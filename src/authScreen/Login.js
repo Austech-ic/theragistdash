@@ -135,7 +135,7 @@ const Login = () => {
 
           <button
             type="submit"
-            className="w-full py-[14px] text-center text-white bg-[#DA5000] rounded-[8px] flex items-center justify-center mb-[20px] md:mb-[32px]"
+            className="w-full py-[14px] text-center text-white bg-[#26ae5f] rounded-[8px] flex items-center justify-center mb-[20px] md:mb-[32px]"
           >
             <p className="text-sm font-medium leading-[20px]">Sign in</p>
             {isLoading && <ClipLoader color={"white"} size={20} />}
