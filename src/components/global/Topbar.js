@@ -154,7 +154,20 @@ const Topbar = ({ setIsSidebar }) => {
             : ""}
         </h4>{" "}
       </div>
+
       <div className="flex flex-row gap-3">
+
+      <div className="flex items-center gap-1">
+                <Switch
+                  colorScheme="green"
+                  onChange={() => setEnableImage(!enableImage)}
+                />
+                 <p className="text-[#667185] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
+             Live
+            </p>
+              </div>
+
+        
         <div className="flex  gap-[12px]  items-center rounded-[18px]">
           <div className="flex items-center">
             <p className="text-[#667185] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">

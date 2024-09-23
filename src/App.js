@@ -19,6 +19,10 @@ import OverView from "./screens/OverView";
 import PaymentLinks from "./screens/PaymentLink";
 import Transactions from "./screens/Transaction";
 import Users from "./screens/Users";
+import Invoice from "./screens/Invoice";
+import CreateInvoice from "./screens/CreateInvoice";
+import Customer from "./screens/Customer";
+import Invoices from "./screens/Invoice";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -51,6 +55,9 @@ function App() {
               <Route path="/paymentlink" exact={true} element={<PaymentLinks />} />
               <Route path="/transaction" exact={true} element={<Transactions />} />
               <Route path="/users" exact={true} element={<Users />} />
+              <Route path="/invoice" exact={true} element={<Invoices />} />
+              <Route path="/createinvoice" exact={true} element={<CreateInvoice />} />
+              <Route path="/customers" exact={true} element={<Customer />} />
 
             </Route>
           </Routes>

@@ -130,6 +130,71 @@ const Sidebar = ({ isSidebarOpen, onClose, role }) => {
               Payment Link
             </Link>
 
+            <button
+                onClick={() => setIsActive("invoice")}
+                className={` ${isActive === "invoice" ? "": "mb-3"} py-[10px] pl-[16px] flex items-center  justify-between w-full text-[14px]    leading-[20px] md:leading-[24px] 
+                ${
+                  window.location.pathname === "/invoice" ||
+                  
+                  window.location.pathname === "/createinvoice"
+                    ? "text-[#26ae5f] font-medium rounded-md"
+                    : "text-[#667185] font-normal "
+                }`}
+              >
+                <div className="flex items-center">
+                  {" "}
+                  <Folder2
+                    className="mr-[12px]"
+                    variant={
+                      window.location.pathname === "/invoice" ||
+                      window.location.pathname === "/customers" ||
+                  
+                      window.location.pathname === "/createinvoice"
+                        ? "Bold"
+                        : "Linear"
+                    }
+                  />
+                  Invoice
+                </div>
+
+                {isActive === "invoice" ? (
+                  <ArrowUp2 size="14" variant="Linear" color="#667185" />
+                ) : (
+                  <ArrowDown2 size="14" variant="Linear" color="#667185" />
+                )}
+              </button>
+
+              {isActive === "invoice" && (
+                <ul className="ml-[26px] pl-[12px] py-[14px] mb-3 border-l border-[#98A2B3]/50">
+                  <Link
+                    to="/invoice"
+                    className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]    leading-[18px] md:leading-[24px]  mb-[14px] ${
+                      window.location.pathname === "/invoice" ||
+                   
+                  
+                      window.location.pathname === "/createinvoice"
+                        ? "bg-[#F7F9FC] font-medium "
+                        : " font-normal"
+                    }`}
+                  >
+                    <li className="">Issue Invoice</li>
+                  </Link>
+
+                  <Link
+                    to="/customers"
+                    className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]  leading-[18px] md:leading-[24px]  mb-[14px] ${
+                      window.location.pathname === "/customers"
+                        ? "bg-[#F7F9FC] font-medium  "
+                        : " font-normal"
+                    }`}
+                  >
+                    <li className="">Customers</li>
+                  </Link>
+
+                 
+                </ul>
+              )}
+
             <Link
               to="/users"
               className={` py-[10px] pl-[16px] flex items-center text-[14px]   mb-3 leading-[20px] md:leading-[24px] ${
