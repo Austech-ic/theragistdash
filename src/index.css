@@ -24,7 +24,10 @@ body {
 }
 
 
-
+.bgImage {
+  background-image: url('/public/bg.png');
+  background-color: "#26ae5f"
+}
 .flex-center {
   display: flex;
   align-items: center;

@@ -81,7 +81,7 @@ const CreateInvoice = () => {
               </li>
               <li className="p-2 md:p-3 border-t-[0.2px] border-b-[0.2px] border-[#98a2b3]">
                 <h2 className="text-[#000] text-[16px]   font-semibold mb-[2px]  ">
-                  From to
+                  From
                 </h2>
                 <p className="text-[#667185]  text-[16px]   font-medium  ">
                   Vant HQ

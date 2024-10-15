@@ -52,6 +52,7 @@ const Topbar = ({ setIsSidebar }) => {
   const [isInvite, setIsInvite] = useState(false);
   const [isCreate, setIsCreate] = useState(false);
   const [isProfile, setIsProfile] = useState(false);
+  const [isLive, setIsLive] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   let userData = localStorage.getItem("authData");
@@ -72,6 +73,17 @@ const Topbar = ({ setIsSidebar }) => {
     const date = Moment(datetimeStr);
     const formattedTime = date.format("h:mm a");
     return formattedTime;
+  }
+
+  function firstAndLastLetter(word) {
+    if (word.length < 1) {
+      return "Input word is too short!";
+    }
+    
+    const firstLetter = word[0]; // First letter
+    const lastLetter = word[word.length - 1]; // Last letter
+  
+    return `${firstLetter}${lastLetter}`;
   }
 
   return (
@@ -156,22 +168,17 @@ const Topbar = ({ setIsSidebar }) => {
       </div>
 
       <div className="flex flex-row gap-3">
+        <div className="flex items-center gap-1">
+          <Switch colorScheme="green" onChange={() => setIsLive(!isLive)} />
+          <p className="text-[#667185] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
+            {isLive ? "Live Mode" : "Test Mode"}
+          </p>
+        </div>
 
-      <div className="flex items-center gap-1">
-                <Switch
-                  colorScheme="green"
-                  onChange={() => setEnableImage(!enableImage)}
-                />
-                 <p className="text-[#667185] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
-             Live
-            </p>
-              </div>
-
-        
-        <div className="flex  gap-[12px]  items-center rounded-[18px]">
-          <div className="flex items-center">
-            <p className="text-[#667185] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
-              {userData?.user?.name}
+        <div className="flex  gap-[12px] border-[0.2px] border-[#98a2b3] px-3 py-1  items-center rounded-[8px]">
+          <div className="flex items-center gap-3">
+            <p className="text-[#475367] font-medium text-[14px] md:text-[14px] xl:text-[16px]  leading-[24px] ">
+              {userData?.partner?.name}
             </p>
             <Menu>
               <MenuButton bg={"none"}>
@@ -188,11 +195,11 @@ const Topbar = ({ setIsSidebar }) => {
                   <div className="h-[28px] w-[28px] md:h-[32px] md:w-[32px] rounded-[4px] bg-[#F9FAFB] flex justify-center items-center">
                     {" "}
                     <p className="text-[#475367] text-[12px] md:text-[12px] xl:text-[12px] font-bold leading-[24px] ">
-                      EA
+                   {firstAndLastLetter( userData?.partner?.name)}
                     </p>
                   </div>
                   <p className="text-[#000000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
-                    Eaglion’s Workspace
+                  {userData?.partner?.name}
                   </p>
                 </div>
                 <div className="flex-item justify-between mb-[20px] mt-[12px]">
@@ -224,11 +231,12 @@ const Topbar = ({ setIsSidebar }) => {
                   <div className="h-[28px] w-[28px] md:h-[32px] md:w-[32px] rounded-[4px] bg-[#F9FAFB] flex justify-center items-center">
                     {" "}
                     <p className="text-[#475367] text-[12px] md:text-[12px] xl:text-[12px] font-bold leading-[24px] ">
-                      EA
+                    {firstAndLastLetter( userData?.partner?.name)}
+
                     </p>
                   </div>
                   <p className="text-[#000000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
-                    Eaglion’s Workspace
+                  {userData?.partner?.name}
                   </p>
                 </div>
                 <div className="flex-item gap-2">
@@ -250,7 +258,7 @@ const Topbar = ({ setIsSidebar }) => {
                     {" "}
                     <Add size={20} color="#98A2B3" />{" "}
                     <p className="text-[#98A2B3] text-[12px]  xl:text-[14px] font-normal leading-[18px] ">
-                      Create new worksapce
+                      Create new business
                     </p>
                   </button>
                   <button
@@ -341,8 +349,8 @@ const Topbar = ({ setIsSidebar }) => {
                   name="name"
                   type="text"
                 />
-                 <p className="text-[14px] md:text-[16px] mb-3 md:mb-4 font-medium text-[#000] leading-[20px]  ">
-                Email
+                <p className="text-[14px] md:text-[16px] mb-3 md:mb-4 font-medium text-[#000] leading-[20px]  ">
+                  Email
                 </p>
                 <input
                   className="flex  h-9 max-w-[410px] w-full mb-5 md:mb-6 rounded-md  border-input bg-background  text-sm shadow-sm text-[#667185] border-[0.2px] border-[#98A2B3] transition-colors file:border-0 file:border-r-[0.2px] file:h-9 file:bg-[#F9FAFB] file:text-[#667185] file:border-[#D0D5DD] file:text-sm file:font-medium placeholder:text-muted-foreground focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f]  disabled:opacity-50"
@@ -361,7 +369,8 @@ const Topbar = ({ setIsSidebar }) => {
                 className="mb-2"
               />
               <p className="text-[14px] md:text-base text-[#FF9800] leading-[20px] md:leading-6  ">
-              Please upload a valid image file. Size of image should not be more than 2MB.
+                Please upload a valid image file. Size of image should not be
+                more than 2MB.
               </p>
             </div>
           </ModalBody>
@@ -422,10 +431,10 @@ const Topbar = ({ setIsSidebar }) => {
               <div>
                 {" "}
                 <p className="text-[14px] md:text-[16px] mb-2 font-medium text-[#000] leading-[20px]  ">
-                  Workspace picture{" "}
+                  Business Logo
                 </p>
                 <p className="text-[14px] text-[#667185] leading-[20px]  ">
-                  Enable or disable workspace picture
+                  Enable or disable business logo
                 </p>
               </div>
 
@@ -449,7 +458,7 @@ const Topbar = ({ setIsSidebar }) => {
                 <div className=" rounded-[8px] bg-[#F9FAFB] max-w-[247px] flex gap-1 py-[10px] md:py-[12px] px-[20px] items-center mb-[28px] md:mb-[40px]">
                   <Send2 color={"#667185"} size={20} />
                   <p className="text-[14px] text-[#667185] leading-[20px]  ">
-                    Upload workspace picture
+                    Upload business logo
                   </p>
                 </div>
               </div>
@@ -589,20 +598,21 @@ const Topbar = ({ setIsSidebar }) => {
             <div className="mt-[20px] md:mt-[26px] lg:mt-[32px] mb-[14px] h-[32px] w-[32px] md:h-[48px] md:w-[48px] lg:h-[80px] lg:w-[80px] rounded-[8px] bg-[#F9FAFB] flex justify-center items-center">
               {" "}
               <p className="text-[#475367] text-[18px] md:text-[24px] xl:text-[24px] font-bold ">
-                EA
+              {firstAndLastLetter( userData?.partner?.name)}
+
               </p>
             </div>
 
             <div className=" rounded-[8px] bg-[#F9FAFB] max-w-[247px] flex gap-1 py-[10px] md:py-[12px] px-[20px] items-center mb-[28px] md:mb-[40px]">
               <Send2 color={"#667185"} size={20} />
               <p className="text-[14px] text-[#667185] leading-[20px]  ">
-                Upload workspace picture
+                Upload business logo
               </p>
             </div>
             <ul>
               <li className="mb-[32px]">
                 <p className="text-[14px] md:text-[16px] mb-2 font-medium text-[#000] leading-[20px]  ">
-                  Upload workspace picture
+                  Upload business logo
                 </p>
                 <input
                   className="flex  h-9 max-w-[410px] w-full rounded-md  border-input bg-background  text-sm shadow-sm text-[#667185] border-[0.2px] border-[#98A2B3] transition-colors file:border-0 file:border-r-[0.2px] file:h-9 file:bg-[#F9FAFB] file:text-[#667185] file:border-[#D0D5DD] file:text-sm file:font-medium placeholder:text-muted-foreground focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f]  disabled:opacity-50"
@@ -615,10 +625,10 @@ const Topbar = ({ setIsSidebar }) => {
                 <div>
                   {" "}
                   <p className="text-[14px] md:text-[16px] mb-2 font-medium text-[#000] leading-[20px]  ">
-                    Workspace picture{" "}
+                  Business Logo{" "}
                   </p>
                   <p className="text-[14px] text-[#667185] leading-[20px]  ">
-                    Enable or disable workspace picture
+                    Enable or disable business logo
                   </p>
                 </div>
 
@@ -633,10 +643,10 @@ const Topbar = ({ setIsSidebar }) => {
                 <div>
                   {" "}
                   <p className="text-[14px] md:text-[16px] mb-2 font-medium text-[#000] leading-[20px]  ">
-                    Remove workspace{" "}
+                    Remove business{" "}
                   </p>
                   <p className="text-[14px] text-[#667185] leading-[20px]  ">
-                    This removes the workspace and automatically deletes all the
+                    This removes the business and automatically deletes all the
                     information{" "}
                   </p>
                 </div>

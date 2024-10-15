@@ -67,7 +67,7 @@ export const data = {
     {
       label: "Dataset 1",
       data: labels.map(() => faker.datatype.number({ min: 2000, max: 20000 })),
-      backgroundColor: "#F05800",
+      backgroundColor: "#26ae5f",
     },
     // {
     //   label: "Dataset 2",
@@ -119,20 +119,18 @@ const OverView = () => {
             </buttion>
           </div>
           <div className="px-[20px] py-[13px] border-t-[0.2] border-[#98A2B3] bg-[#F9FAFB] flex-between rounded-br-lg rounded-bl-lg ">
-            {" "}
+            
             <p className="text-[#000] text-[14px] md:text-[14px] xl:text-[20px] font-bold leading-[24px]  ">
             ₦ 250,000.00
             </p>
-            <p className="text-[#667185] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
-              View employee
-            </p>
+           
           </div>
         </li>
         <li className="border-[0.2px] border-[#98a2b3] rounded-[8px] h-[156px] w-full mx-auto max-w-[270px] bg-[#ffff] flex flex-col justify-between ">
           <div className="px-[20px] py-[24px]  flex-between">
             {" "}
             <p className="text-[#000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px]  ">
-              Total Users
+           Todays Collection
             </p>
             <buttion className="h-[32px] w-[32px] flex justify-center items-center bg-[#F0F2F5] rounded-md">
               <MenuBoard variant="Linear" color="#667185" size="16" />
@@ -141,18 +139,16 @@ const OverView = () => {
           <div className="px-[20px] py-[13px] border-t-[0.2] border-[#98A2B3] bg-[#F9FAFB] flex-between rounded-br-lg rounded-bl-lg ">
             {" "}
             <p className="text-[#000] text-[14px] md:text-[14px] xl:text-[20px] font-bold leading-[24px]  ">
-              20
+            ₦ 250,000.00
             </p>
-            <p className="text-[#667185] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
-              View Users
-            </p>
+          
           </div>
         </li>
         <li className="border-[0.2px] border-[#98a2b3] rounded-[8px] h-[156px] w-full mx-auto max-w-[270px] bg-[#ffff] flex flex-col justify-between ">
           <div className="px-[20px] py-[24px]  flex-between">
             {" "}
             <p className="text-[#000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px]  ">
-              Total Stock
+           Dispute
             </p>
             <buttion className="h-[32px] w-[32px] flex justify-center items-center bg-[#F0F2F5] rounded-md">
               <Task variant="Linear" color="#667185" size="16" />
@@ -161,18 +157,16 @@ const OverView = () => {
           <div className="px-[20px] py-[13px] border-t-[0.2] border-[#98A2B3] bg-[#F9FAFB] flex-between rounded-br-lg rounded-bl-lg ">
             {" "}
             <p className="text-[#000] text-[14px] md:text-[14px] xl:text-[20px] font-bold leading-[24px]  ">
-              50
+            ₦ 250,000.00
             </p>
-            <p className="text-[#667185] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
-              View stock
-            </p>
+           
           </div>
         </li>
         <li className="border-[0.2px] border-[#98a2b3] rounded-[8px] h-[156px] w-full max-w-[270px] mx-auto bg-[#ffff] flex flex-col justify-between ">
           <div className="px-[20px] py-[24px]  flex-between">
             {" "}
             <p className="text-[#000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px]  ">
-              Total Task
+           Total Users
             </p>
             <buttion className="h-[32px] w-[32px] flex justify-center items-center bg-[#F0F2F5] rounded-md">
               <Task variant="Linear" color="#667185" size="16" />
@@ -181,10 +175,10 @@ const OverView = () => {
           <div className="px-[20px] py-[13px] border-t-[0.2] border-[#98A2B3] bg-[#F9FAFB] flex-between rounded-br-lg rounded-bl-lg ">
             {" "}
             <p className="text-[#000] text-[14px] md:text-[14px] xl:text-[20px] font-bold leading-[24px]  ">
-              50
+             4
             </p>
             <p className="text-[#667185] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
-              View tasks
+              View users
             </p>
           </div>
         </li>

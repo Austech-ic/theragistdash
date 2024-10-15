@@ -23,6 +23,7 @@ import Invoice from "./screens/Invoice";
 import CreateInvoice from "./screens/CreateInvoice";
 import Customer from "./screens/Customer";
 import Invoices from "./screens/Invoice";
+import GetStarted from "./screens/GetStarted";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -45,6 +46,7 @@ function App() {
         <Router>
           <Routes>
             <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
 
             <Route path="/forgot-password" component={ForgotPassword} />
 
@@ -52,6 +54,7 @@ function App() {
             <Route element={<Layout />}>
               <Route path="/" exact={true} element={<Home />} />
               <Route path="/overview" exact={true} element={<OverView />} />
+              <Route path="/getstarted" exact={true} element={<GetStarted />} />
               <Route path="/paymentlink" exact={true} element={<PaymentLinks />} />
               <Route path="/transaction" exact={true} element={<Transactions />} />
               <Route path="/users" exact={true} element={<Users />} />

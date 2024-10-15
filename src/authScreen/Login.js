@@ -7,6 +7,8 @@ import { enqueueSnackbar } from "notistack";
 import api from "../api";
 import { Navigate, useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
+import { motion as m } from "framer-motion";
+
 
 const Login = () => {
   const navigate = useNavigate();
@@ -42,11 +44,21 @@ const Login = () => {
   }
   return (
     <div className="bg-[#F2F2F2] h-screen w-full flex justify-center items-center ">
-      <div className="bg-[#ffff] rounded-[16px] max-w-[628px] pt-[24px] md:pt-[32px]  pb-[24px] px-[40px] md:px-[60px] xl:px-[80px]">
-        <img
-          src="./assets/gtLogo.png"
+ <m.div
+        initial={{ x: -30, opacity: 0.4 }}
+        animate={{
+          x: 0,
+          opacity: 1,
+          // scale: 1,
+        }}
+        transition={{
+          duration: 0.9,
+        }}
+        className="bg-[#ffff] rounded-[16px] max-w-[628px] pt-[24px] md:pt-[32px]  pb-[24px] px-[20px] sm:px-[30px] md:px-[60px] xl:px-[80px]"
+      >        <img
+          src="./assets/vantLogo.png"
           alt="logo"
-          className="w-[132px] h-[60px] mx-auto mb-[30px] md:mb-[40px] xl:md-[50px]"
+          className=" h-[60px] mx-auto mb-[30px] md:mb-[40px] xl:md-[50px]"
         />
         <h2 className="text-[20px] md:text-[24px] xl:text-[28px] text-center font-bold leading-[35px] text-black mb-[8px]">
           Hi, Welcome Back!
@@ -150,10 +162,10 @@ const Login = () => {
           </div>
 
           <p className="text-center text-[14px] font-medium leading-[20px] text-[#98a2b3]">
-            Copyright 2024 GTEXT. All Rights Reserved
+            Copyright 2024 VANT. All Rights Reserved
           </p>
         </form>
-      </div>
+      </m.div>
     </div>
   );
 };
