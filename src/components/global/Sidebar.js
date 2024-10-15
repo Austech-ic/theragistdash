@@ -81,11 +81,11 @@ const Sidebar = ({ isSidebarOpen, onClose, role }) => {
 
             <div className="border border-[#98A2B3]/50 my-5 " />
 
-            <Link to="" className="flex-item mb-5 py-1 pl-2 rounded-bl-lg rounded-tl-lg border-l-[3px] border-[#26ae5f]  ">
+            <Link to="" className="flex-item mb-5 py-1 pl-2 pr-1 rounded-lg bg-slate-200 rounded-tl-lg border-l-[3px] border-[#26ae5f]  ">
               <p className="text-[#667185] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
                 Let's get your business started
               </p>
-              <div className="h-[50px] w-[50px]">
+              <div className="h-[40px] w-[40px]">
                 <CircularProgressbar
                   value={10}
                   text={`${10}%`}
