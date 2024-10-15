@@ -152,7 +152,7 @@ const SignUp = () => {
         className="bg-[#ffff] rounded-[16px] max-w-[628px] pt-[24px] md:pt-[32px]  pb-[24px] px-[20px] sm:px-[30px] md:px-[60px] xl:px-[80px]"
       >
         <img
-          src="/assets/vantLogo.png"
+          src="assets/vantLogo.png"
           alt="logo"
           className=" h-[40px] md:h-[60px] mx-auto mb-[18px] md:mb-[25px] xl:md-[40px]"
         />
