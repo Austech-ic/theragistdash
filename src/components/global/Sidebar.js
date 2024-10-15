@@ -75,7 +75,7 @@ const Sidebar = ({ isSidebarOpen, onClose, role }) => {
           <div className="relative h-screen overflow-y-auto no-scrollbar pb-[80px]">
             <img
               class=" h-[40px] w-[70px]   mb-[20px] mt-4"
-              src="./assets/vantLogo.png"
+              src="/assets/vantLogo.png"
               alt="logo"
             />
 
