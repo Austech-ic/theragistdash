@@ -79,7 +79,6 @@ const Sidebar = ({ isSidebarOpen, onClose, role }) => {
               alt="logo"
             />
 
-            
 
             <div className="border border-[#98A2B3]/50 my-5 " />
 
