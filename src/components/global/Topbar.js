@@ -40,6 +40,7 @@ import {
 } from "@chakra-ui/react";
 import api from "../../api";
 import { ClipLoader } from "react-spinners";
+import { decryptaValue, DecryptUserData, decryptValue } from "../../utils/helperFunctions";
 
 const Topbar = ({ setIsSidebar }) => {
   const [logo, setLogo] = useState("");
@@ -55,8 +56,10 @@ const Topbar = ({ setIsSidebar }) => {
   const [isLive, setIsLive] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  let userData = localStorage.getItem("authData");
-  userData = JSON.parse(userData);
+
+  //const decrrtuserData = decryptaValue("U2FsdGVkX1+LkhLONdIns9+eu5hsQt8VLhaXoImDRDOIsJlq7S+4fxL8tfa05BbOfpALu9dHzNwDovZAL+NTM3krN/X5kN4lxw/E0svRGhX7jqX/47y4WPqIQrx/O4qZTJuU41tVJG806zN7jqop5DW92juvHqe4L0LvWFzsdOM2CA+DU5Pn/LIDC3ruY5vkLGuxCfUdMULMurtKVDGOnzuIWs/++y5kdeqRFCZui+UIqhsoP1/HLA5yHXQAKR2QhjMH4j+MQcUpwGvRPIE87Oj8Mcz8xatKx4IF1RjLEuBcLEqHYPLe8da/AaEtDY4ZsI5zu/PG89e9bMsCuwhSags38FNIl0d35iYQS8O56kaY65jBWoNDifkztH7kaTApe6BnU4z1re7/ys4/r9FwvmoFFnYqRHlFrsKn0b/GlRxIrLLauLzhb7ANpHqm6tqLCBnyfYV0D+cm4+57QbRmzJe/45nKvsUn88Qu5vbFrDNFq3lTkOaiHah6YJ5rEBMT2vqFctYkd2GubT5pNfd2k/sTTMGHxjT9DQoq+gcLFXV8MIKMMvLDbntzDOch7PySJcSsbp7zwoorPQuC6OqoCFe1MCh5ajIenIyXktqJ32Lq8REbzxJ3mc4Xq1SkbyiIdreorDTxrjId6LlelQi2I6WQzYX+UN6BhXmR8ZwGDIR02gHQFA212vQC2KuNWl+BdoS6XX7bMM7mDV/LhK35Ann3cCmR1pASQ4Ck60jeuaqZlyTEmUkBw73Q9qfIKXr98WO5bvXZzZEs1BniARM6234NR196xZJh1frx9lHL88WgyDLoCW1Z2Cs7dFL18XDAMNWWQIh9E2jyS6cjaeysSscNq2Rc2TvoMYaT8VoVVuGuty+fwLakypiS/dzlyRf6Um/1Z5kfD01CkDr4aTpEmgnky8rZGdgPB21JY/YODenxVRENqPcfcptVQzDqrLUichze1Xh5RcSKRuXkJ28wnDivMtPL5IpYqNotqpQHjgRC/miNMW1hUI0usZDkzXPmguXyCoF+WYd4j1nH8iuChYDjzh5ou6MUAtfKAeYqaQWmllSjq3cAlnp1eUaF7FvTXO+hUO1xGbPVTz7zVFwXvwyCoF6C7/Cr6slGfRYZ28eofDaGGi3uXeZLimZ2PSanBl6EAv+9u17tfruJageyOw==");
+ 
+  console.log("decryppt===>>>>", DecryptUserData()?.message)
 
   const handleIsModalClose = () => {
     setIsModalOpen(false);
@@ -76,12 +79,13 @@ const Topbar = ({ setIsSidebar }) => {
   }
 
   function firstAndLastLetter(word) {
-    if (word.length < 1) {
+    if ( word && word?.length < 1) {
       return "Input word is too short!";
     }
+    const Word = word ? word : ""
     
-    const firstLetter = word[0]; // First letter
-    const lastLetter = word[word.length - 1]; // Last letter
+    const firstLetter = Word[0]; // First letter
+    const lastLetter = Word[Word.length - 1]; // Last letter
   
     return `${firstLetter}${lastLetter}`;
   }
@@ -178,7 +182,7 @@ const Topbar = ({ setIsSidebar }) => {
         <div className="flex  gap-[12px] border-[0.2px] border-[#98a2b3] px-3 py-1  items-center rounded-[8px]">
           <div className="flex items-center gap-3">
             <p className="text-[#475367] font-medium text-[14px] md:text-[14px] xl:text-[16px]  leading-[24px] ">
-              {userData?.partner?.name}
+              {DecryptUserData()?.partner?.name}
             </p>
             <Menu>
               <MenuButton bg={"none"}>
@@ -195,11 +199,11 @@ const Topbar = ({ setIsSidebar }) => {
                   <div className="h-[28px] w-[28px] md:h-[32px] md:w-[32px] rounded-[4px] bg-[#F9FAFB] flex justify-center items-center">
                     {" "}
                     <p className="text-[#475367] text-[12px] md:text-[12px] xl:text-[12px] font-bold leading-[24px] ">
-                   {firstAndLastLetter( userData?.partner?.name)}
+                   {firstAndLastLetter(DecryptUserData()?.partner?.name)}
                     </p>
                   </div>
                   <p className="text-[#000000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
-                  {userData?.partner?.name}
+                  {DecryptUserData()?.partner?.name}
                   </p>
                 </div>
                 <div className="flex-item justify-between mb-[20px] mt-[12px]">
@@ -223,20 +227,20 @@ const Topbar = ({ setIsSidebar }) => {
                   </button>
                 </div>
                 <div>
-                  <p className="text-[#98A2B3] text-[10px]  xl:text-[12px] font-normal leading-[18px] ">
-                    ogundelecaleb@gmail.com
+                  <p className="text-[#000] text-[10px]  xl:text-[12px] font-normal leading-[18px] ">
+                  Switch Business
                   </p>
                 </div>
                 <div className="flex-item gap-2">
                   <div className="h-[28px] w-[28px] md:h-[32px] md:w-[32px] rounded-[4px] bg-[#F9FAFB] flex justify-center items-center">
                     {" "}
                     <p className="text-[#475367] text-[12px] md:text-[12px] xl:text-[12px] font-bold leading-[24px] ">
-                    {firstAndLastLetter( userData?.partner?.name)}
+                    {firstAndLastLetter( DecryptUserData?.partner?.name)}
 
                     </p>
                   </div>
                   <p className="text-[#000000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
-                  {userData?.partner?.name}
+                  {DecryptUserData?.partner?.name}
                   </p>
                 </div>
                 <div className="flex-item gap-2">
@@ -598,7 +602,7 @@ const Topbar = ({ setIsSidebar }) => {
             <div className="mt-[20px] md:mt-[26px] lg:mt-[32px] mb-[14px] h-[32px] w-[32px] md:h-[48px] md:w-[48px] lg:h-[80px] lg:w-[80px] rounded-[8px] bg-[#F9FAFB] flex justify-center items-center">
               {" "}
               <p className="text-[#475367] text-[18px] md:text-[24px] xl:text-[24px] font-bold ">
-              {firstAndLastLetter( userData?.partner?.name)}
+              {firstAndLastLetter( DecryptUserData()?.partner?.name)}
 
               </p>
             </div>

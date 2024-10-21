@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Sms, CloseCircle, Eye, EyeSlash } from "iconsax-react";
 import { GoLock } from "react-icons/go";
 import { Link } from "react-router-dom";
-import { setUserData } from "../utils/utils";
+import { clearUserData, setUserData } from "../utils/utils";
 import { enqueueSnackbar } from "notistack";
 import api from "../api";
 import { Navigate, useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import { motion as m } from "framer-motion";
-
+import { decryptaValue, decryptValue, encryptaValue } from "../utils/helperFunctions";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -22,29 +22,45 @@ const Login = () => {
     setOpen(!open);
   };
 
+  useEffect(() => {
+    clearUserData()
+
+    const enc = encryptaValue(
+      "hello word"
+            )
+    const dec = decryptaValue(
+"U2FsdGVkX18PTWbmgDsWKoS1GYjv+VUN1uUw8bcF0oUFZZ4lpar+HmzmLrClgUKkYoLmbRO2DAv+vKya++umGhRjeJPVTEWgb3X0+yT4ClCsKbtcVObQLyPgqiIXiL4g0H/4OO2IyZlK4mMkxEM45wKEKbU3f104ErxrXhnTsA+vXsaEQSZgEX9pfk6w2fsjIxR1eXN+cssSSY6iBF0PWyRm/fKJJbUXOmfSI++EMID5bnjCZHMZiTBWLHQAbAvJ9r8WKopoEUr1fXmIZK1p8313wmNfgtorMXqh/8qZUjvVRINCgqEUZ9EzwF5CClc3DnPXKqx6t2QSy9Vm8vZcR0xH3qZx2hxb0PA0mAkQsn1qtTywkfA2EQhbYa2aDpdtSgL9rptX7O9dR+DWf0kMl8t4u7vMcbpFApYCTZAcfHfqdlztiYtLxxLjzZe8jAibqnYLoeQrr+Uv+tuWWeDGfcG0JRb86uSb1q1tS5an1zQ+u1NS2YMo7MhiaLsk2vM5+nHS/Ys1p/WJ68v+HZTvI20vrf6GYCSJIRki79/YFI1vSJ6o4mEiMZp61ifyvM3gug1UpuJmnn5wg7FXneVtCuTK9GxA0A99n/LMQjdrPJh/oiuZpHMyyTB2FQaUDg2sN5LVEEawT5XjSp3eHAtw+o1GcxIL0wGZnoYckI0Pq5YL+gs8SxFPsvdGztZNBwN7m/eskkyG1us5uEb5DiERuGW3k9Wvsgsh23Z3WiJqj1WZ7+o47tbQqQhLhly9qCOqw1kPd/2c62Kjj3KTqlwmuy1nadKRNB6p9FTakV3N2O0LOYGL4xwngCLnOBcwdLxgxKDgko95we9cU5kaXXKM+VjXN0fCVRlZTjb2WVgtJFKV7HzwyZJPDV1hyZyuOpIpJXYcmw8hA4QhUI9mIoGbK6hRTOOMvcNR9yey0cxh1noyXWlQjSqTOENWW54f1+OPKXz1WHU6hWx7VBulvF/VDnwToi+nOjwTEskDDvlpDILEa5gYwleKUi2FumMZNwNOeY6yZcexImLIzSv7uMnXtaiRo3JwikstfTsmnSKpQAlt8g6bAzH6w1SO3Nz3w1i1UGx6NoY6jf2SO7UeZ9gN9dUBA82m+owjPylSM/n8RCfGR2PJUgR+O2hw9xejYnmPLcSMz/3iGv6DLLMSHkPdSQ=="   
+      )  //const dec =  decryptValue("ZU4rSCt5R3ptWTd1TlZFNDVkYnhDaWNPb2RudllTU3lIelJnbGNYSng5N0JCRGE1WDhpOW1uTmR6TFVqZVJMag==")
+    //const dec =  decryptValue("XClPkOy0XN7s07bdFbrx9yV1YXEbbuRHPayMfZvDYQsy9Isoj0HiMJQmRx 75HEWVdLVTMxtHsPpJE7nYTv3hQ: =")
+    console.log("dec===>>>>", dec);
+    console.log("encc===>>>>", enc);
+  });
+
   async function login(e) {
     e.preventDefault();
 
     setIsLoading(true);
+
     try {
-      const response = await api.signIn({ email, password });
-      if (response.result === true) {
-        enqueueSnackbar("Login Successful!!", { variant: "success" });
-      }
-      setUserData(response);
+      const payload = { email: email, password : password }
+
+    
+      const response = await api.signIn({data : encryptaValue(payload)});
+
+
+      setUserData(response?.data);
       setIsLoading(false);
       navigate("/");
-      // navigation.navigate(routes.OTP);
     } catch (error) {
-      console.log(error);
-      enqueueSnackbar(error.message, { variant: "error" });
-      // toast.error(error.message)
+      console.log("error", error);
+     // enqueueSnackbar(error.msg, { variant: "error" });
+      enqueueSnackbar("errooor", { variant: "error" });
       setIsLoading(false);
     }
   }
   return (
     <div className="bg-[#F2F2F2] h-screen w-full flex justify-center items-center ">
- <m.div
+      <m.div
         initial={{ x: -30, opacity: 0.4 }}
         animate={{
           x: 0,
@@ -55,7 +71,9 @@ const Login = () => {
           duration: 0.9,
         }}
         className="bg-[#ffff] rounded-[16px] max-w-[628px] pt-[24px] md:pt-[32px]  pb-[24px] px-[20px] sm:px-[30px] md:px-[60px] xl:px-[80px]"
-      >        <img
+      >
+        {" "}
+        <img
           src="/assets/VantLogo.png"
           alt="logo"
           className=" h-[60px] mx-auto mb-[30px] md:mb-[40px] xl:md-[50px]"
@@ -66,7 +84,6 @@ const Login = () => {
         <p className="text-[14px] md:text-[14px] xl:text-[16px] text-center font-normal leading-[24px] text-[#667185] ">
           Sign in to your account to continue
         </p>
-
         <form
           onSubmit={login}
           className="mt-[40px] max-w-[340px] md:max-w-[486px]"

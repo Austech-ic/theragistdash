@@ -125,7 +125,7 @@ const SignUp = () => {
         rc_number: formValue.rcNumber,
       });
       enqueueSnackbar(response?.message, { variant: "success" });
-      setUserData(response);
+      setUserData(response?.data);
 
       setIsLoading(false);
       navigate("/");

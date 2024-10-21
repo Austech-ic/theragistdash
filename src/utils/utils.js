@@ -1,32 +1,42 @@
 import axios from "axios";
+import {
+  decryptaValue,
+  decryptValue,
+  encryptaValue,
+  encryptValue,
+} from "./helperFunctions";
 
 export async function getHeaders() {
   let userData = localStorage.getItem("authData");
-  // console.log(userData.data.accessToken, "header");
+  console.log(userData, "headerxx======>>>>>>");
+
   if (userData) {
-    userData = JSON.parse(userData);
+    let decryptuserData = decryptaValue(userData);
+
+  console.log(decryptuserData, "decheaderxx======>>>>>>");
+
+    userData = JSON.parse(decryptuserData);
     function cutTokenBeforeSymbol(token) {
-      const symbol = '|';
+      const symbol = "|";
       const symbolIndex = token.indexOf(symbol);
-    
+
       if (symbolIndex !== -1) {
         // Cut out the values before and including the symbol
         return token.slice(symbolIndex + 1);
       }
-    
+
       // If the symbol is not found, return the original token
       return token;
     }
-   
-    
-    const token = "Bearer " +  cutTokenBeforeSymbol(userData.access_token);
+
+    const token = "Bearer " + cutTokenBeforeSymbol(userData.token);
     // console.log(userData.data.accessToken, "header");
-    console.log("token====>>>",token)
+    // console.log("token====>>>",token)
     return {
       authorization: token,
       Accept: "application/json",
       "Content-Type": "application/json",
-      'Access-Control-Allow-Origin': "*"
+      "Access-Control-Allow-Origin": "*",
     };
   }
   return {};
@@ -68,7 +78,6 @@ export async function apiReq(
         // console.log(error && error.response, "the error respne");
         if (error && error.response && error.response.status === 401) {
           clearUserData();
-
         }
         if (error && error.response && error.response.data) {
           if (!error.response.data.message) {
@@ -87,6 +96,7 @@ export async function apiReq(
 }
 
 export function apiPost(endPoint, data, headers = {}) {
+  // const encdata= encryptaValue(JSON.stringify(data))
   return apiReq(endPoint, data, "post", headers);
 }
 
@@ -98,7 +108,12 @@ export function apiGet(endPoint, data, headers = {}, requestOptions) {
   return apiReq(endPoint, data, "get", headers, requestOptions);
 }
 
-export function apiGetCSV(endPoint, data, headers = {}, requestOptions = { responseType: 'blob' }) {
+export function apiGetCSV(
+  endPoint,
+  data,
+  headers = {},
+  requestOptions = { responseType: "blob" }
+) {
   return apiReq(endPoint, data, "get", headers, requestOptions);
 }
 
@@ -129,6 +144,7 @@ export function clearAsyncStorate(key) {
 
 export function setUserData(data) {
   data = JSON.stringify(data);
+
   return localStorage.setItem("authData", data);
 }
 
