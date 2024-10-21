@@ -38,6 +38,9 @@ import { ClipLoader } from "react-spinners";
 import ModalLeft from "../components/ModalLeft";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
+import api from "../api";
+import { enqueueSnackbar } from "notistack";
+import { useQuery } from "@tanstack/react-query";
 
 const Transactions = () => {
   const navigate = useNavigate();
@@ -49,6 +52,7 @@ const Transactions = () => {
   const [isCreate, setIsCreate] = useState(false);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const [page, setPage]= useState("")
 
   function HandleEditModalClose() {
     setIsEditOpen(false);
@@ -94,6 +98,41 @@ const Transactions = () => {
   const closeViewModal = () => {
     setIsViewModal(false);
   };
+
+  // async function handleSubmit(e) {
+  //   e.preventDefault();
+  //   setIsLoading(true);
+
+  //   try {
+  //     const response = await api.getTransaction({
+
+  //     });
+  //     console.log("responce==>>>>>", response);
+  //     enqueueSnackbar("Leave Application successfull", { variant: "success" });
+  //     setIsLoading(false);
+  //     navigate("submited");
+  //   } catch (error) {
+  //     console.log(error);
+  //     enqueueSnackbar(error.message, { variant: "error" });
+  //     setIsLoading(false);
+  //   }
+  // }
+
+  async function getTransaction(page) {
+    const response = await api.getTransaction({
+      params: {
+        page,
+      },
+    });
+    return response;
+  }
+
+  const results = useQuery(["transactions"], () => getTransaction(page), {
+    keepPreviousData: true,
+    refetchOnWindowFocus: "always",
+  });
+
+  console.log("transactions result", results?.data)
   return (
     <div className="p-[20px] bg-[#F2F2F2] min-h-screen ">
       <div className="border-[0.2px] border-[#98a2b3] rounded-[8px]  bg-[#ffff] ">

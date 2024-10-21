@@ -53,11 +53,11 @@ function Layout() {
 
   
   return (
-    <div id="popup-root" className="app bg-[#ffffff] flex ">
+    <div id="" className="app bg-[#ffffff] flex ">
 
       <Sidebar isSidebarOpen={isSidebar} onClose={handleSideBarClose}  />
 
-      <div className="flex flex-col flex-1 w-full overflow-hidden">
+      <div className="flex flex-col flex-1 w-full ">
         <Topbar setIsSidebar={toggleSidebar}/>
         <Main>
           <Suspense fallback={<ThemedSuspense />}>

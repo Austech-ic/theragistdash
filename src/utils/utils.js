@@ -1,6 +1,7 @@
 import axios from "axios";
 import {
   decryptaValue,
+  DecryptUserData,
   decryptValue,
   encryptaValue,
   encryptValue,
@@ -8,14 +9,13 @@ import {
 
 export async function getHeaders() {
   let userData = localStorage.getItem("authData");
-  console.log(userData, "headerxx======>>>>>>");
+  // console.log(userData, "headerxx======>>>>>>");
 
   if (userData) {
-    let decryptuserData = decryptaValue(userData);
+    // let decryptuserData = decryptaValue(userData);
 
-  console.log(decryptuserData, "decheaderxx======>>>>>>");
 
-    userData = JSON.parse(decryptuserData);
+   const  decryptUserData = DecryptUserData();
     function cutTokenBeforeSymbol(token) {
       const symbol = "|";
       const symbolIndex = token.indexOf(symbol);
@@ -29,7 +29,7 @@ export async function getHeaders() {
       return token;
     }
 
-    const token = "Bearer " + cutTokenBeforeSymbol(userData.token);
+    const token = "Bearer " + cutTokenBeforeSymbol(decryptUserData.token);
     // console.log(userData.data.accessToken, "header");
     // console.log("token====>>>",token)
     return {

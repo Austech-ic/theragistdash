@@ -106,7 +106,7 @@ const Login = () => {
                 className="w-[300px] sm:w-[400px] md:w-[486px] h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                 required
                 autoComplete="on"
-                autoFocus
+                
                 name="email"
                 id="email"
                 value={email}
@@ -140,7 +140,7 @@ const Login = () => {
                 className="w-[300px] sm:w-[400px] md:w-[486px] h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                 required
                 autoComplete="on"
-                autoFocus
+                
                 name="password"
                 id="password"
                 value={password}
