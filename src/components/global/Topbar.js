@@ -235,25 +235,15 @@ const Topbar = ({ setIsSidebar }) => {
                   <div className="h-[28px] w-[28px] md:h-[32px] md:w-[32px] rounded-[4px] bg-[#F9FAFB] flex justify-center items-center">
                     {" "}
                     <p className="text-[#475367] text-[12px] md:text-[12px] xl:text-[12px] font-bold leading-[24px] ">
-                    {firstAndLastLetter( DecryptUserData?.partner?.name)}
+                    {firstAndLastLetter( DecryptUserData()?.partner?.name)}
 
                     </p>
                   </div>
                   <p className="text-[#000000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
-                  {DecryptUserData?.partner?.name}
+                  {DecryptUserData()?.partner?.name}
                   </p>
                 </div>
-                <div className="flex-item gap-2">
-                  <div className="h-[28px] w-[28px] md:h-[32px] md:w-[32px] rounded-[4px] bg-[#F9FAFB] flex justify-center items-center">
-                    {" "}
-                    <p className="text-[#475367] text-[12px] md:text-[12px] xl:text-[12px] font-bold leading-[24px] ">
-                      EA
-                    </p>
-                  </div>
-                  <p className="text-[#000000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
-                    Eaglion’s Workspace
-                  </p>
-                </div>
+             
                 <div className="py-[16px] border-t-[0.2px]  border-[#98A2B3] mt-[20px] ">
                   <button
                     onClick={() => setIsCreate(true)}

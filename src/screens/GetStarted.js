@@ -579,7 +579,7 @@ const enc = encryptValue("hello world")
             </m.div>
           )}
 
-{selectedInfo === 3 && (
+{selectedInfo === 4 && (
             <m.div
               initial={{ x: 30, opacity: 0.4 }}
               animate={{
@@ -593,52 +593,74 @@ const enc = encryptValue("hello world")
               }}
             >
               <p className="text-[#000] text-[14px] md:text-[16px] flex gap-3 z-20 xl:text-[18px] italic font-semibold leading-[24px]  mb-6 ">
-                BVN Information
+               Upload Business Information
               </p>
               <div className="mb-[16px] md:mb-[20px]">
                 <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
-                  B.V.N
+                CERTIFICATE OF INCORPORATION <sup className="text-red-400">*</sup>
                 </label>
-                <div className=" relative    flex items-center">
-                  <input
-                    type="text"
-                    placeholder="1234 XXXX XXX"
-                    className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                    required
-                    autoComplete="on"
-                    name="firstName"
-                    // value={formValue.firstName}
-                    // onChange={(e) => {
-                    //   handleInputChange(e);
-                    // }}
-                    autoCapitalize="off"
-                    autoCorrect="off"
-                    spellCheck="false"
+                <div className=" ">
+                <input
+                    className="flex  h-9 w-full rounded-md  border-input bg-background  text-sm shadow-sm text-[#667185] border-[0.2px] border-[#98A2B3] transition-colors file:border-0 file:border-r-[0.2px] file:h-9 file:bg-[#F9FAFB] file:text-[#667185] file:border-[#D0D5DD] file:text-sm file:font-medium placeholder:text-muted-foreground focus:outline-none focus:ring-[#F05800] focus:border-[#F05800]  disabled:opacity-50"
+                    id="csv"
+                    name="csv"
+                    type="file"
                   />
+                                   <p className="text-[10px] text-gray-400">*Maximum file size is 2MB</p>
+
                 </div>
               </div>
               <div className="mb-[16px] md:mb-[20px]">
                 <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
-                  B.V.N Date Of Birth
+                VALID ID OF A DIRECTOR 
+ <sup className="text-red-400">*</sup>
                 </label>
-                <div className=" relative    flex items-center">
-                  <input
-                    type="date"
-                    placeholder=""
-                    className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                    required
-                    autoComplete="on"
-                    name="dob"
-                    // value={formValue.lastName}
-                    // onChange={(e) => {
-                    //   handleInputChange(e);
-                    // }}
-                    autoCapitalize="off"
-                    autoCorrect="off"
-                    spellCheck="false"
+                <div className="">
+                <input
+                    className="flex  h-9 w-full rounded-md  border-input bg-background  text-sm shadow-sm text-[#667185] border-[0.2px] border-[#98A2B3] transition-colors file:border-0 file:border-r-[0.2px] file:h-9 file:bg-[#F9FAFB] file:text-[#667185] file:border-[#D0D5DD] file:text-sm file:font-medium placeholder:text-muted-foreground focus:outline-none focus:ring-[#F05800] focus:border-[#F05800]  disabled:opacity-50"
+                    id="csv"
+                    name="csv"
+                    type="file"
                   />
+                  <p className="text-[10px] text-gray-400">*Maximum file size is 2MB</p>
+                 
                 </div>
               </div>
+              <div className="mb-[16px] md:mb-[20px]">
+                <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
+                CAC Form BN/1 or CAC Form 1.1 (C07 for older companies)  
+ <sup className="text-red-400">*</sup>
+                </label>
+                <div className="">
+                <input
+                    className="flex  h-9 w-full rounded-md  border-input bg-background  text-sm shadow-sm text-[#667185] border-[0.2px] border-[#98A2B3] transition-colors file:border-0 file:border-r-[0.2px] file:h-9 file:bg-[#F9FAFB] file:text-[#667185] file:border-[#D0D5DD] file:text-sm file:font-medium placeholder:text-muted-foreground focus:outline-none focus:ring-[#F05800] focus:border-[#F05800]  disabled:opacity-50"
+                    id="csv"
+                    name="csv"
+                    type="file"
+                  />
+                  <p className="text-[10px] text-gray-400">*Maximum file size is 2MB</p>
+                 
+                </div>
+              </div>
+              <div className="mb-[16px] md:mb-[20px]">
+                <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
+                VALID ID OF ANOTHER DIRECTOR   
+ <sup className="text-red-400">*</sup>
+                </label>
+                <div className="">
+                <input
+                    className="flex  h-9 w-full rounded-md  border-input bg-background  text-sm shadow-sm text-[#667185] border-[0.2px] border-[#98A2B3] transition-colors file:border-0 file:border-r-[0.2px] file:h-9 file:bg-[#F9FAFB] file:text-[#667185] file:border-[#D0D5DD] file:text-sm file:font-medium placeholder:text-muted-foreground focus:outline-none focus:ring-[#F05800] focus:border-[#F05800]  disabled:opacity-50"
+                    id="csv"
+                    name="csv"
+                    type="file"
+                  />
+                  <p className="text-[10px] text-gray-400">*Maximum file size is 2MB</p>
+                 
+                </div>
+              </div>
+
+              
+            
 
               <div className="py-[20px] border-t border-b-[#E4E7EC] flex-item  justify-end">
                 <div className="flex-item gap-2">
