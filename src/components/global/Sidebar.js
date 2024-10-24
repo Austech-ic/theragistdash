@@ -74,15 +74,17 @@ const Sidebar = ({ isSidebarOpen, onClose, role }) => {
         <div className="relative">
           <div className="relative h-screen overflow-y-auto no-scrollbar pb-[80px]">
             <img
-              class=" h-[40px] w-[70px]   mb-[20px] mt-4"
+              class=" h-[40px] w-[70px]   mb-[20px] "
               src="./assets/VantLogo.png"
               alt="logo"
             />
 
-
             <div className="border border-[#98A2B3]/50 my-5 " />
 
-            <Link to="" className="flex-item mb-5 py-1 pl-2 pr-1 rounded-lg bg-slate-200 rounded-tl-lg border-l-[3px] border-[#26ae5f]  ">
+            <Link
+              to=""
+              className="flex-item mb-5 py-1 pl-2 pr-1 rounded-lg bg-slate-200 rounded-tl-lg border-l-[3px] border-[#26ae5f]  "
+            >
               <p className="text-[#667185] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
                 Let's get your business started
               </p>
@@ -150,6 +152,22 @@ const Sidebar = ({ isSidebarOpen, onClose, role }) => {
                 }
               />
               Transaction
+            </Link>
+            <Link
+              to="/wallet"
+              className={` py-[10px] pl-[16px] flex items-center text-[14px]  mb-3   leading-[20px] md:leading-[24px] ${
+                window.location.pathname === "/wallet"
+                  ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
+                  : "text-[#667185] font-normal"
+              }`}
+            >
+              <WalletMoney
+                className="mr-[12px]"
+                variant={
+                  window.location.pathname === "/wallet" ? "Bold" : "Linear"
+                }
+              />
+              Wallets{" "}
             </Link>
 
             <Link

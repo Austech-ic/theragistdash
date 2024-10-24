@@ -70,23 +70,23 @@ const Login = () => {
         transition={{
           duration: 0.9,
         }}
-        className="bg-[#ffff] rounded-[16px] max-w-[628px] pt-[24px] md:pt-[32px]  pb-[24px] px-[20px] sm:px-[30px] md:px-[60px] xl:px-[80px]"
+        className="bg-[#ffff] rounded-[16px] w-[90%]  max-w-[628px] pt-[16px] md:pt-[32px]  pb-[24px] px-[16px] sm:px-[30px] md:px-[60px] xl:px-[80px]"
       >
         {" "}
         <img
           src="/assets/VantLogo.png"
           alt="logo"
-          className=" h-[60px] mx-auto mb-[30px] md:mb-[40px] xl:md-[50px]"
+          className=" h-[40px] md:h-[50px] xl:h-[60px] mx-auto mb-[20px] md:mb-[40px] xl:md-[50px]"
         />
-        <h2 className="text-[20px] md:text-[24px] xl:text-[28px] text-center font-bold leading-[35px] text-black mb-[8px]">
+        {/* <h2 className="text-[20px] md:text-[24px] xl:text-[28px] text-center font-bold leading-[35px] text-black mb-[8px]">
           Hi, Welcome Back!
-        </h2>
+        </h2> */}
         <p className="text-[14px] md:text-[14px] xl:text-[16px] text-center font-normal leading-[24px] text-[#667185] ">
           Sign in to your account to continue
         </p>
         <form
           onSubmit={login}
-          className="mt-[40px] max-w-[340px] md:max-w-[486px]"
+          className="mt-[20px] md:mt-[30px]  max-w-[340px] md:max-w-[486px]"
         >
           <div className="mb-[24px]">
             <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
@@ -103,7 +103,7 @@ const Login = () => {
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="w-[300px] sm:w-[400px] md:w-[486px] h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                className="w-[100%] sm:w-[400px] md:w-[486px] h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                 required
                 autoComplete="on"
                 
@@ -137,7 +137,7 @@ const Login = () => {
               <input
                 type={open === false ? "password" : "text"}
                 placeholder="Enter your password"
-                className="w-[300px] sm:w-[400px] md:w-[486px] h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                className="w-[100%]  sm:w-[400px] md:w-[486px] h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                 required
                 autoComplete="on"
                 

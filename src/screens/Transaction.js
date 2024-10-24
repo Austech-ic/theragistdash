@@ -41,6 +41,13 @@ import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import api from "../api";
 import { enqueueSnackbar } from "notistack";
 import { useQuery } from "@tanstack/react-query";
+import TableLoading from "../components/TableLoading";
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
+import "react-loading-skeleton/dist/skeleton.css";
+import { decryptaValue } from "../utils/helperFunctions";
+import EmptyTable from "../components/EmptyTable";
 
 const Transactions = () => {
   const navigate = useNavigate();
@@ -52,7 +59,9 @@ const Transactions = () => {
   const [isCreate, setIsCreate] = useState(false);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
-  const [page, setPage]= useState("")
+  const [page, setPage] = useState("");
+  const [startdate, setStartdate] = useState("");
+  const [enddate, setEndDate] = useState("");
 
   function HandleEditModalClose() {
     setIsEditOpen(false);
@@ -132,7 +141,9 @@ const Transactions = () => {
     refetchOnWindowFocus: "always",
   });
 
-  console.log("transactions result", results?.data)
+  // console.log("decrypt transaction", decryptaValue(results?.data?.data))
+
+  //console.log("transactions result", results?.data);
   return (
     <div className="p-[20px] bg-[#F2F2F2] min-h-screen ">
       <div className="border-[0.2px] border-[#98a2b3] rounded-[8px]  bg-[#ffff] ">
@@ -147,14 +158,14 @@ const Transactions = () => {
             <div className="flex items-center gap-[8px]">
               <SearchNormal1 variant="Linear" color="#667185" size="16" />
               <input
-                className="w-full lg:w-[300px] py-[6px] text-[16px] text-[#344054] leading-[20px] placeholder:text-[#98A2B3] placeholder:text-[12px] border border-transparent  focus:outline-none focus:ring-[#F05800] focus:border-b-[#F05800] "
-                placeholder="Search"
+                className="w-full lg:w-[300px] py-[6px] text-[16px] text-[#344054] leading-[20px] placeholder:text-[#98A2B3] placeholder:text-[12px] border border-transparent  focus:outline-none focus:ring-[#26ae5f] focus:border-b-[#26ae5f] "
+                placeholder="Search by transaction ref.."
               />
             </div>
           </div>
           <div className="flex items-center gap-[16px] ">
             <button
-              onClick={() => toggleImportModal()}
+              // onClick={() => toggleImportModal()}
               className="flex items-center gap-[8px] "
             >
               <p className="text-[14px] text-[#667185] leading-[20px]">
@@ -195,7 +206,7 @@ const Transactions = () => {
                   </p>
 
                   <input
-                    className="flex mb-[20px] h-9 w-full rounded-md  border-input bg-background  text-sm shadow-sm text-[#667185] border-[0.2px] border-[#98A2B3] transition-colors file:border-0 file:border-r-[0.2px] file:h-9 file:bg-[#F9FAFB] file:text-[#667185] file:border-[#D0D5DD] file:text-sm file:font-medium placeholder:text-muted-foreground focus:outline-none focus:ring-[#F05800] focus:border-[#F05800]  disabled:opacity-50"
+                    className="flex mb-[20px] h-9 w-full rounded-md  border-input bg-background  text-sm shadow-sm text-[#667185] border-[0.2px] border-[#98A2B3] transition-colors file:border-0 file:border-r-[0.2px] file:h-9 file:bg-[#F9FAFB] file:text-[#667185] file:border-[#D0D5DD] file:text-sm file:font-medium placeholder:text-muted-foreground focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f]  disabled:opacity-50"
                     id="csv"
                     name="csv"
                     type="file"
@@ -218,7 +229,7 @@ const Transactions = () => {
                   <button className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black">
                     Cancel
                   </button>
-                  <button className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#F05800] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white">
+                  <button className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white">
                     {!isLoading ? (
                       <ClipLoader color={"white"} size={20} />
                     ) : (
@@ -232,283 +243,307 @@ const Transactions = () => {
         </div>
         <div className="p-[10px] md:p-[16px] lg:p-[20px]">
           {" "}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 overflow-x-auto custom-scrollbar">
             <input
-              type="date"
-              placeholder=""
-              className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#F05800] focus:border-[#F05800] "
-              required
+              type="text"
+              placeholder="Transaction Reference"
+              className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
               autoComplete="on"
-              autoFocus
             />
+              <select
+              type="text"
+              placeholder=""
+              className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+              autoComplete="on"
+            >
+              <option value="">Select Currency</option>
+              <option value="NGN">NGN</option>
+              <option value="USD">USD</option>
+              <option value="GBP">GBP</option>
+            </select>
+            <DatePicker
+              className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+              placeholderText="Start Date"
+              selected={startdate}
+              onChange={(date) => setStartdate(date)}
+            />
+            <DatePicker
+              className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+              placeholderText="End Date"
+              selected={enddate}
+              onChange={(date) => setEndDate(date)}
+            />
+            <select
+              type="text"
+              className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+              autoComplete="on"
+            >
+              <option value="">Select Transaction Type</option>
+              <option value="1">Credit</option>
+              <option value="0">Debit</option>
+              <option value="Medium">Success</option>
+            </select>
 
             <select
               type="text"
               placeholder="Select Item Type"
-              className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#F05800] focus:border-[#F05800] "
-              required
+              className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
               autoComplete="on"
-              autoFocus
             >
-              <option value="High">Select Status</option>
+              <option value="">Select Status</option>
               <option value="Medium">Processing</option>
               <option value="Medium">Failed</option>
               <option value="Medium">Success</option>
             </select>
+            <select
+              type="text"
+              className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+              autoComplete="on"
+            >
+              <option value="">Select Transaction Reason</option>
+              <option value="Wallet Funding">Wallet Funding</option>
+              <option value="Withdrawal">Withdrawal</option>
+              {/* <option value="Medium">Success</option> */}
+            </select>
 
-           
-
-            <buttion className="h-[44px] w-[44px] flex justify-center items-center bg-[#F0F2F5] rounded-md">
-              <FilterSearch variant="Linear" color="#4CAF50" size="20" />
-            </buttion>
-            <buttion className="h-[44px] w-[44px] flex justify-center items-center bg-[#F0F2F5] rounded-md">
-              <Trash variant="Linear" color="#F44336" size="20" />
-            </buttion>
+         
           </div>
         </div>
       </div>
       <div className="overflow-x-auto">
+        <div class="sm:-mx-6 lg:-mx-8 mt-5">
+          <div class="inline-block min-w-full  sm:px-6 lg:px-8">
+            <div class="overflow-x-auto rounded-lg">
+              <table className="min-w-full mb-6 border-[0.8px] border-r-[0.8px]  border-l-[0.8px] border-[#E4E7EC] rounded-lg">
+                <thead className="bg-[#F9FAFB]">
+                  <tr className="">
+                    <th
+                      scope="col"
+                      className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
+                    >
+                      <div className="flex px-5   gap-[6px] md:gap-[12px] items-center">
+                        Name
+                      </div>
+                    </th>
+                    <th
+                      scope="col"
+                      className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
+                    >
+                      <div className="flex px-5   gap-[6px] md:gap-[12px] items-center">
+                        Transaction Ref
+                      </div>
+                    </th>
+                    <th
+                      scope="col"
+                      className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
+                    >
+                      <div className="flex  gap-[6px] md:gap-[12px] items-center my-0">
+                        Amount
+                      </div>
+                    </th>
+                    <th
+                      scope="col"
+                      className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
+                    >
+                      <div className="flex  gap-[6px] md:gap-[12px] items-center my-0">
+                        Channel
+                      </div>
+                    </th>
+                    <th
+                      scope="col"
+                      className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
+                    >
+                      <div className="flex  gap-[6px] md:gap-[12px] items-center my-0">
+                        Charges{" "}
+                      </div>
+                    </th>
 
-      <div class="sm:-mx-6 lg:-mx-8 mt-5">
-        <div class="inline-block min-w-full  sm:px-6 lg:px-8">
-          <div class="overflow-x-auto rounded-lg">
-            <table className="min-w-full mb-6 border-[0.8px] border-r-[0.8px]  border-l-[0.8px] border-[#E4E7EC] rounded-lg">
-              <thead className="bg-[#F9FAFB]">
-                <tr className="">
-                <th
-                    scope="col"
-                    className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
-                  >
-                    <div className="flex px-5   gap-[6px] md:gap-[12px] items-center">
-                     Name
-                    </div>
-                  </th>
-                  <th
-                    scope="col"
-                    className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
-                  >
-                    <div className="flex px-5   gap-[6px] md:gap-[12px] items-center">
-                      Transaction Ref
-                    </div>
-                  </th>
-                  <th
-                    scope="col"
-                    className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
-                  >
-                    <div className="flex  gap-[6px] md:gap-[12px] items-center my-0">
-                      Amount
-                    </div>
-                  </th>
-                  <th
-                    scope="col"
-                    className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
-                  >
-                    <div className="flex  gap-[6px] md:gap-[12px] items-center my-0">
-                      Channel
-                    </div>
-                  </th>
-                  <th
-                    scope="col"
-                    className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
-                  >
-                    <div className="flex  gap-[6px] md:gap-[12px] items-center my-0">
-                      Charges{" "}
-                    </div>
-                  </th>
+                    <th
+                      scope="col"
+                      className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
+                    >
+                      <div className="flex  gap-[6px] md:gap-[12px] items-center my-0">
+                        Status
+                      </div>
+                    </th>
+                    <th
+                      scope="col"
+                      className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
+                    >
+                      <div className="flex  gap-[6px] md:gap-[12px] items-center my-0">
+                        Date{" "}
+                      </div>
+                    </th>
 
-                  <th
-                    scope="col"
-                    className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
-                  >
-                    <div className="flex  gap-[6px] md:gap-[12px] items-center my-0">
-                      Status
-                    </div>
-                  </th>
-                  <th
-                    scope="col"
-                    className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
-                  >
-                    <div className="flex  gap-[6px] md:gap-[12px] items-center my-0">
-                      Date{" "}
-                    </div>
-                  </th>
+                    <th
+                      scope="col"
+                      className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
+                    >
+                      <div className="flex justify-center gap-[6px] md:gap-[12px] items-center my-0">
+                        Action
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {results?.isLoading && <TableLoading cols={8} />}
+                  {results?.data && (
+                    // decryptaValue(results?.data?.data) === 0 &&
+                    <EmptyTable cols={8} />
+                  )}
+                  {/*  {TaskSummaryData &&
+                    TaskSummaryData?.map((result) => ( */}
 
-                  <th
-                    scope="col"
-                    className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
-                  >
-                    <div className="flex justify-center gap-[6px] md:gap-[12px] items-center my-0">
-                      Action
-                    </div>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {/* {isLoading && <div>Loading...</div>}
-                  {!isLoading && TaskSummaryData.length === 0 && (
-                    <tr>
-                      <td className="text-center" colspan="6">
-                        <img
-                          src="./nodata.gif"
-                          className="mx-auto mt-6 h-[70px] "
-                          alt=""
+                  {results?.data && (
+                    <tr key="_" className="mb-2 hover:bg-light-gray">
+                      <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                        Ogundele Caleb{" "}
+                      </td>
+                      <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                        92c3ccsys4b484f59bac030b00e8a96d4
+                      </td>
+                      <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                        #120,000.00
+                      </td>
+                      <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                        Transfer{" "}
+                      </td>
+                      <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                        #120
+                      </td>
+                      <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                        <button
+                          className={`rounded-[20px] md:rounded-[40px] w-[60px] md:w-[74px] py-[2px] md:py-[4px] mx-auto ${
+                            result.status === "Pending"
+                              ? "bg-[rgb(255,245,230)] text-[#FF9800]"
+                              : result.status === "Ongoing"
+                              ? "bg-[#F9FAFB] text-[#667185]"
+                              : "bg-[#EDF7EE] text-[#4CAF50]"
+                          }  text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px]`}
+                        >
+                          <p>Success</p>
+                        </button>{" "}
+                      </td>
+                      <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                        Sep 11, 2024 (at 03.00 AM)
+                      </td>
+
+                      <td className="whitespace-nowrap py-[16px] flex-item gap-2 bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#1A202C] font-medium text-left  ">
+                        <More
+                          onClick={() => ToggleEditModal()}
+                          variant="Linear"
+                          color="#667185"
+                          size="24"
                         />
-                        <h3 className="text-[30px] leading-[35px]  text-[#1A202C] font-extrabold mb-[6px]">
-                          No Project
-                        </h3>
+
+                        <Modal
+                          isCentered
+                          isOpen={isDeleteModal}
+                          onClose={closeDeleteModal}
+                          size="md"
+                          style={{ borderRadius: 12 }}
+                          motionPreset="slideInBottom"
+                          className="rounded-[12px]"
+                        >
+                          <ModalOverlay />
+                          <ModalContent>
+                            <ModalHeader
+                              py="4"
+                              color="#000000"
+                              className="text-[18px]   font-medium leading-[24px] md:leading-[24px]"
+                            >
+                              <svg
+                                className="mx-auto"
+                                width="56"
+                                height="56"
+                                viewBox="0 0 56 56"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <rect
+                                  x="4"
+                                  y="4"
+                                  width="48"
+                                  height="48"
+                                  rx="24"
+                                  fill="#FCC5C1"
+                                />
+                                <rect
+                                  x="4"
+                                  y="4"
+                                  width="48"
+                                  height="48"
+                                  rx="24"
+                                  stroke="#FEECEB"
+                                  stroke-width="8"
+                                />
+                                <path
+                                  d="M28 38C33.5 38 38 33.5 38 28C38 22.5 33.5 18 28 18C22.5 18 18 22.5 18 28C18 33.5 22.5 38 28 38Z"
+                                  stroke="#26ae5f"
+                                  stroke-width="1.5"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                                <path
+                                  d="M28 24V29"
+                                  stroke="#26ae5f"
+                                  stroke-width="1.5"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                                <path
+                                  d="M27.9961 32H28.0051"
+                                  stroke="#26ae5f"
+                                  stroke-width="2"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                              </svg>
+                            </ModalHeader>
+                            <ModalCloseButton size={"sm"} />
+                            <ModalBody
+                              py={{ base: "20px", md: "24px" }}
+                              px={{ base: "16px", md: "24px" }}
+                              className=" px-[16px] md:px-[24px] pb-[30px] md:pb-[40px]"
+                            >
+                              <p className=" text-[16px] md:text-lg text-center  text-[#000] leading-[24px] font-medium  ">
+                                Delete Transactions
+                              </p>
+
+                              <p className="text-[14px]  text-[#667185] leading-[20px] font-normal text-center mt-2  ">
+                                Are you sure you want to delete this
+                                Transactions? This action cannot be undone.
+                              </p>
+                            </ModalBody>
+                            <ModalFooter gap={"16px"}>
+                              <button
+                                onClick={closeDeleteModal}
+                                className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black"
+                              >
+                                Cancel
+                              </button>
+                              <button
+                                // onClick={handleDelete}
+                                className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
+                              >
+                                {isLoading ? (
+                                  <ClipLoader color={"white"} size={20} />
+                                ) : (
+                                  <> Delete </>
+                                )}
+                              </button>
+                            </ModalFooter>
+                          </ModalContent>
+                        </Modal>
                       </td>
                     </tr>
                   )}
-                  {TaskSummaryData &&
-                    TaskSummaryData?.map((result) => ( */}
-                <tr key="_" className="mb-2 hover:bg-light-gray">
-                  <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                    Ogundele Caleb{" "}
-                  </td>
-                  <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                    92c3ccsys4b484f59bac030b00e8a96d4
-                  </td>
-                  <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                    #120,000.00
-                  </td>
-                  <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                    Transfer{" "}
-                  </td>
-                  <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                    #120
-                  </td>
-                  <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                    <button
-                      className={`rounded-[20px] md:rounded-[40px] w-[60px] md:w-[74px] py-[2px] md:py-[4px] mx-auto ${
-                        result.status === "Pending"
-                          ? "bg-[rgb(255,245,230)] text-[#FF9800]"
-                          : result.status === "Ongoing"
-                          ? "bg-[#F9FAFB] text-[#667185]"
-                          : "bg-[#EDF7EE] text-[#4CAF50]"
-                      }  text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px]`}
-                    >
-                      <p>Success</p>
-                    </button>{" "}
-                  </td>
-                  <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                    Sep 11, 2024 (at 03.00 AM)
-                  </td>
-
-                  <td className="whitespace-nowrap py-[16px] flex-item gap-2 bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#1A202C] font-medium text-left  ">
-                    <More
-                      onClick={() => ToggleEditModal()}
-                      variant="Linear"
-                      color="#667185"
-                      size="24"
-                    />
-
-                    <Modal
-                      isCentered
-                      isOpen={isDeleteModal}
-                      onClose={closeDeleteModal}
-                      size="md"
-                      style={{ borderRadius: 12 }}
-                      motionPreset="slideInBottom"
-                      className="rounded-[12px]"
-                    >
-                      <ModalOverlay />
-                      <ModalContent>
-                        <ModalHeader
-                          py="4"
-                          color="#000000"
-                          className="text-[18px]   font-medium leading-[24px] md:leading-[24px]"
-                        >
-                          <svg
-                            className="mx-auto"
-                            width="56"
-                            height="56"
-                            viewBox="0 0 56 56"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <rect
-                              x="4"
-                              y="4"
-                              width="48"
-                              height="48"
-                              rx="24"
-                              fill="#FCC5C1"
-                            />
-                            <rect
-                              x="4"
-                              y="4"
-                              width="48"
-                              height="48"
-                              rx="24"
-                              stroke="#FEECEB"
-                              stroke-width="8"
-                            />
-                            <path
-                              d="M28 38C33.5 38 38 33.5 38 28C38 22.5 33.5 18 28 18C22.5 18 18 22.5 18 28C18 33.5 22.5 38 28 38Z"
-                              stroke="#F44336"
-                              stroke-width="1.5"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                            <path
-                              d="M28 24V29"
-                              stroke="#F44336"
-                              stroke-width="1.5"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                            <path
-                              d="M27.9961 32H28.0051"
-                              stroke="#F44336"
-                              stroke-width="2"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                          </svg>
-                        </ModalHeader>
-                        <ModalCloseButton size={"sm"} />
-                        <ModalBody
-                          py={{ base: "20px", md: "24px" }}
-                          px={{ base: "16px", md: "24px" }}
-                          className=" px-[16px] md:px-[24px] pb-[30px] md:pb-[40px]"
-                        >
-                          <p className=" text-[16px] md:text-lg text-center  text-[#000] leading-[24px] font-medium  ">
-                            Delete Transactions
-                          </p>
-
-                          <p className="text-[14px]  text-[#667185] leading-[20px] font-normal text-center mt-2  ">
-                            Are you sure you want to delete this Transactions?
-                            This action cannot be undone.
-                          </p>
-                        </ModalBody>
-                        <ModalFooter gap={"16px"}>
-                          <button
-                            onClick={closeDeleteModal}
-                            className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black"
-                          >
-                            Cancel
-                          </button>
-                          <button
-                            // onClick={handleDelete}
-                            className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#F05800] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
-                          >
-                            {isLoading ? (
-                              <ClipLoader color={"white"} size={20} />
-                            ) : (
-                              <> Delete </>
-                            )}
-                          </button>
-                        </ModalFooter>
-                      </ModalContent>
-                    </Modal>
-                  </td>
-                </tr>
-                {/* ))} */}
-              </tbody>
-            </table>
+                  {/* ))} */}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
       </div>
       {/* Create Modal */}
       <ModalLeft isOpen={isCreate} onClose={closeCreateModal}>
@@ -539,10 +574,8 @@ const Transactions = () => {
                 <select
                   type="text"
                   placeholder="Name"
-                  className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#F05800] focus:border-[#F05800] "
-                  required
+                  className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                   autoComplete="on"
-                  autoFocus
                   name="full-name"
                   id="full-name"
                   //value=""
@@ -564,10 +597,8 @@ const Transactions = () => {
                 <input
                   type="date"
                   placeholder="Enter Title"
-                  className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#F05800] focus:border-[#F05800] "
-                  required
+                  className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                   autoComplete="on"
-                  autoFocus
                   name="date"
                   id="full-name"
                   //   value={formData.date}
@@ -586,10 +617,8 @@ const Transactions = () => {
                 <input
                   type="time"
                   placeholder="Name"
-                  className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#F05800] focus:border-[#F05800] "
-                  required
+                  className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                   autoComplete="on"
-                  autoFocus
                   name="full-name"
                   id="full-name"
                   //value=""
@@ -608,10 +637,8 @@ const Transactions = () => {
                 <input
                   type="time"
                   placeholder=""
-                  className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#F05800] focus:border-[#F05800] "
-                  required
+                  className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                   autoComplete="on"
-                  autoFocus
                   name="date"
                   id="full-name"
                   //   value={formData.date}
@@ -631,7 +658,7 @@ const Transactions = () => {
                 >
                   Cancel
                 </button>
-                <button className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#F05800] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white">
+                <button className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white">
                   {!isLoading ? (
                     <ClipLoader color={"white"} size={20} />
                   ) : (
@@ -643,8 +670,6 @@ const Transactions = () => {
           </div>
         </div>
       </ModalLeft>
-
-     
     </div>
   );
 };

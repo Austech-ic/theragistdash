@@ -8,6 +8,7 @@ import { ClipLoader } from "react-spinners";
 import { enqueueSnackbar } from "notistack";
 import api from "../api";
 import { setUserData } from "../utils/utils";
+import { encryptaValue } from "../utils/helperFunctions";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -109,20 +110,21 @@ const SignUp = () => {
       enqueueSnackbar("Please check your password", { variant: "error" });
       return
     }
-   
 
     setIsLoading(true);
     try {
+    const payload = {first_name: formValue.firstName,
+      last_name: formValue.lastName,
+      name: formValue.businessName,
+      phone: formValue.phone,
+      email: formValue.email,
+      incorporation_date: formValue.incopDate,
+      password,
+      password_confirmation: confirmPassword,
+      rc_number: formValue.rcNumber,}
+
       const response = await api.signUp({
-        first_name: formValue.firstName,
-        last_name: formValue.lastName,
-        name: formValue.businessName,
-        phone: formValue.phone,
-        email: formValue.email,
-        incorporation_date: formValue.incopDate,
-        password,
-        password_confirmation: confirmPassword,
-        rc_number: formValue.rcNumber,
+        data : encryptaValue(payload) 
       });
       enqueueSnackbar(response?.message, { variant: "success" });
       setUserData(response?.data);
