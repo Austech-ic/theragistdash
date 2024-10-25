@@ -1,85 +1,66 @@
-import React, { useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
+import JsBarcode from "jsbarcode";
+import ReactToPrint from "react-to-print";
+import Barcode from "react-barcode";
 
 const Customer = () => {
-  const [currentStep, setCurrentStep] = useState(0);
+  const [text, setText] = useState('');
+  const barcodeRef = useRef(null);
 
-  const nextStep = () => {
-    if (currentStep < 2) {
-      setCurrentStep(currentStep + 1);
-    }
-  };
-
-  const prevStep = () => {
-    if (currentStep > 0) {
-      setCurrentStep(currentStep - 1);
+  const handlePrint = () => {
+    if (barcodeRef.current) {
+      const printWindow = window.open('', '_blank');
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>Print Barcode</title>
+            <style>
+              body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+              }
+              img {
+                width: 300px;
+              }
+            </style>
+          </head>
+          <body>
+            ${barcodeRef.current.innerHTML}
+          </body>
+        </html>
+      `);
+      printWindow.document.close();
+      printWindow.print();
     }
   };
 
   return (
-    <div className="relative w-full max-w-md mx-auto mt-10">
-      <div className="overflow-hidden relative">
-        <div className="flex transition-transform duration-500"
-             style={{ transform: `translateX(-${currentStep * 100}%)` }}>
-          {/* Form 1 */}
-          <div className="w-full flex-shrink-0">
-            <form className="p-4 bg-white border border-gray-300 rounded-lg shadow-md">
-              <h2 className="text-xl mb-4 font-semibold">Form 1</h2>
-              <label className="block mb-2">First Name</label>
-              <input type="text" className="w-full p-2 border rounded-md mb-4" placeholder="Enter your first name" />
-              <button
-                type="button"
-                onClick={nextStep}
-                className="px-4 py-2 bg-blue-500 text-white rounded-md">
-                Next
-              </button>
-            </form>
-          </div>
-
-          {/* Form 2 */}
-          <div className="w-full flex-shrink-0">
-            <form className="p-4 bg-white border border-gray-300 rounded-lg shadow-md">
-              <h2 className="text-xl mb-4 font-semibold">Form 2</h2>
-              <label className="block mb-2">Last Name</label>
-              <input type="text" className="w-full p-2 border rounded-md mb-4" placeholder="Enter your last name" />
-              <div className="flex justify-between">
-                <button
-                  type="button"
-                  onClick={prevStep}
-                  className="px-4 py-2 bg-gray-500 text-white rounded-md">
-                  Previous
-                </button>
-                <button
-                  type="button"
-                  onClick={nextStep}
-                  className="px-4 py-2 bg-blue-500 text-white rounded-md">
-                  Next
-                </button>
-              </div>
-            </form>
-          </div>
-
-          {/* Form 3 */}
-          <div className="w-full flex-shrink-0">
-            <form className="p-4 bg-white border border-gray-300 rounded-lg shadow-md">
-              <h2 className="text-xl mb-4 font-semibold">Form 3</h2>
-              <label className="block mb-2">Email</label>
-              <input type="email" className="w-full p-2 border rounded-md mb-4" placeholder="Enter your email" />
-              <div className="flex justify-between">
-                <button
-                  type="button"
-                  onClick={prevStep}
-                  className="px-4 py-2 bg-gray-500 text-white rounded-md">
-                  Previous
-                </button>
-                <button type="submit" className="px-4 py-2 bg-green-500 text-white rounded-md">
-                  Submit
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+    <div style={{ textAlign: 'center', margin: '20px' }}>
+      <h1>Barcode Generator</h1>
+      <input
+        type="text"
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        placeholder="Enter text to convert to barcode"
+      />
+      <div ref={barcodeRef} style={{ margin: '20px' }}>
+        {text && (
+          <Barcode
+            value={text}
+            width={1} // Barcode width
+            height={100} // Barcode height
+            displayValue={false} // Set to true if you want to display the text below the barcode
+          />
+        )}
       </div>
+      <button onClick={handlePrint} disabled={!text}>
+        Print Barcode
+      </button>
     </div>
   );
 };
+
 export default Customer;

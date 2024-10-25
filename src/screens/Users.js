@@ -128,8 +128,8 @@ const Users = () => {
   //   }
   // }
 
-  async function getTransaction(page) {
-    const response = await api.getTransaction({
+  async function getCustomers(page) {
+    const response = await api.getCustomers({
       params: {
         page,
       },
@@ -137,7 +137,7 @@ const Users = () => {
     return response;
   }
 
-  const results = useQuery(["transactions", page], () => getTransaction(page), {
+  const results = useQuery(["transactions", page], () => getCustomers(page), {
     keepPreviousData: true,
     refetchOnWindowFocus: "always",
   });
@@ -373,7 +373,7 @@ const Users = () => {
                 </thead>
                 <tbody>
                   {results?.isLoading && <TableLoading cols={8} />}
-                  {results?.data && (
+                  {results?.data && results?.data?.data?.legth === 0 && (
                     // decryptaValue(results?.data?.data) === 0 &&
                     <EmptyWallet
                       cols={8}
@@ -382,144 +382,145 @@ const Users = () => {
                     />
                   )}
                   {/*  {TaskSummaryData &&
-                    TaskSummaryData?.map((result) => ( */}
+                  results?.data?.data?.map((result) => ( */}
 
-                  {results?.data && (
-                    <tr key="_" className="mb-2 hover:bg-light-gray">
-                      <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                        Ogundele Caleb{" "}
-                      </td>
-                      <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                        ogun!@gmail.com
-                      </td>
+                  {results?.data &&
+                    results?.data?.data?.map((result) => (
+                      <tr key="_" className="mb-2 hover:bg-light-gray">
+                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                          Ogundele Caleb{" "}
+                        </td>
+                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                          ogun!@gmail.com
+                        </td>
 
-                      <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                        <button
-                          className={`rounded-[20px] md:rounded-[40px] w-[60px] md:w-[74px] py-[2px] md:py-[4px] mx-auto ${
-                            result.status === "Pending"
-                              ? "bg-[rgb(255,245,230)] text-[#FF9800]"
-                              : result.status === "Ongoing"
-                              ? "bg-[#F9FAFB] text-[#667185]"
-                              : "bg-[#EDF7EE] text-[#4CAF50]"
-                          }  text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px]`}
-                        >
-                          <p>Active</p>
-                        </button>{" "}
-                      </td>
-                      <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                        Sep 11, 2024 (at 03.00 AM)
-                      </td>
+                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                          <button
+                            className={`rounded-[20px] md:rounded-[40px] w-[60px] md:w-[74px] py-[2px] md:py-[4px] mx-auto ${
+                              result.status === "Pending"
+                                ? "bg-[rgb(255,245,230)] text-[#FF9800]"
+                                : result.status === "Ongoing"
+                                ? "bg-[#F9FAFB] text-[#667185]"
+                                : "bg-[#EDF7EE] text-[#4CAF50]"
+                            }  text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px]`}
+                          >
+                            <p>Active</p>
+                          </button>{" "}
+                        </td>
+                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                          Sep 11, 2024 (at 03.00 AM)
+                        </td>
 
-                      <td className="whitespace-nowrap py-[16px] flex-item gap-2 bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#1A202C] font-medium text-left  ">
-                        <More
-                          onClick={() => ToggleEditModal()}
-                          variant="Linear"
-                          color="#667185"
-                          size="24"
-                        />
+                        <td className="whitespace-nowrap py-[16px] flex-item gap-2 bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#1A202C] font-medium text-left  ">
+                          <More
+                            onClick={() => ToggleEditModal()}
+                            variant="Linear"
+                            color="#667185"
+                            size="24"
+                          />
 
-                        <Modal
-                          isCentered
-                          isOpen={isDeleteModal}
-                          onClose={closeDeleteModal}
-                          size="md"
-                          style={{ borderRadius: 12 }}
-                          motionPreset="slideInBottom"
-                          className="rounded-[12px]"
-                        >
-                          <ModalOverlay />
-                          <ModalContent>
-                            <ModalHeader
-                              py="4"
-                              color="#000000"
-                              className="text-[18px]   font-medium leading-[24px] md:leading-[24px]"
-                            >
-                              <svg
-                                className="mx-auto"
-                                width="56"
-                                height="56"
-                                viewBox="0 0 56 56"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
+                          <Modal
+                            isCentered
+                            isOpen={isDeleteModal}
+                            onClose={closeDeleteModal}
+                            size="md"
+                            style={{ borderRadius: 12 }}
+                            motionPreset="slideInBottom"
+                            className="rounded-[12px]"
+                          >
+                            <ModalOverlay />
+                            <ModalContent>
+                              <ModalHeader
+                                py="4"
+                                color="#000000"
+                                className="text-[18px]   font-medium leading-[24px] md:leading-[24px]"
                               >
-                                <rect
-                                  x="4"
-                                  y="4"
-                                  width="48"
-                                  height="48"
-                                  rx="24"
-                                  fill="#FCC5C1"
-                                />
-                                <rect
-                                  x="4"
-                                  y="4"
-                                  width="48"
-                                  height="48"
-                                  rx="24"
-                                  stroke="#FEECEB"
-                                  stroke-width="8"
-                                />
-                                <path
-                                  d="M28 38C33.5 38 38 33.5 38 28C38 22.5 33.5 18 28 18C22.5 18 18 22.5 18 28C18 33.5 22.5 38 28 38Z"
-                                  stroke="#26ae5f"
-                                  stroke-width="1.5"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                                <path
-                                  d="M28 24V29"
-                                  stroke="#26ae5f"
-                                  stroke-width="1.5"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                                <path
-                                  d="M27.9961 32H28.0051"
-                                  stroke="#26ae5f"
-                                  stroke-width="2"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                              </svg>
-                            </ModalHeader>
-                            <ModalCloseButton size={"sm"} />
-                            <ModalBody
-                              py={{ base: "20px", md: "24px" }}
-                              px={{ base: "16px", md: "24px" }}
-                              className=" px-[16px] md:px-[24px] pb-[30px] md:pb-[40px]"
-                            >
-                              <p className=" text-[16px] md:text-lg text-center  text-[#000] leading-[24px] font-medium  ">
-                                Delete Transactions
-                              </p>
+                                <svg
+                                  className="mx-auto"
+                                  width="56"
+                                  height="56"
+                                  viewBox="0 0 56 56"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <rect
+                                    x="4"
+                                    y="4"
+                                    width="48"
+                                    height="48"
+                                    rx="24"
+                                    fill="#FCC5C1"
+                                  />
+                                  <rect
+                                    x="4"
+                                    y="4"
+                                    width="48"
+                                    height="48"
+                                    rx="24"
+                                    stroke="#FEECEB"
+                                    stroke-width="8"
+                                  />
+                                  <path
+                                    d="M28 38C33.5 38 38 33.5 38 28C38 22.5 33.5 18 28 18C22.5 18 18 22.5 18 28C18 33.5 22.5 38 28 38Z"
+                                    stroke="#26ae5f"
+                                    stroke-width="1.5"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  />
+                                  <path
+                                    d="M28 24V29"
+                                    stroke="#26ae5f"
+                                    stroke-width="1.5"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  />
+                                  <path
+                                    d="M27.9961 32H28.0051"
+                                    stroke="#26ae5f"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  />
+                                </svg>
+                              </ModalHeader>
+                              <ModalCloseButton size={"sm"} />
+                              <ModalBody
+                                py={{ base: "20px", md: "24px" }}
+                                px={{ base: "16px", md: "24px" }}
+                                className=" px-[16px] md:px-[24px] pb-[30px] md:pb-[40px]"
+                              >
+                                <p className=" text-[16px] md:text-lg text-center  text-[#000] leading-[24px] font-medium  ">
+                                  Delete Transactions
+                                </p>
 
-                              <p className="text-[14px]  text-[#667185] leading-[20px] font-normal text-center mt-2  ">
-                                Are you sure you want to delete this
-                                Transactions? This action cannot be undone.
-                              </p>
-                            </ModalBody>
-                            <ModalFooter gap={"16px"}>
-                              <button
-                                onClick={closeDeleteModal}
-                                className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black"
-                              >
-                                Cancel
-                              </button>
-                              <button
-                                // onClick={handleDelete}
-                                className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
-                              >
-                                {isLoading ? (
-                                  <ClipLoader color={"white"} size={20} />
-                                ) : (
-                                  <> Delete </>
-                                )}
-                              </button>
-                            </ModalFooter>
-                          </ModalContent>
-                        </Modal>
-                      </td>
-                    </tr>
-                  )}
+                                <p className="text-[14px]  text-[#667185] leading-[20px] font-normal text-center mt-2  ">
+                                  Are you sure you want to delete this
+                                  Transactions? This action cannot be undone.
+                                </p>
+                              </ModalBody>
+                              <ModalFooter gap={"16px"}>
+                                <button
+                                  onClick={closeDeleteModal}
+                                  className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black"
+                                >
+                                  Cancel
+                                </button>
+                                <button
+                                  // onClick={handleDelete}
+                                  className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
+                                >
+                                  {isLoading ? (
+                                    <ClipLoader color={"white"} size={20} />
+                                  ) : (
+                                    <> Delete </>
+                                  )}
+                                </button>
+                              </ModalFooter>
+                            </ModalContent>
+                          </Modal>
+                        </td>
+                      </tr>
+                    ))}
                   {/* ))} */}
                 </tbody>
               </table>

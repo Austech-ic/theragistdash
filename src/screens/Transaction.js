@@ -15,6 +15,7 @@ import {
   Maximize4,
   Message2,
   More,
+  Note1,
   RowHorizontal,
   SearchNormal1,
   Trash,
@@ -53,8 +54,6 @@ import EmptyTable from "../components/EmptyTable";
 import { NumericFormat } from "react-number-format";
 import moment from "moment";
 
-
-
 const Transactions = () => {
   const navigate = useNavigate();
   const [isViewModal, setIsViewModal] = useState(false);
@@ -68,6 +67,9 @@ const Transactions = () => {
   const [page, setPage] = useState(1);
   const [startdate, setStartdate] = useState("");
   const [enddate, setEndDate] = useState("");
+  const [reference, setReference] = useState("");
+  const [type, setType] = useState("");
+  const [transacDetails, setTransacDetails] = useState([])
 
   function HandleEditModalClose() {
     setIsEditOpen(false);
@@ -110,9 +112,14 @@ const Transactions = () => {
   };
   const result = [{ status: "Success" }];
 
+  const handleDetails = (result) => {
+    setIsViewModal(true);
+    setTransacDetails(result)
+  };
   const closeViewModal = () => {
     setIsViewModal(false);
-  };
+
+  }
 
   // async function handleSubmit(e) {
   //   e.preventDefault();
@@ -137,15 +144,23 @@ const Transactions = () => {
     const response = await api.getTransaction({
       params: {
         page,
+        search: reference,
+        //from: startdate,
+         //until: enddate,
+        //is_credit: type,
       },
     });
     return response;
   }
 
-  const results = useQuery(["transactions", page], () => getTransaction(page), {
-    keepPreviousData: true,
-    refetchOnWindowFocus: "always",
-  });
+  const results = useQuery(
+    ["transactions", page, reference, startdate, enddate, type],
+    () => getTransaction(page),
+    {
+      keepPreviousData: true,
+      refetchOnWindowFocus: "always",
+    }
+  );
 
   const handlePrev = (event) => {
     if (event) {
@@ -266,6 +281,8 @@ const Transactions = () => {
               placeholder="Transaction Reference"
               className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
               autoComplete="on"
+              value={reference}
+              onChange={(e) => setReference(e.target.value)}
             />
             <select
               type="text"
@@ -294,6 +311,8 @@ const Transactions = () => {
               type="text"
               className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
               autoComplete="on"
+              value={type}
+              onChange={(e) => setType(e.taget.value)}
             >
               <option value="">Select Transaction Type</option>
               <option value="1">Credit</option>
@@ -419,19 +438,19 @@ const Transactions = () => {
                           {result?.reference}
                         </td>
                         <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                        <NumericFormat
-                      value={result?.amount}
-                      displayType={"text"}
-                      thousandSeparator={true}
-                      prefix={"₦"}
-                      decimalScale={2}
-                      fixedDecimalScale={true}
-                      // renderText={(value) => (
-                      //   <Text className="text-[#fff]  font-semibold font-i_medium text-[16px] leading-[19px]  tracking-[0.2px]   ">
-                      //     {value}
-                      //   </Text>
-                      // )}
-                    />  
+                          <NumericFormat
+                            value={result?.amount}
+                            displayType={"text"}
+                            thousandSeparator={true}
+                            prefix={"₦"}
+                            decimalScale={2}
+                            fixedDecimalScale={true}
+                            // renderText={(value) => (
+                            //   <Text className="text-[#fff]  font-semibold font-i_medium text-[16px] leading-[19px]  tracking-[0.2px]   ">
+                            //     {value}
+                            //   </Text>
+                            // )}
+                          />
                         </td>
                         <td className="whitespace-nowrap py-[16px] bg-white px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
                           <div className="flex-item gap-1">
@@ -461,16 +480,42 @@ const Transactions = () => {
                           </button>{" "}
                         </td>
                         <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                        {moment(result?.date).format("MMM DD, HH:mm:ss")}
+                          {moment(result?.date).format("MMM DD, HH:mm:ss")}
                         </td>
 
                         <td className="whitespace-nowrap py-[16px] flex-item gap-2 bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#1A202C] font-medium text-left  ">
-                          <More
-                            onClick={() => ToggleEditModal()}
-                            variant="Linear"
-                            color="#667185"
-                            size="24"
-                          />
+                         
+
+<Menu>
+                            <MenuButton bg={"none"} as={Button}>
+                              <button
+                                //onClick={() => handleTransacModalOpen(result)}
+                                className="   rounded-sm flex justify-center items-center  hover:bg-[#CBD5E0]  "
+                              >
+                                <More
+                                  variant="Linear"
+                                  color="#98A2B3"
+                                  size="24"
+                                />{" "}
+                              </button>
+                            </MenuButton>
+                            <MenuList maxW="32" className="">
+                              
+
+                              <MenuItem onClick={()=> handleDetails(result)} w="full" color="#bf0d0d" mb="10px">
+                                <Note1
+                                  variant="Linear"
+                                  color="#98A2B3"
+                                  size="16"
+                                  className="mr-2"
+                                />{" "}
+                                <p className="text-[12px] md:text-[14px] text-[#475367]  font-normal leading-[18px] md:leading-[20px]">
+                                  Receipt
+                                </p>
+                              </MenuItem>
+                             
+                            </MenuList>
+                          </Menu>
 
                           <Modal
                             isCentered
@@ -631,7 +676,7 @@ const Transactions = () => {
         </div>
       </div>
       {/* Create Modal */}
-      <ModalLeft isOpen={isCreate} onClose={closeCreateModal}>
+      <ModalLeft isOpen={isViewModal} onClose={closeViewModal}>
         <div>
           <div className="border-b border-b-[#E4E7EC] p-[16px] md:p-[20px]  md:flex justify-between items-center ">
             <div className="flex items-center gap-[16px]">
@@ -644,115 +689,106 @@ const Transactions = () => {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <button onClick={closeCreateModal} className=" ">
+              <button onClick={closeViewModal} className=" ">
                 <CloseCircle variant="Linear" color="#667185" size="20" />
               </button>
             </div>
           </div>
 
-          <div className="p-[12px] md:p-[20px] xl:p-[24px]">
-            <div className="mb-[24px]">
-              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
-                Employee
-              </label>
-              <div className=" relative  mt-[16px]  flex items-center">
-                <select
-                  type="text"
-                  placeholder="Name"
-                  className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                  autoComplete="on"
-                  name="full-name"
-                  id="full-name"
-                  //value=""
-                  //onChange={() => {}}
-                  autoCapitalize="off"
-                  autoCorrect="off"
-                  spellCheck="false"
-                >
-                  <option value="">Select Employee</option>
-                  <option value="Monthly Payslip">Monthly Payslip</option>
-                </select>
-              </div>
-            </div>
-            <div className="mb-[24px]">
-              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
-                Date
-              </label>
-              <div className=" relative  mt-[16px]  flex items-center">
-                <input
-                  type="date"
-                  placeholder="Enter Title"
-                  className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                  autoComplete="on"
-                  name="date"
-                  id="full-name"
-                  //   value={formData.date}
-                  //   onChange={(e) => handleChange(e)}
-                  autoCapitalize="off"
-                  autoCorrect="off"
-                  spellCheck="false"
-                />
-              </div>
-            </div>
-            <div className="mb-[24px]">
-              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
-                Clock In
-              </label>
-              <div className=" relative  mt-[16px]  flex items-center">
-                <input
-                  type="time"
-                  placeholder="Name"
-                  className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                  autoComplete="on"
-                  name="full-name"
-                  id="full-name"
-                  //value=""
-                  //onChange={() => {}}
-                  autoCapitalize="off"
-                  autoCorrect="off"
-                  spellCheck="false"
-                />
-              </div>
-            </div>
-            <div className="mb-[24px]">
-              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
-                Clock Out
-              </label>
-              <div className=" relative  mt-[16px]  flex items-center">
-                <input
-                  type="time"
-                  placeholder=""
-                  className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                  autoComplete="on"
-                  name="date"
-                  id="full-name"
-                  //   value={formData.date}
-                  //   onChange={(e) => handleChange(e)}
-                  autoCapitalize="off"
-                  autoCorrect="off"
-                  spellCheck="false"
-                />
-              </div>
-            </div>
-            <div className="py-[20px] border-t border-b-[#E4E7EC] flex-item  justify-end">
-              <div className="flex-item gap-2">
-                {" "}
+          <table className="mt-[18px] md:mt-[24px] max-w-[490px] mx-[16px] md:mx-[20px]  ">
+            <tr className="">
+              <th className="text-[14px] pb-[20px] text-[#667185] leading-[20px] font-medium text-left ">
+                Reference
+              </th>
+              <td className="pb-[20px] pl-4 md:pl-6 ">
+                {transacDetails?.reference}
+              </td>
+            </tr>
+            <tr className="">
+              <th className="text-[14px] pb-[20px] text-[#667185] leading-[20px] font-medium text-left ">
+               Reason
+              </th>
+              <td className="pb-[20px] pl-4 md:pl-6 ">
+              {transacDetails?.reason}
+
+              </td>
+            </tr>
+            <tr className="">
+              <th className="text-[14px] pb-[20px] text-[#667185] leading-[20px] font-medium text-left ">
+               Amount
+              </th>
+              <td className="pb-[20px] pl-4 md:pl-6 ">
+              <NumericFormat
+                            value={transacDetails?.amount}
+                            displayType={"text"}
+                            thousandSeparator={true}
+                            prefix={"₦"}
+                            decimalScale={2}
+                            fixedDecimalScale={true}
+                            // renderText={(value) => (
+                            //   <Text className="text-[#fff]  font-semibold font-i_medium text-[16px] leading-[19px]  tracking-[0.2px]   ">
+                            //     {value}
+                            //   </Text>
+                            // )}
+                          />
+              </td>
+            </tr>
+            <tr>
+              <th className="pb-5 text-[14px] text-[#667185] leading-[20px] font-medium text-left ">
+                Transaction Type
+              </th>
+              <td className="pb-[20px] pl-4 md:pl-6 ">
+              <div className="flex-item gap-1">
+                            {" "}
+                            {transacDetails?.type === "debit" ? (
+                              <ArrowUp size={14} color="red" />
+                            ) : (
+                              <ArrowDown size={14} color="green" />
+                            )}{" "}
+                            {transacDetails?.type}
+                          </div>
+              </td>
+              
+            </tr>
+
+            <tr>
+              <th className="pb-5 text-[14px] text-[#667185] leading-[20px] font-medium text-left ">
+              Fee
+              </th>
+              <td className="pb-[20px] pl-4 md:pl-6 ">
+                <p className=" text-[14px]  text-[#000] leading-[20px] font-medium text-left ">
+                {transacDetails?.fee}
+                </p>
+              </td>
+            </tr>
+           
+            
+
+            <tr>
+              <th className="pb-5 text-[14px] text-[#667185] leading-[20px] font-medium text-left ">
+                Status
+              </th>
+              <td className="pb-[20px] pl-4 md:pl-6 ">
                 <button
-                  onClick={closeCreateModal}
-                  className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black"
+                  className={`rounded-[20px] md:rounded-[40px] flex justify-center items-center gap-2 px-[12px]  py-[4px] md:py-[4px] border-[0.5px] ${
+                    transacDetails?.status ===
+                    "failed"
+                      ? "bg-[#FEECEB] text-[#F44336] border-[#F44336]"
+                      : // : c.mode === "Medium"
+                        // ? "bg-[#FFF5E6] text-[#F44336] border-[#FF9800]"
+                        "bg-[#EDF7EE] text-[#4CAF50] border-[#4CAF50]"
+                  }  text-[12px] md:text-[14px]  font-semibold leading-[16px] md:leading-[18px] `}
                 >
-                  Cancel
-                </button>
-                <button className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white">
-                  {!isLoading ? (
-                    <ClipLoader color={"white"} size={20} />
-                  ) : (
-                    <> Create</>
-                  )}
-                </button>
-              </div>
-            </div>
-          </div>
+                  <p>
+                    {" "}
+                    {transacDetails?.status}
+                  </p>
+                </button>{" "}
+               
+              </td>
+            </tr>
+           
+          </table>
         </div>
       </ModalLeft>
     </div>

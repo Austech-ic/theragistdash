@@ -1,6 +1,8 @@
 import { PROFILE, SETDEFUALTBUSINESS } from "../utils/AuthConfig";
 import {
- TRANSACTION
+  CUSTOMERS,
+ TRANSACTION,
+ WALLETS
 } from "../utils/config";
 import { apiDelete, apiGet, apiGetCSV, apiPost, apiPut } from "../utils/utils";
 
@@ -11,6 +13,14 @@ export function getTransaction(data) {
 
 export function getProfile(data) {
   return apiGet(PROFILE, data);
+}
+
+export function getWallet(data) {
+  return apiGet(WALLETS, data);
+}
+
+export function getCustomers(data) {
+  return apiGet(CUSTOMERS, data);
 }
 
 export function setDefaultPartner(data) {

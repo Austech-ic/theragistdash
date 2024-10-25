@@ -128,8 +128,8 @@ const Wallet = () => {
   //   }
   // }
 
-  async function getTransaction(page) {
-    const response = await api.getTransaction({
+  async function getWallet(page) {
+    const response = await api.getWallet({
       params: {
         page,
       },
@@ -137,7 +137,7 @@ const Wallet = () => {
     return response;
   }
 
-  const results = useQuery(["transactions", page], () => getTransaction(page), {
+  const results = useQuery(["wallets", page], () => getWallet(page), {
     keepPreviousData: true,
     refetchOnWindowFocus: "always",
   });
