@@ -130,7 +130,8 @@ const SignUp = () => {
       setUserData(response?.data);
 
       setIsLoading(false);
-      navigate("/");
+        navigate("/validate-otp",{state:{email: formValue.email} });
+
       // navigation.navigate(routes.OTP);
     } catch (error) {
       console.log(error);

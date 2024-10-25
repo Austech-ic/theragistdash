@@ -24,6 +24,8 @@ import CreateInvoice from "./screens/CreateInvoice";
 import Customer from "./screens/Customer";
 import Invoices from "./screens/Invoice";
 import GetStarted from "./screens/GetStarted";
+import Wallet from "./screens/Wallet";
+import ValidateOtp from "./authScreen/OTP";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -47,6 +49,7 @@ function App() {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
+            <Route path="/validate-otp" element={<ValidateOtp />} />
 
             <Route path="/forgot-password" component={ForgotPassword} />
 
@@ -55,6 +58,7 @@ function App() {
               <Route path="/" exact={true} element={<Home />} />
               <Route path="/overview" exact={true} element={<OverView />} />
               <Route path="/getstarted" exact={true} element={<GetStarted />} />
+              <Route path="/wallet" exact={true} element={<Wallet />} />
               <Route path="/paymentlink" exact={true} element={<PaymentLinks />} />
               <Route path="/transaction" exact={true} element={<Transactions />} />
               <Route path="/users" exact={true} element={<Users />} />

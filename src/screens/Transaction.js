@@ -59,7 +59,7 @@ const Transactions = () => {
   const [isCreate, setIsCreate] = useState(false);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
-  const [page, setPage] = useState("");
+  const [page, setPage] = useState(1);
   const [startdate, setStartdate] = useState("");
   const [enddate, setEndDate] = useState("");
 
@@ -136,10 +136,21 @@ const Transactions = () => {
     return response;
   }
 
-  const results = useQuery(["transactions"], () => getTransaction(page), {
+  const results = useQuery(["transactions", page], () => getTransaction(page), {
     keepPreviousData: true,
     refetchOnWindowFocus: "always",
   });
+
+  const handlePrev = (event) => {
+if(event) {
+  setPage(page - 1)
+}
+  }
+  const handleNext = (event) => {
+    if(event) {
+      setPage(page + 1)
+    }
+      }
 
   // console.log("decrypt transaction", decryptaValue(results?.data?.data))
 
@@ -545,6 +556,45 @@ const Transactions = () => {
           </div>
         </div>
       </div>
+
+      {/* Pagination */}
+      <div className="flex items-center justify-between">
+            <p className="text-[14px] leading-[16px] tracking-[0.2px] text-[#667185]">
+              Showing {(results?.data?.meta.from || 0)} - {(results?.data?.meta.to || 0)} of {results?.data?.meta.total} results
+              | Page {results?.data?.meta.current_page} of {results?.data?.meta.last_page}
+            </p>
+            <div>
+              <button
+                onClick={() => handlePrev(results?.data?.links?.prev)}
+                disabled={!results?.data?.links.prev}
+                className={`rounded-tl-lg rounded-bl-lg py-1 px-2 border-[0.2px] text-[14px] leading-[16px] tracking-[0.2px] border-[#98A2B3] ${!results?.data?.links.prev? "text-[#667185] bg-[#fefefe] " : "text-white bg-[#26ae5f]"}`}
+              >
+                Prev
+              </button>
+  
+              {/* {results?.data?.meta.links.map((link, index) => (
+                link.url ? (
+                  <button
+                    key={index}
+                    onClick={() => handlePageChange(link.url)}
+                    className={link.active ? 'active' : ''}
+                  >
+                    {link.label}
+                  </button>
+                ) : (
+                  <span key={index}>{link.label}</span>
+                )
+              ))} */}
+  
+              <button
+                onClick={() => handleNext(results?.data?.links?.next)}
+                disabled={!results?.data?.links.next}
+                className={`rounded-tr-lg rounded-br-lg py-1 px-2 border-[0.2px] text-[14px] leading-[16px] tracking-[0.2px] border-[#98A2B3] ${!results?.data?.links.next? "text-[#667185] bg-[#fefefe] " : "text-white bg-[#26ae5f]"}`}
+              >
+                Next
+              </button>
+            </div>
+          </div>
       {/* Create Modal */}
       <ModalLeft isOpen={isCreate} onClose={closeCreateModal}>
         <div>
