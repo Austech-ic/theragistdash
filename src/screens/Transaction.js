@@ -672,6 +672,7 @@ const Transactions = () => {
             }`}
           >
             Next
+            
           </button>
         </div>
       </div>
@@ -684,7 +685,7 @@ const Transactions = () => {
               <div className="h-[32px] w-[1px] bg-[#D0D5DD]" />
               <div className="flex items-center">
                 <p className="text-[#667185] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
-                  Create Transactions
+                  Transactions Details
                 </p>
               </div>
             </div>
