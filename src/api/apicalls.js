@@ -1,3 +1,4 @@
+import { PROFILE, SETDEFUALTBUSINESS } from "../utils/AuthConfig";
 import {
  TRANSACTION
 } from "../utils/config";
@@ -6,6 +7,14 @@ import { apiDelete, apiGet, apiGetCSV, apiPost, apiPut } from "../utils/utils";
 //dashboard
 export function getTransaction(data) {
   return apiGet(TRANSACTION, data);
+}
+
+export function getProfile(data) {
+  return apiGet(PROFILE, data);
+}
+
+export function setDefaultPartner(data) {
+  return apiPost(SETDEFUALTBUSINESS, data);
 }
 
 

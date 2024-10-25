@@ -24,10 +24,11 @@ const GetStarted = () => {
     email: "",
     phone: "",
     incopDate: "",
+    address: ""
   });
   // bg-[#26ae5f6a]
   async function getProfile(page) {
-    const response = await api.fetchUsers({ params: { page } });
+    const response = await api.getProfile({ params: { page } });
     return response;
   }
 
@@ -40,19 +41,12 @@ const GetStarted = () => {
   useEffect(() => {
     setFormValue({
       ...formValue,
-      firstName: profileData?.first_name,
-      lastName: profileData?.last_name,
-      phone: profileData?.phone,
-      email: profileData?.email,
+      firstName: profileData?.user?.first_name,
+      lastName: profileData?.user?.last_name,
+      phone: profileData?.user?.phone,
+      email: profileData?.user?.email,
     });
-const enc = encryptValue("hello world")
-
-
-  //  const dec =  decryptValue("sEQqpBngzSw4RiNSazz81g==")
-
-  //  console.log("dec===>>>>",dec)
-   console.log("enc===>>>>",enc)
-  }, []);
+  }, [ProfileQuery?.data]);
 
   const info = [
     { id: 1, name: "Personal Information" },
@@ -60,7 +54,9 @@ const enc = encryptValue("hello world")
     { id: 3, name: "BVN Of Manager" },
     { id: 4, name: "Upload Document" },
   ];
-
+  const handleInputChange = (e) => {
+    setFormValue({ ...formValue, [e.target.name]: e.target.value });
+  };
   return (
     <div className="p-[10px] md:px-[20px] bg-[#F2F2F2] min-h-screen ">
       <div className="border-[0.2px] border-[#98a2b3] relative rounded-[8px] bg-[#fff]    p-[16px] md:p-[20px] ">
@@ -152,10 +148,10 @@ const enc = encryptValue("hello world")
                     required
                     autoComplete="on"
                     name="firstName"
-                    // value={formValue.firstName}
-                    // onChange={(e) => {
-                    //   handleInputChange(e);
-                    // }}
+                    value={formValue.firstName}
+                    onChange={(e) => {
+                      handleInputChange(e);
+                    }}
                     autoCapitalize="off"
                     autoCorrect="off"
                     spellCheck="false"
@@ -174,10 +170,10 @@ const enc = encryptValue("hello world")
                     required
                     autoComplete="on"
                     name="lastName"
-                    // value={formValue.lastName}
-                    // onChange={(e) => {
-                    //   handleInputChange(e);
-                    // }}
+                  value={formValue.lastName}
+                    onChange={(e) => {
+                      handleInputChange(e);
+                    }}
                     autoCapitalize="off"
                     autoCorrect="off"
                     spellCheck="false"
@@ -203,10 +199,10 @@ const enc = encryptValue("hello world")
                     required
                     autoComplete="on"
                     name="email"
-                    // value={formValue.email}
-                    // onChange={(e) => {
-                    //   handleInputChange(e);
-                    // }}
+                   value={formValue.email}
+                    onChange={(e) => {
+                      handleInputChange(e);
+                    }}
                     autoCapitalize="off"
                     autoCorrect="off"
                     spellCheck="false"
@@ -231,10 +227,10 @@ const enc = encryptValue("hello world")
                     required
                     autoComplete="on"
                     name="phone"
-                    // value={formValue.phone}
-                    // onChange={(e) => {
-                    //   handleInputChange(e);
-                    // }}
+                    value={formValue.phone}
+                    onChange={(e) => {
+                      handleInputChange(e);
+                    }}
                     autoCapitalize="off"
                     autoCorrect="off"
                     spellCheck="false"
@@ -254,10 +250,10 @@ const enc = encryptValue("hello world")
                     required
                     autoComplete="on"
                     name="lastName"
-                    // value={formValue.lastName}
-                    // onChange={(e) => {
-                    //   handleInputChange(e);
-                    // }}
+                    value={formValue.address}
+                    onChange={(e) => {
+                      handleInputChange(e);
+                    }}
                     autoCapitalize="off"
                     autoCorrect="off"
                     spellCheck="false"

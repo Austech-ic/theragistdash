@@ -1,5 +1,7 @@
 import {
   Add,
+  ArrowDown,
+  ArrowUp,
   Book,
   Calendar,
   CloseCircle,
@@ -48,6 +50,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import "react-loading-skeleton/dist/skeleton.css";
 import { decryptaValue } from "../utils/helperFunctions";
 import EmptyTable from "../components/EmptyTable";
+import { NumericFormat } from "react-number-format";
+import moment from "moment";
+
+
 
 const Transactions = () => {
   const navigate = useNavigate();
@@ -142,15 +148,15 @@ const Transactions = () => {
   });
 
   const handlePrev = (event) => {
-if(event) {
-  setPage(page - 1)
-}
-  }
-  const handleNext = (event) => {
-    if(event) {
-      setPage(page + 1)
+    if (event) {
+      setPage(page - 1);
     }
-      }
+  };
+  const handleNext = (event) => {
+    if (event) {
+      setPage(page + 1);
+    }
+  };
 
   // console.log("decrypt transaction", decryptaValue(results?.data?.data))
 
@@ -261,7 +267,7 @@ if(event) {
               className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
               autoComplete="on"
             />
-              <select
+            <select
               type="text"
               placeholder=""
               className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
@@ -316,8 +322,6 @@ if(event) {
               <option value="Withdrawal">Withdrawal</option>
               {/* <option value="Medium">Success</option> */}
             </select>
-
-         
           </div>
         </div>
       </div>
@@ -333,7 +337,7 @@ if(event) {
                       className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
                     >
                       <div className="flex px-5   gap-[6px] md:gap-[12px] items-center">
-                        Name
+                        Reason
                       </div>
                     </th>
                     <th
@@ -357,7 +361,7 @@ if(event) {
                       className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
                     >
                       <div className="flex  gap-[6px] md:gap-[12px] items-center my-0">
-                        Channel
+                        Type
                       </div>
                     </th>
                     <th
@@ -398,157 +402,178 @@ if(event) {
                 </thead>
                 <tbody>
                   {results?.isLoading && <TableLoading cols={8} />}
-                  {results?.data && (
+                  {results?.data && results?.data?.data?.legth === 0 && (
                     // decryptaValue(results?.data?.data) === 0 &&
                     <EmptyTable cols={8} />
                   )}
                   {/*  {TaskSummaryData &&
-                    TaskSummaryData?.map((result) => ( */}
+                  results?.data?.data?.map((result) => ( */}
 
-                  {results?.data && (
-                    <tr key="_" className="mb-2 hover:bg-light-gray">
-                      <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                        Ogundele Caleb{" "}
-                      </td>
-                      <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                        92c3ccsys4b484f59bac030b00e8a96d4
-                      </td>
-                      <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                        #120,000.00
-                      </td>
-                      <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                        Transfer{" "}
-                      </td>
-                      <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                        #120
-                      </td>
-                      <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                        <button
-                          className={`rounded-[20px] md:rounded-[40px] w-[60px] md:w-[74px] py-[2px] md:py-[4px] mx-auto ${
-                            result.status === "Pending"
-                              ? "bg-[rgb(255,245,230)] text-[#FF9800]"
-                              : result.status === "Ongoing"
-                              ? "bg-[#F9FAFB] text-[#667185]"
-                              : "bg-[#EDF7EE] text-[#4CAF50]"
-                          }  text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px]`}
-                        >
-                          <p>Success</p>
-                        </button>{" "}
-                      </td>
-                      <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                        Sep 11, 2024 (at 03.00 AM)
-                      </td>
+                  {results?.data &&
+                    results?.data?.data?.map((result) => (
+                      <tr key="_" className="mb-2 hover:bg-light-gray">
+                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                          {result?.reason}
+                        </td>
+                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                          {result?.reference}
+                        </td>
+                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                        <NumericFormat
+                      value={result?.amount}
+                      displayType={"text"}
+                      thousandSeparator={true}
+                      prefix={"₦"}
+                      decimalScale={2}
+                      fixedDecimalScale={true}
+                      // renderText={(value) => (
+                      //   <Text className="text-[#fff]  font-semibold font-i_medium text-[16px] leading-[19px]  tracking-[0.2px]   ">
+                      //     {value}
+                      //   </Text>
+                      // )}
+                    />  
+                        </td>
+                        <td className="whitespace-nowrap py-[16px] bg-white px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                          <div className="flex-item gap-1">
+                            {" "}
+                            {result?.type === "debit" ? (
+                              <ArrowUp size={14} color="red" />
+                            ) : (
+                              <ArrowDown size={14} color="green" />
+                            )}{" "}
+                            {result?.type}
+                          </div>
+                        </td>
+                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                          #120
+                        </td>
+                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                          <button
+                            className={`rounded-[20px] md:rounded-[40px] w-[80px] w- py-[2px] md:py-[4px] mx-auto ${
+                              result.status === "failed"
+                                ? "bg-[rgb(255,245,230)] text-[#FF9800]"
+                                : result.status === "Ongoing"
+                                ? "bg-[#F9FAFB] text-[#667185]"
+                                : "bg-[#EDF7EE] text-[#4CAF50]"
+                            }  text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px]`}
+                          >
+                            <p>{result.status}</p>
+                          </button>{" "}
+                        </td>
+                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                        {moment(result?.date).format("MMM DD, HH:mm:ss")}
+                        </td>
 
-                      <td className="whitespace-nowrap py-[16px] flex-item gap-2 bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#1A202C] font-medium text-left  ">
-                        <More
-                          onClick={() => ToggleEditModal()}
-                          variant="Linear"
-                          color="#667185"
-                          size="24"
-                        />
+                        <td className="whitespace-nowrap py-[16px] flex-item gap-2 bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#1A202C] font-medium text-left  ">
+                          <More
+                            onClick={() => ToggleEditModal()}
+                            variant="Linear"
+                            color="#667185"
+                            size="24"
+                          />
 
-                        <Modal
-                          isCentered
-                          isOpen={isDeleteModal}
-                          onClose={closeDeleteModal}
-                          size="md"
-                          style={{ borderRadius: 12 }}
-                          motionPreset="slideInBottom"
-                          className="rounded-[12px]"
-                        >
-                          <ModalOverlay />
-                          <ModalContent>
-                            <ModalHeader
-                              py="4"
-                              color="#000000"
-                              className="text-[18px]   font-medium leading-[24px] md:leading-[24px]"
-                            >
-                              <svg
-                                className="mx-auto"
-                                width="56"
-                                height="56"
-                                viewBox="0 0 56 56"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
+                          <Modal
+                            isCentered
+                            isOpen={isDeleteModal}
+                            onClose={closeDeleteModal}
+                            size="md"
+                            style={{ borderRadius: 12 }}
+                            motionPreset="slideInBottom"
+                            className="rounded-[12px]"
+                          >
+                            <ModalOverlay />
+                            <ModalContent>
+                              <ModalHeader
+                                py="4"
+                                color="#000000"
+                                className="text-[18px]   font-medium leading-[24px] md:leading-[24px]"
                               >
-                                <rect
-                                  x="4"
-                                  y="4"
-                                  width="48"
-                                  height="48"
-                                  rx="24"
-                                  fill="#FCC5C1"
-                                />
-                                <rect
-                                  x="4"
-                                  y="4"
-                                  width="48"
-                                  height="48"
-                                  rx="24"
-                                  stroke="#FEECEB"
-                                  stroke-width="8"
-                                />
-                                <path
-                                  d="M28 38C33.5 38 38 33.5 38 28C38 22.5 33.5 18 28 18C22.5 18 18 22.5 18 28C18 33.5 22.5 38 28 38Z"
-                                  stroke="#26ae5f"
-                                  stroke-width="1.5"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                                <path
-                                  d="M28 24V29"
-                                  stroke="#26ae5f"
-                                  stroke-width="1.5"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                                <path
-                                  d="M27.9961 32H28.0051"
-                                  stroke="#26ae5f"
-                                  stroke-width="2"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                              </svg>
-                            </ModalHeader>
-                            <ModalCloseButton size={"sm"} />
-                            <ModalBody
-                              py={{ base: "20px", md: "24px" }}
-                              px={{ base: "16px", md: "24px" }}
-                              className=" px-[16px] md:px-[24px] pb-[30px] md:pb-[40px]"
-                            >
-                              <p className=" text-[16px] md:text-lg text-center  text-[#000] leading-[24px] font-medium  ">
-                                Delete Transactions
-                              </p>
+                                <svg
+                                  className="mx-auto"
+                                  width="56"
+                                  height="56"
+                                  viewBox="0 0 56 56"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <rect
+                                    x="4"
+                                    y="4"
+                                    width="48"
+                                    height="48"
+                                    rx="24"
+                                    fill="#FCC5C1"
+                                  />
+                                  <rect
+                                    x="4"
+                                    y="4"
+                                    width="48"
+                                    height="48"
+                                    rx="24"
+                                    stroke="#FEECEB"
+                                    stroke-width="8"
+                                  />
+                                  <path
+                                    d="M28 38C33.5 38 38 33.5 38 28C38 22.5 33.5 18 28 18C22.5 18 18 22.5 18 28C18 33.5 22.5 38 28 38Z"
+                                    stroke="#26ae5f"
+                                    stroke-width="1.5"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  />
+                                  <path
+                                    d="M28 24V29"
+                                    stroke="#26ae5f"
+                                    stroke-width="1.5"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  />
+                                  <path
+                                    d="M27.9961 32H28.0051"
+                                    stroke="#26ae5f"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  />
+                                </svg>
+                              </ModalHeader>
+                              <ModalCloseButton size={"sm"} />
+                              <ModalBody
+                                py={{ base: "20px", md: "24px" }}
+                                px={{ base: "16px", md: "24px" }}
+                                className=" px-[16px] md:px-[24px] pb-[30px] md:pb-[40px]"
+                              >
+                                <p className=" text-[16px] md:text-lg text-center  text-[#000] leading-[24px] font-medium  ">
+                                  Delete Transactions
+                                </p>
 
-                              <p className="text-[14px]  text-[#667185] leading-[20px] font-normal text-center mt-2  ">
-                                Are you sure you want to delete this
-                                Transactions? This action cannot be undone.
-                              </p>
-                            </ModalBody>
-                            <ModalFooter gap={"16px"}>
-                              <button
-                                onClick={closeDeleteModal}
-                                className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black"
-                              >
-                                Cancel
-                              </button>
-                              <button
-                                // onClick={handleDelete}
-                                className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
-                              >
-                                {isLoading ? (
-                                  <ClipLoader color={"white"} size={20} />
-                                ) : (
-                                  <> Delete </>
-                                )}
-                              </button>
-                            </ModalFooter>
-                          </ModalContent>
-                        </Modal>
-                      </td>
-                    </tr>
-                  )}
+                                <p className="text-[14px]  text-[#667185] leading-[20px] font-normal text-center mt-2  ">
+                                  Are you sure you want to delete this
+                                  Transactions? This action cannot be undone.
+                                </p>
+                              </ModalBody>
+                              <ModalFooter gap={"16px"}>
+                                <button
+                                  onClick={closeDeleteModal}
+                                  className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black"
+                                >
+                                  Cancel
+                                </button>
+                                <button
+                                  // onClick={handleDelete}
+                                  className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
+                                >
+                                  {isLoading ? (
+                                    <ClipLoader color={"white"} size={20} />
+                                  ) : (
+                                    <> Delete </>
+                                  )}
+                                </button>
+                              </ModalFooter>
+                            </ModalContent>
+                          </Modal>
+                        </td>
+                      </tr>
+                    ))}
                   {/* ))} */}
                 </tbody>
               </table>
@@ -559,20 +584,26 @@ if(event) {
 
       {/* Pagination */}
       <div className="flex items-center justify-between">
-            <p className="text-[14px] leading-[16px] tracking-[0.2px] text-[#667185]">
-              Showing {(results?.data?.meta.from || 0)} - {(results?.data?.meta.to || 0)} of {results?.data?.meta.total} results
-              | Page {results?.data?.meta.current_page} of {results?.data?.meta.last_page}
-            </p>
-            <div>
-              <button
-                onClick={() => handlePrev(results?.data?.links?.prev)}
-                disabled={!results?.data?.links.prev}
-                className={`rounded-tl-lg rounded-bl-lg py-1 px-2 border-[0.2px] text-[14px] leading-[16px] tracking-[0.2px] border-[#98A2B3] ${!results?.data?.links.prev? "text-[#667185] bg-[#fefefe] " : "text-white bg-[#26ae5f]"}`}
-              >
-                Prev
-              </button>
-  
-              {/* {results?.data?.meta.links.map((link, index) => (
+        <p className="text-[14px] leading-[16px] tracking-[0.2px] text-[#667185]">
+          Showing {results?.data?.meta.from || 0} -{" "}
+          {results?.data?.meta.to || 0} of {results?.data?.meta.total} results |
+          Page {results?.data?.meta.current_page} of{" "}
+          {results?.data?.meta.last_page}
+        </p>
+        <div>
+          <button
+            onClick={() => handlePrev(results?.data?.links?.prev)}
+            disabled={!results?.data?.links.prev}
+            className={`rounded-tl-lg rounded-bl-lg py-1 px-2 border-[0.2px] text-[14px] leading-[16px] tracking-[0.2px] border-[#98A2B3] ${
+              !results?.data?.links.prev
+                ? "text-[#667185] bg-[#fefefe] "
+                : "text-white bg-[#26ae5f]"
+            }`}
+          >
+            Prev
+          </button>
+
+          {/* {results?.data?.meta.links.map((link, index) => (
                 link.url ? (
                   <button
                     key={index}
@@ -585,16 +616,20 @@ if(event) {
                   <span key={index}>{link.label}</span>
                 )
               ))} */}
-  
-              <button
-                onClick={() => handleNext(results?.data?.links?.next)}
-                disabled={!results?.data?.links.next}
-                className={`rounded-tr-lg rounded-br-lg py-1 px-2 border-[0.2px] text-[14px] leading-[16px] tracking-[0.2px] border-[#98A2B3] ${!results?.data?.links.next? "text-[#667185] bg-[#fefefe] " : "text-white bg-[#26ae5f]"}`}
-              >
-                Next
-              </button>
-            </div>
-          </div>
+
+          <button
+            onClick={() => handleNext(results?.data?.links?.next)}
+            disabled={!results?.data?.links.next}
+            className={`rounded-tr-lg rounded-br-lg py-1 px-2 border-[0.2px] text-[14px] leading-[16px] tracking-[0.2px] border-[#98A2B3] ${
+              !results?.data?.links.next
+                ? "text-[#667185] bg-[#fefefe] "
+                : "text-white bg-[#26ae5f]"
+            }`}
+          >
+            Next
+          </button>
+        </div>
+      </div>
       {/* Create Modal */}
       <ModalLeft isOpen={isCreate} onClose={closeCreateModal}>
         <div>

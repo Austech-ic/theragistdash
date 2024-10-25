@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { clearUserData } from "../../utils/utils";
 import {
   Add,
+  ArrangeHorizontal,
   ArrowDown,
   ArrowDown2,
   DocumentDownload,
+  EmptyWalletChange,
   InfoCircle,
   Logout,
   SecuritySafe,
@@ -40,7 +42,14 @@ import {
 } from "@chakra-ui/react";
 import api from "../../api";
 import { ClipLoader } from "react-spinners";
-import { decryptaValue, DecryptUserData, decryptValue } from "../../utils/helperFunctions";
+import {
+  decryptaValue,
+  DecryptUserData,
+  decryptValue,
+  encryptaValue,
+} from "../../utils/helperFunctions";
+import { useQuery } from "@tanstack/react-query";
+import { enqueueSnackbar } from "notistack";
 
 const Topbar = ({ setIsSidebar }) => {
   const [logo, setLogo] = useState("");
@@ -54,12 +63,55 @@ const Topbar = ({ setIsSidebar }) => {
   const [isCreate, setIsCreate] = useState(false);
   const [isProfile, setIsProfile] = useState(false);
   const [isLive, setIsLive] = useState(false);
+  const [isSwitchModal, setIsSwitchModal] = useState(false);
+  const [switchId, setSwitchId] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
 
+  const handleSwitchModal = (partner) => {
+    setIsSwitchModal(!isSwitchModal);
+    setSwitchId(partner);
+  };
+
+  const closeSwitchModal = () => {
+    setIsSwitchModal(false);
+    setSwitchId("");
+  };
+
   //const decrrtuserData = decryptaValue("U2FsdGVkX1+LkhLONdIns9+eu5hsQt8VLhaXoImDRDOIsJlq7S+4fxL8tfa05BbOfpALu9dHzNwDovZAL+NTM3krN/X5kN4lxw/E0svRGhX7jqX/47y4WPqIQrx/O4qZTJuU41tVJG806zN7jqop5DW92juvHqe4L0LvWFzsdOM2CA+DU5Pn/LIDC3ruY5vkLGuxCfUdMULMurtKVDGOnzuIWs/++y5kdeqRFCZui+UIqhsoP1/HLA5yHXQAKR2QhjMH4j+MQcUpwGvRPIE87Oj8Mcz8xatKx4IF1RjLEuBcLEqHYPLe8da/AaEtDY4ZsI5zu/PG89e9bMsCuwhSags38FNIl0d35iYQS8O56kaY65jBWoNDifkztH7kaTApe6BnU4z1re7/ys4/r9FwvmoFFnYqRHlFrsKn0b/GlRxIrLLauLzhb7ANpHqm6tqLCBnyfYV0D+cm4+57QbRmzJe/45nKvsUn88Qu5vbFrDNFq3lTkOaiHah6YJ5rEBMT2vqFctYkd2GubT5pNfd2k/sTTMGHxjT9DQoq+gcLFXV8MIKMMvLDbntzDOch7PySJcSsbp7zwoorPQuC6OqoCFe1MCh5ajIenIyXktqJ32Lq8REbzxJ3mc4Xq1SkbyiIdreorDTxrjId6LlelQi2I6WQzYX+UN6BhXmR8ZwGDIR02gHQFA212vQC2KuNWl+BdoS6XX7bMM7mDV/LhK35Ann3cCmR1pASQ4Ck60jeuaqZlyTEmUkBw73Q9qfIKXr98WO5bvXZzZEs1BniARM6234NR196xZJh1frx9lHL88WgyDLoCW1Z2Cs7dFL18XDAMNWWQIh9E2jyS6cjaeysSscNq2Rc2TvoMYaT8VoVVuGuty+fwLakypiS/dzlyRf6Um/1Z5kfD01CkDr4aTpEmgnky8rZGdgPB21JY/YODenxVRENqPcfcptVQzDqrLUichze1Xh5RcSKRuXkJ28wnDivMtPL5IpYqNotqpQHjgRC/miNMW1hUI0usZDkzXPmguXyCoF+WYd4j1nH8iuChYDjzh5ou6MUAtfKAeYqaQWmllSjq3cAlnp1eUaF7FvTXO+hUO1xGbPVTz7zVFwXvwyCoF6C7/Cr6slGfRYZ28eofDaGGi3uXeZLimZ2PSanBl6EAv+9u17tfruJageyOw==");
- 
-  console.log("decryppt===>>>>", DecryptUserData()?.message)
+
+  console.log("decryppt===>>>>", DecryptUserData()?.message);
+  const [formValue, setFormValue] = useState({
+    firstName: "",
+    lastName: "",
+    businessName: "",
+    rcNumber: "",
+    email: "",
+    phone: "",
+    incopDate: "",
+    address: "",
+  });
+  // bg-[#26ae5f6a]
+  async function getProfile(page) {
+    const response = await api.getProfile({ params: { page } });
+    return response;
+  }
+
+  const ProfileQuery = useQuery(["profile"], () => getProfile(), {
+    keepPreviousData: true,
+    refetchOnWindowFocus: "always",
+  });
+  const profileData = ProfileQuery?.data || [];
+
+  useEffect(() => {
+    setFormValue({
+      ...formValue,
+      firstName: profileData?.user?.first_name,
+      lastName: profileData?.user?.last_name,
+      phone: profileData?.user?.phone,
+      email: profileData?.user?.email,
+    });
+  }, [ProfileQuery?.data]);
 
   const handleIsModalClose = () => {
     setIsModalOpen(false);
@@ -79,15 +131,39 @@ const Topbar = ({ setIsSidebar }) => {
   }
 
   function firstAndLastLetter(word) {
-    if ( word && word?.length < 1) {
+    if (word && word?.length < 1) {
       return "Input word is too short!";
     }
-    const Word = word ? word : ""
-    
+    const Word = word ? word : "";
+
     const firstLetter = Word[0]; // First letter
     const lastLetter = Word[Word.length - 1]; // Last letter
-  
+
     return `${firstLetter}${lastLetter}`;
+  }
+
+  async function switchBusiness(e) {
+    e.preventDefault();
+
+    setIsLoading(true);
+
+    try {
+      const payload = { partner_id: switchId?.id}
+
+    
+      const response = await api.setDefaultPartner({data : encryptaValue(payload)});
+      ProfileQuery.refetch()
+
+      enqueueSnackbar(response?.message, { variant: "success" });
+
+      setIsLoading(false);
+
+    } catch (error) {
+      console.log("error", error);
+     // enqueueSnackbar(error.msg, { variant: "error" });
+      enqueueSnackbar(error?.message, { variant: "error" });
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -182,7 +258,7 @@ const Topbar = ({ setIsSidebar }) => {
         <div className="flex  gap-[12px] border-[0.2px] border-[#98a2b3] px-3 py-1  items-center rounded-[8px]">
           <div className="flex items-center gap-3">
             <p className="text-[#475367] font-medium text-[14px] md:text-[14px] xl:text-[16px]  leading-[24px] ">
-              {DecryptUserData()?.partner?.name}
+                    {profileData?.default_partner?.name}
             </p>
             <Menu>
               <MenuButton bg={"none"}>
@@ -199,11 +275,11 @@ const Topbar = ({ setIsSidebar }) => {
                   <div className="h-[28px] w-[28px] md:h-[32px] md:w-[32px] rounded-[4px] bg-[#F9FAFB] flex justify-center items-center">
                     {" "}
                     <p className="text-[#475367] text-[12px] md:text-[12px] xl:text-[12px] font-bold leading-[24px] ">
-                   {firstAndLastLetter(DecryptUserData()?.partner?.name)}
+                      {firstAndLastLetter(profileData?.default_partner?.name)}
                     </p>
                   </div>
                   <p className="text-[#000000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
-                  {DecryptUserData()?.partner?.name}
+                    {profileData?.default_partner?.name}
                   </p>
                 </div>
                 <div className="flex-item justify-between mb-[20px] mt-[12px]">
@@ -228,22 +304,119 @@ const Topbar = ({ setIsSidebar }) => {
                 </div>
                 <div>
                   <p className="text-[#000] text-[10px]  xl:text-[12px] font-normal leading-[18px] ">
-                  Switch Business
+                    Switch Business
                   </p>
                 </div>
-                <div className="flex-item gap-2">
-                  <div className="h-[28px] w-[28px] md:h-[32px] md:w-[32px] rounded-[4px] bg-[#F9FAFB] flex justify-center items-center">
-                    {" "}
-                    <p className="text-[#475367] text-[12px] md:text-[12px] xl:text-[12px] font-bold leading-[24px] ">
-                    {firstAndLastLetter( DecryptUserData()?.partner?.name)}
 
-                    </p>
-                  </div>
-                  <p className="text-[#000000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
-                  {DecryptUserData()?.partner?.name}
-                  </p>
-                </div>
-             
+                {ProfileQuery?.data &&
+                  ProfileQuery?.data?.partners.map((partner) => (
+                    <button
+                      className="flex justify-between items-center w-full"
+                      key={partner.id}
+                      onClick={() => handleSwitchModal(partner)}
+                    >
+                      <div className="flex-item gap-2">
+                        <div className="h-[28px] w-[28px] md:h-[32px] md:w-[32px] rounded-[4px] bg-[#F9FAFB] flex justify-center items-center">
+                          {" "}
+                          <p className="text-[#475367] text-[12px] md:text-[12px] xl:text-[12px] font-bold leading-[24px] ">
+                            {firstAndLastLetter(partner?.name)}
+                          </p>
+                        </div>
+                        <p className="text-[#000000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
+                          {partner?.name}
+                        </p>
+                      </div>
+
+                      {isLoading && <ClipLoader color={"#26ae5f"} size={16} />}
+                      <Modal
+                        isCentered
+                        isOpen={isSwitchModal}
+                        onClose={closeSwitchModal}
+                        size="md"
+                        style={{ borderRadius: 12 }}
+                        motionPreset="slideInBottom"
+                        className="rounded-[12px]"
+                      >
+                        <ModalOverlay />
+                        <ModalContent>
+                          <ModalHeader
+                            py="4"
+                            color="#000000"
+                            className="text-[18px]   font-medium leading-[24px] md:leading-[24px]"
+                          >
+                            <EmptyWalletChange
+                              size={32}
+                              variant="Bold"
+                              color="#26ae5f"
+                              className="mx-auto text-center"
+                            />
+                          </ModalHeader>
+                          <ModalCloseButton size={"sm"} />
+                          <ModalBody
+                            py={{ base: "20px", md: "24px" }}
+                            px={{ base: "16px", md: "24px" }}
+                            className=" px-[16px] md:px-[24px] pb-[30px] md:pb-[40px]"
+                          >
+                            <p className=" text-[16px] md:text-lg text-center  text-[#000] leading-[24px] font-medium  ">
+                              Switch Business
+                            </p>
+
+                            <p className="text-[14px]  text-[#667185] leading-[20px] font-normal text-center mt-2  ">
+                              Are you sure you want to switch bussiness account
+                            </p>
+
+                            <div className="flex items-center justify-center space-x-5 mt-5">
+                              <div className="flex-item gap-2">
+                                <div className="h-[28px] w-[28px] md:h-[32px] md:w-[32px] rounded-[4px] bg-[#F9FAFB] flex justify-center items-center">
+                                  {" "}
+                                  <p className="text-[#475367] text-[12px] md:text-[16px] xl:text-[16px] font-bold leading-[24px] ">
+                                    {firstAndLastLetter(
+                                      profileData?.default_partner?.name
+                                    )}
+                                  </p>
+                                </div>
+                                <p className="text-[#000000] text-[14px] md:text-[14px] xl:text-[18px] font-bold leading-[24px] ">
+                                  {profileData?.default_partner?.name}
+                                </p>
+                              </div>
+
+                              <ArrangeHorizontal size={24} color="#26ae5f" />
+                              <div className="flex-item gap-2">
+                                <div className="h-[28px] w-[28px] md:h-[32px] md:w-[32px] rounded-[4px] bg-[#F9FAFB] flex justify-center items-center">
+                                  {" "}
+                                  <p className="text-[#475367] text-[12px] md:text-[16px] xl:text-[16px] font-bold leading-[24px] ">
+                                    {firstAndLastLetter(switchId?.name)}
+                                  </p>
+                                </div>
+                                <p className="text-[#000000] text-[14px] md:text-[14px] xl:text-[18px] font-bold leading-[24px] ">
+                                  {switchId?.name}
+                                </p>
+                              </div>
+                            </div>
+                          </ModalBody>
+                          <ModalFooter gap={"16px"}>
+                            <button
+                              onClick={closeSwitchModal}
+                              className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black"
+                            >
+                              Cancel
+                            </button>
+                            <button
+                               onClick={switchBusiness}
+                              className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
+                            >
+                              {isLoading ? (
+                                <ClipLoader color={"white"} size={20} />
+                              ) : (
+                                <> Switch </>
+                              )}
+                            </button>
+                          </ModalFooter>
+                        </ModalContent>
+                      </Modal>
+                    </button>
+                  ))}
+
                 <div className="py-[16px] border-t-[0.2px]  border-[#98A2B3] mt-[20px] ">
                   <button
                     onClick={() => setIsCreate(true)}
@@ -592,8 +765,7 @@ const Topbar = ({ setIsSidebar }) => {
             <div className="mt-[20px] md:mt-[26px] lg:mt-[32px] mb-[14px] h-[32px] w-[32px] md:h-[48px] md:w-[48px] lg:h-[80px] lg:w-[80px] rounded-[8px] bg-[#F9FAFB] flex justify-center items-center">
               {" "}
               <p className="text-[#475367] text-[18px] md:text-[24px] xl:text-[24px] font-bold ">
-              {firstAndLastLetter( DecryptUserData()?.partner?.name)}
-
+                {firstAndLastLetter(DecryptUserData()?.partner?.name)}
               </p>
             </div>
 
@@ -619,7 +791,7 @@ const Topbar = ({ setIsSidebar }) => {
                 <div>
                   {" "}
                   <p className="text-[14px] md:text-[16px] mb-2 font-medium text-[#000] leading-[20px]  ">
-                  Business Logo{" "}
+                    Business Logo{" "}
                   </p>
                   <p className="text-[14px] text-[#667185] leading-[20px]  ">
                     Enable or disable business logo
