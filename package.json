@@ -33,11 +33,13 @@
     "react-icons": "^5.2.1",
     "react-loading-skeleton": "^3.5.0",
     "react-lottie": "^1.2.4",
+    "react-media-devices": "^1.1.5",
     "react-number-format": "^5.1.4",
     "react-router-dom": "^6.26.2",
     "react-scripts": "5.0.1",
     "react-spinners": "^0.13.8",
     "react-to-print": "^3.0.2",
+    "react-zxing": "^2.0.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
