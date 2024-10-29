@@ -6,7 +6,7 @@ const constraints = {
   audio: false,
 };
 
-export const Customer = () => {
+ const Customer = () => {
   const { devices } = useMediaDevices({ constraints });
   const deviceId = devices?.[0]?.deviceId;
   const { ref } = useZxing({
@@ -16,3 +16,5 @@ export const Customer = () => {
 
   return <video ref={ref} />;
 };
+
+export default Customer
