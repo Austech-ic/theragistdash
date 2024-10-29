@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import BarcodeScannerComponent from 'react-barcode-reader';
 import axios from 'axios';
 
-const BarcodeScanner = () => {
+const Customer = () => {
   const [barcode, setBarcode] = useState('');
   const [productInfo, setProductInfo] = useState(null);
   const [error, setError] = useState('');
@@ -60,4 +60,4 @@ const BarcodeScanner = () => {
   );
 };
 
-export default BarcodeScanner;
+export default Customer;
