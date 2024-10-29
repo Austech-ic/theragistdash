@@ -37,6 +37,7 @@
     "react-lottie": "^1.2.4",
     "react-media-devices": "^1.1.5",
     "react-number-format": "^5.1.4",
+    "react-qr-barcode-scanner": "^2.0.0",
     "react-router-dom": "^6.26.2",
     "react-scripts": "5.0.1",
     "react-spinners": "^0.13.8",
