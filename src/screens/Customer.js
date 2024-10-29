@@ -1,66 +1,63 @@
-import React, { useRef, useEffect, useState } from "react";
-import JsBarcode from "jsbarcode";
-import ReactToPrint from "react-to-print";
-import Barcode from "react-barcode";
+import React, { useState } from 'react';
+import BarcodeScannerComponent from 'react-barcode-reader';
+import axios from 'axios';
 
-const Customer = () => {
-  const [text, setText] = useState('');
-  const barcodeRef = useRef(null);
+const BarcodeScanner = () => {
+  const [barcode, setBarcode] = useState('');
+  const [productInfo, setProductInfo] = useState(null);
+  const [error, setError] = useState('');
 
-  const handlePrint = () => {
-    if (barcodeRef.current) {
-      const printWindow = window.open('', '_blank');
-      printWindow.document.write(`
-        <html>
-          <head>
-            <title>Print Barcode</title>
-            <style>
-              body {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-                margin: 0;
-              }
-              img {
-                width: 300px;
-              }
-            </style>
-          </head>
-          <body>
-            ${barcodeRef.current.innerHTML}
-          </body>
-        </html>
-      `);
-      printWindow.document.close();
-      printWindow.print();
+  const handleScan = (data) => {
+    if (data) {
+      setBarcode(data);
+      fetchProductInfo(data);
+    }
+  };
+
+  const handleError = (err) => {
+    setError('Error scanning the barcode');
+    console.error(err);
+  };
+
+  const fetchProductInfo = async (barcode) => {
+    try {
+      // Replace this URL with your actual API endpoint
+      const response = await axios.get(`https://api.example.com/products/${barcode}`);
+      setProductInfo(response.data);
+    } catch (err) {
+      setError('Error fetching product information');
+      console.error(err);
     }
   };
 
   return (
-    <div style={{ textAlign: 'center', margin: '20px' }}>
-      <h1>Barcode Generator</h1>
-      <input
-        type="text"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        placeholder="Enter text to convert to barcode"
+    <div>
+      <h2>Drug Barcode Scanner</h2>
+      
+      <BarcodeScannerComponent
+        onError={handleError}
+        onScan={handleScan}
       />
-      <div ref={barcodeRef} style={{ margin: '20px' }}>
-        {text && (
-          <Barcode
-            value={text}
-            width={1} // Barcode width
-            height={100} // Barcode height
-            displayValue={false} // Set to true if you want to display the text below the barcode
-          />
+      
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+
+      <div>
+        <p>Scanned Barcode: {barcode}</p>
+        
+        {productInfo ? (
+          <div>
+            <h3>Product Information</h3>
+            <p><strong>Name:</strong> {productInfo.name}</p>
+            <p><strong>Dosage:</strong> {productInfo.dosage}</p>
+            <p><strong>Expiry Date:</strong> {productInfo.expiryDate}</p>
+            <p><strong>Manufacturer:</strong> {productInfo.manufacturer}</p>
+          </div>
+        ) : (
+          <p>No product information available.</p>
         )}
       </div>
-      <button onClick={handlePrint} disabled={!text}>
-        Print Barcode
-      </button>
     </div>
   );
 };
 
-export default Customer;
+export default BarcodeScanner;

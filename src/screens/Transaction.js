@@ -487,7 +487,7 @@ const Transactions = () => {
                          
 
 <Menu>
-                            <MenuButton bg={"none"} as={Button}>
+                            <MenuButton bg={"none"} _hover={"none"}>
                               <button
                                 //onClick={() => handleTransacModalOpen(result)}
                                 className="   rounded-sm flex justify-center items-center  hover:bg-[#CBD5E0]  "
@@ -672,7 +672,7 @@ const Transactions = () => {
             }`}
           >
             Next
-            
+
           </button>
         </div>
       </div>

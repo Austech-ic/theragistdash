@@ -256,15 +256,19 @@ const Topbar = ({ setIsSidebar }) => {
         </div>
 
         <div className="flex  gap-[12px] border-[0.2px] border-[#98a2b3] px-3 py-1  items-center rounded-[8px]">
+        
+          <div className="">
+          <Menu>
+          <MenuButton bg={"none"}>
           <div className="flex items-center gap-3">
             <p className="text-[#475367] font-medium text-[14px] md:text-[14px] xl:text-[16px]  leading-[24px] ">
                     {profileData?.default_partner?.name}
             </p>
-            <Menu>
-              <MenuButton bg={"none"}>
+          
                 <button className="h-[20px] w-[20px] md:h-[24px] md:w-[24px] rounded-[8px] hover:bg-[#F7F9FC] flex justify-center items-center">
                   <ArrowDown2 size={16} color="#667185" />
                 </button>
+                </div>
               </MenuButton>
               <MenuList
                 maxW="289px"
