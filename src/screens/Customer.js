@@ -1,78 +1,121 @@
-/* eslint-disable no-unused-expressions */
-import React, { useEffect, useState } from 'react';
-import BarcodeScannerComponent from 'react-barcode-reader';
-import axios from 'axios';
-import { enqueueSnackbar } from 'notistack';
-import { useZxing } from 'react-zxing';
-
+import React, { useState, useRef, useEffect } from 'react';
+import { Camera, XCircle } from 'lucide-react';
 
 const Customer = () => {
-  const [barcode, setBarcode] = useState('');
-  const [productInfo, setProductInfo] = useState(null);
+  const [scanning, setScanning] = useState(false);
+  const [result, setResult] = useState('');
   const [error, setError] = useState('');
-  const [devices, setDevices]= useState(null);
+  const videoRef = useRef(null);
+  const streamRef = useRef(null);
 
-  const handleScan = (data) => {
-    if (data) {
-      setBarcode(data);
-      fetchProductInfo(data);
-    }
-  };
-
-  useEffect(()=> {
-    (async () => {
-      try {
-        const availableDevices = await navigator.mediaDevices.enumerateDevices();
-        const availableVideoDevices = availableDevices.filter(device => device.kind === 'videoinput');
-        if (availableVideoDevices.length === 0) {
-          enqueueSnackbar('No cameras found');
-          
-        }
-        else {
-          setDevices(availableVideoDevices);
-        }
-      }catch {
-        enqueueSnackbar('Error accessing the camera');
-      }
-    })
-  
-  })
-
-
-//...
-const [scan, setScan] = React.useState(null);
-
-const { ref } = useZxing({
-  onResult(newScan) {
-    setScan(newScan);
-  },
-  devices
-});
-
-//...
-
-  const handleError = (err) => {
-    setError('Error scanning the barcode');
-    console.error(err);
-  };
-
-  const fetchProductInfo = async (barcode) => {
+  const startScanning = async () => {
     try {
-      // Replace this URL with your actual API endpoint
-      const response = await axios.get(`https://api.example.com/products/${barcode}`);
-      setProductInfo(response.data);
+      setError('');
+      setResult('');
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        video: { facingMode: 'environment' } 
+      });
+      
+      streamRef.current = stream;
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        setScanning(true);
+        
+        // Set up barcode detection
+        if ('BarcodeDetector' in window) {
+          const barcodeDetector = new window.BarcodeDetector({
+            formats: ['qr_code', 'ean_13', 'ean_8', 'upc_a', 'upc_e']
+          });
+          
+          const checkForBarcode = async () => {
+            if (videoRef.current && scanning) {
+              try {
+                const barcodes = await barcodeDetector.detect(videoRef.current);
+                if (barcodes.length > 0) {
+                  setResult(barcodes[0].rawValue);
+                  stopScanning();
+                } else {
+                  requestAnimationFrame(checkForBarcode);
+                }
+              } catch (err) {
+                requestAnimationFrame(checkForBarcode);
+              }
+            }
+          };
+          
+          checkForBarcode();
+        } else {
+          setError('Barcode detection is not supported in your browser');
+          stopScanning();
+        }
+      }
     } catch (err) {
-      setError('Error fetching product information');
-      console.error(err);
+      setError('Unable to access camera. Please ensure you have granted camera permissions.');
+      setScanning(false);
     }
   };
 
-   return (
-    <>
-//...
-          <video width="300" ref={ref} />
-//...
-    </>);
+  const stopScanning = () => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop());
+      streamRef.current = null;
+    }
+    setScanning(false);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop());
+      }
+    };
+  }, []);
+
+  return (
+    <div className="w-full max-w-md mx-auto p-4 space-y-4">
+      <div className="relative">
+        {scanning ? (
+          <>
+            <video 
+              ref={videoRef}
+              className="w-full h-64 bg-gray-900 rounded-lg"
+              autoPlay
+              playsInline
+            />
+            <button
+              onClick={stopScanning}
+              className="absolute top-2 right-2 p-2 bg-white rounded-full shadow-lg"
+            >
+              <XCircle className="h-6 w-6 text-red-500" />
+            </button>
+          </>
+        ) : (
+          <div className="w-full h-64 bg-gray-100 rounded-lg flex items-center justify-center">
+            <button
+              onClick={startScanning}
+              className="flex items-center space-x-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+            >
+              <Camera className="h-5 w-5" />
+              <span>Start Scanning</span>
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* {error && (
+        <Alert variant="destructive">
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )} */}
+
+      {result && (
+        <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+          <h3 className="font-medium text-green-900">Scanned Barcode:</h3>
+          <p className="text-green-800">{result}</p>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default Customer;
