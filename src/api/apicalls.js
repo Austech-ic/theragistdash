@@ -1,7 +1,10 @@
 import { PROFILE, SETDEFUALTBUSINESS } from "../utils/AuthConfig";
 import {
+  BANKS,
   CUSTOMERS,
+ INITIATETRANSFER,
  TRANSACTION,
+ VERIFYACCOUNTNUMBER,
  WALLETS
 } from "../utils/config";
 import { apiDelete, apiGet, apiGetCSV, apiPost, apiPut } from "../utils/utils";
@@ -27,6 +30,17 @@ export function setDefaultPartner(data) {
   return apiPost(SETDEFUALTBUSINESS, data);
 }
 
+export function initiateTransfer(data) {
+  return apiPost(INITIATETRANSFER, data);
+}
+
+export function verifyAccountNunmber(data) {
+  return apiPost(VERIFYACCOUNTNUMBER, data);
+}
+
+export function getBanks(data) {
+  return apiGet(BANKS, data);
+}
 
 //task
 

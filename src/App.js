@@ -30,6 +30,7 @@ import UserWallet from "./screens/UserWallet";
 import WalletOverview from "./screens/wallet/WalletOverview";
 import WalletTopup from "./screens/wallet/WalletTopup";
 import WalletDebits from "./screens/wallet/WalletDebits";
+import Verification from "./screens/Verification";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -69,6 +70,7 @@ function App() {
               <Route path="/invoice" exact={true} element={<Invoices />} />
               <Route path="/createinvoice" exact={true} element={<CreateInvoice />} />
               <Route path="/customers" exact={true} element={<Customer />} />
+              <Route path="/verification" exact={true} element={<Verification />} />
               <Route path="/wallet" exact={true} element={<Wallet />}>
                 <Route
                   path="/wallet/overview"

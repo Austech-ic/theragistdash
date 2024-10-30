@@ -8,4 +8,7 @@ export const getApiUrl = (endpoint) => API_BASE_URL + endpoint
 export const TRANSACTION = getApiUrl('/transactions')
 export const WALLETS = getApiUrl('/user-wallets')
 export const CUSTOMERS = getApiUrl('/customers')
+export const INITIATETRANSFER = getApiUrl('/transfer/initiate')
+export const BANKS = getApiUrl('/transfer/banks')
+export const VERIFYACCOUNTNUMBER = getApiUrl('/transfer/verify-account')
 

@@ -18,6 +18,7 @@ import {
   WalletMoney,
   Wallet1,
   EmptyWalletChange,
+  Verify,
 } from "iconsax-react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
@@ -76,8 +77,8 @@ const Sidebar = ({ isSidebarOpen, onClose, role }) => {
         <div className="relative">
           <div className="relative h-screen overflow-y-auto no-scrollbar pb-[80px]">
             <img
-              class=" h-[40px] w-[70px]   mb-[20px] "
-              src="./assets/VantLogo.png"
+              class=" h-[40px] w-[70px]   "
+              src="/assets/VantLogo.png"
               alt="logo"
             />
 
@@ -274,6 +275,23 @@ const Sidebar = ({ isSidebarOpen, onClose, role }) => {
                 </Link>
               </ul>
             )}
+
+<Link
+              to="/verification"
+              className={` py-[10px] pl-[16px] flex items-center text-[14px]   mb-3 leading-[20px] md:leading-[24px] ${
+                window.location.pathname === "/verification"
+                  ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
+                  : "text-[#667185] font-normal"
+              }`}
+            >
+              <Verify
+                className="mr-[12px]"
+                variant={
+                  window.location.pathname === "/verification" ? "Bold" : "Linear"
+                }
+              />
+              Verifications
+            </Link>
 
             <Link
               to="/users"
