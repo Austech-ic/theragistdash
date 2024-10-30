@@ -23,7 +23,7 @@ const Customer = () => {
           (decodedText) => {
             setBarcodeData(decodedText);
             setError(null); // Clear any previous errors
-            html5QrcodeScanner.stop(); // Stop scanning after successful scan
+            //html5QrcodeScanner.stop(); // Stop scanning after successful scan
           },
           (err) => {
             setError(
@@ -68,7 +68,7 @@ const Customer = () => {
       {error && <p style={{ color: "red" }}>{error}</p>}
 
       {barcodeData && (
-        <button onClick={(() => setBarcodeData(""), handleScanner())}>
+        <button className="border rounded-lg" onClick={(() => setBarcodeData(""), handleScanner())}>
           Scan Again
         </button>
       )}
