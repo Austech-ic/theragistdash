@@ -24,8 +24,12 @@ import CreateInvoice from "./screens/CreateInvoice";
 import Customer from "./screens/Customer";
 import Invoices from "./screens/Invoice";
 import GetStarted from "./screens/GetStarted";
-import Wallet from "./screens/Wallet";
+import Wallet from "./screens/wallet/Wallet";
 import ValidateOtp from "./authScreen/OTP";
+import UserWallet from "./screens/UserWallet";
+import WalletOverview from "./screens/wallet/WalletOverview";
+import WalletTopup from "./screens/wallet/WalletTopup";
+import WalletDebits from "./screens/wallet/WalletDebits";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -58,13 +62,30 @@ function App() {
               <Route path="/" exact={true} element={<Home />} />
               <Route path="/overview" exact={true} element={<OverView />} />
               <Route path="/getstarted" exact={true} element={<GetStarted />} />
-              <Route path="/wallet" exact={true} element={<Wallet />} />
+              <Route path="/user-wallets" exact={true} element={<UserWallet />} />
               <Route path="/paymentlink" exact={true} element={<PaymentLinks />} />
               <Route path="/transaction" exact={true} element={<Transactions />} />
               <Route path="/users" exact={true} element={<Users />} />
               <Route path="/invoice" exact={true} element={<Invoices />} />
               <Route path="/createinvoice" exact={true} element={<CreateInvoice />} />
               <Route path="/customers" exact={true} element={<Customer />} />
+              <Route path="/wallet" exact={true} element={<Wallet />}>
+                <Route
+                  path="/wallet/overview"
+                  exact={true}
+                  element={<WalletOverview />}
+                />
+                <Route
+                  path="/wallet/topup"
+                  exact={true}
+                  element={<WalletTopup />}
+                />
+                <Route
+                  path="/wallet/debit"
+                  exact={true}
+                  element={<WalletDebits />}
+                />
+                </Route>
 
             </Route>
           </Routes>

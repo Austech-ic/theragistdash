@@ -82,3 +82,43 @@ export async function getUsers() {
     return error;
   }
 }
+
+
+export function formatDateToText (date) {
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  const day = date.getDate();
+  const month = months[date.getMonth()];
+  const year = date.getFullYear();
+
+  function getDayWithOrdinal(day) {
+    if (day >= 11 && day <= 13) {
+      return `${day}th`;
+    }
+    switch (day % 10) {
+      case 1:
+        return `${day}st`;
+      case 2:
+        return `${day}nd`;
+      case 3:
+        return `${day}rd`;
+      default:
+        return `${day}th`;
+    }
+  }
+
+  return `${getDayWithOrdinal(day)} ${month}, ${year}`;
+}

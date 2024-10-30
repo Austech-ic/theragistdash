@@ -16,6 +16,8 @@ import {
   Profile,
   Note,
   WalletMoney,
+  Wallet1,
+  EmptyWalletChange,
 } from "iconsax-react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
@@ -143,7 +145,7 @@ const Sidebar = ({ isSidebarOpen, onClose, role }) => {
                   : "text-[#667185] font-normal"
               }`}
             >
-              <WalletMoney
+              <EmptyWalletChange
                 className="mr-[12px]"
                 variant={
                   window.location.pathname === "/transaction"
@@ -153,10 +155,31 @@ const Sidebar = ({ isSidebarOpen, onClose, role }) => {
               />
               Transaction
             </Link>
+
             <Link
-              to="/wallet"
+              to="/user-wallets"
               className={` py-[10px] pl-[16px] flex items-center text-[14px]  mb-3   leading-[20px] md:leading-[24px] ${
-                window.location.pathname === "/wallet"
+                window.location.pathname === "/user-wallets"
+                  ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
+                  : "text-[#667185] font-normal"
+              }`}
+            >
+              <Wallet1
+                className="mr-[12px]"
+                variant={
+                  window.location.pathname === "/user-wallets" ? "Bold" : "Linear"
+                }
+              />
+            User Wallets{" "}
+            </Link>
+
+            <Link
+              to="/wallet/overview"
+              className={` py-[10px] pl-[16px] flex items-center text-[14px]  mb-3   leading-[20px] md:leading-[24px] ${
+                window.location.pathname === "/wallet/overview"||
+                window.location.pathname === "/wallet/topup"||
+                window.location.pathname === "/wallet/debit"
+
                   ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
                   : "text-[#667185] font-normal"
               }`}
@@ -164,10 +187,12 @@ const Sidebar = ({ isSidebarOpen, onClose, role }) => {
               <WalletMoney
                 className="mr-[12px]"
                 variant={
-                  window.location.pathname === "/wallet" ? "Bold" : "Linear"
+                  window.location.pathname === "/wallet/overview"||
+                  window.location.pathname === "/wallet/topup"||
+                  window.location.pathname === "/wallet/debit" ? "Bold" : "Linear"
                 }
               />
-              Wallets{" "}
+            Wallet{" "}
             </Link>
 
             <Link

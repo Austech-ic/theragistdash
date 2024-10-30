@@ -280,7 +280,7 @@ const Transactions = () => {
               type="text"
               placeholder="Transaction Reference"
               className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-              autoComplete="on"
+              
               value={reference}
               onChange={(e) => setReference(e.target.value)}
             />
@@ -288,7 +288,7 @@ const Transactions = () => {
               type="text"
               placeholder=""
               className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-              autoComplete="on"
+              
             >
               <option value="">Select Currency</option>
               <option value="NGN">NGN</option>
@@ -310,7 +310,7 @@ const Transactions = () => {
             <select
               type="text"
               className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-              autoComplete="on"
+              
               value={type}
               onChange={(e) => setType(e.taget.value)}
             >
@@ -324,7 +324,7 @@ const Transactions = () => {
               type="text"
               placeholder="Select Item Type"
               className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-              autoComplete="on"
+              
             >
               <option value="">Select Status</option>
               <option value="Medium">Processing</option>
@@ -334,7 +334,7 @@ const Transactions = () => {
             <select
               type="text"
               className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-              autoComplete="on"
+              
             >
               <option value="">Select Transaction Reason</option>
               <option value="Wallet Funding">Wallet Funding</option>

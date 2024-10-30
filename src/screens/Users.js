@@ -163,7 +163,7 @@ const Users = () => {
           <div className="flex items-center gap-[16px]">
             <div className="flex items-center">
               <p className="text-[#000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px]  ">
-                Wallets
+                User Management
               </p>
             </div>
             <div className="h-[32px] w-[1px] bg-[#D0D5DD]" />
@@ -258,65 +258,11 @@ const Users = () => {
           <div className="flex items-center gap-4 overflow-x-auto custom-scrollbar">
             <input
               type="text"
-              placeholder="Transaction Reference"
+              placeholder="username"
               className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-              autoComplete="on"
+              
             />
-            <select
-              type="text"
-              placeholder=""
-              className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-              autoComplete="on"
-            >
-              <option value="">Select Currency</option>
-              <option value="NGN">NGN</option>
-              <option value="USD">USD</option>
-              <option value="GBP">GBP</option>
-            </select>
-            <DatePicker
-              className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-              placeholderText="Start Date"
-              selected={startdate}
-              onChange={(date) => setStartdate(date)}
-            />
-            <DatePicker
-              className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-              placeholderText="End Date"
-              selected={enddate}
-              onChange={(date) => setEndDate(date)}
-            />
-            <select
-              type="text"
-              className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-              autoComplete="on"
-            >
-              <option value="">Select Transaction Type</option>
-              <option value="1">Credit</option>
-              <option value="0">Debit</option>
-              <option value="Medium">Success</option>
-            </select>
-
-            <select
-              type="text"
-              placeholder="Select Item Type"
-              className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-              autoComplete="on"
-            >
-              <option value="">Select Status</option>
-              <option value="Medium">Processing</option>
-              <option value="Medium">Failed</option>
-              <option value="Medium">Success</option>
-            </select>
-            <select
-              type="text"
-              className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-              autoComplete="on"
-            >
-              <option value="">Select Transaction Reason</option>
-              <option value="Wallet Funding">Wallet Funding</option>
-              <option value="Withdrawal">Withdrawal</option>
-              {/* <option value="Medium">Success</option> */}
-            </select>
+            
           </div>
         </div>
       </div>
@@ -606,7 +552,7 @@ const Users = () => {
                   type="text"
                   placeholder="Name"
                   className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                  autoComplete="on"
+                  
                   name="full-name"
                   id="full-name"
                   //value=""
@@ -629,7 +575,7 @@ const Users = () => {
                   type="date"
                   placeholder="Enter Title"
                   className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                  autoComplete="on"
+                  
                   name="date"
                   id="full-name"
                   //   value={formData.date}
@@ -649,7 +595,7 @@ const Users = () => {
                   type="time"
                   placeholder="Name"
                   className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                  autoComplete="on"
+                  
                   name="full-name"
                   id="full-name"
                   //value=""
@@ -669,7 +615,7 @@ const Users = () => {
                   type="time"
                   placeholder=""
                   className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                  autoComplete="on"
+                  
                   name="date"
                   id="full-name"
                   //   value={formData.date}

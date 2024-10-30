@@ -243,7 +243,7 @@ const Invoices = () => {
               placeholder="search by invoice number..."
               className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
               required
-              autoComplete="on"
+              
               autoFocus
             />
 

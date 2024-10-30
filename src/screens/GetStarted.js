@@ -66,7 +66,7 @@ const GetStarted = () => {
             alt="blob"
             className="absolute top-0 right-0 h-[220px] "
           />
-          <p className="text-[#000] text-[14px] md:text-[16px] z-20 xl:text-[18px] italic font-semibold leading-[24px]  mt-6 ">
+          <p className="text-[#000] text-[14px] md:text-[16px]  xl:text-[18px] italic font-semibold leading-[24px]  mt-6 ">
             Hello Kaileb
           </p>
           <p className="text-[#000] text-[14px] md:text-[16px] z-20 xl:text-[18px] font-medium leading-[24px]  mt-2 ">
@@ -146,7 +146,7 @@ const GetStarted = () => {
                     placeholder="Enter first name"
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    autoComplete="on"
+                    
                     name="firstName"
                     value={formValue.firstName}
                     onChange={(e) => {
@@ -168,7 +168,7 @@ const GetStarted = () => {
                     placeholder="Enter last name"
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    autoComplete="on"
+                    
                     name="lastName"
                   value={formValue.lastName}
                     onChange={(e) => {
@@ -197,7 +197,7 @@ const GetStarted = () => {
                     placeholder="Enter email address"
                     className="w-full  h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    autoComplete="on"
+                    
                     name="email"
                    value={formValue.email}
                     onChange={(e) => {
@@ -225,7 +225,7 @@ const GetStarted = () => {
                     placeholder="8083XXXXXXX"
                     className="w-full  h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    autoComplete="on"
+                    
                     name="phone"
                     value={formValue.phone}
                     onChange={(e) => {
@@ -248,7 +248,7 @@ const GetStarted = () => {
                     placeholder="14, xxxx street"
                     className="w-full  h-[120px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    autoComplete="on"
+                    
                     name="lastName"
                     value={formValue.address}
                     onChange={(e) => {
@@ -270,7 +270,7 @@ const GetStarted = () => {
                     placeholder="2933 23XX XXX "
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    autoComplete="on"
+                    
                     name="nin"
                     // value={formValue.lastName}
                     // onChange={(e) => {
@@ -324,7 +324,7 @@ const GetStarted = () => {
                     placeholder="Enter business name"
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    autoComplete="on"
+                    
                     name="firstName"
                     // value={formValue.firstName}
                     // onChange={(e) => {
@@ -346,7 +346,7 @@ const GetStarted = () => {
                     placeholder="https://domain.xyz"
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    autoComplete="on"
+                    
                     name="lastName"
                     // value={formValue.lastName}
                     // onChange={(e) => {
@@ -368,7 +368,7 @@ const GetStarted = () => {
                     placeholder="electronics supplier"
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    autoComplete="on"
+                    
                     name="lastName"
                     // value={formValue.lastName}
                     // onChange={(e) => {
@@ -397,7 +397,7 @@ const GetStarted = () => {
                     placeholder="Enter email address"
                     className="w-full  h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    autoComplete="on"
+                    
                     name="email"
                     // value={formValue.email}
                     // onChange={(e) => {
@@ -425,7 +425,7 @@ const GetStarted = () => {
                     placeholder="Enter email address"
                     className="w-full  h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    autoComplete="on"
+                    
                     name="email"
                     // value={formValue.email}
                     // onChange={(e) => {
@@ -448,7 +448,7 @@ const GetStarted = () => {
                     placeholder=""
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    autoComplete="on"
+                    
                     name="nin"
                     // value={formValue.lastName}
                     // onChange={(e) => {
@@ -470,7 +470,7 @@ const GetStarted = () => {
                     placeholder=""
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    autoComplete="on"
+                    
                     name="nin"
                     // value={formValue.lastName}
                     // onChange={(e) => {
@@ -525,7 +525,7 @@ const GetStarted = () => {
                     placeholder="1234 XXXX XXX"
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    autoComplete="on"
+                    
                     name="firstName"
                     // value={formValue.firstName}
                     // onChange={(e) => {
@@ -547,7 +547,7 @@ const GetStarted = () => {
                     placeholder=""
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    autoComplete="on"
+                    
                     name="dob"
                     // value={formValue.lastName}
                     // onChange={(e) => {
