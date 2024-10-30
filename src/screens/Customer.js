@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { Html5Qrcode } from "html5-qrcode";
+import { enqueueSnackbar } from "notistack";
 
 const Customer = () => {
   const [barcodeData, setBarcodeData] = useState("");
@@ -23,6 +24,8 @@ const Customer = () => {
           (decodedText) => {
             setBarcodeData(decodedText);
             setError(null); // Clear any previous errors
+            enqueueSnackbar("decodedText", { variant: "success" });
+
             //html5QrcodeScanner.stop(); // Stop scanning after successful scan
           },
           (err) => {
