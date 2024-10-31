@@ -10,11 +10,14 @@ import {
   Eye,
   EyeSlash,
   RecordCircle,
+  SearchNormal1,
   Send2,
+  Sms,
+  TickCircle,
   TransmitSquare,
 } from "iconsax-react";
 import React, { useEffect, useState } from "react";
-import { formatDateToText } from "../../utils/helperFunctions";
+import { decryptaValue, decryptValue, formatDateToText } from "../../utils/helperFunctions";
 import { NumericFormat } from "react-number-format";
 import {
   Grid,
@@ -47,6 +50,7 @@ import { ClipLoader } from "react-spinners";
 import api from "../../api";
 import { useQuery } from "@tanstack/react-query";
 import { motion as m } from "framer-motion";
+import { enqueueSnackbar } from "notistack";
 
 ChartJS.register(
   CategoryScale,
@@ -95,6 +99,15 @@ const WalletOverdiv = () => {
   const [bankName, setBankName] = useState("");
   const [banksVisible, setBanksVisible] = useState(false);
   const [selectedBank, setSelectedBank] = useState(null);
+  const [accountNumber, setAccountNumber] = useState("");
+  const [nameLoading, setNameLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const [accountName, setAccountName] = useState("");
+  const [toKyc, setToKyc] = useState("");
+  const [toBvn, setToBvn] = useState("");
+  const [toSession, setToSession] = useState("");
+  const [toClient, setToClient] = useState("");
 
   const closeTransferOthers = () => {
     setIsTransferOthers(false);
@@ -114,12 +127,11 @@ const WalletOverdiv = () => {
     keepPreviousData: true,
     refetchOnWindowFocus: "always",
   });
-  let Bankss = BankQuery?.data
-  const [filteredData, setFilteredData] = useState(Bankss|| []) ;
-useEffect(()=> {
-    setFilteredData(BankQuery.data)
-  },[BankQuery.data])
-
+  let Bankss = BankQuery?.data;
+  const [filteredData, setFilteredData] = useState(Bankss || []);
+  useEffect(() => {
+    setFilteredData(BankQuery.data);
+  }, [BankQuery.data]);
 
   const handleSearch = (query) => {
     const filteredbanks = BankQuery.data.filter((bank) =>
@@ -129,17 +141,73 @@ useEffect(()=> {
   };
   const [isLoading, setIsLoading] = useState(false);
 
-  const  handleSelectBank = (bank)=>{
+  const handleChange = (text) => {
+    console.log(accountNumber);
+    if (accountNumber !== "" && selectedBank == "") {
+      // Show an error message or do something else here
+      enqueueSnackbar("Please Select a bank", { variant: "error" });
+
+      return;
+    }
+
+    if (text.length == 10) {
+      // Search from the API here, using the input text as the search query
+      // searchAPI(text);
+
+      verifyAccount();
+    }
+  };
+
+  useEffect(() => {
+    handleChange(accountNumber);
+  }, [accountNumber]);
+
+  const handleSelectBank = (bank) => {
     setSelectedBank(bank);
     setBanksVisible(false);
-  }
+  };
+  const verifyAccount = async () => {
+    setNameLoading(true);
+    try {
+      const response = await api.verifyAccountNunmber({
+        account_number: accountNumber,
+        account_bank: selectedBank?.code,
+      });
+      console.log("response of account verification==>>>>>", decryptaValue(response?.data));
+      const decryptRes = JSON.parse(decryptaValue(response?.data))
+      console.log("dddd", decryptRes?.status);
+      if (decryptRes.status === "error") {
+        // setAccountName(response.data.name)
+        setAccountName("");
+
+        enqueueSnackbar(decryptRes.message, { variant: "error" });
+      }
+      if (decryptRes.status === "success") {
+        enqueueSnackbar(decryptRes.message, { variant: "success" });
+
+        setAccountName(decryptRes.data.name);
+        setToBvn(decryptRes.data.bvn);
+        setToKyc(decryptRes.data.status);
+        setToSession(decryptRes.data.account.id);
+        setToClient(decryptRes.data.clientId);
+      }
+      setNameLoading(false);
+    } catch (error) {
+      console.log(error.message);
+      enqueueSnackbar(error.message, { variant: "error" });
+      setAccountName("");
+
+      setNameLoading(false);
+    }
+  };
+
   return (
     <div>
       <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-[16px] md:gap-[20px] mt-5 ">
         <li>
           <div className="rounded-[12px] px-[16px] pt-4 pb-6 bg-[#26ae5f] ">
             <div className="flex-between">
-              <div className="flex-bank gap-2">
+              <div className="flex-item gap-2">
                 <div className="py-[5px] text-[12px] px-[10px] flex cursor-pointer bg-white rounded-[48px] w-[90px]  gap-[8px] banks-center ">
                   <img
                     src="/assets/ng.png"
@@ -254,16 +322,14 @@ useEffect(()=> {
             onClick={openTransferOthers}
             className={`rounded-[20px] mt-6 flex justify-center banks-center gap-2 px-[12px]  py-[4px] md:py-[4px] border-[0.5px]
                 bg-[#EDF7EE] text-[#4CAF50] border-[#4CAF50] text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px] `}
-
           >
             <Send2 color="#4CAF50" size={20} /> <p>Transfer to other banks </p>
           </button>{" "}
           <button
             className={`rounded-[20px] mt-6 flex justify-center banks-center gap-2 px-[12px]  py-[4px] md:py-[4px] border-[0.5px]
                 bg-[#EDF7EE] text-[#4CAF50] border-[#4CAF50] text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px] `}
-
           >
-            < Send2 color="#4CAF50" size={20} /> <p>Transfer to Vant Tag </p>
+            <Send2 color="#4CAF50" size={20} /> <p>Transfer to Vant Tag </p>
           </button>{" "}
         </li>
         <li className="rounded-lg relative overflow-hidden border-[0.8px] bg-[#fefefe]  border-[#E4E7EC] shadow p-2 md:p-4 h-[215px]">
@@ -321,18 +387,18 @@ useEffect(()=> {
             className="pt-[20px] md:pt-[24px] px-[16px] md:px-[24px] pb-[30px] md:pb-[40px]"
           >
             <div className="mb-[18px]">
-              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] ">
+              <label className="text-[14px] text-[#667185]    mb-[8px] ">
                 Account Number
               </label>
               <div className=" relative    flex banks-center">
                 <input
                   type="text"
                   placeholder="0002-XXXX-XX"
-                  className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                   name="accountNumber"
                   id="full-name"
-                  //   value={formData.date}
-                  //   onChange={(e) => handleChange(e)}
+                  value={accountNumber}
+                  onChange={(e) => setAccountNumber(e.target.value)}
                   autoCapitalize="off"
                   autoCorrect="off"
                   spellCheck="false"
@@ -341,12 +407,12 @@ useEffect(()=> {
             </div>
 
             <div className="mb-[18px]">
-              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] ">
+              <label className="text-[14px] text-[#667185]    mb-[8px] ">
                 Bank
               </label>
               <button
                 onClick={() => setBanksVisible(!banksVisible)}
-                className="w-full h-[48px] pl-[24px] pr-[8px] flex-between py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                className="w-full h-[48px] pl-[24px] pr-[8px] flex-between py-[12px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
               >
                 <div className="flex-row banks-center">
                   {selectedBank ? (
@@ -372,9 +438,33 @@ useEffect(()=> {
                   transition={{
                     duration: 0.3,
                   }}
-                  className="w-full h-[300px] overflow-y-auto  px-2 py-3 text-[14px] text-[#344054] leading-[20px]    border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  className="w-full h-[300px] overflow-y-auto  px-2 py-3 text-[14px] text-[#344054] border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                 >
-                  { filteredData && 
+                  <div className=" relative  w-full mx-auto mb-2  flex items-center">
+                    <SearchNormal1
+                      size="14"
+                      color="#98A2B3"
+                      className="absolute left-[16px]"
+                    />
+
+                    <input
+                      type="email"
+                      placeholder="search bank"
+                      className="w-full  h-[36px] pl-[44px] py-[12px] text-[14px] text-[#344054]  bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                      required
+                      autoComplete="on"
+                      name="email"
+                      value={searchQuery}
+                      onChange={(e) => {
+                        setSearchQuery(e.target.value);
+                        handleSearch(e.target.value);
+                      }}
+                      autoCapitalize="off"
+                      autoCorrect="off"
+                      spellCheck="false"
+                    />
+                  </div>
+                  {filteredData &&
                     filteredData?.map((bank, index) => (
                       <button
                         // onPress={() => {
@@ -385,11 +475,11 @@ useEffect(()=> {
                         //     setAccountNumber("");
                         // }}
 
-                        onClick={()=>handleSelectBank(bank)}
+                        onClick={() => handleSelectBank(bank)}
                         className="w-full px-[10px] py-2 rounded-[10px] flex items-center flex-row justify-between banks-center mb-2"
                         style={{
                           borderColor: "rgba(18, 3, 58, 0.10)",
-                          borderWidth: .2,
+                          borderWidth: 0.2,
                         }}
                       >
                         <div className="flex-item">
@@ -431,16 +521,32 @@ useEffect(()=> {
                     ))}
                 </m.div>
               )}
+
+              {nameLoading && (
+                <div className="mt-2 ml-2">
+                  {" "}
+                  <ClipLoader color={"green"} size={16} />
+                </div>
+              )}
             </div>
+
+            {accountName && (
+              <div className="mb-5 p-[12px] rounded-[8px] bg-[#EDF7EE] text-[#4CAF50] flex-item ">
+                <TickCircle color="#4CAF50" variant="Bold" size={16} />
+                <p className="text-[#4CAF50] ml-2 font-normal font-i_normal text-[14px] leading-[15px]   tracking-[0.028px] ">
+                  {accountName}
+                </p>
+              </div>
+            )}
             <div className="mb-[18px]">
-              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] ">
+              <label className="text-[14px] text-[#667185]    mb-[8px] ">
                 Transfer Purpose
               </label>
               <div className=" relative  flex banks-center">
                 <select
                   type="text"
                   placeholder="Name"
-                  className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                   name="full-name"
                   id="full-name"
                   //value=""
@@ -452,6 +558,26 @@ useEffect(()=> {
                   <option value="">Select Purpose</option>
                   <option value="Monthly Payslip">Utilities</option>
                 </select>
+              </div>
+            </div>
+            <div className="mb-[18px]">
+              <label className="text-[14px] text-[#667185] leading-[14px]   mb-[8px] ">
+              Naration
+              </label>
+              <div className=" relative  flex banks-center">
+                <textarea
+                  type="text"
+                  placeholder="description..."
+                  className="w-full h-[120px] p-2 text-[14px] text-[#344054] leading-[16px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  name="full-name"
+                  id="full-name"
+                  //value=""
+                  //onChange={() => {}}
+                  autoCapitalize="off"
+                  autoCorrect="off"
+                  spellCheck="false"
+                />
+                 
               </div>
             </div>
           </ModalBody>

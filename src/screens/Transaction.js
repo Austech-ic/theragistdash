@@ -356,7 +356,8 @@ const Transactions = () => {
                       className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
                     >
                       <div className="flex px-5   gap-[6px] md:gap-[12px] items-center">
-                        Reason
+                      Transaction Ref
+                      
                       </div>
                     </th>
                     <th
@@ -364,7 +365,7 @@ const Transactions = () => {
                       className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
                     >
                       <div className="flex px-5   gap-[6px] md:gap-[12px] items-center">
-                        Transaction Ref
+                      Reason
                       </div>
                     </th>
                     <th
@@ -387,8 +388,16 @@ const Transactions = () => {
                       scope="col"
                       className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
                     >
-                      <div className="flex  gap-[6px] md:gap-[12px] items-center my-0">
-                        Charges{" "}
+                      <div className="flex whitespace-nowrap  gap-[6px] md:gap-[12px] items-center my-0">
+                        Balance Before
+                      </div>
+                    </th>
+                     <th
+                      scope="col"
+                      className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
+                    >
+                      <div className="flex whitespace-nowrap  gap-[6px] md:gap-[12px] items-center my-0">
+                        Balance after
                       </div>
                     </th>
 
@@ -427,6 +436,7 @@ const Transactions = () => {
                   )}
                   {/*  {TaskSummaryData &&
                   results?.data?.data?.map((result) => ( */}
+
 
                   {results?.data &&
                     results?.data?.data?.map((result) => (
@@ -470,7 +480,7 @@ const Transactions = () => {
                           <button
                             className={`rounded-[20px] md:rounded-[40px] w-[80px] w- py-[2px] md:py-[4px] mx-auto ${
                               result.status === "failed"
-                                ? "bg-[rgb(255,245,230)] text-[#FF9800]"
+                                ? "bg-[rgb(255,245,230)] text-[#DB0404FFFF]"
                                 : result.status === "Ongoing"
                                 ? "bg-[#F9FAFB] text-[#667185]"
                                 : "bg-[#EDF7EE] text-[#4CAF50]"
