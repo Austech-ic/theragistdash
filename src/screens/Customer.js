@@ -44,17 +44,17 @@ const Customer = () => {
     }
   };
 
-  useEffect(() => {
-    handleScanner();
-    // Cleanup on unmount
-    return () => {
-      if (scannerRef.current) {
-        scannerRef.current
-          .stop()
-          .catch((err) => console.error("Failed to stop scanner", err));
-      }
-    };
-  }, []);
+  // useEffect(() => {
+  //   handleScanner();
+  //   // Cleanup on unmount
+  //   return () => {
+  //     if (scannerRef.current) {
+  //       scannerRef.current
+  //         .stop()
+  //         .catch((err) => console.error("Failed to stop scanner", err));
+  //     }
+  //   };
+  // }, []);
 
   return (
     <div style={{ textAlign: "center", padding: "20px" }}>

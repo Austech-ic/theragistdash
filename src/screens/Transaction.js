@@ -69,7 +69,7 @@ const Transactions = () => {
   const [enddate, setEndDate] = useState("");
   const [reference, setReference] = useState("");
   const [type, setType] = useState("");
-  const [transacDetails, setTransacDetails] = useState([])
+  const [transacDetails, setTransacDetails] = useState([]);
 
   function HandleEditModalClose() {
     setIsEditOpen(false);
@@ -114,12 +114,11 @@ const Transactions = () => {
 
   const handleDetails = (result) => {
     setIsViewModal(true);
-    setTransacDetails(result)
+    setTransacDetails(result);
   };
   const closeViewModal = () => {
     setIsViewModal(false);
-
-  }
+  };
 
   // async function handleSubmit(e) {
   //   e.preventDefault();
@@ -146,7 +145,7 @@ const Transactions = () => {
         page,
         search: reference,
         //from: startdate,
-         //until: enddate,
+        //until: enddate,
         //is_credit: type,
       },
     });
@@ -280,7 +279,6 @@ const Transactions = () => {
               type="text"
               placeholder="Transaction Reference"
               className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-              
               value={reference}
               onChange={(e) => setReference(e.target.value)}
             />
@@ -288,7 +286,6 @@ const Transactions = () => {
               type="text"
               placeholder=""
               className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-              
             >
               <option value="">Select Currency</option>
               <option value="NGN">NGN</option>
@@ -310,7 +307,6 @@ const Transactions = () => {
             <select
               type="text"
               className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-              
               value={type}
               onChange={(e) => setType(e.taget.value)}
             >
@@ -324,7 +320,6 @@ const Transactions = () => {
               type="text"
               placeholder="Select Item Type"
               className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-              
             >
               <option value="">Select Status</option>
               <option value="Medium">Processing</option>
@@ -334,7 +329,6 @@ const Transactions = () => {
             <select
               type="text"
               className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-              
             >
               <option value="">Select Transaction Reason</option>
               <option value="Wallet Funding">Wallet Funding</option>
@@ -356,8 +350,7 @@ const Transactions = () => {
                       className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
                     >
                       <div className="flex px-5   gap-[6px] md:gap-[12px] items-center">
-                      Transaction Ref
-                      
+                        Transaction Ref
                       </div>
                     </th>
                     <th
@@ -365,7 +358,7 @@ const Transactions = () => {
                       className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
                     >
                       <div className="flex px-5   gap-[6px] md:gap-[12px] items-center">
-                      Reason
+                        Reason
                       </div>
                     </th>
                     <th
@@ -392,7 +385,7 @@ const Transactions = () => {
                         Balance Before
                       </div>
                     </th>
-                     <th
+                    <th
                       scope="col"
                       className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
                     >
@@ -437,7 +430,6 @@ const Transactions = () => {
                   {/*  {TaskSummaryData &&
                   results?.data?.data?.map((result) => ( */}
 
-
                   {results?.data &&
                     results?.data?.data?.map((result) => (
                       <tr key="_" className="mb-2 hover:bg-light-gray">
@@ -473,8 +465,35 @@ const Transactions = () => {
                             {result?.type}
                           </div>
                         </td>
+                      <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                        <NumericFormat
+                            value={result?.balance_before}
+                            displayType={"text"}
+                            thousandSeparator={true}
+                            prefix={"₦"}
+                            decimalScale={2}
+                            fixedDecimalScale={true}
+                            // renderText={(value) => (
+                            //   <Text className="text-[#fff]  font-semibold font-i_medium text-[16px] leading-[19px]  tracking-[0.2px]   ">
+                            //     {value}
+                            //   </Text>
+                            // )}
+                          />
+                        </td>
                         <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                          #120
+                        <NumericFormat
+                            value={result?.balance_after}
+                            displayType={"text"}
+                            thousandSeparator={true}
+                            prefix={"₦"}
+                            decimalScale={2}
+                            fixedDecimalScale={true}
+                            // renderText={(value) => (
+                            //   <Text className="text-[#fff]  font-semibold font-i_medium text-[16px] leading-[19px]  tracking-[0.2px]   ">
+                            //     {value}
+                            //   </Text>
+                            // )}
+                          />
                         </td>
                         <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
                           <button
@@ -494,9 +513,7 @@ const Transactions = () => {
                         </td>
 
                         <td className="whitespace-nowrap py-[16px] flex-item gap-2 bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#1A202C] font-medium text-left  ">
-                         
-
-<Menu>
+                          <Menu>
                             <MenuButton bg={"none"} _hover={"none"}>
                               <button
                                 //onClick={() => handleTransacModalOpen(result)}
@@ -510,9 +527,12 @@ const Transactions = () => {
                               </button>
                             </MenuButton>
                             <MenuList maxW="32" className="">
-                              
-
-                              <MenuItem onClick={()=> handleDetails(result)} w="full" color="#bf0d0d" mb="10px">
+                              <MenuItem
+                                onClick={() => handleDetails(result)}
+                                w="full"
+                                color="#bf0d0d"
+                                mb="10px"
+                              >
                                 <Note1
                                   variant="Linear"
                                   color="#98A2B3"
@@ -523,7 +543,6 @@ const Transactions = () => {
                                   Receipt
                                 </p>
                               </MenuItem>
-                             
                             </MenuList>
                           </Menu>
 
@@ -682,7 +701,6 @@ const Transactions = () => {
             }`}
           >
             Next
-
           </button>
         </div>
       </div>
@@ -717,31 +735,30 @@ const Transactions = () => {
             </tr>
             <tr className="">
               <th className="text-[14px] pb-[20px] text-[#667185] leading-[20px] font-medium text-left ">
-               Reason
+                Reason
               </th>
               <td className="pb-[20px] pl-4 md:pl-6 ">
-              {transacDetails?.reason}
-
+                {transacDetails?.reason}
               </td>
             </tr>
             <tr className="">
               <th className="text-[14px] pb-[20px] text-[#667185] leading-[20px] font-medium text-left ">
-               Amount
+                Amount
               </th>
               <td className="pb-[20px] pl-4 md:pl-6 ">
-              <NumericFormat
-                            value={transacDetails?.amount}
-                            displayType={"text"}
-                            thousandSeparator={true}
-                            prefix={"₦"}
-                            decimalScale={2}
-                            fixedDecimalScale={true}
-                            // renderText={(value) => (
-                            //   <Text className="text-[#fff]  font-semibold font-i_medium text-[16px] leading-[19px]  tracking-[0.2px]   ">
-                            //     {value}
-                            //   </Text>
-                            // )}
-                          />
+                <NumericFormat
+                  value={transacDetails?.amount}
+                  displayType={"text"}
+                  thousandSeparator={true}
+                  prefix={"₦"}
+                  decimalScale={2}
+                  fixedDecimalScale={true}
+                  // renderText={(value) => (
+                  //   <Text className="text-[#fff]  font-semibold font-i_medium text-[16px] leading-[19px]  tracking-[0.2px]   ">
+                  //     {value}
+                  //   </Text>
+                  // )}
+                />
               </td>
             </tr>
             <tr>
@@ -749,31 +766,28 @@ const Transactions = () => {
                 Transaction Type
               </th>
               <td className="pb-[20px] pl-4 md:pl-6 ">
-              <div className="flex-item gap-1">
-                            {" "}
-                            {transacDetails?.type === "debit" ? (
-                              <ArrowUp size={14} color="red" />
-                            ) : (
-                              <ArrowDown size={14} color="green" />
-                            )}{" "}
-                            {transacDetails?.type}
-                          </div>
+                <div className="flex-item gap-1">
+                  {" "}
+                  {transacDetails?.type === "debit" ? (
+                    <ArrowUp size={14} color="red" />
+                  ) : (
+                    <ArrowDown size={14} color="green" />
+                  )}{" "}
+                  {transacDetails?.type}
+                </div>
               </td>
-              
             </tr>
 
             <tr>
               <th className="pb-5 text-[14px] text-[#667185] leading-[20px] font-medium text-left ">
-              Fee
+                Fee
               </th>
               <td className="pb-[20px] pl-4 md:pl-6 ">
                 <p className=" text-[14px]  text-[#000] leading-[20px] font-medium text-left ">
-                {transacDetails?.fee}
+                  {transacDetails?.fee}
                 </p>
               </td>
             </tr>
-           
-            
 
             <tr>
               <th className="pb-5 text-[14px] text-[#667185] leading-[20px] font-medium text-left ">
@@ -782,23 +796,17 @@ const Transactions = () => {
               <td className="pb-[20px] pl-4 md:pl-6 ">
                 <button
                   className={`rounded-[20px] md:rounded-[40px] flex justify-center items-center gap-2 px-[12px]  py-[4px] md:py-[4px] border-[0.5px] ${
-                    transacDetails?.status ===
-                    "failed"
+                    transacDetails?.status === "failed"
                       ? "bg-[#FEECEB] text-[#F44336] border-[#F44336]"
                       : // : c.mode === "Medium"
                         // ? "bg-[#FFF5E6] text-[#F44336] border-[#FF9800]"
                         "bg-[#EDF7EE] text-[#4CAF50] border-[#4CAF50]"
                   }  text-[12px] md:text-[14px]  font-semibold leading-[16px] md:leading-[18px] `}
                 >
-                  <p>
-                    {" "}
-                    {transacDetails?.status}
-                  </p>
+                  <p> {transacDetails?.status}</p>
                 </button>{" "}
-               
               </td>
             </tr>
-           
           </table>
         </div>
       </ModalLeft>

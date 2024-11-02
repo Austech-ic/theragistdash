@@ -25,10 +25,11 @@ export const encryptaValue = (value) => {
 
 export const DecryptUserData = () => {
   let userData = localStorage.getItem("authData");
-
+console.log("userData from top Bar", userData)
   userData = JSON.parse(userData);
   let decryptuserData = decryptaValue(userData);
   decryptuserData = JSON.parse(decryptuserData);
+  console.log("deuserData from top Bar", decryptuserData)
 
   return decryptuserData;
 };

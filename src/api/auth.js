@@ -71,7 +71,6 @@ export function validateOtp(data) {
 // }
 
 export function logout() {
-
     clearUserData()
 }
 

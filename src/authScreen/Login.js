@@ -23,14 +23,14 @@ const Login = () => {
   };
 
   useEffect(() => {
-    clearUserData()
 
     const enc = encryptaValue(
       "hello word"
             )
+
     const dec = decryptaValue(
-"U2FsdGVkX18PTWbmgDsWKoS1GYjv+VUN1uUw8bcF0oUFZZ4lpar+HmzmLrClgUKkYoLmbRO2DAv+vKya++umGhRjeJPVTEWgb3X0+yT4ClCsKbtcVObQLyPgqiIXiL4g0H/4OO2IyZlK4mMkxEM45wKEKbU3f104ErxrXhnTsA+vXsaEQSZgEX9pfk6w2fsjIxR1eXN+cssSSY6iBF0PWyRm/fKJJbUXOmfSI++EMID5bnjCZHMZiTBWLHQAbAvJ9r8WKopoEUr1fXmIZK1p8313wmNfgtorMXqh/8qZUjvVRINCgqEUZ9EzwF5CClc3DnPXKqx6t2QSy9Vm8vZcR0xH3qZx2hxb0PA0mAkQsn1qtTywkfA2EQhbYa2aDpdtSgL9rptX7O9dR+DWf0kMl8t4u7vMcbpFApYCTZAcfHfqdlztiYtLxxLjzZe8jAibqnYLoeQrr+Uv+tuWWeDGfcG0JRb86uSb1q1tS5an1zQ+u1NS2YMo7MhiaLsk2vM5+nHS/Ys1p/WJ68v+HZTvI20vrf6GYCSJIRki79/YFI1vSJ6o4mEiMZp61ifyvM3gug1UpuJmnn5wg7FXneVtCuTK9GxA0A99n/LMQjdrPJh/oiuZpHMyyTB2FQaUDg2sN5LVEEawT5XjSp3eHAtw+o1GcxIL0wGZnoYckI0Pq5YL+gs8SxFPsvdGztZNBwN7m/eskkyG1us5uEb5DiERuGW3k9Wvsgsh23Z3WiJqj1WZ7+o47tbQqQhLhly9qCOqw1kPd/2c62Kjj3KTqlwmuy1nadKRNB6p9FTakV3N2O0LOYGL4xwngCLnOBcwdLxgxKDgko95we9cU5kaXXKM+VjXN0fCVRlZTjb2WVgtJFKV7HzwyZJPDV1hyZyuOpIpJXYcmw8hA4QhUI9mIoGbK6hRTOOMvcNR9yey0cxh1noyXWlQjSqTOENWW54f1+OPKXz1WHU6hWx7VBulvF/VDnwToi+nOjwTEskDDvlpDILEa5gYwleKUi2FumMZNwNOeY6yZcexImLIzSv7uMnXtaiRo3JwikstfTsmnSKpQAlt8g6bAzH6w1SO3Nz3w1i1UGx6NoY6jf2SO7UeZ9gN9dUBA82m+owjPylSM/n8RCfGR2PJUgR+O2hw9xejYnmPLcSMz/3iGv6DLLMSHkPdSQ=="   
-      )  //const dec =  decryptValue("ZU4rSCt5R3ptWTd1TlZFNDVkYnhDaWNPb2RudllTU3lIelJnbGNYSng5N0JCRGE1WDhpOW1uTmR6TFVqZVJMag==")
+    "U2FsdGVkX19I3TmwFmyNln1zEwZMiLBL36gqLnMv7bj+zPZFBXpkxynqo2zxgLY\/YRmE7eU7KOV\/u7D7UKV1ASTZWbmo9tV+f27pcT9PL6xiji+f0o\/jv6nsfB10KQSBDYCsOHPh3xKfbP2rAdm72M\/buIUxbc63iHEcMFzaVmzSRoBg8DhTfS\/9ndlTB0k\/8iLUEQ3vFeUw4JZf9xGHf\/OilzWio\/4W4d0QiVhV38g76XZXfhw9QvNRTWxc3xEB0sCVTAcVgcUbSc1uZfVHx1ldh\/aHz1QfcpsEQa2MTGrrvhZVmd11rcCxiD9PiAfsdBIhw8oI0dEOpmUc7F\/McTNiPuA+fGMGOORQg86+w\/7gzAebwQULtuiUaKE3tyVP2QsV7ZXMfq+3n7jHLc9KMdzgsuDaH1RFhstmTqw68nPWLSNveXWgwA+m7EQG21Pc54rl1faDRHEws7HB7UjbXCB0\/X7s6zxhi7UNeRRIuR0="
+    )  //const dec =  decryptValue("ZU4rSCt5R3ptWTd1TlZFNDVkYnhDaWNPb2RudllTU3lIelJnbGNYSng5N0JCRGE1WDhpOW1uTmR6TFVqZVJMag==")
     //const dec =  decryptValue("XClPkOy0XN7s07bdFbrx9yV1YXEbbuRHPayMfZvDYQsy9Isoj0HiMJQmRx 75HEWVdLVTMxtHsPpJE7nYTv3hQ: =")
     console.log("dec===>>>>", dec);
     console.log("encc===>>>>", enc);
@@ -49,6 +49,7 @@ const Login = () => {
 
 
       setUserData(response?.data);
+     console.log("decrypt form login",decryptaValue(response?.data) ) 
       setIsLoading(false);
       navigate("/");
     } catch (error) {

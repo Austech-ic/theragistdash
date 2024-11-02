@@ -3,6 +3,9 @@ import {
   BANKS,
   CUSTOMERS,
  INITIATETRANSFER,
+ RESETPIN,
+ SENDOTP,
+ SETPIN,
  TRANSACTION,
  VERIFYACCOUNTNUMBER,
  WALLETS
@@ -41,6 +44,18 @@ export function verifyAccountNunmber(data) {
 export function getBanks(data) {
   return apiGet(BANKS, data);
 }
+
+export function setPin(data) {
+  return apiPost(SETPIN, data);
+}
+
+export function resetPin(data) {
+  return apiPost(RESETPIN, data);
+}
+export function sendOtp(data) {
+  return apiPost(SENDOTP, data);
+}
+
 
 //task
 
