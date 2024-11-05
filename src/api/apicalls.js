@@ -7,6 +7,8 @@ import {
  SENDOTP,
  SETPIN,
  TRANSACTION,
+ UPDATECUSTOMERS,
+ UPDATEKYC,
  VERIFYACCOUNTNUMBER,
  WALLETS
 } from "../utils/config";
@@ -27,6 +29,16 @@ export function getWallet(data) {
 
 export function getCustomers(data) {
   return apiGet(CUSTOMERS, data);
+}
+export function createCustomers(data) {
+  return apiPost(CUSTOMERS, data);
+}
+
+export function updateCustomers(data) {
+  return apiPut(UPDATECUSTOMERS + data);
+}
+export function deleteCustomers(data) {
+  return apiDelete(UPDATECUSTOMERS + data);
 }
 
 export function setDefaultPartner(data) {
@@ -55,7 +67,13 @@ export function resetPin(data) {
 export function sendOtp(data) {
   return apiPost(SENDOTP, data);
 }
+export function getKyc(data) {
+  return apiGet(UPDATEKYC, data);
+}
 
+export function editKyc(data) {
+  return apiPut(UPDATEKYC, data);
+}
 
 //task
 

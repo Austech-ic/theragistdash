@@ -4,6 +4,7 @@ import {
   MainComponent,
   Profile,
   Sms,
+  TickCircle,
 } from "iconsax-react";
 import React, { useEffect, useState } from "react";
 import { motion as m } from "framer-motion";
@@ -11,11 +12,20 @@ import { GiPhone } from "react-icons/gi";
 import { ClipLoader } from "react-spinners";
 import { useQuery } from "@tanstack/react-query";
 import api from "../api";
-import { decrypt, decryptMessage, decryptValue, encryptValue } from "../utils/helperFunctions";
+import {
+  decrypt,
+  decryptaValue,
+  decryptMessage,
+  decryptValue,
+  encryptaValue,
+  encryptValue,
+} from "../utils/helperFunctions";
+import { enqueueSnackbar } from "notistack";
 
 const GetStarted = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedInfo, setSelectedInfo] = useState(1);
+  const [filledSection, setFilledSection] = useState([])
   const [formValue, setFormValue] = useState({
     firstName: "",
     lastName: "",
@@ -24,28 +34,38 @@ const GetStarted = () => {
     email: "",
     phone: "",
     incopDate: "",
-    address: ""
+    address: "",
+    nin: "",
   });
   // bg-[#26ae5f6a]
-  async function getProfile(page) {
-    const response = await api.getProfile({ params: { page } });
+  async function getKyc(page) {
+    const response = await api.getKyc({ params: { page } });
     return response;
   }
 
-  const ProfileQuery = useQuery(["users"], () => getProfile(), {
+  const ProfileQuery = useQuery(["users"], () => getKyc(), {
     keepPreviousData: true,
     refetchOnWindowFocus: "always",
   });
-  const profileData = ProfileQuery?.data || [];
-
+  const profileData = ProfileQuery?.data?.data|| [];
+  function addValuePush(arr, value) {
+    arr.push(value);
+    return arr;
+}
   useEffect(() => {
     setFormValue({
       ...formValue,
-      firstName: profileData?.user?.first_name,
-      lastName: profileData?.user?.last_name,
-      phone: profileData?.user?.phone,
-      email: profileData?.user?.email,
+      firstName: profileData?.first_name,
+      lastName: profileData?.last_name,
+      phone: profileData?.phone,
+      email: profileData?.email,
+      nin: profileData?.nin,
+      address: profileData?.house_address
     });
+    if(profileData?.personal_info_status === "completed"){
+      setFilledSection(addValuePush(filledSection, 1));
+
+    }
   }, [ProfileQuery?.data]);
 
   const info = [
@@ -57,6 +77,39 @@ const GetStarted = () => {
   const handleInputChange = (e) => {
     setFormValue({ ...formValue, [e.target.name]: e.target.value });
   };
+
+  async function submitKyc(e) {
+    e.preventDefault();
+
+    setIsLoading(true);
+
+    try {
+      const payload = {
+        first_name: formValue?.firstName,
+        last_name: formValue?.lastName,
+        nin: formValue?.nin,
+        house_address: formValue?.address,
+        phone: formValue?.phone,
+        email: formValue?.email,
+      };
+
+      const response = await api.editKyc({ data: encryptaValue(payload) });
+const decr = JSON.parse( decryptaValue(response?.data))
+      console.log("decrypt form login", decr);
+      enqueueSnackbar(decr?.message, { variant: "success" });
+
+      setIsLoading(false);
+    } catch (error) {
+      console.log("error", error);
+    // enqueueSnackbar(error.message, { variant: "error" });
+      // enqueueSnackbar("errooor", { variant: "error" });
+      setIsLoading(false);
+    }
+  }
+
+  function checkIds(requiredIds,array) {
+    return requiredIds.every(id => array.some(item => item.id === id));
+}
   return (
     <div className="p-[10px] md:px-[20px] bg-[#F2F2F2] min-h-screen ">
       <div className="border-[0.2px] border-[#98a2b3] relative rounded-[8px] bg-[#fff]    p-[16px] md:p-[20px] ">
@@ -111,8 +164,8 @@ const GetStarted = () => {
                   index === 0 ? "" : "mt-4"
                 } hover:translate-x-2  transition-transform ease-in-out   w-[90%] border-[0.2px] border-[#98a2b3] relative rounded-[8px]  p-[14px] md:p-[20px]`}
               >
-                <MainComponent size="18" color="#26ae5f " />
-                <p className="text-[#3d4350]  text-[14px] md:text-[16px] font-normal leading-[20px]  ">
+             {( filledSection.every(id => info.some(item => item.id === id)) && filledSection.some(item => item === inf?.id) )  ? <TickCircle size="18" color="#26ae5f " /> : <MainComponent size="18" color="#26ae5f " /> }
+                <p className="text-[#3d4350]  text-[14px]  font-normal leading-[16px]  ">
                   {inf?.name}
                 </p>
                 <ArrowRight2 size="18" color="#98a2b3" />
@@ -146,7 +199,6 @@ const GetStarted = () => {
                     placeholder="Enter first name"
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    
                     name="firstName"
                     value={formValue.firstName}
                     onChange={(e) => {
@@ -168,9 +220,8 @@ const GetStarted = () => {
                     placeholder="Enter last name"
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    
                     name="lastName"
-                  value={formValue.lastName}
+                    value={formValue.lastName}
                     onChange={(e) => {
                       handleInputChange(e);
                     }}
@@ -197,9 +248,8 @@ const GetStarted = () => {
                     placeholder="Enter email address"
                     className="w-full  h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    
                     name="email"
-                   value={formValue.email}
+                    value={formValue.email}
                     onChange={(e) => {
                       handleInputChange(e);
                     }}
@@ -225,7 +275,6 @@ const GetStarted = () => {
                     placeholder="8083XXXXXXX"
                     className="w-full  h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    
                     name="phone"
                     value={formValue.phone}
                     onChange={(e) => {
@@ -248,8 +297,7 @@ const GetStarted = () => {
                     placeholder="14, xxxx street"
                     className="w-full  h-[120px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    
-                    name="lastName"
+                    name="address"
                     value={formValue.address}
                     onChange={(e) => {
                       handleInputChange(e);
@@ -270,12 +318,11 @@ const GetStarted = () => {
                     placeholder="2933 23XX XXX "
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    
                     name="nin"
-                    // value={formValue.lastName}
-                    // onChange={(e) => {
-                    //   handleInputChange(e);
-                    // }}
+                    value={formValue.nin}
+                    onChange={(e) => {
+                      handleInputChange(e);
+                    }}
                     autoCapitalize="off"
                     autoCorrect="off"
                     spellCheck="false"
@@ -283,16 +330,21 @@ const GetStarted = () => {
                 </div>
               </div>
 
-              <div className="py-[20px] border-t border-b-[#E4E7EC] flex-item  justify-end">
-                <div className="flex-item gap-2">
-                  {" "}
-                  <button className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white">
+              <div className="py-[20px] border-t border-b-[#E4E7EC]  ">
+                <div className="flex-item gap-2 w-full">
+                  {profileData && profileData?.personal_info_status === "completed" ? (<div className="flex gap-1 items-center w-[85%] mx-auto">
+                    <div className="h-[1.5px] bg-green-400 flex-1 w-full"></div> <p className="text-green-600 text-[14px]">Personal Information Completed</p> <div className="h-[1.5px] w-full bg-green-400 flex-1"></div>
+                  </div>) : ( <div className="flex-item justify-end"> <button
+                    onClick={submitKyc}
+                    className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
+                  >
                     {isLoading ? (
                       <ClipLoader color={"white"} size={20} />
                     ) : (
                       <> Submit</>
                     )}
-                  </button>
+                  </button></div>)}
+                
                 </div>
               </div>
             </m.div>
@@ -324,7 +376,6 @@ const GetStarted = () => {
                     placeholder="Enter business name"
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    
                     name="firstName"
                     // value={formValue.firstName}
                     // onChange={(e) => {
@@ -346,7 +397,6 @@ const GetStarted = () => {
                     placeholder="https://domain.xyz"
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    
                     name="lastName"
                     // value={formValue.lastName}
                     // onChange={(e) => {
@@ -368,7 +418,6 @@ const GetStarted = () => {
                     placeholder="electronics supplier"
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    
                     name="lastName"
                     // value={formValue.lastName}
                     // onChange={(e) => {
@@ -397,7 +446,6 @@ const GetStarted = () => {
                     placeholder="Enter email address"
                     className="w-full  h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    
                     name="email"
                     // value={formValue.email}
                     // onChange={(e) => {
@@ -425,7 +473,6 @@ const GetStarted = () => {
                     placeholder="Enter email address"
                     className="w-full  h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    
                     name="email"
                     // value={formValue.email}
                     // onChange={(e) => {
@@ -448,7 +495,6 @@ const GetStarted = () => {
                     placeholder=""
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    
                     name="nin"
                     // value={formValue.lastName}
                     // onChange={(e) => {
@@ -470,7 +516,6 @@ const GetStarted = () => {
                     placeholder=""
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    
                     name="nin"
                     // value={formValue.lastName}
                     // onChange={(e) => {
@@ -497,7 +542,6 @@ const GetStarted = () => {
               </div>
             </m.div>
           )}
-
 
           {selectedInfo === 3 && (
             <m.div
@@ -525,7 +569,6 @@ const GetStarted = () => {
                     placeholder="1234 XXXX XXX"
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    
                     name="firstName"
                     // value={formValue.firstName}
                     // onChange={(e) => {
@@ -547,7 +590,6 @@ const GetStarted = () => {
                     placeholder=""
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    
                     name="dob"
                     // value={formValue.lastName}
                     // onChange={(e) => {
@@ -575,7 +617,7 @@ const GetStarted = () => {
             </m.div>
           )}
 
-{selectedInfo === 4 && (
+          {selectedInfo === 4 && (
             <m.div
               initial={{ x: 30, opacity: 0.4 }}
               animate={{
@@ -589,74 +631,76 @@ const GetStarted = () => {
               }}
             >
               <p className="text-[#000] text-[14px] md:text-[16px] flex gap-3 z-20 xl:text-[18px] italic font-semibold leading-[24px]  mb-6 ">
-               Upload Business Information
+                Upload Business Information
               </p>
               <div className="mb-[16px] md:mb-[20px]">
                 <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
-                CERTIFICATE OF INCORPORATION <sup className="text-red-400">*</sup>
+                  CERTIFICATE OF INCORPORATION{" "}
+                  <sup className="text-red-400">*</sup>
                 </label>
                 <div className=" ">
-                <input
+                  <input
                     className="flex  h-9 w-full rounded-md  border-input bg-background  text-sm shadow-sm text-[#667185] border-[0.2px] border-[#98A2B3] transition-colors file:border-0 file:border-r-[0.2px] file:h-9 file:bg-[#F9FAFB] file:text-[#667185] file:border-[#D0D5DD] file:text-sm file:font-medium placeholder:text-muted-foreground focus:outline-none focus:ring-[#F05800] focus:border-[#F05800]  disabled:opacity-50"
                     id="csv"
                     name="csv"
                     type="file"
                   />
-                                   <p className="text-[10px] text-gray-400">*Maximum file size is 2MB</p>
-
+                  <p className="text-[10px] text-gray-400">
+                    *Maximum file size is 2MB
+                  </p>
                 </div>
               </div>
               <div className="mb-[16px] md:mb-[20px]">
                 <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
-                VALID ID OF A DIRECTOR 
- <sup className="text-red-400">*</sup>
+                  VALID ID OF A DIRECTOR
+                  <sup className="text-red-400">*</sup>
                 </label>
                 <div className="">
-                <input
+                  <input
                     className="flex  h-9 w-full rounded-md  border-input bg-background  text-sm shadow-sm text-[#667185] border-[0.2px] border-[#98A2B3] transition-colors file:border-0 file:border-r-[0.2px] file:h-9 file:bg-[#F9FAFB] file:text-[#667185] file:border-[#D0D5DD] file:text-sm file:font-medium placeholder:text-muted-foreground focus:outline-none focus:ring-[#F05800] focus:border-[#F05800]  disabled:opacity-50"
                     id="csv"
                     name="csv"
                     type="file"
                   />
-                  <p className="text-[10px] text-gray-400">*Maximum file size is 2MB</p>
-                 
+                  <p className="text-[10px] text-gray-400">
+                    *Maximum file size is 2MB
+                  </p>
                 </div>
               </div>
               <div className="mb-[16px] md:mb-[20px]">
                 <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
-                CAC Form BN/1 or CAC Form 1.1 (C07 for older companies)  
- <sup className="text-red-400">*</sup>
+                  CAC Form BN/1 or CAC Form 1.1 (C07 for older companies)
+                  <sup className="text-red-400">*</sup>
                 </label>
                 <div className="">
-                <input
+                  <input
                     className="flex  h-9 w-full rounded-md  border-input bg-background  text-sm shadow-sm text-[#667185] border-[0.2px] border-[#98A2B3] transition-colors file:border-0 file:border-r-[0.2px] file:h-9 file:bg-[#F9FAFB] file:text-[#667185] file:border-[#D0D5DD] file:text-sm file:font-medium placeholder:text-muted-foreground focus:outline-none focus:ring-[#F05800] focus:border-[#F05800]  disabled:opacity-50"
                     id="csv"
                     name="csv"
                     type="file"
                   />
-                  <p className="text-[10px] text-gray-400">*Maximum file size is 2MB</p>
-                 
+                  <p className="text-[10px] text-gray-400">
+                    *Maximum file size is 2MB
+                  </p>
                 </div>
               </div>
               <div className="mb-[16px] md:mb-[20px]">
                 <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
-                VALID ID OF ANOTHER DIRECTOR   
- <sup className="text-red-400">*</sup>
+                  VALID ID OF ANOTHER DIRECTOR
+                  <sup className="text-red-400">*</sup>
                 </label>
                 <div className="">
-                <input
+                  <input
                     className="flex  h-9 w-full rounded-md  border-input bg-background  text-sm shadow-sm text-[#667185] border-[0.2px] border-[#98A2B3] transition-colors file:border-0 file:border-r-[0.2px] file:h-9 file:bg-[#F9FAFB] file:text-[#667185] file:border-[#D0D5DD] file:text-sm file:font-medium placeholder:text-muted-foreground focus:outline-none focus:ring-[#F05800] focus:border-[#F05800]  disabled:opacity-50"
                     id="csv"
                     name="csv"
                     type="file"
                   />
-                  <p className="text-[10px] text-gray-400">*Maximum file size is 2MB</p>
-                 
+                  <p className="text-[10px] text-gray-400">
+                    *Maximum file size is 2MB
+                  </p>
                 </div>
               </div>
-
-              
-            
 
               <div className="py-[20px] border-t border-b-[#E4E7EC] flex-item  justify-end">
                 <div className="flex-item gap-2">
@@ -672,9 +716,6 @@ const GetStarted = () => {
               </div>
             </m.div>
           )}
-
-
-          
         </div>
       </div>
     </div>
