@@ -186,6 +186,16 @@ const Users = () => {
 
               <DocumentUpload variant="Linear" color="#667185" size="16" />
             </button>
+            <button
+              onClick={() => toggleCreate()}
+              className="flex items-center gap-[8px] "
+            >
+              <p className="text-[14px] text-[#667185] leading-[20px]">
+                Create Payment Link
+              </p>
+
+              <Add variant="Linear" color="#667185" size="16" />
+            </button>
 
             <Modal
               isCentered
