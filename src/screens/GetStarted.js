@@ -25,11 +25,23 @@ import { enqueueSnackbar } from "notistack";
 const GetStarted = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedInfo, setSelectedInfo] = useState(1);
-  const [filledSection, setFilledSection] = useState([])
+  const [filledSection, setFilledSection] = useState([]);
+  const [incopFile, setIncopFile] = useState(null);
+  const [directorId1File, setDirectorId1File] = useState(null);
+  const [directorId2File, setDirectorId2File] = useState(null);
+  const [cacForm, setCacForm] = useState(null);
   const [formValue, setFormValue] = useState({
     firstName: "",
     lastName: "",
-    businessName: "",
+    busName: "",
+    busWebsite: "",
+    busDescription: "",
+    busEmail: "",
+    busSupportEmail: "",
+    chargeBackEmail: "",
+    busCity: "",
+    busAddress: "",
+    bvn: "",
     rcNumber: "",
     email: "",
     phone: "",
@@ -42,16 +54,36 @@ const GetStarted = () => {
     const response = await api.getKyc({ params: { page } });
     return response;
   }
+  async function getKyb(page) {
+    const response = await api.getBusInfo({ params: { page } });
+    return response;
+  }
+  async function getBvn(page) {
+    const response = await api.getBvn({ params: { page } });
+    return response;
+  }
 
   const ProfileQuery = useQuery(["users"], () => getKyc(), {
     keepPreviousData: true,
     refetchOnWindowFocus: "always",
   });
-  const profileData = ProfileQuery?.data?.data|| [];
+  const BussQuery = useQuery(["kyb"], () => getKyb(), {
+    keepPreviousData: true,
+    refetchOnWindowFocus: "always",
+  });
+  const BvnQuery = useQuery(["bvn"], () => getBvn(), {
+    keepPreviousData: true,
+    refetchOnWindowFocus: "always",
+  });
+
+  const profileData = ProfileQuery?.data?.data || [];
+  const busData = BussQuery?.data?.data || [];
+  const bvnData = BvnQuery?.data?.data || [];
+
   function addValuePush(arr, value) {
     arr.push(value);
     return arr;
-}
+  }
   useEffect(() => {
     setFormValue({
       ...formValue,
@@ -60,13 +92,26 @@ const GetStarted = () => {
       phone: profileData?.phone,
       email: profileData?.email,
       nin: profileData?.nin,
-      address: profileData?.house_address
+      address: profileData?.house_address,
+      busName: busData?.name,
+      busWebsite: busData?.website,
+      busDescription: busData?.description,
+      busEmail: busData?.email,
+      busSupportEmail: busData?.support_email,
+      chargeBackEmail: busData?.chargeback_email,
+      rcNumber: busData?.rc_number,
+      incopDate: busData?.incorporation_date,
+      busCity: busData?.city,
+      busAddress: busData?.address,
+      bvn: bvnData?.bvn,
     });
-    if(profileData?.personal_info_status === "completed"){
+    if (profileData?.personal_info_status === "completed") {
       setFilledSection(addValuePush(filledSection, 1));
-
     }
-  }, [ProfileQuery?.data]);
+    if (bvnData?.bvn) {
+      setFilledSection(addValuePush(filledSection, 3));
+    }
+  }, [ProfileQuery?.data, BussQuery?.data, BvnQuery?.data]);
 
   const info = [
     { id: 1, name: "Personal Information" },
@@ -94,22 +139,95 @@ const GetStarted = () => {
       };
 
       const response = await api.editKyc({ data: encryptaValue(payload) });
-const decr = JSON.parse( decryptaValue(response?.data))
+      const decr = JSON.parse(decryptaValue(response?.data));
       console.log("decrypt form login", decr);
       enqueueSnackbar(decr?.message, { variant: "success" });
 
       setIsLoading(false);
     } catch (error) {
       console.log("error", error);
-    // enqueueSnackbar(error.message, { variant: "error" });
+      enqueueSnackbar(error.message, { variant: "error" });
       // enqueueSnackbar("errooor", { variant: "error" });
       setIsLoading(false);
     }
   }
+  async function submitKyb(e) {
+    e.preventDefault();
 
-  function checkIds(requiredIds,array) {
-    return requiredIds.every(id => array.some(item => item.id === id));
-}
+    setIsLoading(true);
+
+    try {
+      const payload = {
+        name: formValue?.busName,
+        website: formValue?.busWebsite,
+        description: formValue?.busDescription,
+        email: formValue?.busEmail,
+        support_email: formValue?.busSupportEmail,
+        chargeback_email: formValue?.chargeBackEmail,
+        city: formValue?.busCity,
+        rc_number: formValue?.rcNumber,
+        incorporation_date: formValue?.incopDate,
+        address: formValue?.busAddress,
+      };
+
+      const response = await api.editBusInfo({ data: encryptaValue(payload) });
+      const decr = JSON.parse(decryptaValue(response?.data));
+      console.log("decrypt for bus info", decr);
+      enqueueSnackbar(decr?.message, { variant: "success" });
+
+      setIsLoading(false);
+    } catch (error) {
+      console.log("error", error);
+      enqueueSnackbar(error.message, { variant: "error" });
+      // enqueueSnackbar("errooor", { variant: "error" });
+      setIsLoading(false);
+    }
+  }
+  async function submitBvn(e) {
+    e.preventDefault();
+
+    setIsLoading(true);
+
+    try {
+      const payload = {
+        bvn: formValue?.bvn,
+      };
+
+      const response = await api.editBvn({ data: encryptaValue(payload) });
+      const decr = JSON.parse(decryptaValue(response?.data));
+      console.log("decrypt for bus info", decr);
+      enqueueSnackbar(decr?.message, { variant: "success" });
+
+      setIsLoading(false);
+    } catch (error) {
+      console.log("error", error);
+      enqueueSnackbar(error.message, { variant: "error" });
+      // enqueueSnackbar("errooor", { variant: "error" });
+      setIsLoading(false);
+    }
+  }
+  async function handleSubmit() {
+    setIsLoading(true);
+    const formData = new FormData();
+    formData.append("certificate_of_incorporation", incopFile);
+    formData.append("director_id_1", directorId1File);
+    formData.append("cac_form", cacForm);
+    formData.append("director_id_2", directorId2File);
+
+    try {
+      const response = await api.uploadDoc(formData);
+      const decr = JSON.parse(decryptaValue(response?.data));
+      console.log("decrypt for bus info", decr);
+      enqueueSnackbar(decr?.message, { variant: "success" });
+
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
+      enqueueSnackbar(error.message, { variant: "error" });
+      setIsLoading(false);
+    }
+  }
+
   return (
     <div className="p-[10px] md:px-[20px] bg-[#F2F2F2] min-h-screen ">
       <div className="border-[0.2px] border-[#98a2b3] relative rounded-[8px] bg-[#fff]    p-[16px] md:p-[20px] ">
@@ -120,7 +238,7 @@ const decr = JSON.parse( decryptaValue(response?.data))
             className="absolute top-0 right-0 h-[220px] "
           />
           <p className="text-[#000] text-[14px] md:text-[16px]  xl:text-[18px] italic font-semibold leading-[24px]  mt-6 ">
-            Hello Kaileb
+            Hello {formValue.busName}
           </p>
           <p className="text-[#000] text-[14px] md:text-[16px] z-20 xl:text-[18px] font-medium leading-[24px]  mt-2 ">
             Welcome to Vant's KYC Verification
@@ -128,7 +246,7 @@ const decr = JSON.parse( decryptaValue(response?.data))
 
           <p className="text-[#667185] text-[14px] md:text-[14px]  font-normal leading-[24px] mt-5 w-full md:w-[70%] xl:w-[60%] ">
             To ensure a secure and compliant environment for all our partners,
-            we kindly request you to complete the KYC (Know Your Customer)
+            we kindly request you to complete the KYB (Know Your Business)
             verification process. This helps us verify your business identity,
             protect sensitive data, and ensure regulatory compliance.{" "}
           </p>
@@ -164,7 +282,13 @@ const decr = JSON.parse( decryptaValue(response?.data))
                   index === 0 ? "" : "mt-4"
                 } hover:translate-x-2  transition-transform ease-in-out   w-[90%] border-[0.2px] border-[#98a2b3] relative rounded-[8px]  p-[14px] md:p-[20px]`}
               >
-             {( filledSection.every(id => info.some(item => item.id === id)) && filledSection.some(item => item === inf?.id) )  ? <TickCircle size="18" color="#26ae5f " /> : <MainComponent size="18" color="#26ae5f " /> }
+                {filledSection.every((id) =>
+                  info.some((item) => item.id === id)
+                ) && filledSection.some((item) => item === inf?.id) ? (
+                  <TickCircle size="18" color="#26ae5f " />
+                ) : (
+                  <MainComponent size="18" color="#26ae5f " />
+                )}
                 <p className="text-[#3d4350]  text-[14px]  font-normal leading-[16px]  ">
                   {inf?.name}
                 </p>
@@ -332,19 +456,30 @@ const decr = JSON.parse( decryptaValue(response?.data))
 
               <div className="py-[20px] border-t border-b-[#E4E7EC]  ">
                 <div className="flex-item gap-2 w-full">
-                  {profileData && profileData?.personal_info_status === "completed" ? (<div className="flex gap-1 items-center w-[85%] mx-auto">
-                    <div className="h-[1.5px] bg-green-400 flex-1 w-full"></div> <p className="text-green-600 text-[14px]">Personal Information Completed</p> <div className="h-[1.5px] w-full bg-green-400 flex-1"></div>
-                  </div>) : ( <div className="flex-item justify-end"> <button
-                    onClick={submitKyc}
-                    className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
-                  >
-                    {isLoading ? (
-                      <ClipLoader color={"white"} size={20} />
-                    ) : (
-                      <> Submit</>
-                    )}
-                  </button></div>)}
-                
+                  {profileData &&
+                  profileData?.personal_info_status === "completed" ? (
+                    <div className="flex gap-1 items-center w-[85%] mx-auto">
+                      <div className="h-[1.5px] bg-green-400 flex-1 w-full"></div>{" "}
+                      <p className="text-green-600 text-[14px]">
+                        Personal Information Completed
+                      </p>{" "}
+                      <div className="h-[1.5px] w-full bg-green-400 flex-1"></div>
+                    </div>
+                  ) : (
+                    <div className="flex-item justify-end">
+                      {" "}
+                      <button
+                        onClick={submitKyc}
+                        className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
+                      >
+                        {isLoading ? (
+                          <ClipLoader color={"white"} size={20} />
+                        ) : (
+                          <> Submit</>
+                        )}
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             </m.div>
@@ -376,11 +511,11 @@ const decr = JSON.parse( decryptaValue(response?.data))
                     placeholder="Enter business name"
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    name="firstName"
-                    // value={formValue.firstName}
-                    // onChange={(e) => {
-                    //   handleInputChange(e);
-                    // }}
+                    name="busName"
+                    value={formValue.busName}
+                    onChange={(e) => {
+                      handleInputChange(e);
+                    }}
                     autoCapitalize="off"
                     autoCorrect="off"
                     spellCheck="false"
@@ -397,11 +532,11 @@ const decr = JSON.parse( decryptaValue(response?.data))
                     placeholder="https://domain.xyz"
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    name="lastName"
-                    // value={formValue.lastName}
-                    // onChange={(e) => {
-                    //   handleInputChange(e);
-                    // }}
+                    name="busWebsite"
+                    value={formValue.busWebsite}
+                    onChange={(e) => {
+                      handleInputChange(e);
+                    }}
                     autoCapitalize="off"
                     autoCorrect="off"
                     spellCheck="false"
@@ -418,11 +553,11 @@ const decr = JSON.parse( decryptaValue(response?.data))
                     placeholder="electronics supplier"
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    name="lastName"
-                    // value={formValue.lastName}
-                    // onChange={(e) => {
-                    //   handleInputChange(e);
-                    // }}
+                    name="busDescription"
+                    value={formValue.busDescription}
+                    onChange={(e) => {
+                      handleInputChange(e);
+                    }}
                     autoCapitalize="off"
                     autoCorrect="off"
                     spellCheck="false"
@@ -446,11 +581,11 @@ const decr = JSON.parse( decryptaValue(response?.data))
                     placeholder="Enter email address"
                     className="w-full  h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    name="email"
-                    // value={formValue.email}
-                    // onChange={(e) => {
-                    //   handleInputChange(e);
-                    // }}
+                    name="busSupportEmail"
+                    value={formValue.busSupportEmail}
+                    onChange={(e) => {
+                      handleInputChange(e);
+                    }}
                     autoCapitalize="off"
                     autoCorrect="off"
                     spellCheck="false"
@@ -473,11 +608,53 @@ const decr = JSON.parse( decryptaValue(response?.data))
                     placeholder="Enter email address"
                     className="w-full  h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    name="email"
-                    // value={formValue.email}
-                    // onChange={(e) => {
-                    //   handleInputChange(e);
-                    // }}
+                    name="chargeBackEmail"
+                    value={formValue.chargeBackEmail}
+                    onChange={(e) => {
+                      handleInputChange(e);
+                    }}
+                    autoCapitalize="off"
+                    autoCorrect="off"
+                    spellCheck="false"
+                  />
+                </div>
+              </div>
+              <div className="mb-[16px] md:mb-[20px]">
+                <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
+                  Business RC Number
+                </label>
+                <div className=" relative    flex items-center">
+                  <input
+                    type="text"
+                    placeholder=""
+                    className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    required
+                    name="rcNumber"
+                    value={formValue.rcNumber}
+                    onChange={(e) => {
+                      handleInputChange(e);
+                    }}
+                    autoCapitalize="off"
+                    autoCorrect="off"
+                    spellCheck="false"
+                  />
+                </div>
+              </div>
+              <div className="mb-[16px] md:mb-[20px]">
+                <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
+                  Business Incorporation Date
+                </label>
+                <div className=" relative    flex items-center">
+                  <input
+                    type="date"
+                    placeholder=""
+                    className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    required
+                    name="incopDate"
+                    value={formValue.incopDate}
+                    onChange={(e) => {
+                      handleInputChange(e);
+                    }}
                     autoCapitalize="off"
                     autoCorrect="off"
                     spellCheck="false"
@@ -495,11 +672,11 @@ const decr = JSON.parse( decryptaValue(response?.data))
                     placeholder=""
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    name="nin"
-                    // value={formValue.lastName}
-                    // onChange={(e) => {
-                    //   handleInputChange(e);
-                    // }}
+                    name="busCity"
+                    value={formValue.busCity}
+                    onChange={(e) => {
+                      handleInputChange(e);
+                    }}
                     autoCapitalize="off"
                     autoCorrect="off"
                     spellCheck="false"
@@ -516,11 +693,11 @@ const decr = JSON.parse( decryptaValue(response?.data))
                     placeholder=""
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    name="nin"
-                    // value={formValue.lastName}
-                    // onChange={(e) => {
-                    //   handleInputChange(e);
-                    // }}
+                    name="busAddress"
+                    value={formValue.busAddress}
+                    onChange={(e) => {
+                      handleInputChange(e);
+                    }}
                     autoCapitalize="off"
                     autoCorrect="off"
                     spellCheck="false"
@@ -528,16 +705,31 @@ const decr = JSON.parse( decryptaValue(response?.data))
                 </div>
               </div>
 
-              <div className="py-[20px] border-t border-b-[#E4E7EC] flex-item  justify-end">
-                <div className="flex-item gap-2">
-                  {" "}
-                  <button className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white">
-                    {isLoading ? (
-                      <ClipLoader color={"white"} size={20} />
-                    ) : (
-                      <> Submit</>
-                    )}
-                  </button>
+              <div className="py-[20px] border-t border-b-[#E4E7EC]  ">
+                <div className="flex-item gap-2 w-full">
+                  {busData && busData?.personal_info_status === "completed" ? (
+                    <div className="flex gap-1 items-center w-[85%] mx-auto">
+                      <div className="h-[1.5px] bg-green-400 flex-1 w-full"></div>{" "}
+                      <p className="text-green-600 text-[14px]">
+                        Personal Information Completed
+                      </p>{" "}
+                      <div className="h-[1.5px] w-full bg-green-400 flex-1"></div>
+                    </div>
+                  ) : (
+                    <div className="flex-item justify-end">
+                      {" "}
+                      <button
+                        onClick={submitKyb}
+                        className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
+                      >
+                        {isLoading ? (
+                          <ClipLoader color={"white"} size={20} />
+                        ) : (
+                          <> Submit</>
+                        )}
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             </m.div>
@@ -569,32 +761,11 @@ const decr = JSON.parse( decryptaValue(response?.data))
                     placeholder="1234 XXXX XXX"
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    name="firstName"
-                    // value={formValue.firstName}
-                    // onChange={(e) => {
-                    //   handleInputChange(e);
-                    // }}
-                    autoCapitalize="off"
-                    autoCorrect="off"
-                    spellCheck="false"
-                  />
-                </div>
-              </div>
-              <div className="mb-[16px] md:mb-[20px]">
-                <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
-                  B.V.N Date Of Birth
-                </label>
-                <div className=" relative    flex items-center">
-                  <input
-                    type="date"
-                    placeholder=""
-                    className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                    required
-                    name="dob"
-                    // value={formValue.lastName}
-                    // onChange={(e) => {
-                    //   handleInputChange(e);
-                    // }}
+                    name="bvn"
+                    value={formValue.bvn}
+                    onChange={(e) => {
+                      handleInputChange(e);
+                    }}
                     autoCapitalize="off"
                     autoCorrect="off"
                     spellCheck="false"
@@ -602,16 +773,31 @@ const decr = JSON.parse( decryptaValue(response?.data))
                 </div>
               </div>
 
-              <div className="py-[20px] border-t border-b-[#E4E7EC] flex-item  justify-end">
-                <div className="flex-item gap-2">
-                  {" "}
-                  <button className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white">
-                    {isLoading ? (
-                      <ClipLoader color={"white"} size={20} />
-                    ) : (
-                      <> Submit</>
-                    )}
-                  </button>
+              <div className="py-[20px] border-t border-b-[#E4E7EC]  ">
+                <div className="flex-item gap-2 w-full">
+                  {busData && !formValue.bvn ? (
+                    <div className="flex gap-1 items-center w-[85%] mx-auto">
+                      <div className="h-[1.5px] bg-green-400 flex-1 w-full"></div>{" "}
+                      <p className="text-green-600 text-[14px]">
+                        BVN Information Completed
+                      </p>{" "}
+                      <div className="h-[1.5px] w-full bg-green-400 flex-1"></div>
+                    </div>
+                  ) : (
+                    <div className="flex-item justify-end">
+                      {" "}
+                      <button
+                        onClick={submitBvn}
+                        className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
+                      >
+                        {isLoading ? (
+                          <ClipLoader color={"white"} size={20} />
+                        ) : (
+                          <> Submit</>
+                        )}
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             </m.div>
@@ -644,6 +830,8 @@ const decr = JSON.parse( decryptaValue(response?.data))
                     id="csv"
                     name="csv"
                     type="file"
+                    accept=".jpg,.pdf"
+                    onChange={(e) => setIncopFile(e.target.files[0])}
                   />
                   <p className="text-[10px] text-gray-400">
                     *Maximum file size is 2MB
@@ -661,6 +849,8 @@ const decr = JSON.parse( decryptaValue(response?.data))
                     id="csv"
                     name="csv"
                     type="file"
+                    accept=".jpg,.pdf"
+                    onChange={(e) => setDirectorId1File(e.target.files[0])}
                   />
                   <p className="text-[10px] text-gray-400">
                     *Maximum file size is 2MB
@@ -678,6 +868,8 @@ const decr = JSON.parse( decryptaValue(response?.data))
                     id="csv"
                     name="csv"
                     type="file"
+                    accept=".jpg,.pdf"
+                    onChange={(e) => setCacForm(e.target.files[0])}
                   />
                   <p className="text-[10px] text-gray-400">
                     *Maximum file size is 2MB
@@ -695,6 +887,8 @@ const decr = JSON.parse( decryptaValue(response?.data))
                     id="csv"
                     name="csv"
                     type="file"
+                    accept=".jpg,.pdf"
+                    onChange={(e) => setDirectorId2File(e.target.files[0])}
                   />
                   <p className="text-[10px] text-gray-400">
                     *Maximum file size is 2MB
@@ -702,16 +896,31 @@ const decr = JSON.parse( decryptaValue(response?.data))
                 </div>
               </div>
 
-              <div className="py-[20px] border-t border-b-[#E4E7EC] flex-item  justify-end">
-                <div className="flex-item gap-2">
-                  {" "}
-                  <button className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white">
-                    {isLoading ? (
-                      <ClipLoader color={"white"} size={20} />
-                    ) : (
-                      <> Submit</>
-                    )}
-                  </button>
+              <div className="py-[20px] border-t border-b-[#E4E7EC]  ">
+                <div className="flex-item gap-2 w-full">
+                  {busData && formValue.bvn === 0 ? (
+                    <div className="flex gap-1 items-center w-[85%] mx-auto">
+                      <div className="h-[1.5px] bg-green-400 flex-1 w-full"></div>{" "}
+                      <p className="text-green-600 text-[14px]">
+                        Business Document Uploaded{" "}
+                      </p>{" "}
+                      <div className="h-[1.5px] w-full bg-green-400 flex-1"></div>
+                    </div>
+                  ) : (
+                    <div className="flex-item justify-end">
+                      {" "}
+                      <button
+                        onClick={handleSubmit}
+                        className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
+                      >
+                        {isLoading ? (
+                          <ClipLoader color={"white"} size={20} />
+                        ) : (
+                          <> Submit</>
+                        )}
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             </m.div>

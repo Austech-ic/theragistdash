@@ -16,4 +16,7 @@ export const SETPIN = getApiUrl('/business/set-pin')
 export const RESETPIN = getApiUrl('/business/reset-pin')
 export const SENDOTP = getApiUrl('/business/send-otp')
 export const UPDATEKYC = getApiUrl('/kyc/personal-info')
+export const BUSINFO = getApiUrl('/kyb/business-info')
+export const BVN = getApiUrl('/kyb/bvn')
+export const DOCUMENT = getApiUrl('/kyb/upload-documents')
 

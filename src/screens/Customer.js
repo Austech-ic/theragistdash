@@ -318,7 +318,7 @@ Customers              </p>
                 </thead>
                 <tbody>
                   {results?.isLoading && <TableLoading cols={8} />}
-                  {results?.data && results?.data?.data?.legth === 0 && (
+                  {results?.data && results?.data?.data?.length === 0 && (
                     // decryptaValue(results?.data?.data) === 0 &&
                     <EmptyWallet
                       cols={8}

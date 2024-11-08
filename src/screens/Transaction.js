@@ -172,9 +172,7 @@ const Transactions = () => {
     }
   };
 
-  // console.log("decrypt transaction", decryptaValue(results?.data?.data))
-
-  //console.log("transactions result", results?.data);
+ 
   return (
     <div className="p-[20px] bg-[#F2F2F2] min-h-screen ">
       <div className="border-[0.2px] border-[#98a2b3] rounded-[8px]  bg-[#ffff] ">
@@ -423,7 +421,7 @@ const Transactions = () => {
                 </thead>
                 <tbody>
                   {results?.isLoading && <TableLoading cols={8} />}
-                  {results?.data && results?.data?.data?.legth === 0 && (
+                  {results?.data && results?.data?.data?.length === 0 && (
                     // decryptaValue(results?.data?.data) === 0 &&
                     <EmptyTable cols={8} />
                   )}

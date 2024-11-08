@@ -1,7 +1,10 @@
 import { PROFILE, SETDEFUALTBUSINESS } from "../utils/AuthConfig";
 import {
   BANKS,
+  BUSINFO,
+  BVN,
   CUSTOMERS,
+ DOCUMENT,
  INITIATETRANSFER,
  RESETPIN,
  SENDOTP,
@@ -74,6 +77,25 @@ export function getKyc(data) {
 export function editKyc(data) {
   return apiPut(UPDATEKYC, data);
 }
+export function editBusInfo(data) {
+  return apiPut(BUSINFO, data);
+}
+export function getBusInfo(data) {
+  return apiGet(BUSINFO, data);
+}
+
+export function editBvn(data) {
+  return apiPost(BVN, data);
+}
+export function getBvn(data) {
+  return apiGet(BVN, data);
+}
+
+export function uploadDoc(data) {
+  return apiPost(DOCUMENT, data,  { 'Content-Type': 'multipart/form-data' });
+}
+
+
 
 //task
 

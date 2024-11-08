@@ -138,28 +138,30 @@ const Topbar = ({ setIsSidebar }) => {
     const firstLetter = Word[0]; // First letter
     const lastLetter = Word[Word.length - 1]; // Last letter
 
-    return `${firstLetter}${lastLetter}`;
+    return `${firstLetter}`;
   }
 
-  async function switchBusiness(e) {
-    e.preventDefault();
-
+  async function switchBusiness() {
     setIsLoading(true);
 
     try {
-      const payload = { partner_id: switchId?.id}
+      const payload = { partner_id: switchId?.id };
 
-    
-      const response = await api.setDefaultPartner({data : encryptaValue(payload)});
-      ProfileQuery.refetch()
-
-      enqueueSnackbar(response?.message, { variant: "success" });
+      const response = await api.setDefaultPartner({
+        data: encryptaValue(payload),
+      });
+      const decr = JSON.parse(decryptaValue(response?.data));
+      console.log("decrypt for bus info", decr);
+      enqueueSnackbar(decr?.message, { variant: "success" });
 
       setIsLoading(false);
+      ProfileQuery.refetch();
 
+      setIsLoading(false);
+      closeSwitchModal();
     } catch (error) {
       console.log("error", error);
-     // enqueueSnackbar(error.msg, { variant: "error" });
+      // enqueueSnackbar(error.msg, { variant: "error" });
       enqueueSnackbar(error?.message, { variant: "error" });
       setIsLoading(false);
     }
@@ -255,18 +257,17 @@ const Topbar = ({ setIsSidebar }) => {
         </div>
 
         <div className="flex  gap-[12px] border-[0.2px] border-[#98a2b3] px-3 py-1  items-center rounded-[8px]">
-        
           <div className="">
-          <Menu>
-          <MenuButton bg={"none"}>
-          <div className="flex items-center gap-3">
-            <p className="text-[#475367] font-medium text-[14px] md:text-[14px] xl:text-[16px]  leading-[24px] ">
+            <Menu>
+              <MenuButton bg={"none"}>
+                <div className="flex items-center gap-3">
+                  <p className="text-[#475367] font-medium text-[14px] md:text-[14px] xl:text-[16px]  leading-[24px] ">
                     {profileData?.default_partner?.name}
-            </p>
-          
-                <button className="h-[20px] w-[20px] md:h-[24px] md:w-[24px] rounded-[8px] hover:bg-[#F7F9FC] flex justify-center items-center">
-                  <ArrowDown2 size={16} color="#667185" />
-                </button>
+                  </p>
+
+                  <button className="h-[20px] w-[20px] md:h-[24px] md:w-[24px] rounded-[8px] hover:bg-[#F7F9FC] flex justify-center items-center">
+                    <ArrowDown2 size={16} color="#667185" />
+                  </button>
                 </div>
               </MenuButton>
               <MenuList
@@ -275,7 +276,7 @@ const Topbar = ({ setIsSidebar }) => {
                 className="border-[2px] p-[10px] md:p-[16px]"
               >
                 <div className="flex-item gap-[16px]">
-                  <div className="h-[28px] w-[28px] md:h-[32px] md:w-[32px] rounded-[4px] bg-[#F9FAFB] flex justify-center items-center">
+                  <div className="h-[28px] w-[28px] md:h-[32px] md:w-[32px] rounded-[4px] bg-[#d3d3d4] flex justify-center items-center">
                     {" "}
                     <p className="text-[#475367] text-[12px] md:text-[12px] xl:text-[12px] font-bold leading-[24px] ">
                       {firstAndLastLetter(profileData?.default_partner?.name)}
@@ -295,7 +296,7 @@ const Topbar = ({ setIsSidebar }) => {
                       Settings
                     </p>
                   </button>
-                  <button
+                  {/* <button
                     onClick={() => setIsInvite(true)}
                     className="py-[5px] px-[12px] border-[0.2px] rounded-md border-[#98A2B3]  flex-item gap-2"
                   >
@@ -303,125 +304,50 @@ const Topbar = ({ setIsSidebar }) => {
                     <p className="text-[#98A2B3] text-[10px]  xl:text-[12px] font-normal leading-[18px] ">
                       Invite members
                     </p>
-                  </button>
+                  </button> */}
                 </div>
                 <div>
-                  <p className="text-[#000] text-[10px]  xl:text-[12px] font-normal leading-[18px] ">
+                  <p className="text-[#000] text-[12px]  xl:text-[12px] font-normal leading-[18px] mb-3 ">
                     Switch Business
                   </p>
                 </div>
 
                 {ProfileQuery?.data &&
-                  ProfileQuery?.data?.partners.map((partner) => (
-                    <button
-                      className="flex justify-between items-center w-full"
-                      key={partner.id}
-                      onClick={() => handleSwitchModal(partner)}
-                    >
-                      <div className="flex-item gap-2">
-                        <div className="h-[28px] w-[28px] md:h-[32px] md:w-[32px] rounded-[4px] bg-[#F9FAFB] flex justify-center items-center">
-                          {" "}
-                          <p className="text-[#475367] text-[12px] md:text-[12px] xl:text-[12px] font-bold leading-[24px] ">
-                            {firstAndLastLetter(partner?.name)}
+                  ProfileQuery?.data?.partners
+                    ?.filter(
+                      (result) =>
+                        //console.log(ProfileQuery?.data?.default_partner?.id)
+
+                        ![result?.id].includes(
+                          ProfileQuery?.data?.default_partner?.id
+                        )
+                    )
+                    .map((partner) => (
+                      <button
+                        className="flex justify-between items-center w-full hover:bg-slate-50 rounded-lg mb-2"
+                        key={partner.id}
+                        onClick={() => handleSwitchModal(partner)}
+                      >
+                        <div className="flex-item gap-2">
+                          <div className="h-[28px] w-[28px] md:h-[32px] md:w-[32px] rounded-[4px] bg-[#d3d3d4] flex justify-center items-center">
+                            {" "}
+                            <p className="text-[#475367] text-[12px] md:text-[12px] xl:text-[12px] font-bold leading-[24px] ">
+                              {firstAndLastLetter(partner?.name)}
+                            </p>
+                          </div>
+                          <p className="text-[#000000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
+                            {partner?.name}
                           </p>
                         </div>
-                        <p className="text-[#000000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
-                          {partner?.name}
-                        </p>
-                      </div>
 
-                      {isLoading && <ClipLoader color={"#26ae5f"} size={16} />}
-                      <Modal
-                        isCentered
-                        isOpen={isSwitchModal}
-                        onClose={closeSwitchModal}
-                        size="md"
-                        style={{ borderRadius: 12 }}
-                        motionPreset="slideInBottom"
-                        className="rounded-[12px]"
-                      >
-                        <ModalOverlay />
-                        <ModalContent>
-                          <ModalHeader
-                            py="4"
-                            color="#000000"
-                            className="text-[18px]   font-medium leading-[24px] md:leading-[24px]"
-                          >
-                            <EmptyWalletChange
-                              size={32}
-                              variant="Bold"
-                              color="#26ae5f"
-                              className="mx-auto text-center"
-                            />
-                          </ModalHeader>
-                          <ModalCloseButton size={"sm"} />
-                          <ModalBody
-                            py={{ base: "20px", md: "24px" }}
-                            px={{ base: "16px", md: "24px" }}
-                            className=" px-[16px] md:px-[24px] pb-[30px] md:pb-[40px]"
-                          >
-                            <p className=" text-[16px] md:text-lg text-center  text-[#000] leading-[24px] font-medium  ">
-                              Switch Business
-                            </p>
-
-                            <p className="text-[14px]  text-[#667185] leading-[20px] font-normal text-center mt-2  ">
-                              Are you sure you want to switch bussiness account
-                            </p>
-
-                            <div className="flex items-center justify-center space-x-5 mt-5">
-                              <div className="flex-item gap-2">
-                                <div className="h-[28px] w-[28px] md:h-[32px] md:w-[32px] rounded-[4px] bg-[#F9FAFB] flex justify-center items-center">
-                                  {" "}
-                                  <p className="text-[#475367] text-[12px] md:text-[16px] xl:text-[16px] font-bold leading-[24px] ">
-                                    {firstAndLastLetter(
-                                      profileData?.default_partner?.name
-                                    )}
-                                  </p>
-                                </div>
-                                <p className="text-[#000000] text-[14px] md:text-[14px] xl:text-[18px] font-bold leading-[24px] ">
-                                  {profileData?.default_partner?.name}
-                                </p>
-                              </div>
-
-                              <ArrangeHorizontal size={24} color="#26ae5f" />
-                              <div className="flex-item gap-2">
-                                <div className="h-[28px] w-[28px] md:h-[32px] md:w-[32px] rounded-[4px] bg-[#F9FAFB] flex justify-center items-center">
-                                  {" "}
-                                  <p className="text-[#475367] text-[12px] md:text-[16px] xl:text-[16px] font-bold leading-[24px] ">
-                                    {firstAndLastLetter(switchId?.name)}
-                                  </p>
-                                </div>
-                                <p className="text-[#000000] text-[14px] md:text-[14px] xl:text-[18px] font-bold leading-[24px] ">
-                                  {switchId?.name}
-                                </p>
-                              </div>
-                            </div>
-                          </ModalBody>
-                          <ModalFooter gap={"16px"}>
-                            <button
-                              onClick={closeSwitchModal}
-                              className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black"
-                            >
-                              Cancel
-                            </button>
-                            <button
-                               onClick={switchBusiness}
-                              className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
-                            >
-                              {isLoading ? (
-                                <ClipLoader color={"white"} size={20} />
-                              ) : (
-                                <> Switch </>
-                              )}
-                            </button>
-                          </ModalFooter>
-                        </ModalContent>
-                      </Modal>
-                    </button>
-                  ))}
+                        {/* {isLoading && (
+                          <ClipLoader color={"#26ae5f"} size={16} />
+                        )} */}
+                      </button>
+                    ))}
 
                 <div className="py-[16px] border-t-[0.2px]  border-[#98A2B3] mt-[20px] ">
-                  <button
+                  {/* <button
                     onClick={() => setIsCreate(true)}
                     className="flex-item gap-2 "
                   >
@@ -440,7 +366,7 @@ const Topbar = ({ setIsSidebar }) => {
                     <p className="text-[#98A2B3] text-[12px]  xl:text-[14px] font-normal leading-[18px] ">
                       Profile
                     </p>
-                  </button>
+                  </button> */}
                   <button
                     onClick={() => {
                       // navigate("/login");
@@ -463,6 +389,90 @@ const Topbar = ({ setIsSidebar }) => {
           </div>
         </div>
       </div>
+      <Modal
+        isCentered
+        isOpen={isSwitchModal}
+        onClose={closeSwitchModal}
+        size="md"
+        style={{ borderRadius: 12 }}
+        motionPreset="slideInBottom"
+        className="rounded-[12px]"
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader
+            py="4"
+            color="#000000"
+            className="text-[18px]   font-medium leading-[24px] md:leading-[24px]"
+          >
+            <EmptyWalletChange
+              size={32}
+              variant="Bold"
+              color="#26ae5f"
+              className="mx-auto text-center"
+            />
+          </ModalHeader>
+          <ModalCloseButton size={"sm"} />
+          <ModalBody
+            py={{ base: "20px", md: "24px" }}
+            px={{ base: "16px", md: "24px" }}
+            className=" px-[16px] md:px-[24px] pb-[30px] md:pb-[40px]"
+          >
+            <p className=" text-[16px] md:text-lg text-center  text-[#000] leading-[24px] font-medium  ">
+              Switch Business
+            </p>
+
+            <p className="text-[14px]  text-[#667185] leading-[20px] font-normal text-center mt-2  ">
+              Are you sure you want to switch bussiness account
+            </p>
+
+            <div className="flex items-center justify-center space-x-5 mt-5">
+              <div className="flex-item gap-2">
+                <div className="h-[28px] w-[28px] md:h-[32px] md:w-[32px] rounded-[4px] bg-[#d3d3d4] flex justify-center items-center">
+                  {" "}
+                  <p className="text-[#475367] text-[12px] md:text-[16px] xl:text-[16px] font-bold leading-[24px] ">
+                    {firstAndLastLetter(profileData?.default_partner?.name)}
+                  </p>
+                </div>
+                <p className="text-[#000000] text-[14px] md:text-[14px] xl:text-[18px] font-bold leading-[24px] ">
+                  {profileData?.default_partner?.name}
+                </p>
+              </div>
+
+              <ArrangeHorizontal size={24} color="#26ae5f" />
+              <div className="flex-item gap-2">
+                <div className="h-[28px] w-[28px] md:h-[32px] md:w-[32px] rounded-[4px] bg-[#d3d3d4] flex justify-center items-center">
+                  {" "}
+                  <p className="text-[#475367] text-[12px] md:text-[16px] xl:text-[16px] font-bold leading-[24px] ">
+                    {firstAndLastLetter(switchId?.name)}
+                  </p>
+                </div>
+                <p className="text-[#000000] text-[14px] md:text-[14px] xl:text-[18px] font-bold leading-[24px] ">
+                  {switchId?.name}
+                </p>
+              </div>
+            </div>
+          </ModalBody>
+          <ModalFooter gap={"16px"}>
+            <button
+              onClick={closeSwitchModal}
+              className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={switchBusiness}
+              className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
+            >
+              {isLoading ? (
+                <ClipLoader color={"white"} size={20} />
+              ) : (
+                <> Switch </>
+              )}
+            </button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
 
       <Modal
         isCentered

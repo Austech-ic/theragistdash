@@ -138,7 +138,7 @@ const WalletOverdiv = () => {
   const closeTransferOthers = () => {
     setIsTransferOthers(false);
     setTransferPhase(1);
-    clearForm()
+    clearForm();
   };
   const openTransferOthers = () => {
     setIsTransferOthers(true);
@@ -261,7 +261,7 @@ const WalletOverdiv = () => {
   const handlePin = () => {
     setTransferPhase(4);
   };
-  function clearForm(){
+  function clearForm() {
     setAccountNumber("");
     setAccountName("");
     setToKyc("");
@@ -274,7 +274,7 @@ const WalletOverdiv = () => {
     setOtp("");
     setPin("");
     setTransferPhase(1);
-    setSelectedBank(null)
+    setSelectedBank(null);
   }
 
   const handleTransfer = async () => {
@@ -308,6 +308,17 @@ const WalletOverdiv = () => {
       enqueueSnackbar(error.message, { variant: "error" });
     }
   };
+
+  async function getProfile(page) {
+    const response = await api.getProfile({ params: { page } });
+    return response;
+  }
+
+  const ProfileQuery = useQuery(["profile"], () => getProfile(), {
+    keepPreviousData: true,
+    refetchOnWindowFocus: "always",
+  });
+  const profileData = ProfileQuery?.data || [];
 
   return (
     <div>
@@ -350,7 +361,7 @@ const WalletOverdiv = () => {
                   </p>
                 ) : (
                   <NumericFormat
-                    value={200000}
+                    value={profileData?.default_partner?.wallet_balance}
                     displayType={"text"}
                     thousandSeparator={true}
                     prefix={"₦"}
@@ -374,7 +385,7 @@ const WalletOverdiv = () => {
                 }}
               >
                 <p className="text-[#272F35]  font-normal  text-[10px] leading-[14px]  tracking-[0.2px]   ">
-                  Add Money
+                  Vant
                 </p>
               </button>
             </div>
@@ -422,26 +433,48 @@ const WalletOverdiv = () => {
           </div>
         </li>
 
-        <li className="rounded-lg overflow-hidden border-[0.8px] border-[#E4E7EC] bg-[#fefefe] shadow p-2 md:p-4">
-          <button
-            className={`rounded-[20px] mt-6 flex justify-center banks-center gap-2 px-[12px]  py-[4px] md:py-[4px] border-[0.5px]
+        <li className="rounded-lg overflow-hidden border-[0.8px] border-[#E4E7EC] bg-[#fefefeec] shadow p-2 ">
+          <p className="text-[#000]   font-semibold text-[14px] leading-[14px] text-center  tracking-[0.2px] ">
+            Quick Action
+          </p>
+          <div className="flex-item mt-5 ">
+            <div className="w-[50%] pr-2 border-r">
+              <p className="text-[#000]   font-medium text-[12px] leading-[14px] text-center  mb-3 tracking-[0.2px] ">
+                Pay Out
+              </p>
+              <button
+                onClick={openTransferOthers}
+                className={`rounded-[20px] mt-6 flex justify-center banks-center gap-2 px-[12px]  py-[4px] md:py-[4px] border-[0.5px]
+                bg-[#e0e1e0] text-[#171717] border-[#171717] text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px] `}
+              >
+                <Send2 color="#171717" size={20} />{" "}
+                <p>Transfer to banks </p>
+              </button>{" "}
+              <button
+                className={`rounded-[20px] mt-6 flex justify-center banks-center gap-2 px-[12px]  py-[4px] md:py-[4px] border-[0.5px]
+                bg-[#e0e1e0] text-[#171717] border-[#171717] text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px] `}
+              >
+                <Send2 color="#171717" size={20} /> <p>Transfer to Vant Tag </p>
+              </button>{" "}
+            </div>
+            <div className="w-[50%] pl-2 border-l">
+              <p className="text-[#000]   font-medium text-[12px] leading-[14px] text-center  mb-3 tracking-[0.2px] ">
+                Receive
+              </p>
+              <button
+                className={`rounded-[20px] mt-6 flex justify-center banks-center gap-2 px-[12px]  py-[4px] md:py-[4px] border-[0.5px]
+                           bg-[#EDF7EE] text-[#4CAF50] whitespace-nowrap border-[#4CAF50] text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px] `}
+              >
+                <Add color="#4CAF50" size={20} /> <p>Create Payment Link </p>
+              </button>{" "}
+              <button
+                className={`rounded-[20px] mt-6 flex justify-center banks-center gap-2 px-[12px]  py-[4px] md:py-[4px] border-[0.5px]
                            bg-[#EDF7EE] text-[#4CAF50] border-[#4CAF50] text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px] `}
-          >
-            <Add color="#4CAF50" size={20} /> <p>Top Up Wallet </p>
-          </button>{" "}
-          <button
-            onClick={openTransferOthers}
-            className={`rounded-[20px] mt-6 flex justify-center banks-center gap-2 px-[12px]  py-[4px] md:py-[4px] border-[0.5px]
-                bg-[#EDF7EE] text-[#4CAF50] border-[#4CAF50] text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px] `}
-          >
-            <Send2 color="#4CAF50" size={20} /> <p>Transfer to other banks </p>
-          </button>{" "}
-          <button
-            className={`rounded-[20px] mt-6 flex justify-center banks-center gap-2 px-[12px]  py-[4px] md:py-[4px] border-[0.5px]
-                bg-[#EDF7EE] text-[#4CAF50] border-[#4CAF50] text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px] `}
-          >
-            <Send2 color="#4CAF50" size={20} /> <p>Transfer to Vant Tag </p>
-          </button>{" "}
+              >
+                <Add color="#4CAF50" size={20} /> <p>Create Invoice </p>
+              </button>{" "}
+            </div>
+          </div>
         </li>
         <li className="rounded-lg relative overflow-hidden border-[0.8px] bg-[#fefefe]  border-[#E4E7EC] shadow p-2 md:p-4 h-[215px]">
           <Chart
@@ -717,7 +750,10 @@ const WalletOverdiv = () => {
               </ModalBody>
               <Divider />
               <ModalFooter gap={"16px"}>
-                <button onClick={closeTransferOthers} className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black">
+                <button
+                  onClick={closeTransferOthers}
+                  className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black"
+                >
                   Cancel
                 </button>
                 <button
@@ -752,7 +788,6 @@ const WalletOverdiv = () => {
                 setPin={setPin}
                 handlePin={handlePin}
                 onClose={closeTransferOthers}
-
               />
             </>
           )}
@@ -769,7 +804,6 @@ const WalletOverdiv = () => {
                 bank={selectedBank?.name}
                 amount={amount}
                 onClose={closeTransferOthers}
-
               />
             </>
           )}

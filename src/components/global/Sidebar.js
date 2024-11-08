@@ -19,6 +19,7 @@ import {
   Wallet1,
   EmptyWalletChange,
   Verify,
+  ClipboardExport,
 } from "iconsax-react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
@@ -84,41 +85,23 @@ const Sidebar = ({ isSidebarOpen, onClose, role }) => {
 
             <div className="border border-[#98A2B3]/50 my-5 " />
 
+          
+
             <Link
-              to=""
-              className="flex-item mb-5 py-1 pl-2 pr-1 rounded-lg bg-slate-200 rounded-tl-lg border-l-[3px] border-[#26ae5f]  "
+              to="/getstarted"
+              className={` py-[10px] pl-[16px] flex items-center text-[14px] mb-3   leading-[20px] md:leading-[24px] ${
+                window.location.pathname === "/getstarted"
+                  ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
+                  : "text-[#667185] font-normal"
+              }`}
             >
-              <p className="text-[#667185] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
-                Let's get your business started
-              </p>
-              <div className="h-[40px] w-[40px]">
-                <CircularProgressbar
-                  value={10}
-                  text={`${10}%`}
-                  styles={buildStyles({
-                    // Rotation of path and trail, in number of turns (0-1)
-                    // rotation: 0.25,
-
-                    // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
-                    strokeLinecap: "butt",
-
-                    // Text size
-                    textSize: "20px",
-
-                    // How long animation takes to go from one percentage to another, in seconds
-                    pathTransitionDuration: 0.5,
-
-                    // Can specify path transition in more detail, or remove it entirely
-                    // pathTransition: 'none',
-
-                    // Colors
-                    pathColor: `#26ae5f`,
-                    textColor: "#26ae5f",
-                    trailColor: "#d6d6d6",
-                    backgroundColor: "#26ae5f",
-                  })}
-                />
-              </div>
+              <ClipboardExport
+                className="mr-[12px]"
+                variant={
+                  window.location.pathname === "/getstarted" ? "Bold" : "Linear"
+                }
+              />
+              Get Started
             </Link>
 
             <Link
@@ -168,19 +151,20 @@ const Sidebar = ({ isSidebarOpen, onClose, role }) => {
               <Wallet1
                 className="mr-[12px]"
                 variant={
-                  window.location.pathname === "/user-wallets" ? "Bold" : "Linear"
+                  window.location.pathname === "/user-wallets"
+                    ? "Bold"
+                    : "Linear"
                 }
               />
-            User Wallets{" "}
+              User Wallets{" "}
             </Link>
 
             <Link
               to="/wallet/overview"
               className={` py-[10px] pl-[16px] flex items-center text-[14px]  mb-3   leading-[20px] md:leading-[24px] ${
-                window.location.pathname === "/wallet/overview"||
-                window.location.pathname === "/wallet/topup"||
+                window.location.pathname === "/wallet/overview" ||
+                window.location.pathname === "/wallet/topup" ||
                 window.location.pathname === "/wallet/debit"
-
                   ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
                   : "text-[#667185] font-normal"
               }`}
@@ -188,12 +172,14 @@ const Sidebar = ({ isSidebarOpen, onClose, role }) => {
               <WalletMoney
                 className="mr-[12px]"
                 variant={
-                  window.location.pathname === "/wallet/overview"||
-                  window.location.pathname === "/wallet/topup"||
-                  window.location.pathname === "/wallet/debit" ? "Bold" : "Linear"
+                  window.location.pathname === "/wallet/overview" ||
+                  window.location.pathname === "/wallet/topup" ||
+                  window.location.pathname === "/wallet/debit"
+                    ? "Bold"
+                    : "Linear"
                 }
               />
-            Wallet{" "}
+              Wallet{" "}
             </Link>
 
             <Link
@@ -276,7 +262,7 @@ const Sidebar = ({ isSidebarOpen, onClose, role }) => {
               </ul>
             )}
 
-<Link
+            {/* <Link
               to="/verification"
               className={` py-[10px] pl-[16px] flex items-center text-[14px]   mb-3 leading-[20px] md:leading-[24px] ${
                 window.location.pathname === "/verification"
@@ -287,13 +273,31 @@ const Sidebar = ({ isSidebarOpen, onClose, role }) => {
               <Verify
                 className="mr-[12px]"
                 variant={
-                  window.location.pathname === "/verification" ? "Bold" : "Linear"
+                  window.location.pathname === "/verification"
+                    ? "Bold"
+                    : "Linear"
                 }
               />
               Verifications
+            </Link> */}
+            <Link
+              to="/customers"
+              className={` py-[10px] pl-[16px] flex items-center text-[14px]   mb-3 leading-[20px] md:leading-[24px] ${
+                window.location.pathname === "/customers"
+                  ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
+                  : "text-[#667185] font-normal"
+              }`}
+            >
+              <Profile
+                className="mr-[12px]"
+                variant={
+                  window.location.pathname === "/customers" ? "Bold" : "Linear"
+                }
+              />
+              Customers
             </Link>
 
-            <Link
+            {/* <Link
               to="/users"
               className={` py-[10px] pl-[16px] flex items-center text-[14px]   mb-3 leading-[20px] md:leading-[24px] ${
                 window.location.pathname === "/users"
@@ -308,7 +312,7 @@ const Sidebar = ({ isSidebarOpen, onClose, role }) => {
                 }
               />
               Users
-            </Link>
+            </Link> */}
           </div>
         </div>
       </div>

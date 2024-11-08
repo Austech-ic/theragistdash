@@ -325,7 +325,7 @@ const UserWallet = () => {
                   </thead>
                   <tbody>
                     {results?.isLoading && <TableLoading cols={8} />}
-                    {results?.data && results?.data?.length === 0 && (
+                    {results?.data && results?.data?.data?.length === 0 && (
                       <EmptyWallet
                         cols={8}
                         action={"Wallet"}
