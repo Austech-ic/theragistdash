@@ -5,6 +5,7 @@ import {
   BVN,
   CUSTOMERS,
  DOCUMENT,
+ GETBUSINESSPROFILE,
  INITIATETRANSFER,
  RESETPIN,
  SENDOTP,
@@ -89,6 +90,9 @@ export function editBvn(data) {
 }
 export function getBvn(data) {
   return apiGet(BVN, data);
+}
+export function getBusProfile(data) {
+  return apiGet(GETBUSINESSPROFILE, data);
 }
 
 export function uploadDoc(data) {

@@ -20,6 +20,9 @@ import {
   EmptyWalletChange,
   Verify,
   ClipboardExport,
+  Setting,
+  Setting2,
+  Setting3,
 } from "iconsax-react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
@@ -76,7 +79,9 @@ const Sidebar = ({ isSidebarOpen, onClose, role }) => {
       </div>
       <div class="max-w-[260px] min-h-screen bg-[#FFFFFF] w-[260px]  p-[16px] md:p-[20px] sticky top-0 overflow-y-auto ">
         <div className="relative">
-          <div className="relative h-screen overflow-y-auto no-scrollbar pb-[80px]">
+          <div className="relative h-screen overflow-y-auto no-scrollbar flex flex-col justify-between ">
+
+            <div>
             <img
               class=" h-[40px] w-[70px]   "
               src="/assets/VantLogo.png"
@@ -313,8 +318,37 @@ const Sidebar = ({ isSidebarOpen, onClose, role }) => {
               />
               Users
             </Link> */}
+            </div>
+
+        <div className="border-t pb-3 pt-2">
+        <Link
+              to="/setting/personal-info"
+              className={` py-[10px] pl-[16px] flex items-center text-[14px]   mb-3 leading-[20px] md:leading-[24px] ${
+                window.location.pathname === "/setting/personal-info"||
+                window.location.pathname === "/setting/webhook"||
+                window.location.pathname === "/setting/api-key"||
+                window.location.pathname === "//setting/personal-info"
+                  ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
+                  : "text-[#667185] font-normal"
+              }`}
+            >
+              <Setting2
+                className="mr-[12px]"
+                variant={
+                  window.location.pathname === "/setting/personal-info"||
+                  window.location.pathname === "/setting/webhook"||
+                  window.location.pathname === "/setting/api-key"||
+                  window.location.pathname === "//setting/personal-info" ? "Bold" : "Linear"
+                }
+              />
+              Setting
+            </Link>
+
+        </div>
           </div>
         </div>
+
+
       </div>
     </div>
   );

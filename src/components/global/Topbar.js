@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { clearUserData } from "../../utils/utils";
 import {
@@ -287,15 +287,16 @@ const Topbar = ({ setIsSidebar }) => {
                   </p>
                 </div>
                 <div className="flex-item justify-between mb-[20px] mt-[12px]">
-                  <button
-                    onClick={() => setIsSettingsModal(true)}
+                  <Link
+                    // onClick={() => setIsSettingsModal(true)}
+                    to="/setting/personal-info"
                     className="py-[5px] px-[12px] border-[0.2px] rounded-md border-[#98A2B3] w-[96px] flex-item gap-2"
                   >
                     <Setting2 size={13} color="#98A2B3" />{" "}
                     <p className="text-[#98A2B3] text-[10px]  xl:text-[12px] font-normal leading-[18px] ">
                       Settings
                     </p>
-                  </button>
+                  </Link>
                   {/* <button
                     onClick={() => setIsInvite(true)}
                     className="py-[5px] px-[12px] border-[0.2px] rounded-md border-[#98A2B3]  flex-item gap-2"

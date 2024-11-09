@@ -276,23 +276,35 @@ const GetStarted = () => {
                 onClick={() => setSelectedInfo(inf?.id)}
                 className={`flex-between  ${
                   selectedInfo === inf?.id
-                    ? "translate-x-2  bg-[#f3f3f3]"
+                    ? "translate-x-2  bg-[#26ae5f] text-white"
                     : "bg-[#fefefe]"
                 } ${
                   index === 0 ? "" : "mt-4"
-                } hover:translate-x-2  transition-transform ease-in-out   w-[90%] border-[0.2px] border-[#98a2b3] relative rounded-[8px]  p-[14px] md:p-[20px]`}
+                } hover:translate-x-2  transition-transform ease-in-out   w-[90%] border-[0.2px] border-[#98a2b3] relative rounded-[8px]  p-[14px] md:px-[20px] md:py-4`}
               >
                 {filledSection.every((id) =>
                   info.some((item) => item.id === id)
                 ) && filledSection.some((item) => item === inf?.id) ? (
-                  <TickCircle size="18" color="#26ae5f " />
+                  <TickCircle size="18" color={` ${
+                    selectedInfo === inf?.id ?
+                    "  #fefefe"
+                      : "#26ae5f"
+                  }`} />
                 ) : (
-                  <MainComponent size="18" color="#26ae5f " />
+                  <MainComponent size="18" color={` ${
+                  selectedInfo === inf?.id ?
+                  "  #fefefe"
+                    : "#26ae5f"
+                }`} />
                 )}
-                <p className="text-[#3d4350]  text-[14px]  font-normal leading-[16px]  ">
+                <p className="  text-[14px]  font-normal leading-[16px]  ">
                   {inf?.name}
                 </p>
-                <ArrowRight2 size="18" color="#98a2b3" />
+                <ArrowRight2 size="18" color={` ${
+                  selectedInfo === inf?.id ?
+                    "  #fefefe"
+                    : "#26ae5f"
+                }`} />
               </button>
             ))}
         </m.div>

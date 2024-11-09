@@ -31,6 +31,11 @@ import WalletOverview from "./screens/wallet/WalletOverview";
 import WalletTopup from "./screens/wallet/WalletTopup";
 import WalletDebits from "./screens/wallet/WalletDebits";
 import Verification from "./screens/Verification";
+import Settings from "./screens/BusinessSettings/Settings";
+import PersonalInfo from "./screens/BusinessSettings/PersonalInfo";
+import BusinessInfo from "./screens/BusinessSettings/BusinessInfo";
+import ApiKey from "./screens/BusinessSettings/ApiKey";
+import Webhook from "./screens/BusinessSettings/Webhook";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -86,6 +91,28 @@ function App() {
                   path="/wallet/debit"
                   exact={true}
                   element={<WalletDebits />}
+                />
+                </Route>
+                <Route path="/setting" exact={true} element={<Settings />}>
+                <Route
+                  path="/setting/personal-info"
+                  exact={true}
+                  element={<PersonalInfo />}
+                />
+                <Route
+                  path="/setting/business-info"
+                  exact={true}
+                  element={<BusinessInfo />}
+                />
+                <Route
+                  path="/setting/api-key"
+                  exact={true}
+                  element={<ApiKey />}
+                />
+                 <Route
+                  path="/setting/webhook"
+                  exact={true}
+                  element={<Webhook />}
                 />
                 </Route>
 
