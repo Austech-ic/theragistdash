@@ -433,55 +433,55 @@ const WalletOverdiv = () => {
           </div>
         </li>
 
-        <li className="rounded-lg overflow-hidden border-[0.8px] border-[#E4E7EC] bg-[#fefefeec] shadow p-2 ">
+        <li className="rounded-lg overflow-hidden border-[0.8px] border-[#E4E7EC] bg-[#fefefeec] shadow p-2 md:p-4 ">
           <p className="text-[#000]   font-semibold text-[14px] leading-[14px] text-center  tracking-[0.2px] ">
             Quick Action
           </p>
           <div className="flex-item mt-5 ">
-            <div className="w-[50%] pr-2 border-r">
+            <div className="w-[50%] pr-2 py-3 border-r">
               <p className="text-[#000]   font-medium text-[12px] leading-[14px] text-center  mb-3 tracking-[0.2px] ">
                 Pay Out
               </p>
               <button
                 onClick={openTransferOthers}
-                className={`rounded-[20px] mt-6 flex justify-center banks-center gap-2 px-[12px]  py-[4px] md:py-[4px] border-[0.5px]
+                className={`rounded-[14px] mt-6 flex justify-center banks-center gap-2 px-[8px]  py-[4px] md:py-[4px] border-[0.5px]
                 bg-[#e0e1e0] text-[#171717] border-[#171717] text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px] `}
               >
-                <Send2 color="#171717" size={20} />{" "}
+                <Send2 color="#171717" size={16} />{" "}
                 <p>Transfer to banks </p>
               </button>{" "}
               <button
-                className={`rounded-[20px] mt-6 flex justify-center banks-center gap-2 px-[12px]  py-[4px] md:py-[4px] border-[0.5px]
+                className={`rounded-[14px] mt-6 flex justify-center banks-center gap-2 px-[8px]  py-[4px] md:py-[4px] border-[0.5px]
                 bg-[#e0e1e0] text-[#171717] border-[#171717] text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px] `}
               >
-                <Send2 color="#171717" size={20} /> <p>Transfer to Vant Tag </p>
+                <Send2 color="#171717" size={16} /> <p>Transfer to Vant Tag </p>
               </button>{" "}
             </div>
-            <div className="w-[50%] pl-2 border-l">
+            <div className="w-[50%] pl-2 py-3">
               <p className="text-[#000]   font-medium text-[12px] leading-[14px] text-center  mb-3 tracking-[0.2px] ">
                 Receive
               </p>
               <button
-                className={`rounded-[20px] mt-6 flex justify-center banks-center gap-2 px-[12px]  py-[4px] md:py-[4px] border-[0.5px]
+                className={`rounded-[14px] mt-6 flex justify-center banks-center gap-2 px-[8px]  py-[4px] md:py-[4px] border-[0.5px]
                            bg-[#EDF7EE] text-[#4CAF50] whitespace-nowrap border-[#4CAF50] text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px] `}
               >
-                <Add color="#4CAF50" size={20} /> <p>Create Payment Link </p>
+                <Add color="#4CAF50" size={16} /> <p>Create Payment Link </p>
               </button>{" "}
               <button
-                className={`rounded-[20px] mt-6 flex justify-center banks-center gap-2 px-[12px]  py-[4px] md:py-[4px] border-[0.5px]
+                className={`rounded-[14px] mt-6 flex justify-center banks-center gap-2 px-[8px]  py-[4px] md:py-[4px] border-[0.5px]
                            bg-[#EDF7EE] text-[#4CAF50] border-[#4CAF50] text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px] `}
               >
-                <Add color="#4CAF50" size={20} /> <p>Create Invoice </p>
+                <Add color="#4CAF50" size={16} /> <p>Create Invoice </p>
               </button>{" "}
             </div>
           </div>
         </li>
-        <li className="rounded-lg relative overflow-hidden border-[0.8px] bg-[#fefefe]  border-[#E4E7EC] shadow p-2 md:p-4 h-[215px]">
-          <Chart
-            size="184"
-            color="#E4E2DFA0"
-            className="absolute bottom-0 -z-10"
-          />
+        <li className="rounded-lg relative overflow-hidden border-[0.8px] bg-[#fefefe]  border-[#E4E7EC] shadow p-2 md:p-4 h-[215px] flex justify-center  flex-col items-center">
+        <p className="text-[#000] text-center   font-semibold text-[14px] leading-[14px]   tracking-[0.2px] ">
+            Transaction Chart
+          </p>
+         
+   
           <Pie
             data={pieData}
             options={{
@@ -501,6 +501,7 @@ const WalletOverdiv = () => {
               },
             }}
           />
+      
         </li>
       </ul>
 

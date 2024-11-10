@@ -29,12 +29,13 @@ const PersonalInfo = () => {
                 type="text"
                 placeholder="Enter first name"
                 className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                required
+                
                 name="firstName"
                 // value={formValue.firstName}
                 // onChange={(e) => {
                 //   handleInputChange(e);
                 // }}
+                disabled
                 autoCapitalize="off"
                 autoCorrect="off"
                 spellCheck="false"
@@ -56,6 +57,7 @@ const PersonalInfo = () => {
                 // onChange={(e) => {
                 //   handleInputChange(e);
                 // }}
+                disabled
                 autoCapitalize="off"
                 autoCorrect="off"
                 spellCheck="false"
@@ -80,6 +82,7 @@ const PersonalInfo = () => {
                 // onChange={(e) => {
                 //   handleInputChange(e);
                 // }}
+                disabled
                 autoCapitalize="off"
                 autoCorrect="off"
                 spellCheck="false"
@@ -101,12 +104,13 @@ const PersonalInfo = () => {
                 type="text"
                 placeholder="8083XXXXXXX"
                 className="w-full  h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                required
+                
                 name="phone"
                 // value={formValue.phone}
                 // onChange={(e) => {
                 //   handleInputChange(e);
                 // }}
+                disabled
                 autoCapitalize="off"
                 autoCorrect="off"
                 spellCheck="false"
@@ -129,6 +133,7 @@ const PersonalInfo = () => {
                 // onChange={(e) => {
                 //   handleInputChange(e);
                 // }}
+                disabled
                 autoCapitalize="off"
                 autoCorrect="off"
                 spellCheck="false"
@@ -150,6 +155,7 @@ const PersonalInfo = () => {
                 // onChange={(e) => {
                 //   handleInputChange(e);
                 // }}
+                disabled
                 autoCapitalize="off"
                 autoCorrect="off"
                 spellCheck="false"

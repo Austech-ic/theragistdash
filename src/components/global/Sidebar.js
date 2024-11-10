@@ -256,7 +256,7 @@ const Sidebar = ({ isSidebarOpen, onClose, role }) => {
 
                 <Link
                   to="/customers"
-                  className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]  leading-[18px] md:leading-[24px]  mb-[14px] ${
+                  className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]  leading-[18px] md:leading-[24px]  ${
                     window.location.pathname === "/customers"
                       ? "bg-[#F7F9FC] font-medium  "
                       : " font-normal"
@@ -338,7 +338,7 @@ const Sidebar = ({ isSidebarOpen, onClose, role }) => {
                   window.location.pathname === "/setting/personal-info"||
                   window.location.pathname === "/setting/webhook"||
                   window.location.pathname === "/setting/api-key"||
-                  window.location.pathname === "//setting/personal-info" ? "Bold" : "Linear"
+                  window.location.pathname === "/setting/personal-info" ? "Bold" : "Linear"
                 }
               />
               Setting
