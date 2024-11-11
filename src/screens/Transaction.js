@@ -334,7 +334,6 @@ const Transactions = () => {
               <option value="">Select Transaction Type</option>
               <option value="1">Credit</option>
               <option value="0">Debit</option>
-              <option value="Medium">Success</option>
             </select>
 
             <select
@@ -343,9 +342,10 @@ const Transactions = () => {
               className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
             >
               <option value="">Select Status</option>
-              <option value="Medium">Processing</option>
-              <option value="Medium">Failed</option>
-              <option value="Medium">Success</option>
+              <option value="pending">pending</option>
+              <option value="successful">Success</option>
+              <option value="failed">Failed</option>
+              <option value="reversed">Reversed</option>
             </select>
             <select
               type="text"
@@ -366,12 +366,13 @@ const Transactions = () => {
               <table className="min-w-full mb-6 border-[0.8px] border-r-[0.8px]  border-l-[0.8px] border-[#E4E7EC] rounded-lg">
                 <thead className="bg-[#F9FAFB]">
                   <tr className="">
+                  
                     <th
                       scope="col"
                       className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
                     >
                       <div className="flex px-5   gap-[6px] md:gap-[12px] items-center">
-                        Reason
+                        Transaction Ref
                       </div>
                     </th>
                     <th
@@ -379,7 +380,7 @@ const Transactions = () => {
                       className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
                     >
                       <div className="flex px-5   gap-[6px] md:gap-[12px] items-center">
-                        Transaction Ref
+                        Reason
                       </div>
                     </th>
 
@@ -455,12 +456,13 @@ const Transactions = () => {
                   {results?.data &&
                     results?.data?.data?.map((result) => (
                       <tr key="_" className="mb-2 hover:bg-light-gray">
+                            <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                          {result?.reference}
+                        </td>
                         <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
                           {result?.reason}
                         </td>
-                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                          {result?.reference}
-                        </td>
+                    
                         <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
                           <NumericFormat
                             value={result?.amount}

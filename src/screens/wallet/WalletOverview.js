@@ -61,6 +61,7 @@ import CreatePin from "../../components/wallet/CreatePin";
 import PinModal from "../../components/wallet/PinModal";
 import { setPin } from "../../api/apicalls";
 import PreviewModal from "../../components/wallet/PreviewModal";
+import ComingSoon from "../../components/ComingSoon";
 
 ChartJS.register(
   CategoryScale,
@@ -108,6 +109,7 @@ const WalletOverdiv = () => {
   const [isCreatePin, setIsCreatePin] = useState(false);
   const [naration, setNaration] = useState("");
   const [purpose, setPurpose] = useState("");
+  const [isComingSoon, setIsComingSoon] = useState(false);
 
   const [pin, setPin] = useState("");
 
@@ -331,8 +333,23 @@ const WalletOverdiv = () => {
     ],
   };
 
+  const handleComingSoon = () => {
+    setIsComingSoon(true);
+    setTimeout(() => {
+      setIsComingSoon(false);
+    }, 3000);
+  };
+
+  const closeComingSoon = () => {
+    setIsComingSoon(false);
+  };
+
   return (
     <div>
+      <ComingSoon
+        isComingSoon={isComingSoon}
+        closeComingSoon={closeComingSoon}
+      />
       {setIsCreatePin && (
         <CreatePin isCreatePin={isCreatePin} setIsCreatePin={setIsCreatePin} />
       )}
@@ -449,41 +466,55 @@ const WalletOverdiv = () => {
           <p className="text-[#000]   font-semibold text-[14px] leading-[14px] text-center  tracking-[0.2px] ">
             Quick Action
           </p>
-          <div className="flex-item mt-5 ">
-            <div className="w-[50%] pr-2 py-3 border-r">
-              <p className="text-[#000]   font-medium text-[12px] leading-[14px] text-center  mb-3 tracking-[0.2px] ">
-                Pay Out
-              </p>
-              <button
-                onClick={openTransferOthers}
-                className={`rounded-[14px] mt-6 flex justify-center banks-center gap-2 px-[8px]  py-[4px] md:py-[4px] border-[0.5px]
+          <div className=" mt-5 ">
+            <div className="flex-item gap-2">
+              <div>
+                {" "}
+                <p className="text-[#000]   font-medium text-[12px] leading-[14px] text-center  mb-3 tracking-[0.2px] ">
+                  Pay Out
+                </p>
+              </div>
+              <div className="flex flex-col gap-1  py-2 border-l pl-2 flex-1">
+                <button
+                  onClick={openTransferOthers}
+                  className={`rounded-[14px]  flex justify-center banks-center gap-2 px-[8px]  py-[4px] md:py-[4px] border-[0.5px]
                 bg-[#e0e1e0] text-[#171717] border-[#171717] text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px] `}
-              >
-                <Send2 color="#171717" size={16} /> <p>Transfer to banks </p>
-              </button>{" "}
-              <button
-                className={`rounded-[14px] mt-6 flex justify-center banks-center gap-2 px-[8px]  py-[4px] md:py-[4px] border-[0.5px]
+                >
+                  <Send2 color="#171717" size={16} /> <p>Transfer to banks </p>
+                </button>{" "}
+                <button
+                  className={`rounded-[14px] flex justify-center banks-center gap-2 px-[8px]  py-[4px] md:py-[4px] border-[0.5px]
                 bg-[#e0e1e0] text-[#171717] border-[#171717] text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px] `}
-              >
-                <Send2 color="#171717" size={16} /> <p>Transfer to Vant Tag </p>
-              </button>{" "}
+                >
+                  <Send2 color="#171717" size={16} />{" "}
+                  <p>Transfer to Vant Tag </p>
+                </button>{" "}
+              </div>
             </div>
-            <div className="w-[50%] pl-2 py-3">
-              <p className="text-[#000]   font-medium text-[12px] leading-[14px] text-center  mb-3 tracking-[0.2px] ">
-                Receive
-              </p>
-              <button
-                className={`rounded-[14px] mt-6 flex justify-center banks-center gap-2 px-[8px]  py-[4px] md:py-[4px] border-[0.5px]
+
+            <div className="flex-item gap-2 mt-2">
+              <div>
+                {" "}
+                <p className="text-[#000]   font-medium text-[12px] leading-[14px] text-center  mb-3 tracking-[0.2px] ">
+                  Receive{" "}
+                </p>
+              </div>
+              <div className="flex flex-col gap-1 py-2 border-l pl-2 flex-1 ">
+                <button
+                  onClick={handleComingSoon}
+                  className={`rounded-[14px]  flex justify-center banks-center gap-2 px-[8px]  py-[4px] md:py-[4px] border-[0.5px]
                            bg-[#EDF7EE] text-[#4CAF50] whitespace-nowrap border-[#4CAF50] text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px] `}
-              >
-                <Add color="#4CAF50" size={16} /> <p>Create Payment Link </p>
-              </button>{" "}
-              <button
-                className={`rounded-[14px] mt-6 flex justify-center banks-center gap-2 px-[8px]  py-[4px] md:py-[4px] border-[0.5px]
+                >
+                  <Add color="#4CAF50" size={16} /> <p>Create Payment Link </p>
+                </button>{" "}
+                <button
+                  onClick={handleComingSoon}
+                  className={`rounded-[14px]  flex justify-center banks-center gap-2 px-[8px]  py-[4px] md:py-[4px] border-[0.5px]
                            bg-[#EDF7EE] text-[#4CAF50] border-[#4CAF50] text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px] `}
-              >
-                <Add color="#4CAF50" size={16} /> <p>Create Invoice </p>
-              </button>{" "}
+                >
+                  <Add color="#4CAF50" size={16} /> <p>Create Invoice </p>
+                </button>{" "}
+              </div>
             </div>
           </div>
         </li>
