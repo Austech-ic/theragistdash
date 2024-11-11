@@ -20,4 +20,7 @@ export const BUSINFO = getApiUrl('/kyb/business-info')
 export const BVN = getApiUrl('/kyb/bvn')
 export const DOCUMENT = getApiUrl('/kyb/upload-documents')
 export const GETBUSINESSPROFILE = getApiUrl('/business/profile')
+export const TRANSACTIONSUMMARY = getApiUrl('/transactions/summary')
+export const TRANSACTIONFULLLENGTH = getApiUrl('/transactions/all')
+export const ADDTEAMMEMBER = getApiUrl('/business/add-team-member')
 

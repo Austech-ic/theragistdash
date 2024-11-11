@@ -88,6 +88,20 @@ const Settings = () => {
                 </div>
               </li>
             </Link>
+            <Link to="/setting/my-team">
+              <li
+                className={`py-[18px] cursor-pointer text-[14px] ${
+                 
+                  window.location.pathname === "/setting/my-team"
+                    ? "font-medium text-[#000] border-b-[2.4px]"
+                    : "font-normal text-[#667185]"
+                }  flex items-center justify-between border-b-[#26ae5f]`}
+              >
+                <div className="">
+                  <p className="">My Team</p>
+                </div>
+              </li>
+            </Link>
   
             
           </ul>

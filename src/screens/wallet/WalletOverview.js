@@ -87,22 +87,6 @@ export const options = {
   },
 };
 
-export const pieData = {
-  labels: ["Credits", "Debits"],
-  datasets: [
-    {
-      label: "Number of Task",
-      data: [5, 8],
-      backgroundColor: ["#26ae5f", "rgba(243, 121, 51, 1)"],
-      borderColor: ["#26ae5f", "rgba(243, 121, 51, 1)"],
-      borderWidth: 1,
-      borderJoinStyle: "round",
-      spacing: 1,
-      borderRadius: 2,
-    },
-  ],
-};
-
 const WalletOverdiv = () => {
   const [hideBalance, setHideBalance] = useState(false);
   const [isTransferOthers, setIsTransferOthers] = useState(false);
@@ -320,6 +304,33 @@ const WalletOverdiv = () => {
   });
   const profileData = ProfileQuery?.data || [];
 
+  async function getTransactionSummary() {
+    const response = await api.getTransactionSummary({ params: {} });
+    return response;
+  }
+
+  const SummaryQuery = useQuery(["summ"], () => getTransactionSummary(), {
+    keepPreviousData: true,
+    refetchOnWindowFocus: "always",
+  });
+  const summaryData = SummaryQuery?.data || [];
+
+  const pieData = {
+    labels: ["Credits", "Debits"],
+    datasets: [
+      {
+        label: "Transactions %",
+        data: [summaryData?.credit_percentage, summaryData?.debit_percentage],
+        backgroundColor: ["#26ae5f", "rgba(243, 121, 51, 1)"],
+        borderColor: ["#26ae5f", "rgba(243, 121, 51, 1)"],
+        borderWidth: 1,
+        borderJoinStyle: "round",
+        spacing: 1,
+        borderRadius: 2,
+      },
+    ],
+  };
+
   return (
     <div>
       {setIsCreatePin && (
@@ -336,6 +347,7 @@ const WalletOverdiv = () => {
                     className="h-[13px] w-[13px]"
                     alt="flag ng"
                   />
+
                   <p>NGN</p>
                   <ArrowDown2 variant="Bold" size={20} />
                 </div>
@@ -447,8 +459,7 @@ const WalletOverdiv = () => {
                 className={`rounded-[14px] mt-6 flex justify-center banks-center gap-2 px-[8px]  py-[4px] md:py-[4px] border-[0.5px]
                 bg-[#e0e1e0] text-[#171717] border-[#171717] text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px] `}
               >
-                <Send2 color="#171717" size={16} />{" "}
-                <p>Transfer to banks </p>
+                <Send2 color="#171717" size={16} /> <p>Transfer to banks </p>
               </button>{" "}
               <button
                 className={`rounded-[14px] mt-6 flex justify-center banks-center gap-2 px-[8px]  py-[4px] md:py-[4px] border-[0.5px]
@@ -476,32 +487,71 @@ const WalletOverdiv = () => {
             </div>
           </div>
         </li>
-        <li className="rounded-lg relative overflow-hidden border-[0.8px] bg-[#fefefe]  border-[#E4E7EC] shadow p-2 md:p-4 h-[215px] flex justify-center  flex-col items-center">
-        <p className="text-[#000] text-center   font-semibold text-[14px] leading-[14px]   tracking-[0.2px] ">
+        <li className="rounded-lg relative overflow-hidden border-[0.8px] bg-[#fefefe]  border-[#E4E7EC] shadow p-2 md:p-4 h-[225px] flex justify-center  flex-col items-center">
+          <p className="text-[#000] text-center   font-semibold text-[14px] leading-[14px]   tracking-[0.2px] ">
             Transaction Chart
           </p>
-         
-   
-          <Pie
-            data={pieData}
-            options={{
-              plugins: {
-                legend: {
-                  position: "right",
-                  labels: {
-                    pointStyle: "rect",
-                    usePointStyle: true,
-                    // fullSize: false,
-                    // pointStyleWidth: 10,
-                    font: {
-                      size: 10,
+
+          <div className="h-[160px]">
+            <Pie
+              data={pieData}
+              options={{
+                plugins: {
+                  legend: {
+                    position: "right",
+                    labels: {
+                      pointStyle: "rect",
+                      usePointStyle: true,
+                      // fullSize: false,
+                      // pointStyleWidth: 10,
+                      font: {
+                        size: 10,
+                      },
                     },
                   },
                 },
-              },
-            }}
-          />
-      
+              }}
+            />
+          </div>
+
+          <div className="flex-item w-full ">
+            <div className="w-[50%] pr-2 py-1 border-r">
+              <p className="text-[#000] text-center flex items-center   font-semibold text-[12px] leading-[12px]   tracking-[0.2px] ">
+                Total Credit:{" "}
+                <NumericFormat
+                  value={summaryData?.total_credit}
+                  displayType={"text"}
+                  thousandSeparator={true}
+                  prefix={"₦"}
+                  decimalScale={2}
+                  fixedDecimalScale={true}
+                  renderText={(value) => (
+                    <p className="text-[#26ae5f] text-center   font-semibold text-[12px] leading-[12px]   tracking-[0.2px] ">
+                      {value}
+                    </p>
+                  )}
+                />
+              </p>
+            </div>
+            <div className="w-[50%] pl-2 py-3 ">
+              <p className="text-[#000] text-center flex items-center    font-semibold text-[12px] leading-[12px]   tracking-[0.2px] ">
+                Total Debits:{" "}
+                <NumericFormat
+                  value={summaryData?.total_debit}
+                  displayType={"text"}
+                  thousandSeparator={true}
+                  prefix={"₦"}
+                  decimalScale={2}
+                  fixedDecimalScale={true}
+                  renderText={(value) => (
+                    <p className="text-orange-700 text-center   font-semibold text-[12px] leading-[12px]   tracking-[0.2px] ">
+                      {value}
+                    </p>
+                  )}
+                />
+              </p>
+            </div>
+          </div>
         </li>
       </ul>
 

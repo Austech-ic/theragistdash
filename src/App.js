@@ -36,6 +36,7 @@ import PersonalInfo from "./screens/BusinessSettings/PersonalInfo";
 import BusinessInfo from "./screens/BusinessSettings/BusinessInfo";
 import ApiKey from "./screens/BusinessSettings/ApiKey";
 import Webhook from "./screens/BusinessSettings/Webhook";
+import MyTeam from "./screens/BusinessSettings/MyTeam";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -113,6 +114,11 @@ function App() {
                   path="/setting/webhook"
                   exact={true}
                   element={<Webhook />}
+                />
+                   <Route
+                  path="/setting/my-team"
+                  exact={true}
+                  element={<MyTeam />}
                 />
                 </Route>
 
