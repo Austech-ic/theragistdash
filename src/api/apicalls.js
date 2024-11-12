@@ -17,7 +17,7 @@ import {
  WALLETS,
  TRANSACTIONFULLLENGTH,
  TRANSACTIONSUMMARY,
- ADDTEAMMEMBER,GETTEAMMEMBER
+ ADDTEAMMEMBER,GETTEAMMEMBER, GETTRANSACTIONBARCHART
 } from "../utils/config";
 import { apiDelete, apiGet, apiGetCSV, apiPost, apiPut } from "../utils/utils";
 
@@ -28,6 +28,10 @@ export function getTransaction(data) {
 
 export function getTransactionSummary(data) {
   return apiGet(TRANSACTIONSUMMARY, data);
+}
+export function getTransactionChart(data) {
+
+  return apiGet(GETTRANSACTIONBARCHART, data);
 }
 
 export function getTransactionFullLength(data) {

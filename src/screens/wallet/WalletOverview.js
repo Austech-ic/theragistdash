@@ -110,7 +110,20 @@ const WalletOverdiv = () => {
   const [naration, setNaration] = useState("");
   const [purpose, setPurpose] = useState("");
   const [isComingSoon, setIsComingSoon] = useState(false);
+  const [copiedRef, setCopiedRef] = useState(null);
 
+
+
+   // Function to copy text to the clipboard
+   const handleCopy = async (transactionRef) => {
+    try {
+      await navigator.clipboard.writeText(transactionRef);
+      setCopiedRef(transactionRef); // Set copied ref to show feedback
+      setTimeout(() => setCopiedRef(null), 2000); // Clear feedback after 2 seconds
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  };
   const [pin, setPin] = useState("");
 
   const isPin = false;
@@ -422,8 +435,7 @@ const WalletOverdiv = () => {
 
           <div className=" bg-[#1B2026] relative   rounded-[12px]  px-[16px] pb-[14px] pt-[24px] -mt-[16px]   ">
             <p className="text-[#fff]  font-medium  text-[12px] leading-[14px]  tracking-[0.2px]  mb-[8px]  ">
-              {/* {userQuery?.data?.account_numbers[0]?.bank} */}
-              VFD Bank
+           {profileData?.default_partner?.account_numbers[0]?.bank}
             </p>
             <div
               style={{
@@ -433,8 +445,8 @@ const WalletOverdiv = () => {
               }}
             >
               <p className="text-[#fff]  font-semibold  text-[14px] leading-[17px]  tracking-[0.2px]    ">
-                {/* {userQuery?.data?.account_numbers[0]?.account_number} */}
-                983645446637
+              {profileData?.default_partner?.account_numbers[0]?.account_number}
+
               </p>
               <button
                 //   onPress={() =>
@@ -442,22 +454,24 @@ const WalletOverdiv = () => {
                 //       userQuery?.data?.account_numbers[0]?.account_number
                 //     )
                 //   }
+
+                onClick={() => handleCopy(    profileData?.default_partner?.account_numbers[0]?.account_number )}
                 className="absolute top-[12px] right-[16px]"
               >
-                <p className="text-[#3B6896] font-semibold font-i_medium text-[10px] leading-[9.68px]  ">
-                  {/* {copySuccess ===
-                        userQuery?.data?.account_numbers[0]?.account_number ? (
+                <p className="text-[#fff] font-semibold font-i_medium text-[10px] leading-[9.68px]  ">
+                  {copiedRef ===
+                        profileData?.default_partner?.account_numbers[0]?.account_number ? (
                           "Copied!"
                         ) : (
                           <Copy size={20} variant="Bold" color="#fff" />
-                        )} */}
-                  <Copy size={20} variant="Bold" color="#fff" />
+                        )}
+                  {/* <Copy size={20} variant="Bold" color="#fff" /> */}
                 </p>
               </button>
             </div>
             <p className="text-[#fff]  font-normal font-i_normal text-[12px] leading-[14px]  tracking-[0.2px] ">
-              {/* {userQuery?.data?.account_numbers[0]?.account_name} */}
-              Ogundele Caleb
+            {profileData?.default_partner?.account_numbers[0]?.account_name}
+
             </p>
           </div>
         </li>

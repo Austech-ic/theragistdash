@@ -49,6 +49,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { decryptaValue } from "../utils/helperFunctions";
 import EmptyTable from "../components/EmptyTable";
 import EmptyWallet from "../components/EmptyWallets";
+import moment from "moment";
 
 const Customer = () => {
   const navigate = useNavigate();
@@ -61,6 +62,7 @@ const Customer = () => {
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
   const [startdate, setStartdate] = useState("");
   const [enddate, setEndDate] = useState("");
 
@@ -132,15 +134,20 @@ const Customer = () => {
     const response = await api.getCustomers({
       params: {
         page,
+        search,
       },
     });
     return response;
   }
 
-  const results = useQuery(["transactions", page], () => getCustomers(page), {
-    keepPreviousData: true,
-    refetchOnWindowFocus: "always",
-  });
+  const results = useQuery(
+    ["transactions", page, search],
+    () => getCustomers(page),
+    {
+      keepPreviousData: true,
+      refetchOnWindowFocus: "always",
+    }
+  );
 
   const handlePrev = (event) => {
     if (event) {
@@ -159,23 +166,28 @@ const Customer = () => {
   return (
     <div className="p-[20px] bg-[#F2F2F2] min-h-screen ">
       <div className="border-[0.2px] border-[#98a2b3] rounded-[8px]  bg-[#ffff] ">
-        <div className="border-b border-b-[#E4E7EC] h-full p-[16px] md:p-[20px] block md:flex justify-between items-center ">
+        <div className=" h-full p-[16px] md:p-[20px] block md:flex justify-between items-center ">
           <div className="flex items-center gap-[16px]">
             <div className="flex items-center">
               <p className="text-[#000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px]  ">
-Customers              </p>
+                Customers{" "}
+              </p>
             </div>
             <div className="h-[32px] w-[1px] bg-[#D0D5DD]" />
             <div className="flex items-center gap-[8px]">
               <SearchNormal1 variant="Linear" color="#667185" size="16" />
               <input
                 className="w-full lg:w-[300px] py-[6px] text-[16px] text-[#344054] leading-[20px] placeholder:text-[#98A2B3] placeholder:text-[12px] border border-transparent  focus:outline-none focus:ring-[#26ae5f] focus:border-b-[#26ae5f] "
-                placeholder="Search by transaction ref.."
+                placeholder="Search by customer name.."
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                }}
               />
             </div>
           </div>
           <div className="flex items-center gap-[16px] ">
-            <button
+            {/* <button
               // onClick={() => toggleImportModal()}
               className="flex items-center gap-[8px] "
             >
@@ -184,7 +196,7 @@ Customers              </p>
               </p>
 
               <DocumentUpload variant="Linear" color="#667185" size="16" />
-            </button>
+            </button> */}
 
             <Modal
               isCentered
@@ -252,18 +264,7 @@ Customers              </p>
             </Modal>
           </div>
         </div>
-        <div className="p-[10px] md:p-[16px] lg:p-[20px]">
-          {" "}
-          <div className="flex items-center gap-4 overflow-x-auto custom-scrollbar">
-            <input
-              type="text"
-              placeholder="username"
-              className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-              
-            />
-            
-          </div>
-        </div>
+       
       </div>
       <div className="overflow-x-auto">
         <div class="sm:-mx-6 lg:-mx-8 mt-5">
@@ -286,6 +287,14 @@ Customers              </p>
                     >
                       <div className="flex px-5 whitespace-nowrap  gap-[6px] md:gap-[12px] items-center">
                         Email
+                      </div>
+                    </th>
+                    <th
+                      scope="col"
+                      className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
+                    >
+                      <div className="flex px-5 whitespace-nowrap  gap-[6px] md:gap-[12px] items-center">
+                        Phone
                       </div>
                     </th>
 
@@ -333,29 +342,30 @@ Customers              </p>
                     results?.data?.data?.map((result) => (
                       <tr key="_" className="mb-2 hover:bg-light-gray">
                         <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                         {result?.name}
+                          {result?.name}
                         </td>
                         <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                        {result?.email}
+                          {result?.email}
                         </td>
                         <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                        {result?.phone}
+                          {result?.phone}
                         </td>
                         <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
                           <button
                             className={`rounded-[20px] md:rounded-[40px] w-[60px] md:w-[74px] py-[2px] md:py-[4px] mx-auto ${
-                              result.isActive === 1
+                              result.isActive === 0
                                 ? "bg-[rgb(255,245,230)] text-[#FF9800]"
-                                : result.status === "Ongoing"
-                                ? "bg-[#F9FAFB] text-[#667185]"
                                 : "bg-[#EDF7EE] text-[#4CAF50]"
                             }  text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px]`}
                           >
-                            <p>Active</p>
+                            <p>
+                              {result.isActive === 0 ? "Inactive" : "Active "}
+                            </p>
                           </button>{" "}
                         </td>
+                        
                         <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                          Sep 11, 2024 (at 03.00 AM)
+                        {moment(result?.created_at).format("MMM DD, HH:mm:ss")}
                         </td>
 
                         <td className="whitespace-nowrap py-[16px] flex-item gap-2 bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#1A202C] font-medium text-left  ">
@@ -553,7 +563,6 @@ Customers              </p>
                   type="text"
                   placeholder="Name"
                   className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                  
                   name="full-name"
                   id="full-name"
                   //value=""
@@ -576,7 +585,6 @@ Customers              </p>
                   type="date"
                   placeholder="Enter Title"
                   className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                  
                   name="date"
                   id="full-name"
                   //   value={formData.date}
@@ -596,7 +604,6 @@ Customers              </p>
                   type="time"
                   placeholder="Name"
                   className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                  
                   name="full-name"
                   id="full-name"
                   //value=""
@@ -616,7 +623,6 @@ Customers              </p>
                   type="time"
                   placeholder=""
                   className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                  
                   name="date"
                   id="full-name"
                   //   value={formData.date}

@@ -1,19 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 import { motion as m } from "framer-motion";
-import { useOutletContext } from 'react-router-dom';
-
+import { useOutletContext } from "react-router-dom";
 
 const Webhook = () => {
-    const [webhook, setWebhook] = useState("")
-    const profileData = useOutletContext();
+  const [webhook, setWebhook] = useState("");
+  const profileData = useOutletContext();
 
-    useEffect(() => {
-        //If there's no profile data, set selectedInfo to 1
-       if (profileData) {
-        setWebhook(profileData.webhook)
- 
-       }
-    }, [profileData]);
+  useEffect(() => {
+    //If there's no profile data, set selectedInfo to 1
+    if (profileData) {
+      setWebhook(profileData.webhook_url);
+    }
+  }, [profileData]);
 
   return (
     <div className="p-4 md:p-6">
@@ -31,16 +29,18 @@ const Webhook = () => {
             duration: 0.9,
           }}
         >
-    
-    <div className="mb-[16px] md:mb-[20px]">
+          <div className="mb-[16px] md:mb-[20px]">
             <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#373636] mb-[8px]">
-            Integrate API webhooks to alert your application instantly when specific events, like payment updates, inventory changes, or timecard actions, take place. These notifications are usually delivered within milliseconds of the event.
+              Integrate API webhooks to alert your application instantly when
+              specific events, like payment updates, inventory changes, or
+              timecard actions, take place. These notifications are usually
+              delivered within milliseconds of the event.
             </label>
-            </div>
+          </div>
 
           <div className="mb-[16px] md:mb-[20px] w-full md:w-[70%] xl:w-[50%]">
             <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
-           Webhook
+              Webhook
             </label>
             <div className=" relative    flex items-center">
               <input
@@ -49,20 +49,20 @@ const Webhook = () => {
                 className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                 required
                 name="firstName"
-                // value={formValue.firstName}
-                // onChange={(e) => {
-                //   handleInputChange(e);
-                // }}
+                value={webhook}
+                onChange={(e) => {
+                  setWebhook(e.target.value);
+                }}
                 autoCapitalize="off"
                 autoCorrect="off"
                 spellCheck="false"
               />
             </div>
           </div>
-          </m.div>
-          </div>
-          </div>
-  )
-}
+        </m.div>
+      </div>
+    </div>
+  );
+};
 
-export default Webhook
+export default Webhook;
