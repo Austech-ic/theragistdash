@@ -25,4 +25,5 @@ export const TRANSACTIONFULLLENGTH = getApiUrl('/transactions/all')
 export const ADDTEAMMEMBER = getApiUrl('/business/add-member')
 export const GETTEAMMEMBER = getApiUrl('/business/members')
 export const GETTRANSACTIONBARCHART = getApiUrl('/business/transaction-chart')
+export const GETOVERVIEW = getApiUrl('/business/summary')
 

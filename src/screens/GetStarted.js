@@ -108,6 +108,9 @@ const GetStarted = () => {
     if (profileData?.personal_info_status === "completed") {
       setFilledSection(addValuePush(filledSection, 1));
     }
+    if (busData?.business_info_status === "completed") {
+      setFilledSection(addValuePush(filledSection, 2));
+    }
     if (bvnData?.bvn) {
       setFilledSection(addValuePush(filledSection, 3));
     }
@@ -719,11 +722,11 @@ const GetStarted = () => {
 
               <div className="py-[20px] border-t border-b-[#E4E7EC]  ">
                 <div className="flex-item gap-2 w-full">
-                  {busData && busData?.personal_info_status === "completed" ? (
+                  {busData && busData?.business_info_status === "completed" ? (
                     <div className="flex gap-1 items-center w-[85%] mx-auto">
                       <div className="h-[1.5px] bg-green-400 flex-1 w-full"></div>{" "}
                       <p className="text-green-600 text-[14px]">
-                        Personal Information Completed
+                        Business Information Completed
                       </p>{" "}
                       <div className="h-[1.5px] w-full bg-green-400 flex-1"></div>
                     </div>
@@ -787,7 +790,7 @@ const GetStarted = () => {
 
               <div className="py-[20px] border-t border-b-[#E4E7EC]  ">
                 <div className="flex-item gap-2 w-full">
-                  {busData && !formValue.bvn ? (
+                  {bvnData && formValue.bvn ? (
                     <div className="flex gap-1 items-center w-[85%] mx-auto">
                       <div className="h-[1.5px] bg-green-400 flex-1 w-full"></div>{" "}
                       <p className="text-green-600 text-[14px]">

@@ -335,7 +335,7 @@ const WalletOverdiv = () => {
     datasets: [
       {
         label: "Transactions %",
-        data: [summaryData?.credit_percentage, summaryData?.debit_percentage],
+        data: [summaryData?.type_summary?.credit?.percentage, summaryData?.type_summary?.debit?.percentage],
         backgroundColor: ["#26ae5f", "rgba(243, 121, 51, 1)"],
         borderColor: ["#26ae5f", "rgba(243, 121, 51, 1)"],
         borderWidth: 1,
@@ -564,7 +564,7 @@ const WalletOverdiv = () => {
               <p className="text-[#000] text-center flex items-center   font-semibold text-[12px] leading-[12px]   tracking-[0.2px] ">
                 Total Credit:{" "}
                 <NumericFormat
-                  value={summaryData?.total_credit}
+                  value={summaryData?.type_summary?.credit?.total}
                   displayType={"text"}
                   thousandSeparator={true}
                   prefix={"₦"}
@@ -582,7 +582,7 @@ const WalletOverdiv = () => {
               <p className="text-[#000] text-center flex items-center    font-semibold text-[12px] leading-[12px]   tracking-[0.2px] ">
                 Total Debits:{" "}
                 <NumericFormat
-                  value={summaryData?.total_debit}
+                  value={summaryData?.type_summary?.debit?.total}
                   displayType={"text"}
                   thousandSeparator={true}
                   prefix={"₦"}

@@ -69,6 +69,8 @@ const WalletTopup = () => {
   const [reference, setReference] = useState("");
   const [type, setType] = useState("1");
   const [transacDetails, setTransacDetails] = useState([]);
+  const [status, setStatus] = useState("")
+  const [currency, setCurrency] = useState("")
 
   function HandleEditModalClose() {
     setIsEditOpen(false);
@@ -143,16 +145,18 @@ const WalletTopup = () => {
       params: {
         page,
         search: reference,
-        //from: startdate,
-        //until: enddate,
+        from: startdate,
+        until: enddate,
         is_credit: type,
+        status,
+        currency
       },
     });
     return response;
   }
 
   const results = useQuery(
-    ["transactions", page, reference, startdate, enddate, type],
+    ["transactions", page, reference, startdate, enddate, type,status, currency],
     () => getTransaction(page),
     {
       keepPreviousData: true,
@@ -181,7 +185,7 @@ const WalletTopup = () => {
           <div className="flex items-center gap-[16px]">
             <div className="flex items-center">
               <p className="text-[#000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px]  ">
-                Wallet Credits
+                Wallet Credit
               </p>
             </div>
             <div className="h-[32px] w-[1px] bg-[#D0D5DD]" />
@@ -285,7 +289,10 @@ const WalletTopup = () => {
               type="text"
               placeholder=""
               className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-            >
+           
+              value={currency}
+              onChange={(e) => setCurrency(e.target.value)}
+           >
               <option value="">Select Currency</option>
               <option value="NGN">NGN</option>
               <option value="USD">USD</option>
@@ -308,11 +315,15 @@ const WalletTopup = () => {
               type="text"
               placeholder="Select Item Type"
               className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+            
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
             >
-              <option value="">Select Status</option>
-              <option value="Medium">Processing</option>
-              <option value="Medium">Failed</option>
-              <option value="Medium">Success</option>
+               <option value="">Select Status</option>
+              <option value="pending">pending</option>
+              <option value="successful">Success</option>
+              <option value="failed">Failed</option>
+              <option value="reversed">Reversed</option>
             </select>
             <select
               type="text"
@@ -483,17 +494,17 @@ const WalletTopup = () => {
                             // )}
                           />
                         </td>
-                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px]  font-medium text-left  ">
+                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] font-medium text-left  ">
                           <button
-                         className={`rounded-[20px] md:rounded-[40px] w-[80px] w- py-[2px] md:py-[4px] mx-auto ${
-                          result.status === "failed"
-                            ? "bg-[rgb(255,245,230)] text-red-500"
-                            : result.status === "pending"
-                            ? "bg-[rgb(255,245,230)] text-orange-040"
-                              : result.status === "reversed"
-                            ? "bg-yellow-100 text-yellow-500"
-                            : "bg-[#EDF7EE] text-[#4CAF50]"
-                        }  text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px]`}
+                              className={`rounded-[20px] md:rounded-[40px] w-[80px] w- py-[2px] md:py-[4px] mx-auto ${
+                                result.status === "failed"
+                                  ? "bg-[rgb(255,245,230)] text-red-500"
+                                  : result.status === "pending"
+                                  ? "bg-[rgb(255,245,230)] text-orange-040"
+                                    : result.status === "reversed"
+                                  ? "bg-yellow-100 text-yellow-500"
+                                  : "bg-[#EDF7EE] text-[#4CAF50]"
+                              }  text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px]`}
                           >
                             <p>{result.status}</p>
                           </button>{" "}
@@ -804,4 +815,4 @@ const WalletTopup = () => {
   );
 };
 
-export default WalletTopup;
+export default WalletTopup

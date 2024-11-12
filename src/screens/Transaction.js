@@ -550,7 +550,7 @@ const Transactions = () => {
                               result.status === "failed"
                                 ? "bg-[rgb(255,245,230)] text-red-500"
                                 : result.status === "pending"
-                                ? "bg-[rgb(255,245,230)] text-orange-040"
+                                ? "bg-[rgb(255,245,230)] text-orange-400"
                                   : result.status === "reversed"
                                 ? "bg-yellow-100 text-yellow-500"
                                 : "bg-[#EDF7EE] text-[#4CAF50]"
