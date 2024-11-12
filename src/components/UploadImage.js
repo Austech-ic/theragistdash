@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { ClipLoader } from 'react-spinners';
 
-const ImageUpload = () => {
-  const [image, setImage] = useState(null);
+const ImageUpload = ({logo, setLogo}) => {
+//   const [logo, setLogo] = useState(null);
   const [preview, setPreview] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -16,17 +16,17 @@ const ImageUpload = () => {
     setIsDragging(false);
 
     const file = event.dataTransfer.files[0];
-    if (file && file.type.startsWith('image/')) {
-      setImage(file);
+    if (file && file.type.startsWith('logo/')) {
+      setLogo(file);
       setPreview(URL.createObjectURL(file));
     }
   };
 
-  const handleImageUpload = async () => {
-    if (!image) return;
+  const handlelogoUpload = async () => {
+    if (!logo) return;
 
     const formData = new FormData();
-    formData.append('image', image);
+    formData.append('logo', logo);
 
     setUploading(true);
 
@@ -36,10 +36,10 @@ const ImageUpload = () => {
           'Content-Type': 'multipart/form-data'
         }
       });
-      alert('Image uploaded successfully!');
+      alert('logo uploaded successfully!');
     } catch (error) {
-      console.error('Error uploading image:', error);
-      alert('Failed to upload image.');
+      console.error('Error uploading logo:', error);
+      alert('Failed to upload logo.');
     } finally {
       setUploading(false);
     }
@@ -62,11 +62,11 @@ const ImageUpload = () => {
 
         <input
           type="file"
-          accept="image/*"
+          accept="logo/*"
           onChange={(e) => {
             const file = e.target.files[0];
-            if (file && file.type.startsWith('image/')) {
-              setImage(file);
+            if (file && file.type.startsWith('logo/')) {
+              setLogo(file);
               setPreview(URL.createObjectURL(file));
             }
           }}
@@ -75,20 +75,20 @@ const ImageUpload = () => {
         />
 
 
-          <p className="text-gray-500">Drag & Drop an image here</p>
+          <p className="text-gray-500">Drag & Drop an logo here</p>
         
         <label htmlFor="fileInput" className="mt-1 text-[#26ae5f] cursor-pointer hover:underline">
-          Or select an image
+          Or select an logo
         </label>
       </div>
 
       {preview && (
         <button
-          onClick={handleImageUpload}
+          onClick={handlelogoUpload}
           disabled={uploading}
           className="w-full mt-4 bg-[#26ae5f] hover:bg-[#57ca87] text-white  py-2 rounded disabled:bg-gray-400 disabled:cursor-not-allowed"
         >
-          {uploading ? ( <ClipLoader color={"white"} size={18} />) : 'Upload Image'}
+          {uploading ? ( <ClipLoader color={"white"} size={18} />) : 'Upload logo'}
         </button>
       )}
     </div>

@@ -1,8 +1,20 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { motion as m } from "framer-motion";
+import { useOutletContext } from 'react-router-dom';
 
 
 const Webhook = () => {
+    const [webhook, setWebhook] = useState("")
+    const profileData = useOutletContext();
+
+    useEffect(() => {
+        //If there's no profile data, set selectedInfo to 1
+       if (profileData) {
+        setWebhook(profileData.webhook)
+ 
+       }
+    }, [profileData]);
+
   return (
     <div className="p-4 md:p-6">
       {" "}

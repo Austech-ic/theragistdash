@@ -69,6 +69,8 @@ const WalletDebits = () => {
   const [reference, setReference] = useState("");
   const [type, setType] = useState("0");
   const [transacDetails, setTransacDetails] = useState([]);
+  const [status, setStatus] = useState("")
+  const [currency, setCurrency] = useState("")
 
   function HandleEditModalClose() {
     setIsEditOpen(false);
@@ -143,16 +145,18 @@ const WalletDebits = () => {
       params: {
         page,
         search: reference,
-        //from: startdate,
-        //until: enddate,
+        from: startdate,
+        until: enddate,
         is_credit: type,
+        status,
+        currency
       },
     });
     return response;
   }
 
   const results = useQuery(
-    ["transactions", page, reference, startdate, enddate, type],
+    ["transactions", page, reference, startdate, enddate, type,status, currency],
     () => getTransaction(page),
     {
       keepPreviousData: true,
@@ -285,7 +289,10 @@ const WalletDebits = () => {
               type="text"
               placeholder=""
               className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-            >
+           
+              value={currency}
+              onChange={(e) => setCurrency(e.target.value)}
+           >
               <option value="">Select Currency</option>
               <option value="NGN">NGN</option>
               <option value="USD">USD</option>
@@ -308,11 +315,15 @@ const WalletDebits = () => {
               type="text"
               placeholder="Select Item Type"
               className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+            
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
             >
-              <option value="">Select Status</option>
-              <option value="Medium">Processing</option>
-              <option value="Medium">Failed</option>
-              <option value="Medium">Success</option>
+               <option value="">Select Status</option>
+              <option value="pending">pending</option>
+              <option value="successful">Success</option>
+              <option value="failed">Failed</option>
+              <option value="reversed">Reversed</option>
             </select>
             <select
               type="text"
@@ -483,15 +494,17 @@ const WalletDebits = () => {
                             // )}
                           />
                         </td>
-                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] font-medium text-left  ">
                           <button
-                            className={`rounded-[20px] md:rounded-[40px] w-[80px] w- py-[2px] md:py-[4px] mx-auto ${
-                              result.status === "failed"
-                                ? "bg-[rgb(255,245,230)] text-[#DB0404FFFF]"
-                                : result.status === "Ongoing"
-                                ? "bg-[#F9FAFB] text-[#667185]"
-                                : "bg-[#EDF7EE] text-[#4CAF50]"
-                            }  text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px]`}
+                              className={`rounded-[20px] md:rounded-[40px] w-[80px] w- py-[2px] md:py-[4px] mx-auto ${
+                                result.status === "failed"
+                                  ? "bg-[rgb(255,245,230)] text-red-500"
+                                  : result.status === "pending"
+                                  ? "bg-[rgb(255,245,230)] text-orange-040"
+                                    : result.status === "reversed"
+                                  ? "bg-yellow-100 text-yellow-500"
+                                  : "bg-[#EDF7EE] text-[#4CAF50]"
+                              }  text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px]`}
                           >
                             <p>{result.status}</p>
                           </button>{" "}

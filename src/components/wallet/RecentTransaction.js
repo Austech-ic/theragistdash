@@ -187,13 +187,15 @@ const [perPage, setPerPage] = useState("10");
                           </div>
                         </td>
                       
-                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px]  font-medium text-left  ">
                           <button
                             className={`rounded-[20px] md:rounded-[40px] w-[80px] w- py-[2px] md:py-[4px] mx-auto ${
                               result.status === "failed"
-                                ? "bg-[rgb(255,245,230)] text-[#DB0404FFFF]"
-                                : result.status === "Ongoing"
-                                ? "bg-[#F9FAFB] text-[#667185]"
+                                ? "bg-[rgb(255,245,230)] text-red-500"
+                                : result.status === "pending"
+                                ? "bg-[rgb(255,245,230)] text-orange-040"
+                                  : result.status === "reversed"
+                                ? "bg-yellow-100 text-yellow-500"
                                 : "bg-[#EDF7EE] text-[#4CAF50]"
                             }  text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px]`}
                           >

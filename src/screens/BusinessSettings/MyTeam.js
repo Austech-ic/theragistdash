@@ -61,8 +61,16 @@ const MyTeam = () => {
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [page, setPage] = useState(1);
+  const [resultId, setResultId] = useState("")
   const [startdate, setStartdate] = useState("");
   const [enddate, setEndDate] = useState("");
+  const [formValue, setFormValue] = useState({
+    firstName: "",
+    lastName: "",
+    eamil: "",
+    phone: "",
+    role: "",
+  })
 
   function HandleEditModalClose() {
     setIsEditOpen(false);
@@ -81,6 +89,7 @@ const MyTeam = () => {
 
   function ToggleDeleteModal(id) {
     setIsDeleteModal(!isDeleteModal);
+    setResultId(id)
   }
   function closeDeleteModal() {
     setIsDeleteModal(false);
@@ -132,16 +141,17 @@ const MyTeam = () => {
     setIsLoading(true);
     try {
       const response = await api.createTeamMember({
-        event: "transfer",
+        email: formValue?.email,
+        role: formValue?.role,
+        first_name: formValue?.firstName,
+        last_name: formValue?.lastName,
+        phone: formValue?.phone
       });
-      console.log("response of send otp==>>>>>", decryptaValue(response?.data));
       const decryptRes = JSON.parse(decryptaValue(response?.data));
-      console.log("response of send otp==>>>>>", decryptRes?.status);
-
-      if (decryptRes.status === true) {
-        enqueueSnackbar(decryptRes.message, { variant: "success" });
-      }
+      enqueueSnackbar(decryptRes?.message, { variant: "success" });
+      results.refetch()
       setIsLoading(false);
+      setIsCreate(false);
     } catch (error) {
       console.log(error.message);
       enqueueSnackbar(error.message, { variant: "error" });
@@ -150,8 +160,8 @@ const MyTeam = () => {
     }
   };
 
-  async function getCustomers(page) {
-    const response = await api.getCustomers({
+  async function getTeamMember(page) {
+    const response = await api.getTeamMember({
       params: {
         page,
       },
@@ -159,7 +169,7 @@ const MyTeam = () => {
     return response;
   }
 
-  const results = useQuery(["transactions", page], () => getCustomers(page), {
+  const results = useQuery(["getTeamMember", page], () => getTeamMember(page), {
     keepPreviousData: true,
     refetchOnWindowFocus: "always",
   });
@@ -173,6 +183,10 @@ const MyTeam = () => {
     if (event) {
       setPage(page + 1);
     }
+  };
+
+  const handleInputChange = (e) => {
+    setFormValue({ ...formValue, [e.target.name]: e.target.value });
   };
 
   // console.log("decrypt transaction", decryptaValue(results?.data?.data))
@@ -189,14 +203,19 @@ const MyTeam = () => {
               </p>
             </div>
             <div className="h-[32px] w-[1px] bg-[#D0D5DD]" />
-            <div className="flex items-center gap-[8px]">
-              <SearchNormal1 variant="Linear" color="#667185" size="16" />
-              <input
-                className="w-full lg:w-[300px] py-[6px] text-[16px] text-[#344054] leading-[20px] placeholder:text-[#98A2B3] placeholder:text-[12px] border border-transparent  focus:outline-none focus:ring-[#26ae5f] focus:border-b-[#26ae5f] "
-                placeholder="Search by transaction ref.."
-              />
-            </div>
+           
           </div>
+
+          <button
+            onClick={() => toggleCreate()}
+            className="flex items-center gap-[8px] "
+          >
+            <p className="text-[14px] text-[#667185] leading-[20px]">
+              Create Team Member
+            </p>
+
+            <Add variant="Linear" color="#667185" size="16" />
+          </button>
         </div>
       </div>
       <div className="overflow-x-auto">
@@ -239,14 +258,7 @@ const MyTeam = () => {
                         Status
                       </div>
                     </th>
-                    <th
-                      scope="col"
-                      className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
-                    >
-                      <div className="flex  gap-[6px] md:gap-[12px] items-center my-0">
-                        Date Created
-                      </div>
-                    </th>
+                
 
                     <th
                       scope="col"
@@ -268,17 +280,18 @@ const MyTeam = () => {
                       subheading={"Your sub users will appear here."}
                     />
                   )}
-                  {/*  {TaskSummaryData &&
-                    results?.data?.data?.map((result) => ( */}
 
                   {results?.data &&
                     results?.data?.data?.map((result) => (
                       <tr key="_" className="mb-2 hover:bg-light-gray">
                         <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                          Ogundele Caleb{" "}
+                          {result?.first_name} {result?.last_name}
                         </td>
                         <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                          ogun!@gmail.com
+                         {result?.email}
+                        </td>
+                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                       {result?.role}
                         </td>
 
                         <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
@@ -294,17 +307,19 @@ const MyTeam = () => {
                             <p>Active</p>
                           </button>{" "}
                         </td>
-                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                          Sep 11, 2024 (at 03.00 AM)
-                        </td>
+                      
 
                         <td className="whitespace-nowrap py-[16px] flex-item gap-2 bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#1A202C] font-medium text-left  ">
-                          <More
-                            onClick={() => ToggleEditModal()}
+                         
+                         <button>
+                         <Trash
+                            onClick={() => ToggleDeleteModal(result?.id)}
                             variant="Linear"
-                            color="#667185"
+                            color="#E01616FF"
                             size="24"
                           />
+                         </button>
+                         
 
                           <Modal
                             isCentered
@@ -322,53 +337,12 @@ const MyTeam = () => {
                                 color="#000000"
                                 className="text-[18px]   font-medium leading-[24px] md:leading-[24px]"
                               >
-                                <svg
-                                  className="mx-auto"
-                                  width="56"
-                                  height="56"
-                                  viewBox="0 0 56 56"
-                                  fill="none"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                >
-                                  <rect
-                                    x="4"
-                                    y="4"
-                                    width="48"
-                                    height="48"
-                                    rx="24"
-                                    fill="#FCC5C1"
-                                  />
-                                  <rect
-                                    x="4"
-                                    y="4"
-                                    width="48"
-                                    height="48"
-                                    rx="24"
-                                    stroke="#FEECEB"
-                                    stroke-width="8"
-                                  />
-                                  <path
-                                    d="M28 38C33.5 38 38 33.5 38 28C38 22.5 33.5 18 28 18C22.5 18 18 22.5 18 28C18 33.5 22.5 38 28 38Z"
-                                    stroke="#26ae5f"
-                                    stroke-width="1.5"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                  />
-                                  <path
-                                    d="M28 24V29"
-                                    stroke="#26ae5f"
-                                    stroke-width="1.5"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                  />
-                                  <path
-                                    d="M27.9961 32H28.0051"
-                                    stroke="#26ae5f"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                  />
-                                </svg>
+                               <Trash
+                            variant="Linear"
+                            color="#E01616FF"
+                            size="42"
+                            className="mx-auto"
+                          />
                               </ModalHeader>
                               <ModalCloseButton size={"sm"} />
                               <ModalBody
@@ -377,12 +351,12 @@ const MyTeam = () => {
                                 className=" px-[16px] md:px-[24px] pb-[30px] md:pb-[40px]"
                               >
                                 <p className=" text-[16px] md:text-lg text-center  text-[#000] leading-[24px] font-medium  ">
-                                  Delete Transactions
+                                  Delete Team Member
                                 </p>
 
                                 <p className="text-[14px]  text-[#667185] leading-[20px] font-normal text-center mt-2  ">
                                   Are you sure you want to delete this
-                                  Transactions? This action cannot be undone.
+                                  Team Member? This action cannot be undone.
                                 </p>
                               </ModalBody>
                               <ModalFooter gap={"16px"}>
@@ -393,7 +367,7 @@ const MyTeam = () => {
                                   Cancel
                                 </button>
                                 <button
-                                  // onClick={handleDelete}
+                                  //onClick={handleDelete}
                                   className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
                                 >
                                   {isLoading ? (
@@ -417,14 +391,14 @@ const MyTeam = () => {
       </div>
       {/* Pagination */}
       <div className="flex items-center justify-between">
-        <p className="text-[14px] leading-[16px] tracking-[0.2px] text-[#667185]">
+        {/* <p className="text-[14px] leading-[16px] tracking-[0.2px] text-[#667185]">
           Showing {results?.data?.meta.from || 0} -{" "}
           {results?.data?.meta.to || 0} of {results?.data?.meta.total} results |
           Page {results?.data?.meta.current_page} of{" "}
           {results?.data?.meta.last_page}
-        </p>
+        </p> */}
         <div>
-          <button
+          {/* <button
             onClick={() => handlePrev(results?.data?.links?.prev)}
             disabled={!results?.data?.links.prev}
             className={`rounded-tl-lg rounded-bl-lg py-1 px-2 border-[0.2px] text-[14px] leading-[16px] tracking-[0.2px] border-[#98A2B3] ${
@@ -434,7 +408,7 @@ const MyTeam = () => {
             }`}
           >
             Prev
-          </button>
+          </button> */}
 
           {/* {results?.data?.meta.links.map((link, index) => (
                 link.url ? (
@@ -450,7 +424,7 @@ const MyTeam = () => {
                 )
               ))} */}
 
-          <button
+          {/* <button
             onClick={() => handleNext(results?.data?.links?.next)}
             disabled={!results?.data?.links.next}
             className={`rounded-tr-lg rounded-br-lg py-1 px-2 border-[0.2px] text-[14px] leading-[16px] tracking-[0.2px] border-[#98A2B3] ${
@@ -460,7 +434,7 @@ const MyTeam = () => {
             }`}
           >
             Next
-          </button>
+          </button> */}
         </div>
       </div>
       {/* Create Modal */}
@@ -472,7 +446,7 @@ const MyTeam = () => {
               <div className="h-[32px] w-[1px] bg-[#D0D5DD]" />
               <div className="flex items-center">
                 <p className="text-[#667185] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
-                  Create Transactions
+                  Create Team Member
                 </p>
               </div>
             </div>
@@ -484,85 +458,112 @@ const MyTeam = () => {
           </div>
 
           <div className="p-[12px] md:p-[20px] xl:p-[24px]">
+          <div className="mb-[20px]">
+              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
+                First Name
+              </label>
+              <div className=" relative  flex items-center">
+                <input
+                  type="text"
+                  placeholder=""
+                  className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  name="firstName"
+                  id=""
+                 value={formValue.firstName}
+                    onChange={(e) => handleInputChange(e)}
+                  autoCapitalize="off"
+                  autoCorrect="off"
+                  spellCheck="false"
+                />
+              </div>
+            </div>
+          <div className="mb-[20px]">
+              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
+                Last Name
+              </label>
+              <div className=" relative  flex items-center">
+                <input
+                  type="text"
+                  placeholder=""
+                  className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  name="lastName"
+                  id=""
+                 value={formValue.lastName}
+                    onChange={(e) => handleInputChange(e)}
+                  autoCapitalize="off"
+                  autoCorrect="off"
+                  spellCheck="false"
+                />
+              </div>
+            </div>
+            <div className="mb-[20px]">
+              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
+                Phone Number
+              </label>
+              <div className=" relative  flex items-center">
+                <input
+                  type="text"
+                  placeholder=""
+                  className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  name="phone"
+                  id=""
+                 value={formValue.phone}
+                    onChange={(e) => handleInputChange(e)}
+                  autoCapitalize="off"
+                  autoCorrect="off"
+                  spellCheck="false"
+                />
+              </div>
+            </div>
+            <div className="mb-[20px]">
+              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
+                Email
+              </label>
+              <div className=" relative  flex items-center">
+                <input
+                  type="email"
+                  placeholder=""
+                  className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  name="email"
+                  id=""
+                 value={formValue.email}
+                    onChange={(e) => handleInputChange(e)}
+                  autoCapitalize="off"
+                  autoCorrect="off"
+                  spellCheck="false"
+                />
+              </div>
+            </div>
             <div className="mb-[24px]">
               <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
-                Employee
+                Role
               </label>
-              <div className=" relative  mt-[16px]  flex items-center">
+              <div className=" relative  flex items-center">
                 <select
                   type="text"
-                  placeholder="Name"
+                  placeholder=""
                   className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                  name="full-name"
-                  id="full-name"
-                  //value=""
-                  //onChange={() => {}}
+                  name="role"
+                  id=""
+                 value={formValue.role}
+                    onChange={(e) => handleInputChange(e)}
                   autoCapitalize="off"
                   autoCorrect="off"
                   spellCheck="false"
                 >
-                  <option value="">Select Employee</option>
-                  <option value="Monthly Payslip">Monthly Payslip</option>
+                  <option value="">Select Role</option>
+                  <option value="owner">Owner</option>
+                  <option value="manager">Manager</option>
+                  <option value="developer">Developer</option>
+                  <option value="support">Support</option>
+                  <option value="finance">Finance</option>
+                  <option value="operations">Operations</option>
+                  <option value="viewer">Viewer</option>
+                  {/* <option value="Manager">Manager</option> */}
                 </select>
               </div>
             </div>
-            <div className="mb-[24px]">
-              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
-                Date
-              </label>
-              <div className=" relative  mt-[16px]  flex items-center">
-                <input
-                  type="date"
-                  placeholder="Enter Title"
-                  className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                  name="date"
-                  id="full-name"
-                  //   value={formData.date}
-                  //   onChange={(e) => handleChange(e)}
-                  autoCapitalize="off"
-                  autoCorrect="off"
-                  spellCheck="false"
-                />
-              </div>
-            </div>
-            <div className="mb-[24px]">
-              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
-                Clock In
-              </label>
-              <div className=" relative  mt-[16px]  flex items-center">
-                <input
-                  type="time"
-                  placeholder="Name"
-                  className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                  name="full-name"
-                  id="full-name"
-                  //value=""
-                  //onChange={() => {}}
-                  autoCapitalize="off"
-                  autoCorrect="off"
-                  spellCheck="false"
-                />
-              </div>
-            </div>
-            <div className="mb-[24px]">
-              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
-                Clock Out
-              </label>
-              <div className=" relative  mt-[16px]  flex items-center">
-                <input
-                  type="time"
-                  placeholder=""
-                  className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                  name="date"
-                  id="full-name"
-                  //   value={formData.date}
-                  //   onChange={(e) => handleChange(e)}
-                  autoCapitalize="off"
-                  autoCorrect="off"
-                  spellCheck="false"
-                />
-              </div>
-            </div>
+
             <div className="py-[20px] border-t border-b-[#E4E7EC] flex-item  justify-end">
               <div className="flex-item gap-2">
                 {" "}
@@ -572,8 +573,11 @@ const MyTeam = () => {
                 >
                   Cancel
                 </button>
-                <button className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white">
-                  {!isLoading ? (
+
+                <button
+                onClick={CreateTeam}
+                className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white">
+                  {isLoading ? (
                     <ClipLoader color={"white"} size={20} />
                   ) : (
                     <> Create</>

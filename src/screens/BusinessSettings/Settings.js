@@ -22,6 +22,10 @@ const Settings = () => {
       refetchOnWindowFocus: "always",
     }
   );
+
+  const profileData = results?.data?.data || []
+  console.log("profile Data up====>>>", profileData )
+
   
 
     return (
@@ -107,7 +111,7 @@ const Settings = () => {
           </ul>
         </div>
         <div className=" ">
-          <Outlet context={results?.data?.data} />
+          <Outlet context={profileData} />
   
         </div>
       </div>

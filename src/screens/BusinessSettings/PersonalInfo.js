@@ -1,9 +1,32 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { motion as m } from "framer-motion";
 import { Sms } from "iconsax-react";
 import { GiPhone } from "react-icons/gi";
+import { useOutletContext } from "react-router-dom";
+import api from "../../api";
+import { useQuery } from "@tanstack/react-query";
 
 const PersonalInfo = () => {
+
+//   const profileData  = useOutletContext();
+// console.log("profile Data====>>>", profileData )
+
+
+async function getKyc(page) {
+  const response = await api.getKyc({ params: { page } });
+  return response;
+}
+const ProfileQuery = useQuery(["users"], () => getKyc(), {
+  keepPreviousData: true,
+  refetchOnWindowFocus: "always",
+});
+
+const profileData = ProfileQuery?.data?.data || []
+//   useEffect(()=> {
+// if
+//   }, [profileData])
+
+
   return (
     <div className="p-4 md:p-6">
       {" "}
@@ -31,7 +54,7 @@ const PersonalInfo = () => {
                 className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                 
                 name="firstName"
-                // value={formValue.firstName}
+                value={profileData?.first_name}
                 // onChange={(e) => {
                 //   handleInputChange(e);
                 // }}
@@ -53,7 +76,7 @@ const PersonalInfo = () => {
                 className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                 required
                 name="lastName"
-                // value={formValue.lastName}
+                value={profileData?.last_name}
                 // onChange={(e) => {
                 //   handleInputChange(e);
                 // }}
@@ -78,7 +101,8 @@ const PersonalInfo = () => {
                 className="w-full  h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                 required
                 name="email"
-                // value={formValue.email}
+                value={profileData?.email}
+
                 // onChange={(e) => {
                 //   handleInputChange(e);
                 // }}
@@ -106,7 +130,7 @@ const PersonalInfo = () => {
                 className="w-full  h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                 
                 name="phone"
-                // value={formValue.phone}
+                value={profileData?.phone}
                 // onChange={(e) => {
                 //   handleInputChange(e);
                 // }}
@@ -129,7 +153,7 @@ const PersonalInfo = () => {
                 className="w-full  h-[120px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                 required
                 name="address"
-                // value={formValue.address}
+                value={profileData?.address}
                 // onChange={(e) => {
                 //   handleInputChange(e);
                 // }}
@@ -151,7 +175,7 @@ const PersonalInfo = () => {
                 className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                 required
                 name="nin"
-                // value={formValue.nin}
+                value={profileData?.nin}
                 // onChange={(e) => {
                 //   handleInputChange(e);
                 // }}

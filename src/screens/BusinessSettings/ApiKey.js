@@ -1,5 +1,9 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import { motion as m } from "framer-motion";
+import { useOutletContext } from "react-router-dom";
+import { decryptaValue, encryptaValue } from "../../utils/helperFunctions";
+
+
 
 const ApiKey = () => {
   const [publicCopySuccess, setPublicCopySuccess] = useState("");
@@ -7,6 +11,20 @@ const ApiKey = () => {
   const [publicKey, setPublicKey] = useState("PBLK_23632RXXXXXXXXXX_1298");
   const [secretKey, setSecretKey] = useState("");
   const [keyloading, setKeyLoading] = useState(false);
+  
+  const profileData = useOutletContext();
+
+  useEffect(() => {
+     //If there's no profile data, set selectedInfo to 1
+    if (profileData) {
+       setPublicKey(profileData?.api_token)
+    }
+    //const stringedValue = JSON.parse(profileData?.api_token);
+
+   console.log("decrypting the api key=====>>>", profileData?.api_token)
+    
+  }, [profileData]);
+
 
   const copyPublicKeyToClipboard = (text) => {
     navigator.clipboard.writeText(text);

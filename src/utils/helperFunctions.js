@@ -3,8 +3,7 @@ import { AES, enc } from "crypto-js";
 import CryptoJS from "crypto-js";
 import AES256 from "aes-everywhere";
 
-// or
-// import AES256 from 'aes-everywhere';
+
 
 // decryption
 export const decryptaValue = (value) => {

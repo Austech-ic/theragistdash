@@ -333,16 +333,18 @@ Customers              </p>
                     results?.data?.data?.map((result) => (
                       <tr key="_" className="mb-2 hover:bg-light-gray">
                         <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                          Ogundele Caleb{" "}
+                         {result?.name}
                         </td>
                         <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                          ogun!@gmail.com
+                        {result?.email}
                         </td>
-
+                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                        {result?.phone}
+                        </td>
                         <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
                           <button
                             className={`rounded-[20px] md:rounded-[40px] w-[60px] md:w-[74px] py-[2px] md:py-[4px] mx-auto ${
-                              result.status === "Pending"
+                              result.isActive === 1
                                 ? "bg-[rgb(255,245,230)] text-[#FF9800]"
                                 : result.status === "Ongoing"
                                 ? "bg-[#F9FAFB] text-[#667185]"

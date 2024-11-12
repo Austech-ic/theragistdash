@@ -4,6 +4,8 @@ import {
   ArrowUp,
   Book,
   Calendar,
+  Clipboard,
+  ClipboardText,
   CloseCircle,
   DocumentDownload,
   DocumentUpload,
@@ -69,6 +71,20 @@ const Transactions = () => {
   const [reference, setReference] = useState("");
   const [type, setType] = useState("");
   const [transacDetails, setTransacDetails] = useState([]);
+  const [copiedRef, setCopiedRef] = useState(null);
+  const [status, setStatus] = useState("")
+  const [currency, setCurrency] = useState("")
+
+  // Function to copy text to the clipboard
+  const handleCopy = async (transactionRef) => {
+    try {
+      await navigator.clipboard.writeText(transactionRef);
+      setCopiedRef(transactionRef); // Set copied ref to show feedback
+      setTimeout(() => setCopiedRef(null), 2000); // Clear feedback after 2 seconds
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  };
 
   function HandleEditModalClose() {
     setIsEditOpen(false);
@@ -150,17 +166,19 @@ const Transactions = () => {
     const response = await api.getTransaction({
       params: {
         page,
-        // search: reference,
-        // from: startdate,
-        // until: enddate,
-        // is_credit: type,
+        search: reference,
+        from: startdate,
+        until: enddate,
+        is_credit: type,
+        status,
+        currency
       },
     });
     return response;
   }
 
   const results = useQuery(
-    ["transactions", page, reference, startdate, enddate, type],
+    ["transactions", page, reference, startdate, enddate, type, status, currency],
     () => getTransaction(page),
     {
       keepPreviousData: true,
@@ -212,6 +230,8 @@ const Transactions = () => {
               <input
                 className="w-full lg:w-[300px] py-[6px] text-[16px] text-[#344054] leading-[20px] placeholder:text-[#98A2B3] placeholder:text-[12px] border border-transparent  focus:outline-none focus:ring-[#26ae5f] focus:border-b-[#26ae5f] "
                 placeholder="Search by transaction ref.."
+                value={reference}
+                onChange={(e) => setReference(e.target.value)}
               />
             </div>
           </div>
@@ -307,6 +327,8 @@ const Transactions = () => {
               type="text"
               placeholder=""
               className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+              value={currency}
+              onChange={(e) => setCurrency(e.target.value)}
             >
               <option value="">Select Currency</option>
               <option value="NGN">NGN</option>
@@ -329,7 +351,7 @@ const Transactions = () => {
               type="text"
               className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
               value={type}
-              onChange={(e) => setType(e.taget.value)}
+              onChange={(e) => setType(e.target.value)}
             >
               <option value="">Select Transaction Type</option>
               <option value="1">Credit</option>
@@ -340,6 +362,9 @@ const Transactions = () => {
               type="text"
               placeholder="Select Item Type"
               className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+            
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
             >
               <option value="">Select Status</option>
               <option value="pending">pending</option>
@@ -456,8 +481,8 @@ const Transactions = () => {
                   {results?.data &&
                     results?.data?.data?.map((result) => (
                       <tr key="_" className="mb-2 hover:bg-light-gray">
-                            <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                          {result?.reference}
+                            <td className="whitespace-nowrap py-[16px]  bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                         <div className="flex-item gap-2 ">{result?.reference} <button onClick={() => handleCopy(result?.reference)} className="hover:-translate-y-1  transition-transform ease-in-out ">   {copiedRef === result?.reference ? (<span className="font-normal text-[12px]">Copied!</span>) : (<ClipboardText size={14} />)}</button></div> 
                         </td>
                         <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
                           {result?.reason}
@@ -519,13 +544,15 @@ const Transactions = () => {
                             // )}
                           />
                         </td>
-                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px]  font-medium text-left  ">
                           <button
                             className={`rounded-[20px] md:rounded-[40px] w-[80px] w- py-[2px] md:py-[4px] mx-auto ${
                               result.status === "failed"
-                                ? "bg-[rgb(255,245,230)] text-[#DB0404FFFF]"
-                                : result.status === "Ongoing"
-                                ? "bg-[#F9FAFB] text-[#667185]"
+                                ? "bg-[rgb(255,245,230)] text-red-500"
+                                : result.status === "pending"
+                                ? "bg-[rgb(255,245,230)] text-orange-040"
+                                  : result.status === "reversed"
+                                ? "bg-yellow-100 text-yellow-500"
                                 : "bg-[#EDF7EE] text-[#4CAF50]"
                             }  text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px]`}
                           >

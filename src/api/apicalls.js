@@ -17,7 +17,7 @@ import {
  WALLETS,
  TRANSACTIONFULLLENGTH,
  TRANSACTIONSUMMARY,
- ADDTEAMMEMBER
+ ADDTEAMMEMBER,GETTEAMMEMBER
 } from "../utils/config";
 import { apiDelete, apiGet, apiGetCSV, apiPost, apiPut } from "../utils/utils";
 
@@ -69,6 +69,11 @@ export function setDefaultPartner(data) {
 export function createTeamMember(data) {
   return apiPost(ADDTEAMMEMBER, data);
 }
+
+export function getTeamMember(data) {
+  return apiGet(GETTEAMMEMBER, data);
+}
+
 
 
 //transfer

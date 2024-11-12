@@ -22,5 +22,6 @@ export const DOCUMENT = getApiUrl('/kyb/upload-documents')
 export const GETBUSINESSPROFILE = getApiUrl('/business/profile')
 export const TRANSACTIONSUMMARY = getApiUrl('/transactions/summary')
 export const TRANSACTIONFULLLENGTH = getApiUrl('/transactions/all')
-export const ADDTEAMMEMBER = getApiUrl('/business/add-team-member')
+export const ADDTEAMMEMBER = getApiUrl('/business/add-member')
+export const GETTEAMMEMBER = getApiUrl('/business/members')
 
