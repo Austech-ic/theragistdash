@@ -30,6 +30,10 @@ const GetStarted = () => {
   const [directorId1File, setDirectorId1File] = useState(null);
   const [directorId2File, setDirectorId2File] = useState(null);
   const [cacForm, setCacForm] = useState(null);
+  const [personalDisabled, setPersonalDisabled] = useState(false)
+  const [busDisabled, setBusDisabled] = useState(false)
+  const [bvnDisabled, setBvnDisabled] = useState(false)
+  const [uploadDisabled, setUploadDisabled] = useState(false)
   const [formValue, setFormValue] = useState({
     firstName: "",
     lastName: "",
@@ -75,6 +79,16 @@ const GetStarted = () => {
     keepPreviousData: true,
     refetchOnWindowFocus: "always",
   });
+  async function getProfile(page) {
+    const response = await api.getProfile({ params: { page } });
+    return response;
+  }
+
+  const ProfilesQuery = useQuery(["profile"], () => getProfile(), {
+    keepPreviousData: true,
+    refetchOnWindowFocus: "always",
+  });
+  const profilesData = ProfilesQuery?.data || [];
 
   const profileData = ProfileQuery?.data?.data || [];
   const busData = BussQuery?.data?.data || [];
@@ -107,14 +121,22 @@ const GetStarted = () => {
     });
     if (profileData?.personal_info_status === "completed") {
       setFilledSection(addValuePush(filledSection, 1));
+      setPersonalDisabled(true)
     }
     if (busData?.business_info_status === "completed") {
       setFilledSection(addValuePush(filledSection, 2));
+      setBusDisabled(true)
     }
     if (bvnData?.bvn) {
       setFilledSection(addValuePush(filledSection, 3));
+      setBvnDisabled(true)
     }
-  }, [ProfileQuery?.data, BussQuery?.data, BvnQuery?.data]);
+    if (profilesData?.default_partner?.documents_status === "completed") {
+      setFilledSection(addValuePush(filledSection, 4));
+      setUploadDisabled(true)
+    }
+
+  }, [ProfileQuery?.data, BussQuery?.data, BvnQuery?.data, ProfilesQuery?.data]);
 
   const info = [
     { id: 1, name: "Personal Information" },
@@ -338,6 +360,7 @@ const GetStarted = () => {
                     placeholder="Enter first name"
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
+                    disabled={personalDisabled}
                     name="firstName"
                     value={formValue.firstName}
                     onChange={(e) => {
@@ -360,6 +383,8 @@ const GetStarted = () => {
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     name="lastName"
+                    disabled={personalDisabled}
+
                     value={formValue.lastName}
                     onChange={(e) => {
                       handleInputChange(e);
@@ -388,6 +413,8 @@ const GetStarted = () => {
                     className="w-full  h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     name="email"
+                    disabled={personalDisabled}
+
                     value={formValue.email}
                     onChange={(e) => {
                       handleInputChange(e);
@@ -415,6 +442,8 @@ const GetStarted = () => {
                     className="w-full  h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     name="phone"
+                    disabled={personalDisabled}
+
                     value={formValue.phone}
                     onChange={(e) => {
                       handleInputChange(e);
@@ -437,6 +466,8 @@ const GetStarted = () => {
                     className="w-full  h-[120px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     name="address"
+                    disabled={personalDisabled}
+
                     value={formValue.address}
                     onChange={(e) => {
                       handleInputChange(e);
@@ -458,6 +489,8 @@ const GetStarted = () => {
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     name="nin"
+                    disabled={personalDisabled}
+
                     value={formValue.nin}
                     onChange={(e) => {
                       handleInputChange(e);
@@ -527,6 +560,8 @@ const GetStarted = () => {
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     name="busName"
+                    disabled={busDisabled}
+
                     value={formValue.busName}
                     onChange={(e) => {
                       handleInputChange(e);
@@ -548,6 +583,8 @@ const GetStarted = () => {
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     name="busWebsite"
+                    disabled={busDisabled}
+
                     value={formValue.busWebsite}
                     onChange={(e) => {
                       handleInputChange(e);
@@ -569,6 +606,8 @@ const GetStarted = () => {
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     name="busDescription"
+                    disabled={busDisabled}
+
                     value={formValue.busDescription}
                     onChange={(e) => {
                       handleInputChange(e);
@@ -597,6 +636,8 @@ const GetStarted = () => {
                     className="w-full  h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     name="busSupportEmail"
+                    disabled={busDisabled}
+
                     value={formValue.busSupportEmail}
                     onChange={(e) => {
                       handleInputChange(e);
@@ -624,6 +665,8 @@ const GetStarted = () => {
                     className="w-full  h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     name="chargeBackEmail"
+                    disabled={busDisabled}
+
                     value={formValue.chargeBackEmail}
                     onChange={(e) => {
                       handleInputChange(e);
@@ -645,6 +688,8 @@ const GetStarted = () => {
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     name="rcNumber"
+                    disabled={busDisabled}
+
                     value={formValue.rcNumber}
                     onChange={(e) => {
                       handleInputChange(e);
@@ -666,6 +711,8 @@ const GetStarted = () => {
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     name="incopDate"
+                    disabled={busDisabled}
+
                     value={formValue.incopDate}
                     onChange={(e) => {
                       handleInputChange(e);
@@ -688,6 +735,8 @@ const GetStarted = () => {
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     name="busCity"
+                    disabled={busDisabled}
+
                     value={formValue.busCity}
                     onChange={(e) => {
                       handleInputChange(e);
@@ -709,6 +758,8 @@ const GetStarted = () => {
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     name="busAddress"
+                    disabled={busDisabled}
+
                     value={formValue.busAddress}
                     onChange={(e) => {
                       handleInputChange(e);
@@ -777,7 +828,9 @@ const GetStarted = () => {
                     className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     name="bvn"
-                    value={formValue.bvn}
+                    disabled={bvnDisabled}
+
+                    value={formValue.bvn === "Uploaded" ? "XXXX XXXX XX" : formValue.bvn }
                     onChange={(e) => {
                       handleInputChange(e);
                     }}
@@ -846,6 +899,8 @@ const GetStarted = () => {
                     name="csv"
                     type="file"
                     accept=".jpg,.pdf"
+                    disabled={uploadDisabled}
+
                     onChange={(e) => setIncopFile(e.target.files[0])}
                   />
                   <p className="text-[10px] text-gray-400">
@@ -865,6 +920,8 @@ const GetStarted = () => {
                     name="csv"
                     type="file"
                     accept=".jpg,.pdf"
+                    disabled={uploadDisabled}
+
                     onChange={(e) => setDirectorId1File(e.target.files[0])}
                   />
                   <p className="text-[10px] text-gray-400">
@@ -884,6 +941,8 @@ const GetStarted = () => {
                     name="csv"
                     type="file"
                     accept=".jpg,.pdf"
+                    disabled={uploadDisabled}
+
                     onChange={(e) => setCacForm(e.target.files[0])}
                   />
                   <p className="text-[10px] text-gray-400">
@@ -903,6 +962,8 @@ const GetStarted = () => {
                     name="csv"
                     type="file"
                     accept=".jpg,.pdf"
+                    disabled={uploadDisabled}
+
                     onChange={(e) => setDirectorId2File(e.target.files[0])}
                   />
                   <p className="text-[10px] text-gray-400">
@@ -913,7 +974,7 @@ const GetStarted = () => {
 
               <div className="py-[20px] border-t border-b-[#E4E7EC]  ">
                 <div className="flex-item gap-2 w-full">
-                  {busData && formValue.bvn === 0 ? (
+                  {profilesData && profilesData?.default_partner?.documents_status === "completed" ? (
                     <div className="flex gap-1 items-center w-[85%] mx-auto">
                       <div className="h-[1.5px] bg-green-400 flex-1 w-full"></div>{" "}
                       <p className="text-green-600 text-[14px]">

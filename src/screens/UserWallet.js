@@ -307,14 +307,7 @@ const UserWallet = () => {
                         </div>
                       </th> */}
   
-                      <th
-                        scope="col"
-                        className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
-                      >
-                        <div className="flex justify-center gap-[6px] md:gap-[12px] items-center my-0">
-                          Action
-                        </div>
-                      </th>
+                   
                     </tr>
                   </thead>
                   <tbody>
@@ -344,24 +337,9 @@ const UserWallet = () => {
                           <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
                           {result?.phone}
                           </td>
-                          {/* <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                            <button
-                              className={`rounded-[20px] md:rounded-[40px] w-[60px] md:w-[74px] py-[2px] md:py-[4px] mx-auto ${
-                                result.status === "Pending"
-                                  ? "bg-[rgb(255,245,230)] text-[#FF9800]"
-                                  : result.status === "Ongoing"
-                                  ? "bg-[#F9FAFB] text-[#667185]"
-                                  : "bg-[#EDF7EE] text-[#4CAF50]"
-                              }  text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px]`}
-                            >
-                              <p>Active</p>
-                            </button>{" "}
-                          </td> */}
-                          {/* <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                            Sep 11, 2024 (at 03.00 AM)
-                          </td> */}
+                        
   
-                          <td className="whitespace-nowrap py-[16px] flex-item gap-2 bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#1A202C] font-medium text-left  ">
+                          {/* <td className="whitespace-nowrap py-[16px] flex-item gap-2 bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#1A202C] font-medium text-left  ">
                             <More
                               onClick={() => ToggleEditModal()}
                               variant="Linear"
@@ -468,7 +446,7 @@ const UserWallet = () => {
                                 </ModalFooter>
                               </ModalContent>
                             </Modal>
-                          </td>
+                          </td> */}
                         </tr>
                       ))}
                     {/* ))} */}

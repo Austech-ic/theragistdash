@@ -21,14 +21,14 @@ const ApiKey = () => {
     }
     //const stringedValue = JSON.parse(profileData?.api_token);
 
-   console.log("decrypting the api key=====>>>", profileData?.api_token)
+//    console.log("decrypting the api key=====>>>", decryptaValue('U2FsdGVkX19eJSpPaYvAOpYRegX386fJRgcTvazL7w16Via3BrZcofJPif+5Vdic3nzu65JfOspeoTIKjqygyfbPdJGWrBMgxzD25ffabQ50gG+fwL0y+CDi6KRZfR2tqiEyKgLnVYs1ao/R7Ot9Gw=='))
     
   }, [profileData]);
 
 
   const copyPublicKeyToClipboard = (text) => {
-    navigator.clipboard.writeText(text);
-    setPublicCopySuccess(text);
+    navigator.clipboard.writeText(decryptaValue(text));
+    setPublicCopySuccess(decryptaValue(text));
     setTimeout(() => {
       setPublicCopySuccess("");
     }, 3000);
@@ -80,7 +80,7 @@ const ApiKey = () => {
                 onClick={() => copyPublicKeyToClipboard(publicKey)}
               >
                 <p className="text-[14px] leading-[21px] tracking-[0.2px] text-[white] font-medium text-left whitespace-nowrap">
-                  {publicCopySuccess === publicKey
+                  {publicCopySuccess === decryptaValue(publicKey)
                     ? "Copied!"
                     : "Click to copy"}
                 </p>

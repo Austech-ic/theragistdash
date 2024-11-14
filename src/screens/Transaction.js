@@ -9,7 +9,6 @@ import {
   CloseCircle,
   DocumentDownload,
   DocumentUpload,
- 
   More,
   Note1,
   Printer,
@@ -32,7 +31,7 @@ import {
   ModalOverlay,
   Text,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { ClipLoader } from "react-spinners";
 
 import ModalLeft from "../components/ModalLeft";
@@ -54,9 +53,11 @@ import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import TransactionReceipt from "../components/transaction-receipt";
 
 const Transactions = () => {
   const navigate = useNavigate();
+  const receiptRef = useRef();
   const [isViewModal, setIsViewModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -72,8 +73,8 @@ const Transactions = () => {
   const [type, setType] = useState("");
   const [transacDetails, setTransacDetails] = useState([]);
   const [copiedRef, setCopiedRef] = useState(null);
-  const [status, setStatus] = useState("")
-  const [currency, setCurrency] = useState("")
+  const [status, setStatus] = useState("");
+  const [currency, setCurrency] = useState("");
 
   // Function to copy text to the clipboard
   const handleCopy = async (transactionRef) => {
@@ -82,7 +83,7 @@ const Transactions = () => {
       setCopiedRef(transactionRef); // Set copied ref to show feedback
       setTimeout(() => setCopiedRef(null), 2000); // Clear feedback after 2 seconds
     } catch (err) {
-      console.error('Failed to copy:', err);
+      console.error("Failed to copy:", err);
     }
   };
 
@@ -162,6 +163,12 @@ const Transactions = () => {
     });
   };
 
+  const handleDownloadPdf = () => {
+    if (receiptRef.current) {
+      receiptRef.current.generatePDF();
+    }
+  };
+
   async function getTransaction(page) {
     const response = await api.getTransaction({
       params: {
@@ -171,14 +178,23 @@ const Transactions = () => {
         until: enddate,
         is_credit: type,
         status,
-        currency
+        currency,
       },
     });
     return response;
   }
 
   const results = useQuery(
-    ["transactions", page, reference, startdate, enddate, type, status, currency],
+    [
+      "transactions",
+      page,
+      reference,
+      startdate,
+      enddate,
+      type,
+      status,
+      currency,
+    ],
     () => getTransaction(page),
     {
       keepPreviousData: true,
@@ -246,6 +262,13 @@ const Transactions = () => {
 
               <DocumentUpload variant="Linear" color="#667185" size="16" />
             </button>
+
+            <div className="hidden"> <TransactionReceipt
+              ref={receiptRef}
+              transaction={transacDetails}
+              showDownloadButton={false} // Hide the built-in download button
+            /></div>
+           
 
             <Modal
               isCentered
@@ -362,7 +385,6 @@ const Transactions = () => {
               type="text"
               placeholder="Select Item Type"
               className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-            
               value={status}
               onChange={(e) => setStatus(e.target.value)}
             >
@@ -391,7 +413,6 @@ const Transactions = () => {
               <table className="min-w-full mb-6 border-[0.8px] border-r-[0.8px]  border-l-[0.8px] border-[#E4E7EC] rounded-lg">
                 <thead className="bg-[#F9FAFB]">
                   <tr className="">
-                  
                     <th
                       scope="col"
                       className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
@@ -481,13 +502,28 @@ const Transactions = () => {
                   {results?.data &&
                     results?.data?.data?.map((result) => (
                       <tr key="_" className="mb-2 hover:bg-light-gray">
-                            <td className="whitespace-nowrap py-[16px]  bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                         <div className="flex-item gap-2 ">{result?.reference} <button onClick={() => handleCopy(result?.reference)} className="hover:-translate-y-1  transition-transform ease-in-out ">   {copiedRef === result?.reference ? (<span className="font-normal text-[12px]">Copied!</span>) : (<ClipboardText size={14} />)}</button></div> 
+                        <td className="whitespace-nowrap py-[16px]  bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                          <div className="flex-item gap-2 ">
+                            {result?.reference}{" "}
+                            <button
+                              onClick={() => handleCopy(result?.reference)}
+                              className="hover:-translate-y-1  transition-transform ease-in-out "
+                            >
+                              {" "}
+                              {copiedRef === result?.reference ? (
+                                <span className="font-normal text-[12px]">
+                                  Copied!
+                                </span>
+                              ) : (
+                                <ClipboardText size={14} />
+                              )}
+                            </button>
+                          </div>
                         </td>
                         <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
                           {result?.reason}
                         </td>
-                    
+
                         <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
                           <NumericFormat
                             value={result?.amount}
@@ -551,7 +587,7 @@ const Transactions = () => {
                                 ? "bg-[rgb(255,245,230)] text-red-500"
                                 : result.status === "pending"
                                 ? "bg-[rgb(255,245,230)] text-orange-400"
-                                  : result.status === "reversed"
+                                : result.status === "reversed"
                                 ? "bg-yellow-100 text-yellow-500"
                                 : "bg-[#EDF7EE] text-[#4CAF50]"
                             }  text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px]`}
@@ -760,7 +796,10 @@ const Transactions = () => {
         <div>
           <div className="border-b border-b-[#E4E7EC] p-[16px] md:flex justify-between items-center ">
             <div className="flex items-center gap-[16px]">
-            <button onClick={handleDownload}>  <Printer variant="Linear" color="#667185" size="16" />{" "}</button>
+              <button onClick={handleDownloadPdf}>
+                {" "}
+                <Printer variant="Linear" color="#667185" size="16" />{" "}
+              </button>
               <div className="h-[32px] w-[1px] bg-[#D0D5DD]" />
               <div className="">
                 <p className="text-[#667185] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
@@ -777,7 +816,7 @@ const Transactions = () => {
           <div id="print">
             <div className="w-full">
               {" "}
-              <p className=" text-[26px] my-3  text-[#000] leading-[24px] font-semibold text-center ">
+              <p className=" text-[26px] my-3  mt-6 text-[#000] leading-[24px] font-semibold text-center ">
                 {" "}
                 <NumericFormat
                   value={transacDetails?.amount}

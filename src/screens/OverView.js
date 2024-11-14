@@ -7,7 +7,7 @@ import {
   MobileProgramming,
   Task,
   User,
-  UserOctagon,
+  WalletMoney,
 } from "iconsax-react";
 import React, { useState } from "react";
 import {
@@ -58,7 +58,7 @@ const OverView = () => {
   const [isLoading, setIsLoading] = useState(false);
   const result = [{ status: "Success" }];
   const [page, setPage] = useState(1);
-  const [filter, setFilter] = useState("m");
+  const [filter, setFilter] = useState("d");
 
   async function getTransaction(page) {
     const response = await api.getTransaction({
@@ -98,7 +98,7 @@ const OverView = () => {
   }
 
   const ChartQuery = useQuery(
-    ["chart", page],
+    ["chart", page, filter],
     () => getTransactionChart(page),
     {
       keepPreviousData: true,
@@ -190,7 +190,7 @@ const OverView = () => {
               Wallet Balance
             </p>
             <buttion className="h-[32px] w-[32px] flex justify-center items-center bg-[#F0F2F5] rounded-md">
-              <Folder2 variant="Linear" color="#667185" size="16" />
+              <WalletMoney variant="Linear" color="#667185" size="16" />
             </buttion>
           </div>
           <div className="px-[20px] py-[13px] border-t-[0.2] border-[#98A2B3] bg-[#F9FAFB] flex-between rounded-br-lg rounded-bl-lg ">
@@ -240,7 +240,7 @@ const OverView = () => {
             </p>
           </div>
         </li>
-        <li className="border-[0.2px] border-[#98a2b3] rounded-[8px] h-[156px] w-full mx-auto max-w-[270px] bg-[#ffff] flex flex-col justify-between ">
+        {/* <li className="border-[0.2px] border-[#98a2b3] rounded-[8px] h-[156px] w-full mx-auto max-w-[270px] bg-[#ffff] flex flex-col justify-between ">
           <div className="px-[20px] py-[24px]  flex-between">
             {" "}
             <p className="text-[#000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px]  ">
@@ -256,7 +256,7 @@ const OverView = () => {
               ₦ 250,000.00
             </p>
           </div>
-        </li>
+        </li> */}
         <li className="border-[0.2px] border-[#98a2b3] rounded-[8px] h-[156px] w-full max-w-[270px] mx-auto bg-[#ffff] flex flex-col justify-between ">
           <div className="px-[20px] py-[24px]  flex-between">
             {" "}
@@ -285,6 +285,20 @@ const OverView = () => {
           <p className="text-[18px]  leading-[27px] text-[#000]  ">
             Transaction Chart
           </p>
+
+          <select
+              type="text"
+              placeholder=""
+              className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+           
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+           >
+              <option value="">Select Frequency</option>
+              <option value="d">Daily</option>
+              <option value="m">Monthly</option>
+              <option value="y">Yearly</option>
+            </select>
         </div>
         <div className="px-[16px] mt-5 h-[350px] flex justify-center ">
           <Bar options={options} data={data} />

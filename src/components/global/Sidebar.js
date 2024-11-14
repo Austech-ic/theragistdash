@@ -186,7 +186,7 @@ const Sidebar = ({ isSidebarOpen, onClose, role }) => {
               />
               Wallet{" "}
             </Link>
-
+{/* 
             <Link
               to="/paymentlink"
               className={` py-[10px] pl-[16px] flex items-center text-[14px]   mb-3 leading-[20px] md:leading-[24px] ${
@@ -265,7 +265,7 @@ const Sidebar = ({ isSidebarOpen, onClose, role }) => {
                   <li className="">Customers</li>
                 </Link>
               </ul>
-            )}
+            )} */}
 
             {/* <Link
               to="/verification"
