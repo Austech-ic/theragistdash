@@ -8,7 +8,7 @@ import api from "../api";
 import { Navigate, useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import { motion as m } from "framer-motion";
-import { decryptaValue, decryptValue, encryptaValue } from "../utils/helperFunctions";
+import { decryptaValue, encryptaValue } from "../utils/helperFunctions";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -22,19 +22,19 @@ const Login = () => {
     setOpen(!open);
   };
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    const enc = encryptaValue(
-      "hello word"
-            )
+  //   // const enc = encryptaValue(
+  //   //   "hello word"
+  //   //         )
 
-    const dec = decryptaValue(
-    "U2FsdGVkX19I3TmwFmyNln1zEwZMiLBL36gqLnMv7bj+zPZFBXpkxynqo2zxgLY\/YRmE7eU7KOV\/u7D7UKV1ASTZWbmo9tV+f27pcT9PL6xiji+f0o\/jv6nsfB10KQSBDYCsOHPh3xKfbP2rAdm72M\/buIUxbc63iHEcMFzaVmzSRoBg8DhTfS\/9ndlTB0k\/8iLUEQ3vFeUw4JZf9xGHf\/OilzWio\/4W4d0QiVhV38g76XZXfhw9QvNRTWxc3xEB0sCVTAcVgcUbSc1uZfVHx1ldh\/aHz1QfcpsEQa2MTGrrvhZVmd11rcCxiD9PiAfsdBIhw8oI0dEOpmUc7F\/McTNiPuA+fGMGOORQg86+w\/7gzAebwQULtuiUaKE3tyVP2QsV7ZXMfq+3n7jHLc9KMdzgsuDaH1RFhstmTqw68nPWLSNveXWgwA+m7EQG21Pc54rl1faDRHEws7HB7UjbXCB0\/X7s6zxhi7UNeRRIuR0="
-    )  //const dec =  decryptValue("ZU4rSCt5R3ptWTd1TlZFNDVkYnhDaWNPb2RudllTU3lIelJnbGNYSng5N0JCRGE1WDhpOW1uTmR6TFVqZVJMag==")
-    //const dec =  decryptValue("XClPkOy0XN7s07bdFbrx9yV1YXEbbuRHPayMfZvDYQsy9Isoj0HiMJQmRx 75HEWVdLVTMxtHsPpJE7nYTv3hQ: =")
-    console.log("dec===>>>>", dec);
-    console.log("encc===>>>>", enc);
-  });
+  //   // const dec = decryptaValue(
+  //   // "U2FsdGVkX19I3TmwFmyNln1zEwZMiLBL36gqLnMv7bj+zPZFBXpkxynqo2zxgLY\/YRmE7eU7KOV\/u7D7UKV1ASTZWbmo9tV+f27pcT9PL6xiji+f0o\/jv6nsfB10KQSBDYCsOHPh3xKfbP2rAdm72M\/buIUxbc63iHEcMFzaVmzSRoBg8DhTfS\/9ndlTB0k\/8iLUEQ3vFeUw4JZf9xGHf\/OilzWio\/4W4d0QiVhV38g76XZXfhw9QvNRTWxc3xEB0sCVTAcVgcUbSc1uZfVHx1ldh\/aHz1QfcpsEQa2MTGrrvhZVmd11rcCxiD9PiAfsdBIhw8oI0dEOpmUc7F\/McTNiPuA+fGMGOORQg86+w\/7gzAebwQULtuiUaKE3tyVP2QsV7ZXMfq+3n7jHLc9KMdzgsuDaH1RFhstmTqw68nPWLSNveXWgwA+m7EQG21Pc54rl1faDRHEws7HB7UjbXCB0\/X7s6zxhi7UNeRRIuR0="
+  //   // )  //const dec =  decryptValue("ZU4rSCt5R3ptWTd1TlZFNDVkYnhDaWNPb2RudllTU3lIelJnbGNYSng5N0JCRGE1WDhpOW1uTmR6TFVqZVJMag==")
+  //   //const dec =  decryptValue("XClPkOy0XN7s07bdFbrx9yV1YXEbbuRHPayMfZvDYQsy9Isoj0HiMJQmRx 75HEWVdLVTMxtHsPpJE7nYTv3hQ: =")
+  //   // console.log("dec===>>>>", dec);
+  //   // console.log("encc===>>>>", enc);
+  // });
 
   async function login(e) {
     e.preventDefault();
@@ -153,7 +153,7 @@ const Login = () => {
             </div>
           </div>
 
-          <Link to="forgotpassword">
+          {/* <Link to="forgotpassword">
             {" "}
             <button
               type="button"
@@ -161,11 +161,11 @@ const Login = () => {
             >
               Forgot password?
             </button>
-          </Link>
+          </Link> */}
 
           <button
             type="submit"
-            className="w-full py-[14px] text-center text-white bg-[#26ae5f] rounded-[8px] flex items-center justify-center mb-[20px] md:mb-[32px]"
+            className="w-full py-[14px] mt-[39px] text-center text-white bg-[#26ae5f] rounded-[8px] flex items-center justify-center mb-[20px] md:mb-[32px]"
           >
             <p className="text-sm font-medium leading-[20px]">Sign in</p>
             {isLoading && <ClipLoader color={"white"} size={20} />}

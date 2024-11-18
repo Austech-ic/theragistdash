@@ -27,20 +27,8 @@ import {
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
-const Sidebar = ({ isSidebarOpen, onClose, role }) => {
+const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
   const router = useLocation();
-  // let userData = localStorage.getItem("userData")
-  const [token, setToken] = useState(null);
-  const [subUserPermission, setSubUserPermission] = useState(true);
-
-  const [settings, setSettings] = useState(false);
-  const [openOption, setOpenOption] = useState(false);
-  const [isActive, setIsActive] = useState("project");
-  const [isProject, setIsProject] = useState(false);
-  const [isHrm, setIsHrm] = useState(false);
-  const [isCrm, setIsCrm] = useState(false);
-  const [isInventory, setIsInventory] = useState(false);
-  const [isUser, setIsUser] = useState(false);
 
   return (
     <div
@@ -80,113 +68,114 @@ const Sidebar = ({ isSidebarOpen, onClose, role }) => {
       <div class="max-w-[260px] min-h-screen bg-[#FFFFFF] w-[260px]  p-[16px] md:p-[20px] sticky top-0 overflow-y-auto ">
         <div className="relative">
           <div className="relative h-screen overflow-y-auto no-scrollbar flex flex-col justify-between ">
-
             <div>
-            <img
-              class=" h-[40px] w-[70px]   "
-              src="/assets/VantLogo.png"
-              alt="logo"
-            />
-
-            <div className="border border-[#98A2B3]/50 my-5 " />
-
-          
-
-            <Link
-              to="/getstarted"
-              className={` py-[10px] pl-[16px] flex items-center text-[14px] mb-3   leading-[20px] md:leading-[24px] ${
-                window.location.pathname === "/getstarted"
-                  ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
-                  : "text-[#667185] font-normal"
-              }`}
-            >
-              <ClipboardExport
-                className="mr-[12px]"
-                variant={
-                  window.location.pathname === "/getstarted" ? "Bold" : "Linear"
-                }
+              <img
+                class=" h-[40px] w-[70px]   "
+                src="/assets/VantLogo.png"
+                alt="logo"
               />
-              Get Started
-            </Link>
 
-            <Link
-              to="/overview"
-              className={` py-[10px] pl-[16px] flex items-center text-[14px] mb-3   leading-[20px] md:leading-[24px] ${
-                window.location.pathname === "/overview"
-                  ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
-                  : "text-[#667185] font-normal"
-              }`}
-            >
-              <Home
-                className="mr-[12px]"
-                variant={
-                  window.location.pathname === "/overview" ? "Bold" : "Linear"
-                }
-              />
-              Overview
-            </Link>
+              <div className="border border-[#98A2B3]/50 my-5 " />
 
-            <Link
-              to="/transaction"
-              className={` py-[10px] pl-[16px] flex items-center text-[14px]  mb-3   leading-[20px] md:leading-[24px] ${
-                window.location.pathname === "/transaction"
-                  ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
-                  : "text-[#667185] font-normal"
-              }`}
-            >
-              <EmptyWalletChange
-                className="mr-[12px]"
-                variant={
+              {profileData?.default_partner?.is_verified !== 1 && (
+                <Link
+                  to="/getstarted"
+                  className={` py-[10px] pl-[16px] flex items-center text-[14px] mb-3   leading-[20px] md:leading-[24px] ${
+                    window.location.pathname === "/getstarted"
+                      ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
+                      : "text-[#667185] font-normal"
+                  }`}
+                >
+                  <ClipboardExport
+                    className="mr-[12px]"
+                    variant={
+                      window.location.pathname === "/getstarted"
+                        ? "Bold"
+                        : "Linear"
+                    }
+                  />
+                  Get Started
+                </Link>
+              )}
+
+              <Link
+                to="/overview"
+                className={` py-[10px] pl-[16px] flex items-center text-[14px] mb-3   leading-[20px] md:leading-[24px] ${
+                  window.location.pathname === "/overview"
+                    ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
+                    : "text-[#667185] font-normal"
+                }`}
+              >
+                <Home
+                  className="mr-[12px]"
+                  variant={
+                    window.location.pathname === "/overview" ? "Bold" : "Linear"
+                  }
+                />
+                Overview
+              </Link>
+
+              <Link
+                to="/transaction"
+                className={` py-[10px] pl-[16px] flex items-center text-[14px]  mb-3   leading-[20px] md:leading-[24px] ${
                   window.location.pathname === "/transaction"
-                    ? "Bold"
-                    : "Linear"
-                }
-              />
-              Transaction
-            </Link>
+                    ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
+                    : "text-[#667185] font-normal"
+                }`}
+              >
+                <EmptyWalletChange
+                  className="mr-[12px]"
+                  variant={
+                    window.location.pathname === "/transaction"
+                      ? "Bold"
+                      : "Linear"
+                  }
+                />
+                Transaction
+              </Link>
 
-            <Link
-              to="/user-wallets"
-              className={` py-[10px] pl-[16px] flex items-center text-[14px]  mb-3   leading-[20px] md:leading-[24px] ${
-                window.location.pathname === "/user-wallets"
-                  ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
-                  : "text-[#667185] font-normal"
-              }`}
-            >
-              <Wallet1
-                className="mr-[12px]"
-                variant={
+              <Link
+                to="/user-wallets"
+                className={` py-[10px] pl-[16px] flex items-center text-[14px]  mb-3   leading-[20px] md:leading-[24px] ${
                   window.location.pathname === "/user-wallets"
-                    ? "Bold"
-                    : "Linear"
-                }
-              />
-              User Wallets{" "}
-            </Link>
+                    ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
+                    : "text-[#667185] font-normal"
+                }`}
+              >
+                <Wallet1
+                  className="mr-[12px]"
+                  variant={
+                    window.location.pathname === "/user-wallets"
+                      ? "Bold"
+                      : "Linear"
+                  }
+                />
+                User Wallets{" "}
+              </Link>
 
-            <Link
-              to="/wallet/overview"
-              className={` py-[10px] pl-[16px] flex items-center text-[14px]  mb-3   leading-[20px] md:leading-[24px] ${
-                window.location.pathname === "/wallet/overview" ||
-                window.location.pathname === "/wallet/topup" ||
-                window.location.pathname === "/wallet/debit"
-                  ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
-                  : "text-[#667185] font-normal"
-              }`}
-            >
-              <WalletMoney
-                className="mr-[12px]"
-                variant={
+              <Link
+                to="/wallet/overview"
+                className={` py-[10px] pl-[16px] flex items-center text-[14px]  mb-3   leading-[20px] md:leading-[24px] ${
                   window.location.pathname === "/wallet/overview" ||
                   window.location.pathname === "/wallet/topup" ||
                   window.location.pathname === "/wallet/debit"
-                    ? "Bold"
-                    : "Linear"
-                }
-              />
-              Wallet{" "}
-            </Link>
-{/* 
+                    ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
+                    : "text-[#667185] font-normal"
+                }`}
+              >
+                <WalletMoney
+                  className="mr-[12px]"
+                  variant={
+                    window.location.pathname === "/wallet/overview" ||
+                    window.location.pathname === "/wallet/topup" ||
+                    window.location.pathname === "/wallet/debit"
+                      ? "Bold"
+                      : "Linear"
+                  }
+                />
+                Wallet{" "}
+              </Link>
+              {/* 
             <Link
               to="/paymentlink"
               className={` py-[10px] pl-[16px] flex items-center text-[14px]   mb-3 leading-[20px] md:leading-[24px] ${
@@ -267,7 +256,7 @@ const Sidebar = ({ isSidebarOpen, onClose, role }) => {
               </ul>
             )} */}
 
-            {/* <Link
+              {/* <Link
               to="/verification"
               className={` py-[10px] pl-[16px] flex items-center text-[14px]   mb-3 leading-[20px] md:leading-[24px] ${
                 window.location.pathname === "/verification"
@@ -285,24 +274,26 @@ const Sidebar = ({ isSidebarOpen, onClose, role }) => {
               />
               Verifications
             </Link> */}
-            <Link
-              to="/customers"
-              className={` py-[10px] pl-[16px] flex items-center text-[14px]   mb-3 leading-[20px] md:leading-[24px] ${
-                window.location.pathname === "/customers"
-                  ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
-                  : "text-[#667185] font-normal"
-              }`}
-            >
-              <Profile
-                className="mr-[12px]"
-                variant={
-                  window.location.pathname === "/customers" ? "Bold" : "Linear"
-                }
-              />
-              Customers
-            </Link>
+              <Link
+                to="/customers"
+                className={` py-[10px] pl-[16px] flex items-center text-[14px]   mb-3 leading-[20px] md:leading-[24px] ${
+                  window.location.pathname === "/customers"
+                    ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
+                    : "text-[#667185] font-normal"
+                }`}
+              >
+                <Profile
+                  className="mr-[12px]"
+                  variant={
+                    window.location.pathname === "/customers"
+                      ? "Bold"
+                      : "Linear"
+                  }
+                />
+                Customers
+              </Link>
 
-            {/* <Link
+              {/* <Link
               to="/users"
               className={` py-[10px] pl-[16px] flex items-center text-[14px]   mb-3 leading-[20px] md:leading-[24px] ${
                 window.location.pathname === "/users"
@@ -320,35 +311,34 @@ const Sidebar = ({ isSidebarOpen, onClose, role }) => {
             </Link> */}
             </div>
 
-        <div className="border-t pb-3 pt-2">
-        <Link
-              to="/setting/personal-info"
-              className={` py-[10px] pl-[16px] flex items-center text-[14px]   mb-3 leading-[20px] md:leading-[24px] ${
-                window.location.pathname === "/setting/personal-info"||
-                window.location.pathname === "/setting/webhook"||
-                window.location.pathname === "/setting/api-key"||
-                window.location.pathname === "//setting/personal-info"
-                  ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
-                  : "text-[#667185] font-normal"
-              }`}
-            >
-              <Setting2
-                className="mr-[12px]"
-                variant={
-                  window.location.pathname === "/setting/personal-info"||
-                  window.location.pathname === "/setting/webhook"||
-                  window.location.pathname === "/setting/api-key"||
-                  window.location.pathname === "/setting/personal-info" ? "Bold" : "Linear"
-                }
-              />
-              Setting
-            </Link>
-
-        </div>
+            <div className="border-t pb-3 pt-2">
+              <Link
+                to="/setting/personal-info"
+                className={` py-[10px] pl-[16px] flex items-center text-[14px]   mb-3 leading-[20px] md:leading-[24px] ${
+                  window.location.pathname === "/setting/personal-info" ||
+                  window.location.pathname === "/setting/webhook" ||
+                  window.location.pathname === "/setting/api-key" ||
+                  window.location.pathname === "//setting/personal-info"
+                    ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
+                    : "text-[#667185] font-normal"
+                }`}
+              >
+                <Setting2
+                  className="mr-[12px]"
+                  variant={
+                    window.location.pathname === "/setting/personal-info" ||
+                    window.location.pathname === "/setting/webhook" ||
+                    window.location.pathname === "/setting/api-key" ||
+                    window.location.pathname === "/setting/personal-info"
+                      ? "Bold"
+                      : "Linear"
+                  }
+                />
+                Setting
+              </Link>
+            </div>
           </div>
         </div>
-
-
       </div>
     </div>
   );

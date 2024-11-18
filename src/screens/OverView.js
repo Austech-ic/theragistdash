@@ -196,7 +196,7 @@ const OverView = () => {
           <div className="px-[20px] py-[13px] border-t-[0.2] border-[#98A2B3] bg-[#F9FAFB] flex-between rounded-br-lg rounded-bl-lg ">
             <p className="text-[#000] text-[14px] md:text-[14px] xl:text-[20px] font-bold leading-[24px]  ">
               <NumericFormat
-                value={result?.balance_after}
+                value={summaryData?.wallet_balance}
                 displayType={"text"}
                 thousandSeparator={true}
                 prefix={"₦"}

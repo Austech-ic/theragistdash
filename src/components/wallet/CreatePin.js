@@ -21,7 +21,7 @@ import { enqueueSnackbar } from "notistack";
 import api from "../../api";
 import { decryptaValue } from "../../utils/helperFunctions";
 
-const CreatePin = ({ isCreatePin, setIsCreatePin }) => {
+const CreatePin = ({ isCreatePin, setIsCreatePin, refetch }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [pin1, setPin1] = useState("");
   const [pin2, setPin2] = useState("");
@@ -61,6 +61,7 @@ const CreatePin = ({ isCreatePin, setIsCreatePin }) => {
         if (decryptRes.status === "success") {
           enqueueSnackbar(decryptRes.message, { variant: "success" });
           setIsCreatePin(false)
+          refetch()
         }
 setIsLoading(true)
 

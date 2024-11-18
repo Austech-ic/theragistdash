@@ -14,14 +14,10 @@ import {
   Send2,
   Sms,
   TickCircle,
-  TransmitSquare,
+  ShieldSlash,
 } from "iconsax-react";
-import React, { useEffect, useState } from "react";
-import {
-  decryptaValue,
-  decryptValue,
-  formatDateToText,
-} from "../../utils/helperFunctions";
+import React, { useEffect, useState, useCallback } from "react";
+import { decryptaValue, formatDateToText } from "../../utils/helperFunctions";
 import { NumericFormat } from "react-number-format";
 import {
   Grid,
@@ -60,8 +56,10 @@ import OtpModal from "../../components/wallet/OtpModal";
 import CreatePin from "../../components/wallet/CreatePin";
 import PinModal from "../../components/wallet/PinModal";
 import { setPin } from "../../api/apicalls";
-import PreviewModal from "../../components/wallet/PreviewModal";
+import PredivModal from "../../components/wallet/PreviewModal";
 import ComingSoon from "../../components/ComingSoon";
+import debounce from "lodash/debounce";
+import Success from "../../components/Success";
 
 ChartJS.register(
   CategoryScale,
@@ -111,34 +109,44 @@ const WalletOverdiv = () => {
   const [purpose, setPurpose] = useState("");
   const [isComingSoon, setIsComingSoon] = useState(false);
   const [copiedRef, setCopiedRef] = useState(null);
+  const [phoneFocus, setPhoneFocus] = useState(false);
+  const [tag, setTag] = useState("");
+  const [vantUser, setVantUser] = useState(null);
+  const [isTitleValid, setTitleValid] = useState(false);
+  const [isVantTagModal, setIsVantTagModal] = useState(false);
+  const [transferVantPhase, setTransferVantPhase] = useState(1);
+  const [isSuccess, setIsSuccess] = useState(false)
 
+  const CloseVantTagModal = () => {
+    setIsVantTagModal(!isVantTagModal);
+    setTransferVantPhase(1);
+    clearForm();
+  };
 
-
-   // Function to copy text to the clipboard
-   const handleCopy = async (transactionRef) => {
+  // Function to copy text to the clipboard
+  const handleCopy = async (transactionRef) => {
     try {
       await navigator.clipboard.writeText(transactionRef);
       setCopiedRef(transactionRef); // Set copied ref to show feedback
       setTimeout(() => setCopiedRef(null), 2000); // Clear feedback after 2 seconds
     } catch (err) {
-      console.error('Failed to copy:', err);
+      console.error("Failed to copy:", err);
     }
   };
   const [pin, setPin] = useState("");
 
   const isPin = false;
 
-  useEffect(() => {
-    if (isPin) {
-      setIsCreatePin(true);
-    }
-  }, []);
+
 
   const closeTransferOthers = () => {
     setIsTransferOthers(false);
     setTransferPhase(1);
     clearForm();
   };
+  const closeIsSuccess = () => {
+    setIsSuccess(false)
+  }
   const openTransferOthers = () => {
     setIsTransferOthers(true);
   };
@@ -244,6 +252,7 @@ const WalletOverdiv = () => {
       if (decryptRes.status === true) {
         enqueueSnackbar(decryptRes.message, { variant: "success" });
         setTransferPhase(2);
+        setTransferVantPhase(2);
       }
       setIsLoading(false);
     } catch (error) {
@@ -256,9 +265,11 @@ const WalletOverdiv = () => {
 
   const handleOtp = () => {
     setTransferPhase(3);
+    setTransferVantPhase(3);
   };
   const handlePin = () => {
     setTransferPhase(4);
+    setTransferVantPhase(4);
   };
   function clearForm() {
     setAccountNumber("");
@@ -273,6 +284,8 @@ const WalletOverdiv = () => {
     setOtp("");
     setPin("");
     setTransferPhase(1);
+    setTransferVantPhase(1);
+    setTag("");
     setSelectedBank(null);
   }
 
@@ -299,8 +312,37 @@ const WalletOverdiv = () => {
 
       if (decryptRes.status === true) {
         enqueueSnackbar(decryptRes.message, { variant: "success" });
-        setTransferPhase(1);
+        closeTransferOthers();
+      setIsSuccess(true)
+ProfileQuery.refetch()
       }
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error.message);
+      enqueueSnackbar(error.message, { variant: "error" });
+    }
+  };
+
+  const handleVantTransfer = async () => {
+    setIsLoading(true);
+    try {
+      const response = await api.initiateVantTagTransfer({
+        amount: amount,
+        username: tag,
+        otp: otp,
+        pin: pin,
+      });
+      console.log("response of transfer==>>>>>", decryptaValue(response?.data));
+      const decryptRes = JSON.parse(decryptaValue(response?.data));
+      console.log("response of transfer==>>>>>", decryptRes?.status);
+      enqueueSnackbar(decryptRes.message, { variant: "success" });
+      CloseVantTagModal();
+      setIsSuccess(true)
+ProfileQuery.refetch()
+
+      // if (decryptRes.status === true) {
+       
+      // }
       setIsLoading(false);
     } catch (error) {
       console.log(error.message);
@@ -319,6 +361,12 @@ const WalletOverdiv = () => {
   });
   const profileData = ProfileQuery?.data || [];
 
+  useEffect(() => {
+    if (profileData?.default_partner?.hasPin === false) {
+      setIsCreatePin(true);
+    }
+  }, [profileData]);
+
   async function getTransactionSummary() {
     const response = await api.getTransactionSummary({ params: {} });
     return response;
@@ -335,7 +383,10 @@ const WalletOverdiv = () => {
     datasets: [
       {
         label: "Transactions %",
-        data: [summaryData?.type_summary?.credit?.percentage, summaryData?.type_summary?.debit?.percentage],
+        data: [
+          summaryData?.type_summary?.credit?.percentage,
+          summaryData?.type_summary?.debit?.percentage,
+        ],
         backgroundColor: ["#26ae5f", "rgba(243, 121, 51, 1)"],
         borderColor: ["#26ae5f", "rgba(243, 121, 51, 1)"],
         borderWidth: 1,
@@ -356,6 +407,23 @@ const WalletOverdiv = () => {
   const closeComingSoon = () => {
     setIsComingSoon(false);
   };
+  const checkTitle = useCallback(
+    debounce(async (title) => {
+      try {
+        const response = await api.checkUserName({
+          name: title,
+        });
+
+        setTitleValid(response.userExists);
+        setVantUser(response.user);
+        // console.log(response.user)
+      } catch (error) {
+        console.log("Error checking title:", error);
+        // Handle the error appropriately
+      }
+    }, 300),
+    []
+  );
 
   return (
     <div>
@@ -363,9 +431,9 @@ const WalletOverdiv = () => {
         isComingSoon={isComingSoon}
         closeComingSoon={closeComingSoon}
       />
-      {setIsCreatePin && (
-        <CreatePin isCreatePin={isCreatePin} setIsCreatePin={setIsCreatePin} />
-      )}
+    
+        <CreatePin isCreatePin={isCreatePin} setIsCreatePin={setIsCreatePin} refetch={ProfileQuery.refetch} />
+     
       <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-[16px] md:gap-[20px] mt-5 ">
         <li>
           <div className="rounded-[12px] px-[16px] pt-4 pb-6 bg-[#26ae5f] ">
@@ -435,7 +503,7 @@ const WalletOverdiv = () => {
 
           <div className=" bg-[#1B2026] relative   rounded-[12px]  px-[16px] pb-[14px] pt-[24px] -mt-[16px]   ">
             <p className="text-[#fff]  font-medium  text-[12px] leading-[14px]  tracking-[0.2px]  mb-[8px]  ">
-           {profileData?.default_partner?.account_numbers[0]?.bank}
+              {profileData?.default_partner?.account_numbers[0]?.bank}
             </p>
             <div
               style={{
@@ -445,8 +513,10 @@ const WalletOverdiv = () => {
               }}
             >
               <p className="text-[#fff]  font-semibold  text-[14px] leading-[17px]  tracking-[0.2px]    ">
-              {profileData?.default_partner?.account_numbers[0]?.account_number}
-
+                {
+                  profileData?.default_partner?.account_numbers[0]
+                    ?.account_number
+                }
               </p>
               <button
                 //   onPress={() =>
@@ -455,23 +525,28 @@ const WalletOverdiv = () => {
                 //     )
                 //   }
 
-                onClick={() => handleCopy(    profileData?.default_partner?.account_numbers[0]?.account_number )}
+                onClick={() =>
+                  handleCopy(
+                    profileData?.default_partner?.account_numbers[0]
+                      ?.account_number
+                  )
+                }
                 className="absolute top-[12px] right-[16px]"
               >
                 <p className="text-[#fff] font-semibold font-i_medium text-[10px] leading-[9.68px]  ">
                   {copiedRef ===
-                        profileData?.default_partner?.account_numbers[0]?.account_number ? (
-                          "Copied!"
-                        ) : (
-                          <Copy size={20} variant="Bold" color="#fff" />
-                        )}
+                  profileData?.default_partner?.account_numbers[0]
+                    ?.account_number ? (
+                    "Copied!"
+                  ) : (
+                    <Copy size={20} variant="Bold" color="#fff" />
+                  )}
                   {/* <Copy size={20} variant="Bold" color="#fff" /> */}
                 </p>
               </button>
             </div>
             <p className="text-[#fff]  font-normal font-i_normal text-[12px] leading-[14px]  tracking-[0.2px] ">
-            {profileData?.default_partner?.account_numbers[0]?.account_name}
-
+              {profileData?.default_partner?.account_numbers[0]?.account_name}
             </p>
           </div>
         </li>
@@ -497,6 +572,7 @@ const WalletOverdiv = () => {
                   <Send2 color="#171717" size={16} /> <p>Transfer to banks </p>
                 </button>{" "}
                 <button
+                  onClick={() => setIsVantTagModal(true)}
                   className={`rounded-[14px] flex justify-center banks-center gap-2 px-[8px]  py-[4px] md:py-[4px] border-[0.5px]
                 bg-[#e0e1e0] text-[#171717] border-[#171717] text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px] `}
                 >
@@ -889,7 +965,7 @@ const WalletOverdiv = () => {
           )}
           {transferPhase === 4 && (
             <>
-              <PreviewModal
+              <PredivModal
                 isLoading={isLoading}
                 accountNumber={accountNumber}
                 name={accountName}
@@ -906,7 +982,159 @@ const WalletOverdiv = () => {
         </ModalContent>
       </Modal>
 
+      <Modal
+        isCentered
+        isOpen={isVantTagModal}
+        onClose={CloseVantTagModal}
+        size="xl"
+        style={{ borderRadius: 12 }}
+        motionPreset="slideInBottom"
+        className="rounded-[12px]"
+      >
+        <ModalOverlay />
+        <ModalContent>
+          {transferVantPhase === 1 && (
+            <>
+              {" "}
+              <ModalHeader
+                py="4"
+                color="#000000"
+                className="text-[18px] md:text-[20px] text-[#000000] font-medium leading-[24px] md:leading-[24px]"
+              >
+                Transfer To Vant Tag
+              </ModalHeader>
+              <ModalCloseButton size={"sm"} />
+              <Divider color="#98A2B3" />
+              <ModalBody
+                pt={{ base: "20px", md: "24px" }}
+                px={{ base: "16px", md: "24px" }}
+                pb={{ base: "30px", md: "40px" }}
+                className="pt-[20px] md:pt-[24px] px-[16px] md:px-[24px] pb-[30px] md:pb-[40px]"
+              >
+                <div className="mb-[18px]">
+                  <label className="text-[14px] text-[#667185]    mb-[8px] ">
+                    Amount(#)
+                  </label>
+                  <div className=" relative    flex banks-center">
+                    <input
+                      type="text"
+                      placeholder="2,000"
+                      className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                      name="amount"
+                      value={amount}
+                      onChange={(e) => setAmount(e.target.value)}
+                      autoCapitalize="off"
+                      autoCorrect="off"
+                      spellCheck="false"
+                    />
+                  </div>
+                </div>
+                <div className="my-[18px]">
+                  <label className="text-[14px] text-[#667185]    mb-[8px] ">
+                    Recipient Tag{" "}
+                  </label>
+                  <div className=" relative    flex banks-center">
+                    <input
+                      type="text"
+                      placeholder=""
+                      className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                      name=""
+                      id="full-name"
+                      value={tag}
+                      onChange={(e) => {
+                        setTag(e.target.value);
+                        checkTitle(e.target.value);
+                      }}
+                      autoCapitalize="off"
+                      autoCorrect="off"
+                      spellCheck="false"
+                    />
+                  </div>
+                </div>
+                {tag && !isTitleValid && (
+                  <div className="flex items-center mx-6 mt-4 ">
+                    <ShieldSlash color="#FF3333" variant="Linear" size={14} />
+                    <Text
+                      style={{ color: "#FF3333" }}
+                      className="font-semibold font-i_semibold text-[12px] leading-[13px] ml-2   tracking-[0.028px]"
+                    >
+                      User does not exist.
+                    </Text>
+                  </div>
+                )}
+                {tag && isTitleValid && (
+                  <div className="flex-row items-center mx-6 mt-4 ">
+                    {/* <ShieldTick color="#3B6896" variant="Linear" size={16} /> */}
+                    <Text
+                      style={{ color: "#3B6896" }}
+                      className="font-semibold font-i_semibold text-[12px] leading-[13px]   tracking-[0.028px]"
+                    >
+                      {vantUser?.full_name}
+                    </Text>
+                  </div>
+                )}
+              </ModalBody>
+              <Divider />
+              <ModalFooter gap={"16px"}>
+                <button
+                  onClick={CloseVantTagModal}
+                  className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={sendOtp}
+                  disabled={!tag && !isTitleValid}
+                  className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex banks-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
+                >
+                  {isLoading ? (
+                    <ClipLoader color={"white"} size={20} />
+                  ) : (
+                    <> Send </>
+                  )}
+                </button>
+              </ModalFooter>
+            </>
+          )}
+
+          {transferVantPhase === 2 && (
+            <>
+              <OtpModal
+                isLoading={isLoading}
+                otp={otp}
+                setOtp={setOtp}
+                handleOtp={handleOtp}
+                onClose={CloseVantTagModal}
+              />
+            </>
+          )}
+          {transferVantPhase === 3 && (
+            <>
+              <PinModal
+                isLoading={isLoading}
+                pin={pin}
+                setPin={setPin}
+                handlePin={handlePin}
+                onClose={CloseVantTagModal}
+              />
+            </>
+          )}
+          {transferVantPhase === 4 && (
+            <>
+              <PredivModal
+                tag={tag}
+                handleTransfer={handleVantTransfer}
+                handleClose={CloseVantTagModal}
+                amount={amount}
+                onClose={CloseVantTagModal}
+              />
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+
       <RecentTransaction />
+      <Success isSuccess={isSuccess} closeIsSuccess={closeIsSuccess}/>
     </div>
   );
 };

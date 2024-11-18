@@ -63,8 +63,14 @@ const Customer = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  const [startdate, setStartdate] = useState("");
-  const [enddate, setEndDate] = useState("");
+  const [formValue, setFormValue] = useState({
+    name: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    status: null,
+  })
+
 
   function HandleEditModalClose() {
     setIsEditOpen(false);
@@ -111,24 +117,27 @@ const Customer = () => {
     setIsViewModal(false);
   };
 
-  // async function handleSubmit(e) {
-  //   e.preventDefault();
-  //   setIsLoading(true);
+  const CreateCustomer = async () => {
+    setIsLoading(true);
+    try {
+      const response = await api.createCustomers({
+        email: formValue?.email,
+       isActive : formValue?.status === "true" ? true : false,
+        name: formValue?.name,
+        phone: formValue?.phone
+      });
+      const decryptRes = JSON.parse(decryptaValue(response?.data));
+      enqueueSnackbar("Customer Created Successfully", { variant: "success" });
+      results.refetch()
+      setIsLoading(false);
+      setIsCreate(false);
+    } catch (error) {
+      console.log(error.message);
+      enqueueSnackbar(error.message, { variant: "error" });
 
-  //   try {
-  //     const response = await api.getTransaction({
-
-  //     });
-  //     console.log("responce==>>>>>", response);
-  //     enqueueSnackbar("Leave Application successfull", { variant: "success" });
-  //     setIsLoading(false);
-  //     navigate("submited");
-  //   } catch (error) {
-  //     console.log(error);
-  //     enqueueSnackbar(error.message, { variant: "error" });
-  //     setIsLoading(false);
-  //   }
-  // }
+      setIsLoading(false);
+    }
+  };
 
   async function getCustomers(page) {
     const response = await api.getCustomers({
@@ -160,6 +169,10 @@ const Customer = () => {
     }
   };
 
+  const handleInputChange = (e) => {
+    setFormValue({ ...formValue, [e.target.name]: e.target.value });
+  };
+
   // console.log("decrypt transaction", decryptaValue(results?.data?.data))
 
   //console.log("transactions result", results?.data);
@@ -187,16 +200,16 @@ const Customer = () => {
             </div>
           </div>
           <div className="flex items-center gap-[16px] ">
-            {/* <button
-              // onClick={() => toggleImportModal()}
-              className="flex items-center gap-[8px] "
-            >
-              <p className="text-[14px] text-[#667185] leading-[20px]">
-                Export CSV
-              </p>
+          <button
+            onClick={() => toggleCreate()}
+            className="flex items-center gap-[8px] "
+          >
+            <p className="text-[14px] text-[#667185] leading-[20px]">
+              Create Customer
+            </p>
 
-              <DocumentUpload variant="Linear" color="#667185" size="16" />
-            </button> */}
+            <Add variant="Linear" color="#667185" size="16" />
+          </button>
 
             <Modal
               isCentered
@@ -315,14 +328,14 @@ const Customer = () => {
                       </div>
                     </th>
 
-                    <th
+                    {/* <th
                       scope="col"
                       className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
                     >
                       <div className="flex justify-center gap-[6px] md:gap-[12px] items-center my-0">
                         Action
                       </div>
-                    </th>
+                    </th> */}
                   </tr>
                 </thead>
                 <tbody>
@@ -368,7 +381,7 @@ const Customer = () => {
                         {moment(result?.created_at).format("MMM DD, HH:mm:ss")}
                         </td>
 
-                        <td className="whitespace-nowrap py-[16px] flex-item gap-2 bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#1A202C] font-medium text-left  ">
+                        {/* <td className="whitespace-nowrap py-[16px] flex-item gap-2 bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#1A202C] font-medium text-left  ">
                           <More
                             onClick={() => ToggleEditModal()}
                             variant="Linear"
@@ -475,7 +488,7 @@ const Customer = () => {
                               </ModalFooter>
                             </ModalContent>
                           </Modal>
-                        </td>
+                        </td> */}
                       </tr>
                     ))}
                   {/* ))} */}
@@ -542,7 +555,7 @@ const Customer = () => {
               <div className="h-[32px] w-[1px] bg-[#D0D5DD]" />
               <div className="flex items-center">
                 <p className="text-[#667185] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
-                  Create Transactions
+                  Create Customer
                 </p>
               </div>
             </div>
@@ -554,85 +567,85 @@ const Customer = () => {
           </div>
 
           <div className="p-[12px] md:p-[20px] xl:p-[24px]">
+
             <div className="mb-[24px]">
               <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
-                Employee
+                Name
               </label>
-              <div className=" relative  mt-[16px]  flex items-center">
+              <div className=" relative  flex items-center">
+                <input
+                  type="text"
+                  placeholder="Enter Name"
+                  className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  name="name"
+                  value={formValue.name}
+                  onChange={(e) => handleInputChange(e)}
+                  autoCapitalize="off"
+                  autoCorrect="off"
+                  spellCheck="false"
+                />
+              </div>
+            </div>
+            <div className="mb-[24px]">
+              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
+                Phone Number
+              </label>
+              <div className=" relative flex items-center">
+                <input
+                  type="text"
+                  placeholder="XXXX XXXX XXX"
+                  className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  name="phone"
+                  value={formValue.phone}
+                  onChange={(e) => handleInputChange(e)}
+                  autoCapitalize="off"
+                  autoCorrect="off"
+                  spellCheck="false"
+                />
+              </div>
+            </div>
+            <div className="mb-[24px]">
+              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
+              Email Address
+              </label>
+              <div className=" relative    flex items-center">
+                <input
+                  type="email"
+                  placeholder=""
+                  className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  name="email"
+                  value={formValue.email}
+                  onChange={(e) => handleInputChange(e)}
+                  autoCapitalize="off"
+                  autoCorrect="off"
+                  spellCheck="false"
+                />
+              </div>
+            </div>
+            <div className="mb-[24px]">
+              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
+                Status
+              </label>
+              <div className=" relative flex items-center">
                 <select
                   type="text"
-                  placeholder="Name"
+                  placeholder=""
                   className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                  name="full-name"
-                  id="full-name"
-                  //value=""
-                  //onChange={() => {}}
+                  name="status"
+                  
+                  value={formValue.status}
+                  onChange={(e) => handleInputChange(e)}
                   autoCapitalize="off"
                   autoCorrect="off"
                   spellCheck="false"
                 >
-                  <option value="">Select Employee</option>
-                  <option value="Monthly Payslip">Monthly Payslip</option>
+                  <option value="">Select Status</option>
+                  <option value={true}>Active</option>
+                  <option value={false}>Inactive</option>
                 </select>
               </div>
             </div>
-            <div className="mb-[24px]">
-              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
-                Date
-              </label>
-              <div className=" relative  mt-[16px]  flex items-center">
-                <input
-                  type="date"
-                  placeholder="Enter Title"
-                  className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                  name="date"
-                  id="full-name"
-                  //   value={formData.date}
-                  //   onChange={(e) => handleChange(e)}
-                  autoCapitalize="off"
-                  autoCorrect="off"
-                  spellCheck="false"
-                />
-              </div>
-            </div>
-            <div className="mb-[24px]">
-              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
-                Clock In
-              </label>
-              <div className=" relative  mt-[16px]  flex items-center">
-                <input
-                  type="time"
-                  placeholder="Name"
-                  className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                  name="full-name"
-                  id="full-name"
-                  //value=""
-                  //onChange={() => {}}
-                  autoCapitalize="off"
-                  autoCorrect="off"
-                  spellCheck="false"
-                />
-              </div>
-            </div>
-            <div className="mb-[24px]">
-              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
-                Clock Out
-              </label>
-              <div className=" relative  mt-[16px]  flex items-center">
-                <input
-                  type="time"
-                  placeholder=""
-                  className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                  name="date"
-                  id="full-name"
-                  //   value={formData.date}
-                  //   onChange={(e) => handleChange(e)}
-                  autoCapitalize="off"
-                  autoCorrect="off"
-                  spellCheck="false"
-                />
-              </div>
-            </div>
+            
             <div className="py-[20px] border-t border-b-[#E4E7EC] flex-item  justify-end">
               <div className="flex-item gap-2">
                 {" "}
@@ -642,11 +655,13 @@ const Customer = () => {
                 >
                   Cancel
                 </button>
-                <button className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white">
-                  {!isLoading ? (
+                <button 
+                onClick={CreateCustomer}
+                className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white">
+                  {isLoading ? (
                     <ClipLoader color={"white"} size={20} />
                   ) : (
-                    <> Create</>
+                    <> Create Customer</>
                   )}
                 </button>
               </div>

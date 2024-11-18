@@ -21,8 +21,10 @@ import {
   encryptValue,
 } from "../utils/helperFunctions";
 import { enqueueSnackbar } from "notistack";
+import { useNavigate } from "react-router-dom";
 
 const GetStarted = () => {
+  const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false);
   const [selectedInfo, setSelectedInfo] = useState(1);
   const [filledSection, setFilledSection] = useState([]);
@@ -99,6 +101,9 @@ const GetStarted = () => {
     return arr;
   }
   useEffect(() => {
+    if(profilesData?.default_partner?.is_verified === 1){
+      navigate("/overview")
+    }
     setFormValue({
       ...formValue,
       firstName: profileData?.first_name,
@@ -135,6 +140,7 @@ const GetStarted = () => {
       setFilledSection(addValuePush(filledSection, 4));
       setUploadDisabled(true)
     }
+    
 
   }, [ProfileQuery?.data, BussQuery?.data, BvnQuery?.data, ProfilesQuery?.data]);
 

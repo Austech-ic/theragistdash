@@ -71,7 +71,7 @@ const PinModal = ({isLoading, pin,setPin, handlePin, onClose}) => {
         <button onClick={onClose}  className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black">
           Cancel
         </button>
-        <button onClick={handlePin} className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex banks-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white">
+        <button onClick={handlePin} disabled={isLoading} className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex banks-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white">
           {isLoading ? <ClipLoader color={"white"} size={20} /> : <> Send </>}
         </button>
       </ModalFooter>

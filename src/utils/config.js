@@ -10,6 +10,7 @@ export const WALLETS = getApiUrl('/user-wallets')
 export const CUSTOMERS = getApiUrl('/customers')
 export const UPDATECUSTOMERS = getApiUrl('/customers/')
 export const INITIATETRANSFER = getApiUrl('/transfer/initiate')
+export const INITIATEVANTTAGTRANSFER = getApiUrl('/transfer/initiate-vant')
 export const BANKS = getApiUrl('/transfer/banks')
 export const VERIFYACCOUNTNUMBER = getApiUrl('/transfer/verify-account')
 export const SETPIN = getApiUrl('/business/set-pin')
@@ -26,4 +27,7 @@ export const ADDTEAMMEMBER = getApiUrl('/business/add-member')
 export const GETTEAMMEMBER = getApiUrl('/business/members')
 export const GETTRANSACTIONBARCHART = getApiUrl('/business/transaction-chart')
 export const GETOVERVIEW = getApiUrl('/business/summary')
+export const UPDATEROLE = getApiUrl('/business/members/')
+export const CHECKUSERNAME = 'https://api.vantapp.com/api/verify-username'
+
 

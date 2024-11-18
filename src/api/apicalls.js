@@ -18,7 +18,9 @@ import {
  TRANSACTIONFULLLENGTH,
  TRANSACTIONSUMMARY,
  ADDTEAMMEMBER,GETTEAMMEMBER, GETTRANSACTIONBARCHART,
- GETOVERVIEW
+ GETOVERVIEW,
+ CHECKUSERNAME, UPDATEROLE,
+ INITIATEVANTTAGTRANSFER
 } from "../utils/config";
 import { apiDelete, apiGet, apiGetCSV, apiPost, apiPut } from "../utils/utils";
 
@@ -90,6 +92,9 @@ export function getTeamMember(data) {
 export function initiateTransfer(data) {
   return apiPost(INITIATETRANSFER, data);
 }
+export function initiateVantTagTransfer(data) {
+  return apiPost(INITIATEVANTTAGTRANSFER, data);
+}
 
 export function verifyAccountNunmber(data) {
   return apiPost(VERIFYACCOUNTNUMBER, data);
@@ -139,6 +144,14 @@ export function getBusProfile(data) {
 
 export function uploadDoc(data) {
   return apiPost(DOCUMENT, data,  { 'Content-Type': 'multipart/form-data' });
+}
+
+export function checkUserName(data) {
+  return apiPost(CHECKUSERNAME, data);
+}
+
+export function updateTeamRole(id, data) {
+  return apiPut(UPDATEROLE + id + "/role" , data);
 }
 
 

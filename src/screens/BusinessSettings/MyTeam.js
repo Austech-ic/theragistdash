@@ -15,6 +15,7 @@ import {
   More,
   RowHorizontal,
   SearchNormal1,
+  Settings,
   Trash,
 } from "iconsax-react";
 import {
@@ -61,23 +62,25 @@ const MyTeam = () => {
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [page, setPage] = useState(1);
-  const [resultId, setResultId] = useState("")
+  const [resultId, setResultId] = useState(null);
   const [startdate, setStartdate] = useState("");
   const [enddate, setEndDate] = useState("");
   const [formValue, setFormValue] = useState({
     firstName: "",
     lastName: "",
-    eamil: "",
+    email: "",
     phone: "",
     role: "",
-  })
+  });
 
   function HandleEditModalClose() {
     setIsEditOpen(false);
   }
 
-  function ToggleEditModal() {
+  function ToggleEditModal(id) {
     setIsEditOpen(!isEditOpen);
+    setResultId(id);
+
   }
 
   const toggleCreate = () => {
@@ -89,7 +92,7 @@ const MyTeam = () => {
 
   function ToggleDeleteModal(id) {
     setIsDeleteModal(!isDeleteModal);
-    setResultId(id)
+    setResultId(id);
   }
   function closeDeleteModal() {
     setIsDeleteModal(false);
@@ -145,11 +148,30 @@ const MyTeam = () => {
         role: formValue?.role,
         first_name: formValue?.firstName,
         last_name: formValue?.lastName,
-        phone: formValue?.phone
+        phone: formValue?.phone,
       });
       const decryptRes = JSON.parse(decryptaValue(response?.data));
       enqueueSnackbar(decryptRes?.message, { variant: "success" });
-      results.refetch()
+      results.refetch();
+      setIsLoading(false);
+      setIsCreate(false);
+    } catch (error) {
+      console.log(error.message);
+      enqueueSnackbar(error.message, { variant: "error" });
+
+      setIsLoading(false);
+    }
+  };
+
+  const UpdateRole = async () => {
+    setIsLoading(true);
+    try {
+      const response = await api.updateTeamRole(resultId?.id,{
+        role: formValue?.role,
+      });
+      const decryptRes = JSON.parse(decryptaValue(response?.data));
+      enqueueSnackbar(decryptRes?.message, { variant: "success" });
+      results.refetch();
       setIsLoading(false);
       setIsCreate(false);
     } catch (error) {
@@ -203,7 +225,6 @@ const MyTeam = () => {
               </p>
             </div>
             <div className="h-[32px] w-[1px] bg-[#D0D5DD]" />
-           
           </div>
 
           <button
@@ -258,7 +279,6 @@ const MyTeam = () => {
                         Status
                       </div>
                     </th>
-                
 
                     <th
                       scope="col"
@@ -288,10 +308,10 @@ const MyTeam = () => {
                           {result?.first_name} {result?.last_name}
                         </td>
                         <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                         {result?.email}
+                          {result?.email}
                         </td>
                         <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                       {result?.role}
+                          {result?.role}
                         </td>
 
                         <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
@@ -307,19 +327,24 @@ const MyTeam = () => {
                             <p>Active</p>
                           </button>{" "}
                         </td>
-                      
 
                         <td className="whitespace-nowrap py-[16px] flex-item gap-2 bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#1A202C] font-medium text-left  ">
-                         
-                         <button>
-                         <Trash
-                            onClick={() => ToggleDeleteModal(result?.id)}
-                            variant="Linear"
-                            color="#E01616FF"
-                            size="24"
-                          />
-                         </button>
-                         
+                          <button>
+                            <Trash
+                              onClick={() => ToggleDeleteModal(result?.id)}
+                              variant="Linear"
+                              color="#E01616FF"
+                              size="24"
+                            />
+                          </button>
+                          <button                               onClick={() => ToggleEditModal(result)}
+                          >
+                            <Settings
+                              variant="Linear"
+                              color="#E01616FF"
+                              size="24"
+                            />
+                          </button>
 
                           <Modal
                             isCentered
@@ -337,12 +362,12 @@ const MyTeam = () => {
                                 color="#000000"
                                 className="text-[18px]   font-medium leading-[24px] md:leading-[24px]"
                               >
-                               <Trash
-                            variant="Linear"
-                            color="#E01616FF"
-                            size="42"
-                            className="mx-auto"
-                          />
+                                <Trash
+                                  variant="Linear"
+                                  color="#E01616FF"
+                                  size="42"
+                                  className="mx-auto"
+                                />
                               </ModalHeader>
                               <ModalCloseButton size={"sm"} />
                               <ModalBody
@@ -355,8 +380,8 @@ const MyTeam = () => {
                                 </p>
 
                                 <p className="text-[14px]  text-[#667185] leading-[20px] font-normal text-center mt-2  ">
-                                  Are you sure you want to delete this
-                                  Team Member? This action cannot be undone.
+                                  Are you sure you want to delete this Team
+                                  Member? This action cannot be undone.
                                 </p>
                               </ModalBody>
                               <ModalFooter gap={"16px"}>
@@ -458,7 +483,7 @@ const MyTeam = () => {
           </div>
 
           <div className="p-[12px] md:p-[20px] xl:p-[24px]">
-          <div className="mb-[20px]">
+            <div className="mb-[20px]">
               <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
                 First Name
               </label>
@@ -469,15 +494,15 @@ const MyTeam = () => {
                   className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                   name="firstName"
                   id=""
-                 value={formValue.firstName}
-                    onChange={(e) => handleInputChange(e)}
+                  value={formValue.firstName}
+                  onChange={(e) => handleInputChange(e)}
                   autoCapitalize="off"
                   autoCorrect="off"
                   spellCheck="false"
                 />
               </div>
             </div>
-          <div className="mb-[20px]">
+            <div className="mb-[20px]">
               <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
                 Last Name
               </label>
@@ -488,8 +513,8 @@ const MyTeam = () => {
                   className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                   name="lastName"
                   id=""
-                 value={formValue.lastName}
-                    onChange={(e) => handleInputChange(e)}
+                  value={formValue.lastName}
+                  onChange={(e) => handleInputChange(e)}
                   autoCapitalize="off"
                   autoCorrect="off"
                   spellCheck="false"
@@ -507,8 +532,8 @@ const MyTeam = () => {
                   className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                   name="phone"
                   id=""
-                 value={formValue.phone}
-                    onChange={(e) => handleInputChange(e)}
+                  value={formValue.phone}
+                  onChange={(e) => handleInputChange(e)}
                   autoCapitalize="off"
                   autoCorrect="off"
                   spellCheck="false"
@@ -526,8 +551,8 @@ const MyTeam = () => {
                   className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                   name="email"
                   id=""
-                 value={formValue.email}
-                    onChange={(e) => handleInputChange(e)}
+                  value={formValue.email}
+                  onChange={(e) => handleInputChange(e)}
                   autoCapitalize="off"
                   autoCorrect="off"
                   spellCheck="false"
@@ -545,8 +570,8 @@ const MyTeam = () => {
                   className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                   name="role"
                   id=""
-                 value={formValue.role}
-                    onChange={(e) => handleInputChange(e)}
+                  value={formValue.role}
+                  onChange={(e) => handleInputChange(e)}
                   autoCapitalize="off"
                   autoCorrect="off"
                   spellCheck="false"
@@ -573,10 +598,10 @@ const MyTeam = () => {
                 >
                   Cancel
                 </button>
-
                 <button
-                onClick={CreateTeam}
-                className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white">
+                  onClick={CreateTeam}
+                  className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
+                >
                   {isLoading ? (
                     <ClipLoader color={"white"} size={20} />
                   ) : (
@@ -588,6 +613,99 @@ const MyTeam = () => {
           </div>
         </div>
       </ModalLeft>
+
+      <Modal
+        isCentered
+        isOpen={isEditOpen}
+        onClose={ToggleEditModal}
+        size="xl"
+        style={{ borderRadius: 12 }}
+        motionPreset="slideInBottom"
+        className="rounded-[12px]"
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader
+            py="4"
+            color="#000000"
+            className="text-[18px] md:text-[20px] text-[#000000] font-medium leading-[24px] md:leading-[24px]"
+          >
+            Update Team Member Role
+          </ModalHeader>
+          <ModalCloseButton size={"sm"} />
+          <Divider color="#98A2B3" />
+          <ModalBody
+            pt={{ base: "20px", md: "24px" }}
+            px={{ base: "16px", md: "24px" }}
+            pb={{ base: "30px", md: "40px" }}
+            className="pt-[20px] md:pt-[24px] px-[16px] md:px-[24px] pb-[30px] md:pb-[40px]"
+          >
+            <div className="my-[18px]">
+              <label className="text-[14px] text-[#667185]    mb-[8px] ">
+                Name
+              </label>
+              <div className=" relative    flex banks-center">
+                <input
+                  type="text"
+                  placeholder=""
+                  className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  name=""
+                  id="name"
+                  disabled
+                  value={resultId?.first_name + resultId?.last_name}
+                  onChange={(e) => {}}
+                  autoCapitalize="off"
+                  autoCorrect="off"
+                  spellCheck="false"
+                />
+              </div>
+            </div>
+            <div className=" relative  flex items-center">
+                <select
+                  type="text"
+                  placeholder=""
+                  className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  name="role"
+                  id=""
+                  value={formValue.role}
+                  onChange={(e) => handleInputChange(e)}
+                  autoCapitalize="off"
+                  autoCorrect="off"
+                  spellCheck="false"
+                >
+                  <option value="">Select Role</option>
+                  <option value="owner">Owner</option>
+                  <option value="manager">Manager</option>
+                  <option value="developer">Developer</option>
+                  <option value="support">Support</option>
+                  <option value="finance">Finance</option>
+                  <option value="operations">Operations</option>
+                  <option value="viewer">Viewer</option>
+                  {/* <option value="Manager">Manager</option> */}
+                </select>
+              </div>
+          </ModalBody>
+          <Divider />
+          <ModalFooter gap={"16px"}>
+            <button
+              onClick={ToggleEditModal}
+              className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black"
+            >
+              Cancel
+            </button>
+            <button
+             onClick={UpdateRole}
+              className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex banks-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
+            >
+              {isLoading ? (
+                <ClipLoader color={"white"} size={20} />
+              ) : (
+                <> Update </>
+              )}
+            </button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </div>
   );
 };
