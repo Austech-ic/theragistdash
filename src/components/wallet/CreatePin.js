@@ -52,10 +52,7 @@ const CreatePin = ({ isCreatePin, setIsCreatePin, refetch }) => {
         const response = await api.setPin({
           pin: pin2,
         });
-        console.log(
-          "response of account verification==>>>>>",
-          decryptaValue(response?.data)
-        );
+     
         const decryptRes = JSON.parse(decryptaValue(response?.data));
 
         if (decryptRes.status === "success") {

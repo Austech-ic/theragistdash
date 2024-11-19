@@ -8,7 +8,7 @@ import { ClipLoader } from "react-spinners";
 import { enqueueSnackbar } from "notistack";
 import api from "../api";
 import { setUserData } from "../utils/utils";
-import { encryptaValue } from "../utils/helperFunctions";
+import { decryptaValue, encryptaValue } from "../utils/helperFunctions";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -126,13 +126,16 @@ const SignUp = () => {
       const response = await api.signUp({
         data : encryptaValue(payload) 
       });
-      enqueueSnackbar(response?.message, { variant: "success" });
+      const decryptRes = JSON.parse(decryptaValue(response?.data));
+
+
+      enqueueSnackbar(decryptRes.message, { variant: "success" });
+
       setUserData(response?.data);
-
       setIsLoading(false);
-        navigate("/validate-otp",{state:{email: formValue.email} });
+      navigate("/validate-otp",{state:{email: formValue.email} });
+     
 
-      // navigation.navigate(routes.OTP);
     } catch (error) {
       console.log(error);
       enqueueSnackbar(error.message, { variant: "error" });
