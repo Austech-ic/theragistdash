@@ -79,8 +79,8 @@ const [perPage, setPerPage] = useState("10");
       </p>
     </div>
     <div className="overflow-x-auto">
-        <div class="sm:-mx-6 lg:-mx-8">
-          <div class="inline-block min-w-full  sm:px-6 lg:px-8">
+        <div class="">
+          <div class="inline-block min-w-full  ">
             <div class="overflow-x-auto rounded-lg">
               <table className="min-w-full mb-6 border-[0.8px] border-r-[0.8px]  border-l-[0.8px] border-[#E4E7EC] rounded-lg">
                 <thead className="bg-[#F9FAFB]">

@@ -5,7 +5,7 @@ import { DocumentDownload } from "iconsax-react";
 import logo from "../assets/VantLogo.png"
 
 const TransactionReceipt = forwardRef(
-  ({ transaction, showDownloadbutton = true }, ref) => {
+  ({ transaction, showDownloadbutton = true, isLoading, setIsLoading }, ref) => {
     // Default transaction data
     const defaultTransaction = {
       bankName: "PROVIDUS BANK",
@@ -108,6 +108,7 @@ const TransactionReceipt = forwardRef(
 
       // Save the PDF
       doc.save(`Transaction_Receipt_${data.reference}.pdf`);
+      setIsLoading(false)
     };
 
     // Expose the generatePDF function to parent components

@@ -137,7 +137,7 @@ const SignUp = () => {
      
 
     } catch (error) {
-      console.log(error);
+      //console.log(error);
       enqueueSnackbar(error.message, { variant: "error" });
       // toast.error(error.message)
       setIsLoading(false);

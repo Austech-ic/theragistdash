@@ -78,7 +78,7 @@ const BusinessInfo = () => {
 
     try {
       const payload = {
-        logo: logo,
+       // logo: logo,
         name: formValue?.busName,
         website: formValue?.busWebsite,
         description: formValue?.busDescription,
@@ -93,12 +93,12 @@ const BusinessInfo = () => {
 
       const response = await api.editBusInfo({ data: encryptaValue(payload) });
       const decr = JSON.parse(decryptaValue(response?.data));
-      console.log("decrypt for bus info", decr);
+      //console.log("decrypt for bus info", decr);
       enqueueSnackbar(decr?.message, { variant: "success" });
 
       setIsLoading(false);
     } catch (error) {
-      console.log("error", error);
+      //console.log("error", error);
       enqueueSnackbar(error.message, { variant: "error" });
       // enqueueSnackbar("errooor", { variant: "error" });
       setIsLoading(false);
@@ -160,13 +160,13 @@ const BusinessInfo = () => {
               duration: 0.9,
             }}
           >
-            <div className="flex gap-3">
+            {/* <div className="flex gap-3">
               {" "}
               <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
                 Business Logo:
               </label>{" "}
               <ImageUpload logo={logo} setLogo={setLogo} />
-            </div>
+            </div> */}
 
             <div className="mb-[16px] md:mb-[20px]">
               <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
@@ -179,6 +179,8 @@ const BusinessInfo = () => {
                   className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                   required
                   name="busName"
+                  disabled={formValue.busName ? true : false}
+
                   value={formValue.busName}
                   onChange={(e) => {
                     handleInputChange(e);
@@ -243,6 +245,7 @@ const BusinessInfo = () => {
                   className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                   required
                   name="rcNumber"
+                  disabled={formValue.rcNumber ? true : false}
                    value={formValue.rcNumber}
                    onChange={(e) => {
                      handleInputChange(e);
@@ -264,6 +267,7 @@ const BusinessInfo = () => {
                   className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                   required
                   name="incopDate"
+                  disabled={formValue.incopDate ? true : false}
                    value={formValue.incopDate}
                    onChange={(e) => {
                      handleInputChange(e);
@@ -372,6 +376,8 @@ const BusinessInfo = () => {
                   className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                   required
                   name="busCity"
+                  disabled={formValue.busCity ? true : false}
+
                    value={formValue.busCity}
                    onChange={(e) => {
                      handleInputChange(e);
@@ -393,6 +399,8 @@ const BusinessInfo = () => {
                   className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                   required
                   name="busAddress"
+                  disabled={formValue.busAddress ? true : false}
+
                    value={formValue.busAddress}
                    onChange={(e) => {
                      handleInputChange(e);

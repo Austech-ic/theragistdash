@@ -249,12 +249,12 @@ const Topbar = ({ setIsSidebar }) => {
       </div>
 
       <div className="flex flex-row gap-3">
-        <div className="flex items-center gap-1">
+        {/* <div className="flex items-center gap-1">
           <Switch colorScheme="green" onChange={() => setIsLive(!isLive)} />
           <p className="text-[#667185] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
             {isLive ? "Live Mode" : "Test Mode"}
           </p>
-        </div>
+        </div> */}
 
         <div className="flex  gap-[12px] border-[0.2px] border-[#98a2b3] px-3 py-1  items-center rounded-[8px]">
           <div className="">
@@ -307,11 +307,21 @@ const Topbar = ({ setIsSidebar }) => {
                     </p>
                   </button> */}
                 </div>
+                {(ProfileQuery?.data &&
+                  ProfileQuery?.data?.partners
+                    ?.filter(
+                      (result) =>
+                        //console.log(ProfileQuery?.data?.default_partner?.id)
+
+                        ![result?.id].includes(
+                          ProfileQuery?.data?.default_partner?.id
+                        )
+                    ).length >0 ) && (
                 <div>
                   <p className="text-[#000] text-[12px]  xl:text-[12px] font-normal leading-[18px] mb-3 ">
                     Switch Business
                   </p>
-                </div>
+                </div>)}
 
                 {ProfileQuery?.data &&
                   ProfileQuery?.data?.partners

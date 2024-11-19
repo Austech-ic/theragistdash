@@ -183,8 +183,8 @@ const OverView = () => {
 
   return (
     <div className="p-[20px] bg-[#F2F2F2]  ">
-      <ul className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-        <li className="border-[0.2px] border-[#98a2b3] rounded-[8px] h-[156px] w-full max-w-[270px] mx-auto bg-[#ffff] flex flex-col justify-between ">
+      <ul className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5">
+        <li className="border-[0.2px] border-[#98a2b3] rounded-[8px] h-[176px] w-full   mx-auto bg-[#ffff] flex flex-col justify-between ">
           <div className="px-[20px] py-[24px]  flex-between">
             <p className="text-[#000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px]  ">
               Wallet Balance
@@ -202,16 +202,12 @@ const OverView = () => {
                 prefix={"₦"}
                 decimalScale={2}
                 fixedDecimalScale={true}
-                // renderText={(value) => (
-                //   <Text className="text-[#fff]  font-semibold font-i_medium text-[16px] leading-[19px]  tracking-[0.2px]   ">
-                //     {value}
-                //   </Text>
-                // )}
+              
               />
             </p>
           </div>
         </li>
-        <li className="border-[0.2px] border-[#98a2b3] rounded-[8px] h-[156px] w-full mx-auto max-w-[270px] bg-[#ffff] flex flex-col justify-between ">
+        <li className="border-[0.2px] border-[#98a2b3] rounded-[8px] h-[176px] w-full mx-auto   bg-[#ffff] flex flex-col justify-between ">
           <div className="px-[20px] py-[24px]  flex-between">
             {" "}
             <p className="text-[#000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px]  ">
@@ -231,16 +227,12 @@ const OverView = () => {
                 prefix={"₦"}
                 decimalScale={2}
                 fixedDecimalScale={true}
-                // renderText={(value) => (
-                //   <Text className="text-[#fff]  font-semibold font-i_medium text-[16px] leading-[19px]  tracking-[0.2px]   ">
-                //     {value}
-                //   </Text>
-                // )}
+               
               />
             </p>
           </div>
         </li>
-        {/* <li className="border-[0.2px] border-[#98a2b3] rounded-[8px] h-[156px] w-full mx-auto max-w-[270px] bg-[#ffff] flex flex-col justify-between ">
+        {/* <li className="border-[0.2px] border-[#98a2b3] rounded-[8px] h-[176px] w-full mx-auto   bg-[#ffff] flex flex-col justify-between ">
           <div className="px-[20px] py-[24px]  flex-between">
             {" "}
             <p className="text-[#000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px]  ">
@@ -257,7 +249,7 @@ const OverView = () => {
             </p>
           </div>
         </li> */}
-        <li className="border-[0.2px] border-[#98a2b3] rounded-[8px] h-[156px] w-full max-w-[270px] mx-auto bg-[#ffff] flex flex-col justify-between ">
+        <li className="border-[0.2px] border-[#98a2b3] rounded-[8px] h-[176px] w-full   mx-auto bg-[#ffff] flex flex-col justify-between ">
           <div className="px-[20px] py-[24px]  flex-between">
             {" "}
             <p className="text-[#000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px]  ">
@@ -311,8 +303,8 @@ const OverView = () => {
           </p>
         </div>
         <div className="overflow-x-auto">
-          <div class="sm:-mx-6 lg:-mx-8 mt-5">
-            <div class="inline-block min-w-full  sm:px-6 lg:px-8">
+          <div class="">
+            <div class="inline-block min-w-full  ">
               <div class="overflow-x-auto rounded-lg">
                 <table className="min-w-full mb-6 border-[0.8px] border-r-[0.8px]  border-l-[0.8px] border-[#E4E7EC] rounded-lg">
                   <thead className="bg-[#F9FAFB]">

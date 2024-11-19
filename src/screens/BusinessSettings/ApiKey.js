@@ -1,30 +1,25 @@
-import React, { useState , useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { motion as m } from "framer-motion";
 import { useOutletContext } from "react-router-dom";
 import { decryptaValue, encryptaValue } from "../../utils/helperFunctions";
 
-
-
 const ApiKey = () => {
   const [publicCopySuccess, setPublicCopySuccess] = useState("");
   const [secretCopySuccess, setSecretCopySuccess] = useState("");
-  const [publicKey, setPublicKey] = useState("PBLK_23632RXXXXXXXXXX_1298");
+  const [publicKey, setPublicKey] = useState("");
   const [secretKey, setSecretKey] = useState("");
   const [keyloading, setKeyLoading] = useState(false);
-  
+
   const profileData = useOutletContext();
 
   useEffect(() => {
-     //If there's no profile data, set selectedInfo to 1
+    //If there's no profile data, set selectedInfo to 1
     if (profileData) {
-       setPublicKey(profileData?.api_token)
+      setPublicKey(profileData?.api_token);
     }
-    const stringedValue = JSON.parse(profileData?.api_token);
-
-//    console.log("decrypting the api key=====>>>", decryptaValue('U2FsdGVkX19eJSpPaYvAOpYRegX386fJRgcTvazL7w16Via3BrZcofJPif+5Vdic3nzu65JfOspeoTIKjqygyfbPdJGWrBMgxzD25ffabQ50gG+fwL0y+CDi6KRZfR2tqiEyKgLnVYs1ao/R7Ot9Gw=='))
-    
+    // const lol = 'U2FsdGVkX1+c56rAfYYrgLg6xvS48LNB098qWf5TV5u8Tyw64sC2LXsDTZE3SstP6+dt0INfYO4F4ziil5UCxhl0AjiPoj8v58EUVBOdTvhXksbevQq4hBkSLA4AJNmZpsHxmrUldKPeH8N8towMvQ=='
+    //  //console.log("decrypting the api key=====>>>", decryptaValue(lol))
   }, [profileData]);
-
 
   const copyPublicKeyToClipboard = (text) => {
     navigator.clipboard.writeText(decryptaValue(text));
@@ -81,9 +76,10 @@ const ApiKey = () => {
                 onClick={() => copyPublicKeyToClipboard(publicKey)}
               >
                 <p className="text-[14px] leading-[21px] tracking-[0.2px] text-[white] font-medium text-left whitespace-nowrap">
-                  {publicCopySuccess === decryptaValue(publicKey)
-                    ? "Copied!"
-                    : "Click to copy"}
+                  {publicKey &&
+                    (publicCopySuccess === decryptaValue(publicKey)
+                      ? "Copied!"
+                      : "Click to copy")}
                 </p>
               </button>
             </div>

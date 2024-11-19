@@ -24,11 +24,11 @@ export const encryptaValue = (value) => {
 
 export const DecryptUserData = () => {
   let userData = localStorage.getItem("authData");
-console.log("userData from top Bar", userData)
+//console.log("userData from top Bar", userData)
   userData = JSON.parse(userData);
   let decryptuserData = decryptaValue(userData);
   decryptuserData = JSON.parse(decryptuserData);
-  console.log("deuserData from top Bar", decryptuserData)
+  //console.log("deuserData from top Bar", decryptuserData)
 
   return decryptuserData;
 };
@@ -75,7 +75,7 @@ export const getRoles = async () => {
 export async function getUsers() {
   try {
     const response = await api.getUsers();
-    console.log("users===>", response);
+    //console.log("users===>", response);
 
     return response;
   } catch (error) {

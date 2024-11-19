@@ -29,7 +29,6 @@ const CreatePin = ({ isCreatePin, setIsCreatePin, refetch }) => {
   const userRef = useRef();
   const userRef2 = useRef();
 
-  
   const handlePin = async () => {
     setIsLoading(true);
     if (!validatePin) {
@@ -39,7 +38,6 @@ const CreatePin = ({ isCreatePin, setIsCreatePin, refetch }) => {
       } else {
         setValidatePin(true);
         setIsLoading(false);
-
       }
     }
 
@@ -52,18 +50,17 @@ const CreatePin = ({ isCreatePin, setIsCreatePin, refetch }) => {
         const response = await api.setPin({
           pin: pin2,
         });
-     
+
         const decryptRes = JSON.parse(decryptaValue(response?.data));
 
-        if (decryptRes.status === "success") {
-          enqueueSnackbar(decryptRes.message, { variant: "success" });
-          setIsCreatePin(false)
-          refetch()
-        }
-setIsLoading(true)
 
+          enqueueSnackbar(decryptRes.message, { variant: "success" });
+          setIsCreatePin(false);
+          refetch();
+     
+        setIsLoading(false);
       } catch (error) {
-        console.log(error.message);
+        //console.log(error.message);
         enqueueSnackbar(error.message, { variant: "error" });
 
         setIsLoading(false);
@@ -98,9 +95,17 @@ setIsLoading(true)
           pb={{ base: "30px", md: "40px" }}
           className="pt-[20px] md:pt-[24px] px-[16px] md:px-[24px] pb-[30px] md:pb-[40px]"
         >
-          {validatePin ?(<button onClick={()=> setValidatePin(false)}><ArrowLeft2 size={18} /></button>)  : ""}
+          {validatePin ? (
+            <button onClick={() => setValidatePin(false)}>
+              <ArrowLeft2 size={18} />
+            </button>
+          ) : (
+            ""
+          )}
           <p className="text-[#667185] text-md mb-5 w-[90%] text-center">
-           {validatePin? "Re-enter your 4-digit pin" : "Enter your 4-digit pin"}
+            {validatePin
+              ? "Re-enter your 4-digit pin"
+              : "Enter your 4-digit pin"}
             {/* {hideEmail(location.state.email)} */}
           </p>
           <div className="flex justify-center my-6">
@@ -120,7 +125,7 @@ setIsLoading(true)
                   padding: "5px",
                   // width: "46px",
                   // height: "46px",
-                  
+
                   backgroundColor: "#DBDCDDFF",
                   border: "#000",
                   borderRadius: "5px",
@@ -153,8 +158,10 @@ setIsLoading(true)
         </ModalBody>
         <Divider />
         <ModalFooter gap={"16px"}>
-          <button onClick={()=>           setIsCreatePin(false)
-} className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black">
+          <button
+            onClick={() => setIsCreatePin(false)}
+            className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black"
+          >
             Cancel
           </button>
           <button

@@ -75,6 +75,7 @@ const Transactions = () => {
   const [copiedRef, setCopiedRef] = useState(null);
   const [status, setStatus] = useState("");
   const [currency, setCurrency] = useState("");
+  const [reason, setReason] = useState("");
 
   // Function to copy text to the clipboard
   const handleCopy = async (transactionRef) => {
@@ -83,7 +84,7 @@ const Transactions = () => {
       setCopiedRef(transactionRef); // Set copied ref to show feedback
       setTimeout(() => setCopiedRef(null), 2000); // Clear feedback after 2 seconds
     } catch (err) {
-      console.error("Failed to copy:", err);
+      //console.error("Failed to copy:", err);
     }
   };
 
@@ -164,6 +165,7 @@ const Transactions = () => {
   };
 
   const handleDownloadPdf = () => {
+    setIsLoading(true)
     if (receiptRef.current) {
       receiptRef.current.generatePDF();
     }
@@ -179,6 +181,7 @@ const Transactions = () => {
         is_credit: type,
         status,
         currency,
+        reason,
       },
     });
     return response;
@@ -194,6 +197,7 @@ const Transactions = () => {
       type,
       status,
       currency,
+      reason,
     ],
     () => getTransaction(page),
     {
@@ -263,12 +267,16 @@ const Transactions = () => {
               <DocumentUpload variant="Linear" color="#667185" size="16" />
             </button>
 
-            <div className="hidden"> <TransactionReceipt
-              ref={receiptRef}
-              transaction={transacDetails}
-              showDownloadButton={false} // Hide the built-in download button
-            /></div>
-           
+            <div className="hidden">
+              {" "}
+              <TransactionReceipt
+                ref={receiptRef}
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
+                transaction={transacDetails}
+                showDownloadButton={false} // Hide the built-in download button
+              />
+            </div>
 
             <Modal
               isCentered
@@ -312,6 +320,7 @@ const Transactions = () => {
                     <p className="text-[14px] underline text-[#667185] leading-[20px]  ">
                       Download Sample Transactions CSV File
                     </p>
+                    
                     <DocumentDownload
                       color="#4CAF50"
                       variant="Bold"
@@ -397,18 +406,25 @@ const Transactions = () => {
             <select
               type="text"
               className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
             >
               <option value="">Select Transaction Reason</option>
               <option value="Wallet Funding">Wallet Funding</option>
               <option value="Withdrawal">Withdrawal</option>
-              {/* <option value="Medium">Success</option> */}
+              <option value="Withdrawal Transfer Fee">
+                Withdrawal Transfer Fee
+              </option>
+              <option value="Dynamic Account Funding">
+                Dynamic Account Funding
+              </option>
             </select>
           </div>
         </div>
       </div>
       <div className="overflow-x-auto">
-        <div class="sm:-mx-6 lg:-mx-8 mt-5">
-          <div class="inline-block min-w-full  sm:px-6 lg:px-8">
+        <div class=" mt-5">
+          <div class="inline-block min-w-full  ">
             <div class="overflow-x-auto rounded-lg">
               <table className="min-w-full mb-6 border-[0.8px] border-r-[0.8px]  border-l-[0.8px] border-[#E4E7EC] rounded-lg">
                 <thead className="bg-[#F9FAFB]">
@@ -580,16 +596,16 @@ const Transactions = () => {
                             // )}
                           />
                         </td>
-                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px]  font-medium text-left  ">
+                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px]  text-[14px] leading-[24px] tracking-[0.2px]  font-medium text-left  ">
                           <button
                             className={`rounded-[20px] md:rounded-[40px] w-[80px] w- py-[2px] md:py-[4px] mx-auto ${
                               result.status === "failed"
-                                ? "bg-[rgb(255,245,230)] text-red-500"
+                                ? "bg-[#FEECEB] text-[#F44336] border-[#F44336]"
                                 : result.status === "pending"
-                                ? "bg-[rgb(255,245,230)] text-orange-400"
+                                ? "bg-[rgb(255,245,230)] text-orange-400 border-orange-400"
                                 : result.status === "reversed"
-                                ? "bg-yellow-100 text-yellow-500"
-                                : "bg-[#EDF7EE] text-[#4CAF50]"
+                                ? "bg-yellow-100 text-yellow-500 border-yellow-500"
+                                : "bg-[#EDF7EE] text-[#4CAF50] border-[#4CAF50]"
                             }  text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px]`}
                           >
                             <p>{result.status}</p>
@@ -627,7 +643,7 @@ const Transactions = () => {
                                   className="mr-2"
                                 />{" "}
                                 <p className="text-[12px] md:text-[14px] text-[#475367]  font-normal leading-[18px] md:leading-[20px]">
-                                  Receipt
+                                  Transaction Details
                                 </p>
                               </MenuItem>
                             </MenuList>
@@ -796,7 +812,7 @@ const Transactions = () => {
         <div>
           <div className="border-b border-b-[#E4E7EC] p-[16px] md:flex justify-between items-center ">
             <div className="flex items-center gap-[16px]">
-              <button onClick={handleDownloadPdf}>
+              <button>
                 {" "}
                 <Printer variant="Linear" color="#667185" size="16" />{" "}
               </button>
@@ -815,7 +831,17 @@ const Transactions = () => {
           </div>
           <div id="print">
             <div className="w-full">
-              {" "}
+              <div className="flex justify-end mt-3">
+                <button
+                  onClick={handleDownloadPdf}
+                  className="flex gap-1 border px-[6px] py-1 text-[13px] leading-[13px] items-center rounded-md hover:bg-slate-50 mr-3"
+                >
+                   {isLoading ? <ClipLoader size={12} /> :  <DocumentDownload
+                      size="14px"
+                    />}
+                  Download Receipt
+                </button>
+              </div>{" "}
               <p className=" text-[26px] my-3  mt-6 text-[#000] leading-[24px] font-semibold text-center ">
                 {" "}
                 <NumericFormat

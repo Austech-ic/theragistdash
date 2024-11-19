@@ -9,7 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 const PersonalInfo = () => {
 
 //   const profileData  = useOutletContext();
-// console.log("profile Data====>>>", profileData )
+// //console.log("profile Data====>>>", profileData )
 
 
 async function getKyc(page) {

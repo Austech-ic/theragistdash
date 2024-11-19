@@ -67,8 +67,8 @@ export function createCustomers(data) {
   return apiPost(CUSTOMERS, data);
 }
 
-export function updateCustomers(data) {
-  return apiPut(UPDATECUSTOMERS + data);
+export function updateCustomers(id, data) {
+  return apiPut(UPDATECUSTOMERS +id,  data);
 }
 export function deleteCustomers(data) {
   return apiDelete(UPDATECUSTOMERS + data);

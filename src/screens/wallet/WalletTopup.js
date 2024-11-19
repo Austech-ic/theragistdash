@@ -129,12 +129,12 @@ const WalletTopup = () => {
   //     const response = await api.getTransaction({
 
   //     });
-  //     console.log("responce==>>>>>", response);
+  //     //console.log("responce==>>>>>", response);
   //     enqueueSnackbar("Leave Application successfull", { variant: "success" });
   //     setIsLoading(false);
   //     navigate("submited");
   //   } catch (error) {
-  //     console.log(error);
+  //     //console.log(error);
   //     enqueueSnackbar(error.message, { variant: "error" });
   //     setIsLoading(false);
   //   }
@@ -175,9 +175,9 @@ const WalletTopup = () => {
     }
   };
 
-  // console.log("decrypt transaction", decryptaValue(results?.data?.data))
+  // //console.log("decrypt transaction", decryptaValue(results?.data?.data))
 
-  //console.log("transactions result", results?.data);
+  ////console.log("transactions result", results?.data);
   return (
     <div className="my-5 bg-[#F2F2F2] min-h-screen ">
       <div className="border-[0.2px] border-[#98a2b3] rounded-[8px]  bg-[#ffff] ">
@@ -494,17 +494,17 @@ const WalletTopup = () => {
                             // )}
                           />
                         </td>
-                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] font-medium text-left  ">
+                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px]  text-[14px] leading-[24px] tracking-[0.2px]  font-medium text-left  ">
                           <button
-                              className={`rounded-[20px] md:rounded-[40px] w-[80px] w- py-[2px] md:py-[4px] mx-auto ${
-                                result.status === "failed"
-                                  ? "bg-[rgb(255,245,230)] text-red-500"
-                                  : result.status === "pending"
-                                  ? "bg-[rgb(255,245,230)] text-orange-040"
-                                    : result.status === "reversed"
-                                  ? "bg-yellow-100 text-yellow-500"
-                                  : "bg-[#EDF7EE] text-[#4CAF50]"
-                              }  text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px]`}
+                            className={`rounded-[20px] md:rounded-[40px] w-[80px] w- py-[2px] md:py-[4px] mx-auto ${
+                              result.status === "failed"
+                                ? "bg-[#FEECEB] text-[#F44336] border-[#F44336]"
+                                : result.status === "pending"
+                                ? "bg-[rgb(255,245,230)] text-orange-400 border-orange-400"
+                                : result.status === "reversed"
+                                ? "bg-yellow-100 text-yellow-500 border-yellow-500"
+                                : "bg-[#EDF7EE] text-[#4CAF50] border-[#4CAF50]"
+                            }  text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px]`}
                           >
                             <p>{result.status}</p>
                           </button>{" "}

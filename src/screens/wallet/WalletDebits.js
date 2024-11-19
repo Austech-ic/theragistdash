@@ -129,12 +129,12 @@ const WalletDebits = () => {
   //     const response = await api.getTransaction({
 
   //     });
-  //     console.log("responce==>>>>>", response);
+  //     //console.log("responce==>>>>>", response);
   //     enqueueSnackbar("Leave Application successfull", { variant: "success" });
   //     setIsLoading(false);
   //     navigate("submited");
   //   } catch (error) {
-  //     console.log(error);
+  //     //console.log(error);
   //     enqueueSnackbar(error.message, { variant: "error" });
   //     setIsLoading(false);
   //   }
@@ -175,9 +175,9 @@ const WalletDebits = () => {
     }
   };
 
-  // console.log("decrypt transaction", decryptaValue(results?.data?.data))
+  // //console.log("decrypt transaction", decryptaValue(results?.data?.data))
 
-  //console.log("transactions result", results?.data);
+  ////console.log("transactions result", results?.data);
   return (
     <div className="my-5 bg-[#F2F2F2] min-h-screen ">
       <div className="border-[0.2px] border-[#98a2b3] rounded-[8px]  bg-[#ffff] ">

@@ -63,21 +63,28 @@ const Customer = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
+  const [resultId, setResultId] = useState(null);
   const [formValue, setFormValue] = useState({
     name: "",
     lastName: "",
     email: "",
     phone: "",
     status: null,
-  })
-
+  });
 
   function HandleEditModalClose() {
     setIsEditOpen(false);
   }
 
-  function ToggleEditModal() {
+  function ToggleEditModal(id) {
     setIsEditOpen(!isEditOpen);
+    setResultId(id);
+    setFormValue({
+      name: id?.name,
+      email: id?.email,
+      phone: id?.phone,
+      status: id?.isActive === 0 ? false :true,
+    });
   }
 
   const toggleCreate = () => {
@@ -117,22 +124,44 @@ const Customer = () => {
     setIsViewModal(false);
   };
 
+  const UpdateCustomer = async () => {
+    setIsLoading(true);
+    try {
+      const response = await api.updateCustomers(resultId?.id,{
+        email: formValue?.email,
+        isActive: formValue?.status === "true" ? true : false,
+        name: formValue?.name,
+        phone: formValue?.phone,
+      });
+      const decryptRes = JSON.parse(decryptaValue(response?.data));
+      enqueueSnackbar(decryptRes?.message, { variant: "success" });
+      results.refetch();
+      setIsLoading(false);
+      setIsEditOpen(false);
+    } catch (error) {
+      enqueueSnackbar(error.message, { variant: "error" });
+
+      setIsLoading(false);
+    }
+  };
+
+
   const CreateCustomer = async () => {
     setIsLoading(true);
     try {
       const response = await api.createCustomers({
         email: formValue?.email,
-       isActive : formValue?.status === "true" ? true : false,
+        isActive: formValue?.status === "true" ? true : false,
         name: formValue?.name,
-        phone: formValue?.phone
+        phone: formValue?.phone,
       });
       const decryptRes = JSON.parse(decryptaValue(response?.data));
       enqueueSnackbar("Customer Created Successfully", { variant: "success" });
-      results.refetch()
+      results.refetch();
       setIsLoading(false);
       setIsCreate(false);
     } catch (error) {
-      console.log(error.message);
+      //console.log(error.message);
       enqueueSnackbar(error.message, { variant: "error" });
 
       setIsLoading(false);
@@ -173,9 +202,9 @@ const Customer = () => {
     setFormValue({ ...formValue, [e.target.name]: e.target.value });
   };
 
-  // console.log("decrypt transaction", decryptaValue(results?.data?.data))
+  // //console.log("decrypt transaction", decryptaValue(results?.data?.data))
 
-  //console.log("transactions result", results?.data);
+  ////console.log("transactions result", results?.data);
   return (
     <div className="p-[20px] bg-[#F2F2F2] min-h-screen ">
       <div className="border-[0.2px] border-[#98a2b3] rounded-[8px]  bg-[#ffff] ">
@@ -200,16 +229,16 @@ const Customer = () => {
             </div>
           </div>
           <div className="flex items-center gap-[16px] ">
-          <button
-            onClick={() => toggleCreate()}
-            className="flex items-center gap-[8px] "
-          >
-            <p className="text-[14px] text-[#667185] leading-[20px]">
-              Create Customer
-            </p>
+            <button
+              onClick={() => toggleCreate()}
+              className="flex items-center gap-[8px] "
+            >
+              <p className="text-[14px] text-[#667185] leading-[20px]">
+                Create Customer
+              </p>
 
-            <Add variant="Linear" color="#667185" size="16" />
-          </button>
+              <Add variant="Linear" color="#667185" size="16" />
+            </button>
 
             <Modal
               isCentered
@@ -277,7 +306,6 @@ const Customer = () => {
             </Modal>
           </div>
         </div>
-       
       </div>
       <div className="overflow-x-auto">
         <div class="sm:-mx-6 lg:-mx-8 mt-5">
@@ -328,14 +356,14 @@ const Customer = () => {
                       </div>
                     </th>
 
-                    {/* <th
+                    <th
                       scope="col"
                       className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
                     >
                       <div className="flex justify-center gap-[6px] md:gap-[12px] items-center my-0">
                         Action
                       </div>
-                    </th> */}
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -344,8 +372,8 @@ const Customer = () => {
                     // decryptaValue(results?.data?.data) === 0 &&
                     <EmptyWallet
                       cols={8}
-                      action={"Users"}
-                      subheading={"Your sub users will appear here."}
+                      action={"Customer"}
+                      subheading={"Your customer will appear here."}
                     />
                   )}
                   {/*  {TaskSummaryData &&
@@ -376,20 +404,19 @@ const Customer = () => {
                             </p>
                           </button>{" "}
                         </td>
-                        
+
                         <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                        {moment(result?.created_at).format("MMM DD, HH:mm:ss")}
+                          {moment(result?.created_at).format(
+                            "MMM DD, HH:mm:ss"
+                          )}
                         </td>
 
-                        {/* <td className="whitespace-nowrap py-[16px] flex-item gap-2 bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#1A202C] font-medium text-left  ">
-                          <More
-                            onClick={() => ToggleEditModal()}
-                            variant="Linear"
-                            color="#667185"
-                            size="24"
-                          />
+                        <td className="whitespace-nowrap py-[16px]  gap-2 bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#1A202C] font-medium text-left  ">
+                          <button onClick={() => ToggleEditModal(result)}>
+                            <Edit variant="Linear" color="#667185" size="16" />
+                          </button>
 
-                          <Modal
+                          {/* <Modal
                             isCentered
                             isOpen={isDeleteModal}
                             onClose={closeDeleteModal}
@@ -487,8 +514,8 @@ const Customer = () => {
                                 </button>
                               </ModalFooter>
                             </ModalContent>
-                          </Modal>
-                        </td> */}
+                          </Modal> */}
+                        </td>
                       </tr>
                     ))}
                   {/* ))} */}
@@ -567,7 +594,6 @@ const Customer = () => {
           </div>
 
           <div className="p-[12px] md:p-[20px] xl:p-[24px]">
-
             <div className="mb-[24px]">
               <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
                 Name
@@ -606,7 +632,7 @@ const Customer = () => {
             </div>
             <div className="mb-[24px]">
               <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
-              Email Address
+                Email Address
               </label>
               <div className=" relative    flex items-center">
                 <input
@@ -632,7 +658,6 @@ const Customer = () => {
                   placeholder=""
                   className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                   name="status"
-                  
                   value={formValue.status}
                   onChange={(e) => handleInputChange(e)}
                   autoCapitalize="off"
@@ -645,7 +670,7 @@ const Customer = () => {
                 </select>
               </div>
             </div>
-            
+
             <div className="py-[20px] border-t border-b-[#E4E7EC] flex-item  justify-end">
               <div className="flex-item gap-2">
                 {" "}
@@ -655,9 +680,10 @@ const Customer = () => {
                 >
                   Cancel
                 </button>
-                <button 
-                onClick={CreateCustomer}
-                className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white">
+                <button
+                  onClick={CreateCustomer}
+                  className="border-[0.2px]  border-[#98A2B3] w-[140px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
+                >
                   {isLoading ? (
                     <ClipLoader color={"white"} size={20} />
                   ) : (
@@ -669,7 +695,134 @@ const Customer = () => {
           </div>
         </div>
       </ModalLeft>
+
+      <Modal
+        isCentered
+        isOpen={isEditOpen}
+        onClose={ToggleEditModal}
+        size="xl"
+        style={{ borderRadius: 12 }}
+        motionPreset="slideInBottom"
+        className="rounded-[12px]"
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader
+            py="4"
+            color="#000000"
+            className="text-[18px] md:text-[20px] text-[#000000] font-medium leading-[24px] md:leading-[24px]"
+          >
+            Edit Customer
+          </ModalHeader>
+          <ModalCloseButton size={"sm"} />
+          <Divider color="#98A2B3" />
+          <ModalBody
+            pt={{ base: "20px", md: "24px" }}
+            px={{ base: "16px", md: "24px" }}
+            pb={{ base: "30px", md: "40px" }}
+            className="pt-[20px] md:pt-[24px] px-[16px] md:px-[24px] pb-[30px] md:pb-[40px]"
+          >
+            <div className="mb-[24px]">
+              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
+                Name
+              </label>
+              <div className=" relative  flex items-center">
+                <input
+                  type="text"
+                  placeholder="Enter Name"
+                  className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  name="name"
+                  value={formValue.name}
+                  onChange={(e) => handleInputChange(e)}
+                  autoCapitalize="off"
+                  autoCorrect="off"
+                  spellCheck="false"
+                />
+              </div>
+            </div>
+            <div className="mb-[24px]">
+              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
+                Phone Number
+              </label>
+              <div className=" relative flex items-center">
+                <input
+                  type="text"
+                  placeholder="XXXX XXXX XXX"
+                  className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  name="phone"
+                  value={formValue.phone}
+                  onChange={(e) => handleInputChange(e)}
+                  autoCapitalize="off"
+                  autoCorrect="off"
+                  spellCheck="false"
+                />
+              </div>
+            </div>
+            <div className="mb-[24px]">
+              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
+                Email Address
+              </label>
+              <div className=" relative    flex items-center">
+                <input
+                  type="email"
+                  placeholder=""
+                  className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  name="email"
+                  disabled
+                  value={formValue.email}
+                  onChange={(e) => handleInputChange(e)}
+                  autoCapitalize="off"
+                  autoCorrect="off"
+                  spellCheck="false"
+                />
+              </div>
+            </div>
+            <div className="mb-[24px]">
+              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
+                Status
+              </label>
+              <div className=" relative flex items-center">
+                <select
+                  type="text"
+                  placeholder=""
+                  className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  name="status"
+                  value={formValue.status}
+                  onChange={(e) => handleInputChange(e)}
+                  autoCapitalize="off"
+                  autoCorrect="off"
+                  spellCheck="false"
+                >
+                  <option value="">Select Status</option>
+                  <option value={true}>Active</option>
+                  <option value={false}>Inactive</option>
+                </select>
+              </div>
+            </div>
+          </ModalBody>
+          <Divider />
+          <ModalFooter gap={"16px"}>
+            <button
+              onClick={HandleEditModalClose}
+              className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black"
+            >
+              Cancel
+            </button>
+            <button
+               onClick={UpdateCustomer}
+              className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex banks-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
+            >
+              {isLoading ? (
+                <ClipLoader color={"white"} size={20} />
+              ) : (
+                <> Update </>
+              )}
+            </button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </div>
+
   );
 };
 

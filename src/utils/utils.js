@@ -9,7 +9,7 @@ import {
 
 export async function getHeaders() {
   let userData = localStorage.getItem("authData");
-  // console.log(userData, "headerxx======>>>>>>");
+  // //console.log(userData, "headerxx======>>>>>>");
 
   if (userData) {
     // let decryptuserData = decryptaValue(userData);
@@ -30,8 +30,8 @@ export async function getHeaders() {
     }
 
     const token = "Bearer " + cutTokenBeforeSymbol(decryptUserData.token);
-    // console.log(userData.data.accessToken, "header");
-    // console.log("token====>>>",token)
+    // //console.log(userData.data.accessToken, "header");
+    // //console.log("token====>>>",token)
     return {
       authorization: token,
       Accept: "application/json",
@@ -74,8 +74,8 @@ export async function apiReq(
         return res(data);
       })
       .catch((error) => {
-        // console.log(error);
-        // console.log(error && error.response, "the error respne");
+        // //console.log(error);
+        // //console.log(error && error.response, "the error respne");
         if (error && error.response && error.response.status === 401) {
           clearUserData();
         }

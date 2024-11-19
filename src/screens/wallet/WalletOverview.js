@@ -130,7 +130,7 @@ const WalletOverdiv = () => {
       setCopiedRef(transactionRef); // Set copied ref to show feedback
       setTimeout(() => setCopiedRef(null), 2000); // Clear feedback after 2 seconds
     } catch (err) {
-      console.error("Failed to copy:", err);
+      //console.error("Failed to copy:", err);
     }
   };
   const [pin, setPin] = useState("");
@@ -177,7 +177,7 @@ const WalletOverdiv = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (text) => {
-    console.log(accountNumber);
+    //console.log(accountNumber);
     if (accountNumber !== "" && selectedBank == "") {
       // Show an error message or do something else here
       enqueueSnackbar("Please Select a bank", { variant: "error" });
@@ -208,12 +208,12 @@ const WalletOverdiv = () => {
         account_number: accountNumber,
         account_bank: selectedBank?.code,
       });
-      console.log(
-        "response of account verification==>>>>>",
-        decryptaValue(response?.data)
-      );
+      //console.log(
+      //   "response of account verification==>>>>>",
+      //   decryptaValue(response?.data)
+      // );
       const decryptRes = JSON.parse(decryptaValue(response?.data));
-      console.log("dddd", decryptRes?.status);
+      //console.log("dddd", decryptRes?.status);
       if (decryptRes.status === "error") {
         // setAccountName(response.data.name)
         setAccountName("");
@@ -231,7 +231,7 @@ const WalletOverdiv = () => {
       }
       setNameLoading(false);
     } catch (error) {
-      console.log(error.message);
+      //console.log(error.message);
       enqueueSnackbar(error.message, { variant: "error" });
       setAccountName("");
 
@@ -245,9 +245,9 @@ const WalletOverdiv = () => {
       const response = await api.sendOtp({
         event: "transfer",
       });
-      console.log("response of send otp==>>>>>", decryptaValue(response?.data));
+      //console.log("response of send otp==>>>>>", decryptaValue(response?.data));
       const decryptRes = JSON.parse(decryptaValue(response?.data));
-      console.log("response of send otp==>>>>>", decryptRes?.status);
+      //console.log("response of send otp==>>>>>", decryptRes?.status);
 
       if (decryptRes.status === true) {
         enqueueSnackbar(decryptRes.message, { variant: "success" });
@@ -256,7 +256,7 @@ const WalletOverdiv = () => {
       }
       setIsLoading(false);
     } catch (error) {
-      console.log(error.message);
+      //console.log(error.message);
       enqueueSnackbar(error.message, { variant: "error" });
 
       setIsLoading(false);
@@ -306,9 +306,9 @@ const WalletOverdiv = () => {
         toSession,
         toBvn,
       });
-      console.log("response of transfer==>>>>>", decryptaValue(response?.data));
+      //console.log("response of transfer==>>>>>", decryptaValue(response?.data));
       const decryptRes = JSON.parse(decryptaValue(response?.data));
-      console.log("response of transfer==>>>>>", decryptRes?.status);
+      //console.log("response of transfer==>>>>>", decryptRes?.status);
 
       if (decryptRes.status === true) {
         enqueueSnackbar(decryptRes.message, { variant: "success" });
@@ -318,7 +318,7 @@ ProfileQuery.refetch()
       }
       setIsLoading(false);
     } catch (error) {
-      console.log(error.message);
+      //console.log(error.message);
       enqueueSnackbar(error.message, { variant: "error" });
     }
   };
@@ -332,9 +332,9 @@ ProfileQuery.refetch()
         otp: otp,
         pin: pin,
       });
-      console.log("response of transfer==>>>>>", decryptaValue(response?.data));
+      //console.log("response of transfer==>>>>>", decryptaValue(response?.data));
       const decryptRes = JSON.parse(decryptaValue(response?.data));
-      console.log("response of transfer==>>>>>", decryptRes?.status);
+      //console.log("response of transfer==>>>>>", decryptRes?.status);
       enqueueSnackbar(decryptRes.message, { variant: "success" });
       CloseVantTagModal();
       setIsSuccess(true)
@@ -345,7 +345,7 @@ ProfileQuery.refetch()
       // }
       setIsLoading(false);
     } catch (error) {
-      console.log(error.message);
+      //console.log(error.message);
       enqueueSnackbar(error.message, { variant: "error" });
     }
   };
@@ -416,9 +416,9 @@ ProfileQuery.refetch()
 
         setTitleValid(response.userExists);
         setVantUser(response.user);
-        // console.log(response.user)
+        // //console.log(response.user)
       } catch (error) {
-        console.log("Error checking title:", error);
+        //console.log("Error checking title:", error);
         // Handle the error appropriately
       }
     }, 300),
@@ -500,7 +500,7 @@ ProfileQuery.refetch()
               </button>
             </div>
           </div>
-
+          {profileData?.default_partner?.account_numbers && ( 
           <div className=" bg-[#1B2026] relative   rounded-[12px]  px-[16px] pb-[14px] pt-[24px] -mt-[16px]   ">
             <p className="text-[#fff]  font-medium  text-[12px] leading-[14px]  tracking-[0.2px]  mb-[8px]  ">
               {profileData?.default_partner?.account_numbers[0]?.bank}
@@ -519,11 +519,7 @@ ProfileQuery.refetch()
                 }
               </p>
               <button
-                //   onPress={() =>
-                //     copyKeyToClipboard(
-                //       userQuery?.data?.account_numbers[0]?.account_number
-                //     )
-                //   }
+               
 
                 onClick={() =>
                   handleCopy(
@@ -549,6 +545,7 @@ ProfileQuery.refetch()
               {profileData?.default_partner?.account_numbers[0]?.account_name}
             </p>
           </div>
+          )}
         </li>
 
         <li className="rounded-lg overflow-hidden border-[0.8px] border-[#E4E7EC] bg-[#fefefeec] shadow p-2 md:p-4 ">

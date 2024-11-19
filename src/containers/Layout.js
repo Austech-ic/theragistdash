@@ -33,12 +33,12 @@ function Layout() {
   const profileData = ProfileQuery?.data || [];
   
   let userData = localStorage.getItem("authData");
-  console.log(userData)
+  //console.log(userData)
   if (!userData) {
     return <Navigate to="/login" />;
     
   } else {
-    console.log("Valid token");
+    //console.log("Valid token");
   }
  
   // if (userData) {

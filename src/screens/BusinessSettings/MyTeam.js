@@ -50,6 +50,7 @@ import api from "../../api";
 import EmptyWallet from "../../components/EmptyWallets";
 import TableLoading from "../../components/TableLoading";
 import { decryptaValue } from "../../utils/helperFunctions";
+import { Settings2 } from "lucide-react";
 
 const MyTeam = () => {
   const navigate = useNavigate();
@@ -80,7 +81,6 @@ const MyTeam = () => {
   function ToggleEditModal(id) {
     setIsEditOpen(!isEditOpen);
     setResultId(id);
-
   }
 
   const toggleCreate = () => {
@@ -129,12 +129,12 @@ const MyTeam = () => {
   //     const response = await api.getTransaction({
 
   //     });
-  //     console.log("responce==>>>>>", response);
+  //     //console.log("responce==>>>>>", response);
   //     enqueueSnackbar("Leave Application successfull", { variant: "success" });
   //     setIsLoading(false);
   //     navigate("submited");
   //   } catch (error) {
-  //     console.log(error);
+  //     //console.log(error);
   //     enqueueSnackbar(error.message, { variant: "error" });
   //     setIsLoading(false);
   //   }
@@ -156,7 +156,7 @@ const MyTeam = () => {
       setIsLoading(false);
       setIsCreate(false);
     } catch (error) {
-      console.log(error.message);
+      //console.log(error.message);
       enqueueSnackbar(error.message, { variant: "error" });
 
       setIsLoading(false);
@@ -166,16 +166,16 @@ const MyTeam = () => {
   const UpdateRole = async () => {
     setIsLoading(true);
     try {
-      const response = await api.updateTeamRole(resultId?.id,{
+      const response = await api.updateTeamRole(resultId?.id, {
         role: formValue?.role,
       });
       const decryptRes = JSON.parse(decryptaValue(response?.data));
       enqueueSnackbar(decryptRes?.message, { variant: "success" });
       results.refetch();
       setIsLoading(false);
-      setIsCreate(false);
+      setIsEditOpen(false);
     } catch (error) {
-      console.log(error.message);
+      //console.log(error.message);
       enqueueSnackbar(error.message, { variant: "error" });
 
       setIsLoading(false);
@@ -211,9 +211,9 @@ const MyTeam = () => {
     setFormValue({ ...formValue, [e.target.name]: e.target.value });
   };
 
-  // console.log("decrypt transaction", decryptaValue(results?.data?.data))
+  // //console.log("decrypt transaction", decryptaValue(results?.data?.data))
 
-  //console.log("transactions result", results?.data);
+  ////console.log("transactions result", results?.data);
   return (
     <div className="p-[20px] bg-[#F2F2F2] min-h-screen ">
       <div className="border-[0.2px] border-[#98a2b3] rounded-[8px]  bg-[#ffff] ">
@@ -328,23 +328,58 @@ const MyTeam = () => {
                           </button>{" "}
                         </td>
 
-                        <td className="whitespace-nowrap py-[16px] flex-item gap-2 bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#1A202C] font-medium text-left  ">
-                          <button>
-                            <Trash
+                        <td className="whitespace-nowrap py-[16px]  bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#1A202C] font-medium text-left  ">
+                          <Menu>
+                            <MenuButton bg={"none"} _hover={"none"}>
+                              <button
+                                //onClick={() => handleTransacModalOpen(result)}
+                                className="   rounded-sm flex justify-center items-center  hover:bg-[#CBD5E0]  "
+                              >
+                                <More
+                                  variant="Linear"
+                                  color="#98A2B3"
+                                  size="24"
+                                />{" "}
+                              </button>
+                            </MenuButton>
+                            <MenuList maxW="32" className="">
+                              <MenuItem
+                                onClick={() => ToggleEditModal(result)}
+                                w="full"
+                                color="#bf0d0d"
+                                mb="10px"
+                              >
+                                <Settings2
+                                  variant="Linear"
+                                  color="#98A2B3"
+                                  size="16"
+                                  className="mr-2"
+                                />{" "}
+                                <p className="text-[12px] md:text-[14px] text-[#475367]  font-normal leading-[18px] md:leading-[20px]">
+                                  Manage Role
+                                </p>
+                              </MenuItem>
+
+                              <MenuItem
                               onClick={() => ToggleDeleteModal(result?.id)}
-                              variant="Linear"
-                              color="#E01616FF"
-                              size="24"
-                            />
-                          </button>
-                          <button                               onClick={() => ToggleEditModal(result)}
-                          >
-                            <Settings
-                              variant="Linear"
-                              color="#E01616FF"
-                              size="24"
-                            />
-                          </button>
+                              w="full"
+                                color="#bf0d0d"
+                                mb="10px"
+                              >
+                                <Trash
+                                  variant="Linear"
+                                  color="#98A2B3"
+                                  size="16"
+                                  className="mr-2"
+                                />{" "}
+                                <p className="text-[12px] md:text-[14px] text-[#475367]  font-normal leading-[18px] md:leading-[20px]">
+                                  Delete Team Member
+                                </p>
+                              </MenuItem>
+                            </MenuList>
+                          </Menu>
+
+                         
 
                           <Modal
                             isCentered
@@ -661,29 +696,29 @@ const MyTeam = () => {
               </div>
             </div>
             <div className=" relative  flex items-center">
-                <select
-                  type="text"
-                  placeholder=""
-                  className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                  name="role"
-                  id=""
-                  value={formValue.role}
-                  onChange={(e) => handleInputChange(e)}
-                  autoCapitalize="off"
-                  autoCorrect="off"
-                  spellCheck="false"
-                >
-                  <option value="">Select Role</option>
-                  <option value="owner">Owner</option>
-                  <option value="manager">Manager</option>
-                  <option value="developer">Developer</option>
-                  <option value="support">Support</option>
-                  <option value="finance">Finance</option>
-                  <option value="operations">Operations</option>
-                  <option value="viewer">Viewer</option>
-                  {/* <option value="Manager">Manager</option> */}
-                </select>
-              </div>
+              <select
+                type="text"
+                placeholder=""
+                className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                name="role"
+                id=""
+                value={formValue.role}
+                onChange={(e) => handleInputChange(e)}
+                autoCapitalize="off"
+                autoCorrect="off"
+                spellCheck="false"
+              >
+                <option value="">Select Role</option>
+                <option value="owner">Owner</option>
+                <option value="manager">Manager</option>
+                <option value="developer">Developer</option>
+                <option value="support">Support</option>
+                <option value="finance">Finance</option>
+                <option value="operations">Operations</option>
+                <option value="viewer">Viewer</option>
+                {/* <option value="Manager">Manager</option> */}
+              </select>
+            </div>
           </ModalBody>
           <Divider />
           <ModalFooter gap={"16px"}>
@@ -694,7 +729,7 @@ const MyTeam = () => {
               Cancel
             </button>
             <button
-             onClick={UpdateRole}
+              onClick={UpdateRole}
               className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex banks-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
             >
               {isLoading ? (

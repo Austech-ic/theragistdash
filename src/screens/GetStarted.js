@@ -171,12 +171,12 @@ const GetStarted = () => {
 
       const response = await api.editKyc({ data: encryptaValue(payload) });
       const decr = JSON.parse(decryptaValue(response?.data));
-      console.log("decrypt form login", decr);
+      //console.log("decrypt form login", decr);
       enqueueSnackbar(decr?.message, { variant: "success" });
       ProfileQuery.refetch()
       setIsLoading(false);
     } catch (error) {
-      console.log("error", error);
+      //console.log("error", error);
       enqueueSnackbar(error.message, { variant: "error" });
       // enqueueSnackbar("errooor", { variant: "error" });
       setIsLoading(false);
@@ -203,12 +203,12 @@ const GetStarted = () => {
 
       const response = await api.editBusInfo({ data: encryptaValue(payload) });
       const decr = JSON.parse(decryptaValue(response?.data));
-      console.log("decrypt for bus info", decr);
+      //console.log("decrypt for bus info", decr);
       enqueueSnackbar(decr?.message, { variant: "success" });
       BussQuery.refetch()
       setIsLoading(false);
     } catch (error) {
-      console.log("error", error);
+      //console.log("error", error);
       enqueueSnackbar(error.message, { variant: "error" });
       // enqueueSnackbar("errooor", { variant: "error" });
       setIsLoading(false);
@@ -229,12 +229,12 @@ const GetStarted = () => {
       //const response = await api.editBvn({ data: encryptaValue(payload) });
       const response = await api.editBvn({    bvn: formValue?.bvn});
       const decr = JSON.parse(decryptaValue(response?.data));
-      console.log("decrypt for bus info", decr);
+      //console.log("decrypt for bus info", decr);
       enqueueSnackbar(decr?.message, { variant: "success" });
       BvnQuery.refetch()
       setIsLoading(false);
     } catch (error) {
-      console.log("error", error);
+      //console.log("error", error);
       enqueueSnackbar(error.message, { variant: "error" });
       // enqueueSnackbar("errooor", { variant: "error" });
       setIsLoading(false);
@@ -251,12 +251,12 @@ const GetStarted = () => {
     try {
       const response = await api.uploadDoc(formData);
       const decr = JSON.parse(decryptaValue(response?.data));
-      console.log("decrypt for bus info", decr);
+      //console.log("decrypt for bus info", decr);
       enqueueSnackbar(decr?.message, { variant: "success" });
 
       setIsLoading(false);
     } catch (error) {
-      console.error(error);
+      //console.error(error);
       enqueueSnackbar(error.message, { variant: "error" });
       setIsLoading(false);
     }
