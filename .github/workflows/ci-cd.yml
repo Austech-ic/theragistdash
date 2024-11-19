@@ -46,6 +46,6 @@ jobs:
           echo "Current Working Directory: $(pwd)"
           echo "Contents of the directory: $(ls -la)"
           echo "Starting deployment....."
-          ssh -o StrictHostKeyChecking=no -p ${{ secrets.VPS_PORT }} ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} "cd /usr/share/nginx/portfolio/build && rm -rf * && exit"
-          scp -o StrictHostKeyChecking=no -P ${{ secrets.VPS_PORT }} -r ./build/* ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}:/usr/share/nginx/portfolio/build
+          ssh -o StrictHostKeyChecking=no -p ${{ secrets.VPS_PORT }} ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} "cd /home/garri/htdocs/garri.ddnsgeek.com/build && rm -rf * && exit"
+          scp -o StrictHostKeyChecking=no -P ${{ secrets.VPS_PORT }} -r ./build/* ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}:/home/garri/htdocs/garri.ddnsgeek.com/build
           echo "Deployment completed."
