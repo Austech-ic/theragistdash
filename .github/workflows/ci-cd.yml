@@ -36,9 +36,9 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.VPS_SSH_KEY }}
       #Performs the actual deployment.
-      #It consists of a multi-line script (run:) Prints the current working directory and lists its contents.
+      #It consists of a multi-line scrpt (run:) Prints the current working directory and lists its contents.
       #Outputs a message indicating the start of the deployment.
-      #Use SSH to connect to the CentOS 7 server (${{ secrets.SSH_HOST }}) with the specified port, user, and private key. It then changes to the deployment directory (/usr/share/nginx/portfolio/build), removes existing contents, and exits.
+      #Use SSH to connect to the CentOS 7 server (${{ secrets.VPS_HOST }}) with the specified port, user, and private key. It then changes to the deployment directory (/usr/share/nginx/portfolio/build), removes existing contents, and exits.
       #Use scp to securely copy the contents of the local ./build/* directory to the specified deployment directory on the server.
       #Outputs a message indicating the completion of the deployment.
       - name: Deploy React App to Linux UBUNTU
