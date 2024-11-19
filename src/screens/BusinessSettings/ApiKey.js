@@ -19,7 +19,7 @@ const ApiKey = () => {
     if (profileData) {
        setPublicKey(profileData?.api_token)
     }
-    //const stringedValue = JSON.parse(profileData?.api_token);
+    const stringedValue = JSON.parse(profileData?.api_token);
 
 //    console.log("decrypting the api key=====>>>", decryptaValue('U2FsdGVkX19eJSpPaYvAOpYRegX386fJRgcTvazL7w16Via3BrZcofJPif+5Vdic3nzu65JfOspeoTIKjqygyfbPdJGWrBMgxzD25ffabQ50gG+fwL0y+CDi6KRZfR2tqiEyKgLnVYs1ao/R7Ot9Gw=='))
     
@@ -33,6 +33,7 @@ const ApiKey = () => {
       setPublicCopySuccess("");
     }, 3000);
   };
+
   return (
     <div className="p-4 md:p-6">
       {" "}
@@ -75,7 +76,7 @@ const ApiKey = () => {
                 disabled
               />
               <button
-                class="flex items-center   bg-[#26ae5f] text-[#fafafa] text-[12px]    rounded-r border border-l-0 border-solid border-[#D0D5DD]  px-3 py-[0.40rem] text-center text-base  leading-[1.6] text-neutral-700 dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200"
+                class="flex items-center   bg-[#26ae5f] text-[#fafafa] text-[12px]    rounded-r border border-l-0 border-solid border-[#D0D5DD]  px-3 py-[0.40rem] text-center text-base  leading-[1.6]  dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200"
                 id="basic-addon2"
                 onClick={() => copyPublicKeyToClipboard(publicKey)}
               >

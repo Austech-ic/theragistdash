@@ -5,10 +5,11 @@ import { enqueueSnackbar } from "notistack";
 import api from "../api";
 import { ClipLoader } from "react-spinners";
 import { motion as m } from "framer-motion";
+import { decryptaValue } from "../utils/helperFunctions";
 
 const ValidateOtp = () => {
-    const navigate = useNavigate();
-     const location = useLocation();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
   const [otp, setOtp] = useState("");
   const userRef = useRef();
@@ -23,11 +24,9 @@ const ValidateOtp = () => {
         email: location.state.email,
         otp: otp,
       });
-      console.log("res of login==>>>>>", response);
       enqueueSnackbar("Email Verified Successfully", { variant: "success" });
 
       setIsLoading(false);
-      //   navigate("/signUp",{state:{email:location.state.email} });
       navigate("/");
 
       // navigate("/signUp");
@@ -66,10 +65,11 @@ const ValidateOtp = () => {
 
     try {
       const response = await api.resendOtp({
-        hash: sessionId,
+        email: location.state.email,
       });
-      console.log("res of login==>>>>>", response);
-      enqueueSnackbar(response.message, { variant: "OTP Sent" });
+      const decryptRes = JSON.parse(decryptaValue(response?.data));
+
+      enqueueSnackbar(decryptRes.message, { variant: "success" });
     } catch (error) {
       enqueueSnackbar(error.message, { variant: "error" });
     }
@@ -112,7 +112,6 @@ const ValidateOtp = () => {
     }, 1000);
   }
 
-
   return (
     <div className="bg-[#F2F2F2] h-screen w-full flex justify-center items-center ">
       <m.div
@@ -132,7 +131,7 @@ const ValidateOtp = () => {
         </h3>
         <p className="text-[#667185] text-md mb-5 w-[90%] text-center">
           We have sent a verification code to your email
-          {/* {hideEmail(location.state.email)} */}
+          {hideEmail(location.state.email)}
         </p>
         <div className="flex justify-center my-6">
           <OTPInput
@@ -159,7 +158,8 @@ const ValidateOtp = () => {
         </div>
 
         <button
-          type="submit"
+          type="button"
+          onClick={validtaeOtp}
           className="w-full py-[14px] text-center text-white bg-[#26ae5f] rounded-[8px] flex items-center justify-center mb-[20px] md:mb-[32px]"
         >
           <p className="text-sm font-medium leading-[20px]">Confirm</p>

@@ -132,7 +132,7 @@ const GetStarted = () => {
       setFilledSection(addValuePush(filledSection, 2));
       setBusDisabled(true)
     }
-    if (bvnData?.bvn) {
+    if (bvnData?.bvn_status === "completed") {
       setFilledSection(addValuePush(filledSection, 3));
       setBvnDisabled(true)
     }
@@ -173,7 +173,7 @@ const GetStarted = () => {
       const decr = JSON.parse(decryptaValue(response?.data));
       console.log("decrypt form login", decr);
       enqueueSnackbar(decr?.message, { variant: "success" });
-
+      ProfileQuery.refetch()
       setIsLoading(false);
     } catch (error) {
       console.log("error", error);
@@ -205,7 +205,7 @@ const GetStarted = () => {
       const decr = JSON.parse(decryptaValue(response?.data));
       console.log("decrypt for bus info", decr);
       enqueueSnackbar(decr?.message, { variant: "success" });
-
+      BussQuery.refetch()
       setIsLoading(false);
     } catch (error) {
       console.log("error", error);
@@ -214,6 +214,8 @@ const GetStarted = () => {
       setIsLoading(false);
     }
   }
+
+  
   async function submitBvn(e) {
     e.preventDefault();
 
@@ -224,11 +226,12 @@ const GetStarted = () => {
         bvn: formValue?.bvn,
       };
 
-      const response = await api.editBvn({ data: encryptaValue(payload) });
+      //const response = await api.editBvn({ data: encryptaValue(payload) });
+      const response = await api.editBvn({    bvn: formValue?.bvn});
       const decr = JSON.parse(decryptaValue(response?.data));
       console.log("decrypt for bus info", decr);
       enqueueSnackbar(decr?.message, { variant: "success" });
-
+      BvnQuery.refetch()
       setIsLoading(false);
     } catch (error) {
       console.log("error", error);
@@ -836,7 +839,7 @@ const GetStarted = () => {
                     name="bvn"
                     disabled={bvnDisabled}
 
-                    value={formValue.bvn === "Uploaded" ? "XXXX XXXX XX" : formValue.bvn }
+                    value={formValue.bvn}
                     onChange={(e) => {
                       handleInputChange(e);
                     }}
@@ -849,7 +852,7 @@ const GetStarted = () => {
 
               <div className="py-[20px] border-t border-b-[#E4E7EC]  ">
                 <div className="flex-item gap-2 w-full">
-                  {bvnData && formValue.bvn ? (
+                  {(bvnData && bvnData?.bvn_status === "completed") ? (
                     <div className="flex gap-1 items-center w-[85%] mx-auto">
                       <div className="h-[1.5px] bg-green-400 flex-1 w-full"></div>{" "}
                       <p className="text-green-600 text-[14px]">
