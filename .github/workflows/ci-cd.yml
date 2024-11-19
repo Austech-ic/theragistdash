@@ -6,7 +6,7 @@ on:
   push:
     branches:
       #Specifies the branches on which the workflow should be triggered
-      - main
+      - master
 #Defines the jobs to be executed as part of the workflow
 jobs:
   #The name of the job, in this case, "CI-CD."
