@@ -23,7 +23,7 @@ jobs:
         uses: actions/setup-node@v3
         # Allows passing additional parameters to the action, in this case, specifying the Node.js version.
         with:
-          node-version: 16
+          node-version: 20
       #Installs project dependencies using the `npm install` command.
       - name: Install Dependencies
         run: npm install
