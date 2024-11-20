@@ -3,28 +3,14 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 import { DocumentDownload } from "iconsax-react";
 import logo from "../assets/VantLogo.png"
+import moment from "moment";
 
 const TransactionReceipt = forwardRef(
   ({ transaction, showDownloadbutton = true, isLoading, setIsLoading }, ref) => {
     // Default transaction data
-    const defaultTransaction = {
-      bankName: "PROVIDUS BANK",
-      customerNumber: "277544 AKOLADE DAMILARE PAUL - ADVANT CAPITOL LTD",
-      branch: "NNAMDI AZIKWE BRANCH",
-      accountNumber: "0212/0277544/001/0054/000",
-      ibanNumber: "5403998053",
-      accountType: "PROVIDUSBANK PREMIUM PLUS-CORP CURR.ACCT",
-      currency: "NAIRA",
-      amount: "21,700.000",
-      transactionNumber: "96476",
-      transactionDate: "11/11/2024",
-      valueDate: "11/11/2024",
-      description:
-        "OUTWARD TRANSFER (N) 2724971 To FIRST CITY MONUMENT BANK | YAKUBU YUSUF BAKO RECOVERY - YUSUF BAKO/000023241111130022002129037653",
-      type: "Debit",
-    };
+ 
 
-    const data = transaction || defaultTransaction;
+    const data = transaction 
 
     const generatePDF = () => {
       // Initialize jsPDF
@@ -34,33 +20,37 @@ const TransactionReceipt = forwardRef(
       doc.setFont("helvetica");
 
       // Add bank logo (placeholder rectangle)
-      doc.addImage(logo, 'PNG', 20, 10, 20, 10);
+      doc.addImage(logo, 'PNG', 20, 70, 20, 10);
 
       // Add title
       doc.setFontSize(16);
       doc.setFont("helvetica", "bold");
-      doc.text("Transaction Advice", 15, 50);
+      doc.text("Transaction Receipt", 15, 30);
 
-      // Add transaction details using autoTable
-      const tableData = [
-        //  data?.beneficiary &&  ["Bank Name", data?.beneficiary?.bank],
-        // data?.beneficiary ? ["Account Number", data?.beneficiary?.account_number] : "",
-        ["Account number", data.accountNumber],
-        ["Account Type", data.accountType],
-        ["Currency", "Naira"],
-        ["Transaction Amount", `NGN ${data.amount}`],
-        ["Transaction Number", data.reference],
-        ["Transaction Description", data.remark],
-        ["Transaction Date", data.date],
-       // ["Transaction Value Date", data.valueDate],
-        ["Transaction Type", data.type],
+     
+
+      const allRows = [
+        data?.beneficiary?.bank && ["Bank Name", data?.beneficiary?.bank],
+        data?.beneficiary?.account_number && ["Account Number", data?.beneficiary?.account_number],
+        data.accountNumber && ["Account number", data.accountNumber],
+        data.accountType && ["Account Type", data.accountType],
+        data.currency && ["Currency", "Naira"],
+        data.amount && ["Transaction Amount", `NGN ${data.amount}`],
+        data.reference && ["Transaction Number", data.reference],
+        data.remark && ["Transaction Description", data.remark],
+        data.date && ["Transaction Date",      moment(data.date).format("MMM DD, HH:mm:ss") ],
+        data.type && ["Transaction Type", data.type],
+        data.status && ["Transaction Status", data.status]
       ];
+    
+      // Filter out null, undefined and empty arrays
+      const filteredRows = allRows.filter(row => row && row[1]);
 
-      // Custom style for the table
+      //Custom style for the table
       doc.autoTable({
-        startY: 60,
+        startY: 40,
         head: [["", ""]],
-        body: tableData,
+        body: filteredRows,
         theme: "grid",
         headStyles: {
           fillColor: [66, 66, 66],
@@ -76,16 +66,17 @@ const TransactionReceipt = forwardRef(
           1: { width: 110 },
         },
       });
+     
 
-      // Add Transaction Description separately due to its potential length
-      const descriptionY = doc.lastAutoTable.finalY + 10;
-      doc.setFontSize(10);
+     // Add Transaction Description separately due to its potential length
+     const descriptionY = doc.lastAutoTable.finalY + 10;
+     doc.setFontSize(10);
       doc.setFont("helvetica", "bold");
       doc.setFont("helvetica", "normal");
 
-      // Word wrap for long description
+      //Word wrap for long description
       const splitDescription = doc.splitTextToSize(data.description, 180);
-      doc.text(splitDescription, 15, descriptionY + 7);
+      // doc.text(splitDescription, 15, descriptionY + 7);
 
       // Add disclaimer
       const disclaimerText =
@@ -94,8 +85,8 @@ const TransactionReceipt = forwardRef(
           "For any enquiries, please contact our business concierge team on";
         // "For any enquiries, please contact our business concierge team on 0700PROVIDUS (070077684387) or send an email to businessconcierge@providusbank.com";
 
-      const disclaimerY = descriptionY + 30;
-      doc.setFontSize(8);
+        const disclaimerY = descriptionY + 30;
+        doc.setFontSize(8);
       doc.setFont("helvetica", "bold");
       doc.text("DISCLAIMER", 15, disclaimerY);
       doc.setFont("helvetica", "normal");
