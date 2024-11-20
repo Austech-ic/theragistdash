@@ -2,6 +2,8 @@ import api from "../api";
 import { AES, enc } from "crypto-js";
 import CryptoJS from "crypto-js";
 import AES256 from "aes-everywhere";
+import { enqueueSnackbar } from "notistack";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -122,3 +124,76 @@ export function formatDateToText (date) {
 
   return `${getDayWithOrdinal(day)} ${month}, ${year}`;
 }
+
+export const Categories = [
+  {
+      id:1,
+      name: "Food"
+  },
+  {
+      id:2,
+      name: "Drinks"
+  },
+  {
+      id:3,
+      name: "Transportation"
+  },
+  {
+      id:4,
+      name: "Gift"
+  },
+  {
+      id:5,
+      name: "Debt"
+  },
+  {
+      id:6,
+      name: "Rent"
+  },
+  {
+      id:7,
+      name: "Education"
+  },
+  {
+      id:8,
+      name: "Shopping"
+  },
+  {
+      id:9,
+      name: "Utilities"
+  },
+  {
+      id:10,
+      name: "Others"
+  },
+  {
+      id:11,
+      name: "Medical Expenses"
+  },
+  {
+      id:12,
+      name: "Lifestyle"
+  },
+  {
+      id:13,
+      name: "Charitable Donations"
+  },
+  {
+      id:14,
+      name: "Investments"
+  },
+  {
+      id:15,
+      name: "Business Expenses"
+  },
+  {
+      id:16,
+      name: "Fitness"
+  },
+  {
+      id:17,
+      name: "Insurance"
+  },
+
+
+]

@@ -17,7 +17,7 @@ import {
   ShieldSlash,
 } from "iconsax-react";
 import React, { useEffect, useState, useCallback } from "react";
-import { decryptaValue, formatDateToText } from "../../utils/helperFunctions";
+import { decryptaValue, formatDateToText, Categories } from "../../utils/helperFunctions";
 import { NumericFormat } from "react-number-format";
 import {
   Grid,
@@ -133,6 +133,17 @@ const WalletOverdiv = () => {
       //console.error("Failed to copy:", err);
     }
   };
+
+  const handleAmountChange = (e) => {
+    const value = e.target.value;
+
+    // Only allow digits (no letters, special characters, or signs)
+    const numericValue = value.replace(/[^0-9]/g, "");
+
+    setAmount(numericValue);
+  };
+
+
   const [pin, setPin] = useState("");
 
   const isPin = false;
@@ -200,7 +211,7 @@ const WalletOverdiv = () => {
     setBanksVisible(false);
   };
   const verifyAccount = async () => {
-    if (accountNumber !== "" && !selectedBank ) {
+    if (accountNumber !== "" && !selectedBank) {
       // Show an error message or do something else here
       enqueueSnackbar("Please Select a bank 😞", { variant: "error" });
 
@@ -302,8 +313,6 @@ const WalletOverdiv = () => {
 
       return;
     }
-  
-
 
     setIsLoading(true);
     try {
@@ -330,7 +339,9 @@ const WalletOverdiv = () => {
 
   const handleOtp = () => {
     if (!otp || otp?.length < 6) {
-      enqueueSnackbar("Please input otp received via email😞", { variant: "error" });
+      enqueueSnackbar("Please input otp received via email😞", {
+        variant: "error",
+      });
 
       return;
     }
@@ -396,7 +407,6 @@ const WalletOverdiv = () => {
       //console.log(error.message);
       enqueueSnackbar(error.message, { variant: "error" });
       setIsLoading(false);
-
     }
   };
 
@@ -425,7 +435,6 @@ const WalletOverdiv = () => {
       //console.log(error.message);
       enqueueSnackbar(error.message, { variant: "error" });
       setIsLoading(false);
-
     }
   };
 
@@ -794,7 +803,7 @@ const WalletOverdiv = () => {
                       className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                       name="amount"
                       value={amount}
-                      onChange={(e) => setAmount(e.target.value)}
+                      onChange={(e) => handleAmountChange(e)}
                       autoCapitalize="off"
                       autoCorrect="off"
                       spellCheck="false"
@@ -862,8 +871,6 @@ const WalletOverdiv = () => {
                       {filteredData &&
                         filteredData?.map((bank, index) => (
                           <button
-                            
-
                             onClick={() => handleSelectBank(bank)}
                             className="w-full px-[10px] py-2 rounded-[10px] flex items-center flex-row justify-between banks-center mb-2"
                             style={{
@@ -968,7 +975,13 @@ const WalletOverdiv = () => {
                       spellCheck="false"
                     >
                       <option value="">Select Purpose</option>
-                      <option value="Monthly Payslip">Utilities</option>
+
+                      {Categories && Categories.map((category)=> 
+
+                      (
+                        <option value={category?.name}>{category?.name}</option>
+                      ))}
+                     
                     </select>
                   </div>
                 </div>
@@ -983,8 +996,8 @@ const WalletOverdiv = () => {
                       className="w-full h-[120px] p-2 text-[14px] text-[#344054] leading-[16px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                       name="full-name"
                       id="full-name"
-                      //value=""
-                      //onChange={() => {}}
+                      value={naration}
+                      onChange={(e) => {setNaration(e.target.value)}}
                       autoCapitalize="off"
                       autoCorrect="off"
                       spellCheck="false"
@@ -1094,7 +1107,7 @@ const WalletOverdiv = () => {
                       className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                       name="amount"
                       value={amount}
-                      onChange={(e) => setAmount(e.target.value)}
+                      onChange={(e) => handleAmountChange(e)}
                       autoCapitalize="off"
                       autoCorrect="off"
                       spellCheck="false"

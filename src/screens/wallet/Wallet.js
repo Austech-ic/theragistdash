@@ -7,8 +7,8 @@ const Wallet = () => {
   
 
     return (
-      <div className="bg-[#F2F2F2] min-h-screen">
-        <div className="px-[10px] md:px-[16px] xl:px-[20px] pt-[16px] md:pt-[18px] bg-white border-b border-t border-[#98A2B38F]/50 overflow-auto">
+      <div className="bg-[#F2F2F2] min-h-screen ">
+        <div className="px-[10px] md:px-[16px] xl:px-[20px] py-[16px] md:py-[18px] bg-white border-b border-t border-[#98A2B38F]/50 overflow-auto">
           <ul className="flex items-center gap-[20px] md:gap-[32px]">
             {/* <button onClick={() => setState("Employee")}> */}
             <Link to="/wallet/overview">

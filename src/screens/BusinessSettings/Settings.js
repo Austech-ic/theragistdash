@@ -24,7 +24,6 @@ const Settings = () => {
   );
 
   const profileData = results?.data?.data || []
-  //console.log("profile Data up====>>>", profileData )
 
   
 

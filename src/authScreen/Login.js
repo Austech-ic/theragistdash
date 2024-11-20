@@ -8,7 +8,11 @@ import api from "../api";
 import { Navigate, useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import { motion as m } from "framer-motion";
-import { decryptaValue, encryptaValue } from "../utils/helperFunctions";
+import {
+  decryptaValue,
+  encryptaValue,
+  SendOtp,
+} from "../utils/helperFunctions";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -42,24 +46,43 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      const payload = { email: email, password : password }
+      const payload = { email: email, password: password };
 
-    
-      const response = await api.signIn({data : encryptaValue(payload)});
+      const response = await api.signIn({ data: encryptaValue(payload) });
 
       const decryptRes = JSON.parse(decryptaValue(response?.data));
 
       setUserData(response?.data);
       enqueueSnackbar(decryptRes.message, { variant: "success" });
 
-     //console.log("decrypt form login",decryptaValue(response?.data) ) 
-      setIsLoading(false);
-      navigate("/");
+      setUserData(response?.data);
+
+      if (decryptRes?.user?.email_verified) {
+        setIsLoading(false);
+        navigate("/");
+      } else {
+        SendOtp(email);
+        setIsLoading(false);
+      }
     } catch (error) {
-      //console.log("error", error);
-     // enqueueSnackbar(error.msg, { variant: "error" });
       enqueueSnackbar(error.message, { variant: "error" });
       setIsLoading(false);
+    }
+  }
+
+  const SendOtp = async(email) => {
+  
+    try {
+      const response = await api.resendOtp({
+        email: email,
+      });
+      const decryptRes = JSON.parse(decryptaValue(response?.data));
+    
+      enqueueSnackbar(decryptRes.message, { variant: "success" });
+      navigate("/validate-otp",{state:{email: email} });
+  
+    } catch (error) {
+      enqueueSnackbar(error.message, { variant: "error" });
     }
   }
   return (
@@ -110,7 +133,6 @@ const Login = () => {
                 className="w-[100%] sm:w-[400px] md:w-[486px] h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                 required
                 autoComplete="on"
-                
                 name="email"
                 id="email"
                 value={email}
@@ -144,7 +166,6 @@ const Login = () => {
                 className="w-[100%]  sm:w-[400px] md:w-[486px] h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                 required
                 autoComplete="on"
-                
                 name="password"
                 id="password"
                 value={password}

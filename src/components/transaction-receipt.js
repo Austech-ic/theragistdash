@@ -20,7 +20,8 @@ const TransactionReceipt = forwardRef(
       doc.setFont("helvetica");
 
       // Add bank logo (placeholder rectangle)
-      doc.addImage(logo, 'PNG', 20, 70, 20, 10);
+      doc.addImage(logo, 'PNG', 20, 10, 20, 10);
+
 
       // Add title
       doc.setFontSize(16);
@@ -28,17 +29,16 @@ const TransactionReceipt = forwardRef(
       doc.text("Transaction Receipt", 15, 30);
 
      
-
       const allRows = [
         data?.beneficiary?.bank && ["Bank Name", data?.beneficiary?.bank],
         data?.beneficiary?.account_number && ["Account Number", data?.beneficiary?.account_number],
         data.accountNumber && ["Account number", data.accountNumber],
         data.accountType && ["Account Type", data.accountType],
-        data.currency && ["Currency", "Naira"],
+        data.amount && ["Currency", "Naira"],
         data.amount && ["Transaction Amount", `NGN ${data.amount}`],
-        data.reference && ["Transaction Number", data.reference],
-        data.remark && ["Transaction Description", data.remark],
-        data.date && ["Transaction Date",      moment(data.date).format("MMM DD, HH:mm:ss") ],
+        data.reference && ["Transaction Reference", data.reference],
+        data.remark && ["Remark", data.remark],
+        data.date && ["Transaction Date",      moment(data.date).format("MMM DD YYYY, HH:mm:ss") ],
         data.type && ["Transaction Type", data.type],
         data.status && ["Transaction Status", data.status]
       ];
@@ -134,51 +134,7 @@ const TransactionReceipt = forwardRef(
         </div>
         
 
-        <div className="space-y-2">
-          <ReceiptRow label="Bank Name" value={data.bankName} />
-          <ReceiptRow label="Customer Number" value={data.customerNumber} />
-          <ReceiptRow label="Branch" value={data.branch} />
-          <ReceiptRow
-            label="Account number / IBAN"
-            value={
-              <div>
-                <div>{data.accountNumber}</div>
-                <div>{data.ibanNumber}</div>
-              </div>
-            }
-          />
-          <ReceiptRow label="Account Type" value={data.accountType} />
-          <ReceiptRow label="Currency" value={data.currency} />
-          <ReceiptRow
-            label="Transaction Amount"
-            value={`${data.amount} ${data.currency}`}
-          />
-          <ReceiptRow
-            label="Transaction Number"
-            value={data.transactionNumber}
-          />
-          <ReceiptRow label="Transaction Date" value={data.transactionDate} />
-          <ReceiptRow label="Transaction Value Date" value={data.valueDate} />
-          <ReceiptRow
-            label="Transaction Description"
-            value={data.description}
-          />
-          <ReceiptRow label="Transaction Type" value={data.type} />
-        </div>
-
-        <div className="mt-6 text-sm text-gray-600 border-t pt-4">
-          <p className="font-bold mb-2">DISCLAIMER</p>
-          <p>
-            This is a computer generated document requiring no signature and it
-            represents our records of your transactions with us. Any exceptions
-            must be advised to the bank immediately. If we do not hear from you
-            within 2 weeks. We will assume that you are in agreement with the
-            details stated. All products are subject to the bank's terms and
-            conditions. For any enquiries, please contact our business concierge
-            team on 0700PROVIDUS (070077684387) or send an email to
-            businessconcierge@providusbank.com
-          </p>
-        </div>
+       
       </div>
     );
   }
