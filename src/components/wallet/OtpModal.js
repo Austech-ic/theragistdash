@@ -28,7 +28,7 @@ const OtpModal = ({isLoading, otp,setOtp, handleOtp,onClose}) => {
         color="#000000"
         className="text-[18px] md:text-[20px] text-[#000000] font-medium leading-[24px] md:leading-[24px]"
       >
-        Transfer Money
+       Validate OTP
       </ModalHeader>
       <ModalCloseButton size={"sm"} />
       <Divider color="#98A2B3" />

@@ -115,7 +115,7 @@ const WalletOverdiv = () => {
   const [isTitleValid, setTitleValid] = useState(false);
   const [isVantTagModal, setIsVantTagModal] = useState(false);
   const [transferVantPhase, setTransferVantPhase] = useState(1);
-  const [isSuccess, setIsSuccess] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const CloseVantTagModal = () => {
     setIsVantTagModal(!isVantTagModal);
@@ -137,16 +137,14 @@ const WalletOverdiv = () => {
 
   const isPin = false;
 
-
-
   const closeTransferOthers = () => {
     setIsTransferOthers(false);
     setTransferPhase(1);
     clearForm();
   };
   const closeIsSuccess = () => {
-    setIsSuccess(false)
-  }
+    setIsSuccess(false);
+  };
   const openTransferOthers = () => {
     setIsTransferOthers(true);
   };
@@ -202,6 +200,12 @@ const WalletOverdiv = () => {
     setBanksVisible(false);
   };
   const verifyAccount = async () => {
+    if (accountNumber !== "" && !selectedBank ) {
+      // Show an error message or do something else here
+      enqueueSnackbar("Please Select a bank 😞", { variant: "error" });
+
+      return;
+    }
     setNameLoading(true);
     try {
       const response = await api.verifyAccountNunmber({
@@ -240,6 +244,67 @@ const WalletOverdiv = () => {
   };
 
   const sendOtp = async () => {
+    if (!accountName) {
+      enqueueSnackbar("Account name is not valid", { variant: "error" });
+      return;
+    }
+
+    if (!accountNumber) {
+      enqueueSnackbar("Account number is not valid", { variant: "error" });
+      return;
+    }
+    if (!selectedBank) {
+      enqueueSnackbar("Please select a bank", { variant: "error" });
+      return;
+    }
+    if (!amount) {
+      enqueueSnackbar("Please input an amount 😞", { variant: "error" });
+
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const response = await api.sendOtp({
+        event: "transfer",
+      });
+      //console.log("response of send otp==>>>>>", decryptaValue(response?.data));
+      const decryptRes = JSON.parse(decryptaValue(response?.data));
+      //console.log("response of send otp==>>>>>", decryptRes?.status);
+
+      if (decryptRes.status === true) {
+        enqueueSnackbar(decryptRes.message, { variant: "success" });
+        setTransferPhase(2);
+        setTransferVantPhase(2);
+      }
+      setIsLoading(false);
+    } catch (error) {
+      //console.log(error.message);
+      enqueueSnackbar(error.message, { variant: "error" });
+
+      setIsLoading(false);
+    }
+  };
+
+  const sendOtpVant = async () => {
+    if (!tag) {
+      enqueueSnackbar("Please enter a valid Vant Tag", { variant: "error" });
+      return;
+    }
+
+    if (!isTitleValid) {
+      enqueueSnackbar("User does not exist 😞", { variant: "error" });
+      return;
+    }
+
+    if (!amount) {
+      enqueueSnackbar("Please input an amount 😞", { variant: "error" });
+
+      return;
+    }
+  
+
+
     setIsLoading(true);
     try {
       const response = await api.sendOtp({
@@ -264,10 +329,20 @@ const WalletOverdiv = () => {
   };
 
   const handleOtp = () => {
+    if (!otp || otp?.length < 6) {
+      enqueueSnackbar("Please input otp received via email😞", { variant: "error" });
+
+      return;
+    }
     setTransferPhase(3);
     setTransferVantPhase(3);
   };
   const handlePin = () => {
+    if (!pin || pin.length < 4) {
+      enqueueSnackbar("Please input a valid pin😞", { variant: "error" });
+
+      return;
+    }
     setTransferPhase(4);
     setTransferVantPhase(4);
   };
@@ -313,13 +388,15 @@ const WalletOverdiv = () => {
       if (decryptRes.status === true) {
         enqueueSnackbar(decryptRes.message, { variant: "success" });
         closeTransferOthers();
-      setIsSuccess(true)
-ProfileQuery.refetch()
+        setIsSuccess(true);
+        ProfileQuery.refetch();
       }
       setIsLoading(false);
     } catch (error) {
       //console.log(error.message);
       enqueueSnackbar(error.message, { variant: "error" });
+      setIsLoading(false);
+
     }
   };
 
@@ -337,16 +414,18 @@ ProfileQuery.refetch()
       //console.log("response of transfer==>>>>>", decryptRes?.status);
       enqueueSnackbar(decryptRes.message, { variant: "success" });
       CloseVantTagModal();
-      setIsSuccess(true)
-ProfileQuery.refetch()
+      setIsSuccess(true);
+      ProfileQuery.refetch();
 
       // if (decryptRes.status === true) {
-       
+
       // }
       setIsLoading(false);
     } catch (error) {
       //console.log(error.message);
       enqueueSnackbar(error.message, { variant: "error" });
+      setIsLoading(false);
+
     }
   };
 
@@ -431,9 +510,13 @@ ProfileQuery.refetch()
         isComingSoon={isComingSoon}
         closeComingSoon={closeComingSoon}
       />
-    
-        <CreatePin isCreatePin={isCreatePin} setIsCreatePin={setIsCreatePin} refetch={ProfileQuery.refetch} />
-     
+
+      <CreatePin
+        isCreatePin={isCreatePin}
+        setIsCreatePin={setIsCreatePin}
+        refetch={ProfileQuery.refetch}
+      />
+
       <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-[16px] md:gap-[20px] mt-5 ">
         <li>
           <div className="rounded-[12px] px-[16px] pt-4 pb-6 bg-[#26ae5f] ">
@@ -500,51 +583,49 @@ ProfileQuery.refetch()
               </button>
             </div>
           </div>
-          {profileData?.default_partner?.account_numbers && ( 
-          <div className=" bg-[#1B2026] relative   rounded-[12px]  px-[16px] pb-[14px] pt-[24px] -mt-[16px]   ">
-            <p className="text-[#fff]  font-medium  text-[12px] leading-[14px]  tracking-[0.2px]  mb-[8px]  ">
-              {profileData?.default_partner?.account_numbers[0]?.bank}
-            </p>
-            <div
-              style={{
-                flexDirection: "row",
-                alignbanks: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <p className="text-[#fff]  font-semibold  text-[14px] leading-[17px]  tracking-[0.2px]    ">
-                {
-                  profileData?.default_partner?.account_numbers[0]
-                    ?.account_number
-                }
+          {profileData?.default_partner?.account_numbers.length > 0 && (
+            <div className=" bg-[#1B2026] relative   rounded-[12px]  px-[16px] pb-[14px] pt-[24px] -mt-[16px]   ">
+              <p className="text-[#fff]  font-medium  text-[12px] leading-[14px]  tracking-[0.2px]  mb-[8px]  ">
+                {profileData?.default_partner?.account_numbers[0]?.bank}
               </p>
-              <button
-               
-
-                onClick={() =>
-                  handleCopy(
+              <div
+                style={{
+                  flexDirection: "row",
+                  alignbanks: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <p className="text-[#fff]  font-semibold  text-[14px] leading-[17px]  tracking-[0.2px]    ">
+                  {
                     profileData?.default_partner?.account_numbers[0]
                       ?.account_number
-                  )
-                }
-                className="absolute top-[12px] right-[16px]"
-              >
-                <p className="text-[#fff] font-semibold font-i_medium text-[10px] leading-[9.68px]  ">
-                  {copiedRef ===
-                  profileData?.default_partner?.account_numbers[0]
-                    ?.account_number ? (
-                    "Copied!"
-                  ) : (
-                    <Copy size={20} variant="Bold" color="#fff" />
-                  )}
-                  {/* <Copy size={20} variant="Bold" color="#fff" /> */}
+                  }
                 </p>
-              </button>
+                <button
+                  onClick={() =>
+                    handleCopy(
+                      profileData?.default_partner?.account_numbers[0]
+                        ?.account_number
+                    )
+                  }
+                  className="absolute top-[12px] right-[16px]"
+                >
+                  <p className="text-[#fff] font-semibold font-i_medium text-[10px] leading-[9.68px]  ">
+                    {copiedRef ===
+                    profileData?.default_partner?.account_numbers[0]
+                      ?.account_number ? (
+                      "Copied!"
+                    ) : (
+                      <Copy size={20} variant="Bold" color="#fff" />
+                    )}
+                    {/* <Copy size={20} variant="Bold" color="#fff" /> */}
+                  </p>
+                </button>
+              </div>
+              <p className="text-[#fff]  font-normal font-i_normal text-[12px] leading-[14px]  tracking-[0.2px] ">
+                {profileData?.default_partner?.account_numbers[0]?.account_name}
+              </p>
             </div>
-            <p className="text-[#fff]  font-normal font-i_normal text-[12px] leading-[14px]  tracking-[0.2px] ">
-              {profileData?.default_partner?.account_numbers[0]?.account_name}
-            </p>
-          </div>
           )}
         </li>
 
@@ -781,13 +862,7 @@ ProfileQuery.refetch()
                       {filteredData &&
                         filteredData?.map((bank, index) => (
                           <button
-                            // onPress={() => {
-                            //   ToggleBottomdiv(),
-                            //     setBank(bank.code),
-                            //     setBankName(bank.name),
-                            //     setAccountName(""),
-                            //     setAccountNumber("");
-                            // }}
+                            
 
                             onClick={() => handleSelectBank(bank)}
                             className="w-full px-[10px] py-2 rounded-[10px] flex items-center flex-row justify-between banks-center mb-2"
@@ -1080,7 +1155,7 @@ ProfileQuery.refetch()
                   Cancel
                 </button>
                 <button
-                  onClick={sendOtp}
+                  onClick={sendOtpVant}
                   disabled={!tag && !isTitleValid}
                   className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex banks-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
                 >
@@ -1131,7 +1206,7 @@ ProfileQuery.refetch()
       </Modal>
 
       <RecentTransaction />
-      <Success isSuccess={isSuccess} closeIsSuccess={closeIsSuccess}/>
+      <Success isSuccess={isSuccess} closeIsSuccess={closeIsSuccess} />
     </div>
   );
 };

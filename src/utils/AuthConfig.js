@@ -1,5 +1,5 @@
 //production server
-// export const API_BASE_URL = 'https://dev.vantapp.com/api/partner-business';
+ //export const API_BASE_URL = 'https://dev.vantapp.com/api/partner-business/auth';
 
 //live server
 export const API_BASE_URL = 'https://api.vantapp.com/api/partner-business/auth';

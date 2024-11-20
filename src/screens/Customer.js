@@ -74,6 +74,7 @@ const Customer = () => {
 
   function HandleEditModalClose() {
     setIsEditOpen(false);
+    ClearForm()
   }
 
   function ToggleEditModal(id) {
@@ -92,6 +93,7 @@ const Customer = () => {
   };
   const closeCreateModal = () => {
     setIsCreate(false);
+    ClearForm()
   };
 
   function ToggleDeleteModal(id) {
@@ -124,6 +126,16 @@ const Customer = () => {
     setIsViewModal(false);
   };
 
+  const ClearForm =()=> {
+    setFormValue({
+      name: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      status: null,
+    })
+  }
+
   const UpdateCustomer = async () => {
     setIsLoading(true);
     try {
@@ -138,6 +150,7 @@ const Customer = () => {
       results.refetch();
       setIsLoading(false);
       setIsEditOpen(false);
+      ClearForm()
     } catch (error) {
       enqueueSnackbar(error.message, { variant: "error" });
 
@@ -160,6 +173,7 @@ const Customer = () => {
       results.refetch();
       setIsLoading(false);
       setIsCreate(false);
+      ClearForm()
     } catch (error) {
       //console.log(error.message);
       enqueueSnackbar(error.message, { variant: "error" });
