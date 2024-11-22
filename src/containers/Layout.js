@@ -1,4 +1,4 @@
-import React, { useContext,useState, Suspense, useEffect, lazy } from "react";
+import React, { useContext, useState, Suspense, useEffect, lazy } from "react";
 import {
   Routes,
   Route,
@@ -15,7 +15,7 @@ import Topbar from "../components/global/Topbar";
 import Sidebar from "../components/global/Sidebar";
 import api from "../api";
 import { useQuery } from "@tanstack/react-query";
-
+import Warning from "../components/Warning";
 
 function Layout() {
   // const { isSidebarOpen, closeSidebar } = useContext(SidebarContext);
@@ -31,16 +31,15 @@ function Layout() {
     refetchOnWindowFocus: "always",
   });
   const profileData = ProfileQuery?.data || [];
-  
+
   let userData = localStorage.getItem("authData");
   //console.log(userData)
   if (!userData) {
     return <Navigate to="/login" />;
-    
   } else {
     //console.log("Valid token");
   }
- 
+
   // if (userData) {
   //   const decodedData = JSON.parse(atob(userData?.split(".")[1]));
   //   let currentDate = new Date();
@@ -62,21 +61,21 @@ function Layout() {
     return response;
   }
 
-
-
-  
   return (
     <div id="" className="app bg-[#ffffff] flex  ">
-
-      <Sidebar isSidebarOpen={isSidebar} onClose={handleSideBarClose} profileData={profileData}  />
+      <Sidebar
+        isSidebarOpen={isSidebar}
+        onClose={handleSideBarClose}
+        profileData={profileData}
+      />
 
       <div className="flex flex-col flex-1 w-full overflow-x-hidden">
-        <Topbar setIsSidebar={toggleSidebar}/>
+        <Topbar setIsSidebar={toggleSidebar} />
+        {profileData?.default_partner?.is_verified === 0 && <Warning />}
         <Main>
           <Suspense fallback={<ThemedSuspense />}>
-            
-            <Outlet/>
-            </Suspense>
+            <Outlet />
+          </Suspense>
         </Main>
       </div>
     </div>

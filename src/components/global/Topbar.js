@@ -9,6 +9,7 @@ import {
   ArrowDown2,
   DocumentDownload,
   EmptyWalletChange,
+  HambergerMenu,
   InfoCircle,
   Logout,
   SecuritySafe,
@@ -174,35 +175,7 @@ const Topbar = ({ setIsSidebar }) => {
           class="h-10 w-10 bg-[#FAFAFA] hover:bg-[#eeeded] flex justify-center items-center rounded-md lg:hidden mr-2"
           onClick={setIsSidebar}
         >
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M4 6H20"
-              stroke="#1A202C"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M4 12H20"
-              stroke="#1A202C"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M4 18H20"
-              stroke="#1A202C"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
+         <HambergerMenu size={18} color="#31363EFF"/>
         </button>
         <div className="md:flex items-center gap-[16px] hidden">
           <div className="flex items-center">

@@ -272,16 +272,16 @@ const OverView = () => {
           </div>
         </li>
       </ul>
-      <div className="bg-white rounded-lg border-[0.2px] border-[#98a2b3] mt-[20px] h-[459px] w-full  mt">
+      <div className="bg-white rounded-lg border-[0.2px] border-[#98a2b3] mt-[20px] h-[359px] md:h-[459px] w-full  mt">
         <div className="p-[16px] md:p-[20px] flex-between bg-white rounded-tr-lg rounded-tl-lg  border-b-[0.8px]  border-[#D0D5DD]">
-          <p className="text-[18px]  leading-[27px] text-[#000]  ">
+          <p className="text-[18px] whitespace-nowrap leading-[27px] text-[#000]  ">
             Transaction Chart
           </p>
 
           <select
               type="text"
               placeholder=""
-              className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+              className="w-[120px] md:w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
            
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
@@ -292,11 +292,11 @@ const OverView = () => {
               <option value="y">Yearly</option>
             </select>
         </div>
-        <div className="px-[16px] mt-5 h-[350px] flex justify-center ">
+        <div className="px-[16px] mt-5 h-[260px] md:h-[350px] flex justify-center ">
           <Bar options={options} data={data} />
         </div>
       </div>
-      <div className="bg-white rounded-lg border-[0.2px] border-[#98a2b3] mt-[20px] h-[459px] w-full  mt">
+      <div className="bg-white rounded-lg border-[0.2px] border-[#98a2b3] mt-[20px]  w-full  mt">
         <div className="p-[16px] md:p-[20px] flex-between bg-white rounded-tr-lg rounded-tl-lg  border-b-[0.8px]  border-[#D0D5DD]">
           <p className="text-[18px]  leading-[27px] text-[#000]  ">
             Recent Transaction
@@ -313,7 +313,7 @@ const OverView = () => {
                         scope="col"
                         className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
                       >
-                        <div className="flex px-5   gap-[6px] md:gap-[12px] items-center">
+                        <div className="flex px-5 whitespace-nowrap   gap-[6px] md:gap-[12px] items-center">
                           Transaction Ref
                         </div>
                       </th>

@@ -433,7 +433,7 @@ const Transactions = () => {
                       scope="col"
                       className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
                     >
-                      <div className="flex px-5   gap-[6px] md:gap-[12px] items-center">
+                      <div className="flex px-5 whitespace-nowrap   gap-[6px] md:gap-[12px] items-center">
                         Transaction Ref
                       </div>
                     </th>

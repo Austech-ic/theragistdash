@@ -1,7 +1,11 @@
 import {
   ArrowRight2,
   ArrowRight3,
+  Building,
+  CardTick1,
+  DocumentCloud,
   MainComponent,
+  Personalcard,
   Profile,
   Sms,
   TickCircle,
@@ -24,7 +28,7 @@ import { enqueueSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
 
 const GetStarted = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [selectedInfo, setSelectedInfo] = useState(1);
   const [filledSection, setFilledSection] = useState([]);
@@ -32,10 +36,10 @@ const GetStarted = () => {
   const [directorId1File, setDirectorId1File] = useState(null);
   const [directorId2File, setDirectorId2File] = useState(null);
   const [cacForm, setCacForm] = useState(null);
-  const [personalDisabled, setPersonalDisabled] = useState(false)
-  const [busDisabled, setBusDisabled] = useState(false)
-  const [bvnDisabled, setBvnDisabled] = useState(false)
-  const [uploadDisabled, setUploadDisabled] = useState(false)
+  const [personalDisabled, setPersonalDisabled] = useState(false);
+  const [busDisabled, setBusDisabled] = useState(false);
+  const [bvnDisabled, setBvnDisabled] = useState(false);
+  const [uploadDisabled, setUploadDisabled] = useState(false);
   const [formValue, setFormValue] = useState({
     firstName: "",
     lastName: "",
@@ -101,8 +105,8 @@ const GetStarted = () => {
     return arr;
   }
   useEffect(() => {
-    if(profilesData?.default_partner?.is_verified === 1){
-      navigate("/overview")
+    if (profilesData?.default_partner?.is_verified === 1) {
+      navigate("/overview");
     }
     setFormValue({
       ...formValue,
@@ -126,29 +130,32 @@ const GetStarted = () => {
     });
     if (profileData?.personal_info_status === "completed") {
       setFilledSection(addValuePush(filledSection, 1));
-      setPersonalDisabled(true)
+      setPersonalDisabled(true);
     }
     if (busData?.business_info_status === "completed") {
       setFilledSection(addValuePush(filledSection, 2));
-      setBusDisabled(true)
+      setBusDisabled(true);
     }
     if (bvnData?.bvn_status === "completed") {
       setFilledSection(addValuePush(filledSection, 3));
-      setBvnDisabled(true)
+      setBvnDisabled(true);
     }
     if (profilesData?.default_partner?.documents_status === "completed") {
       setFilledSection(addValuePush(filledSection, 4));
-      setUploadDisabled(true)
+      setUploadDisabled(true);
     }
-    
-
-  }, [ProfileQuery?.data, BussQuery?.data, BvnQuery?.data, ProfilesQuery?.data]);
+  }, [
+    ProfileQuery?.data,
+    BussQuery?.data,
+    BvnQuery?.data,
+    ProfilesQuery?.data,
+  ]);
 
   const info = [
-    { id: 1, name: "Personal Information" },
-    { id: 2, name: "Business Information" },
-    { id: 3, name: "BVN Of Manager" },
-    { id: 4, name: "Upload Document" },
+    { id: 1, name: "Personal Information" , icon: Personalcard },
+    { id: 2, name: "Business Information", icon: Building },
+    { id: 3, name: "BVN Of Manager", icon: CardTick1 },
+    { id: 4, name: "Upload Document", icon:DocumentCloud },
   ];
   const handleInputChange = (e) => {
     setFormValue({ ...formValue, [e.target.name]: e.target.value });
@@ -173,7 +180,7 @@ const GetStarted = () => {
       const decr = JSON.parse(decryptaValue(response?.data));
       //console.log("decrypt form login", decr);
       enqueueSnackbar(decr?.message, { variant: "success" });
-      ProfileQuery.refetch()
+      ProfileQuery.refetch();
       setIsLoading(false);
     } catch (error) {
       //console.log("error", error);
@@ -205,7 +212,7 @@ const GetStarted = () => {
       const decr = JSON.parse(decryptaValue(response?.data));
       //console.log("decrypt for bus info", decr);
       enqueueSnackbar(decr?.message, { variant: "success" });
-      BussQuery.refetch()
+      BussQuery.refetch();
       setIsLoading(false);
     } catch (error) {
       //console.log("error", error);
@@ -215,7 +222,6 @@ const GetStarted = () => {
     }
   }
 
-  
   async function submitBvn(e) {
     e.preventDefault();
 
@@ -227,11 +233,11 @@ const GetStarted = () => {
       };
 
       //const response = await api.editBvn({ data: encryptaValue(payload) });
-      const response = await api.editBvn({    bvn: formValue?.bvn});
+      const response = await api.editBvn({ bvn: formValue?.bvn });
       const decr = JSON.parse(decryptaValue(response?.data));
       //console.log("decrypt for bus info", decr);
       enqueueSnackbar(decr?.message, { variant: "success" });
-      BvnQuery.refetch()
+      BvnQuery.refetch();
       setIsLoading(false);
     } catch (error) {
       //console.log("error", error);
@@ -269,7 +275,7 @@ const GetStarted = () => {
           <img
             src="./assets/fblob.png"
             alt="blob"
-            className="absolute top-0 right-0 h-[220px] "
+            className="absolute hidden md:block top-0 right-0 h-[220px] "
           />
           <p className="text-[#000] text-[14px] md:text-[16px]  xl:text-[18px] italic font-semibold leading-[24px]  mt-6 ">
             Hello {formValue.busName}
@@ -291,7 +297,7 @@ const GetStarted = () => {
         </div>
       </div>
 
-      <div className="flex mt-4 md:mt-6 gap-[24px]">
+      <div className="flex mt-4 md:mt-6 gap-[16px] md:gap-[24px]">
         <m.div
           initial={{ x: -30, opacity: 0.4 }}
           animate={{
@@ -302,7 +308,7 @@ const GetStarted = () => {
           transition={{
             duration: 0.9,
           }}
-          className="w-[30%]"
+          className="w-[25%] md:w-[30%]"
         >
           {info &&
             info?.map((inf, index) => (
@@ -319,26 +325,41 @@ const GetStarted = () => {
                 {filledSection.every((id) =>
                   info.some((item) => item.id === id)
                 ) && filledSection.some((item) => item === inf?.id) ? (
-                  <TickCircle size="18" color={` ${
-                    selectedInfo === inf?.id ?
-                    "  #fefefe"
-                      : "#26ae5f"
-                  }`} />
+                  <TickCircle
+                    size="18"
+                    className="hidden md:block"
+                    color={` ${
+                      selectedInfo === inf?.id ? "  #fefefe" : "#26ae5f"
+                    }`}
+                  />
                 ) : (
-                  <MainComponent size="18" color={` ${
-                  selectedInfo === inf?.id ?
-                  "  #fefefe"
-                    : "#26ae5f"
-                }`} />
+                  <MainComponent
+                    size="18"
+                    className="hidden md:block"
+                    color={` ${
+                      selectedInfo === inf?.id ? "  #fefefe" : "#26ae5f"
+                    }`}
+                  />
                 )}
-                <p className="  text-[14px]  font-normal leading-[16px]  ">
-                  {inf?.name}
-                </p>
-                <ArrowRight2 size="18" color={` ${
-                  selectedInfo === inf?.id ?
-                    "  #fefefe"
-                    : "#26ae5f"
-                }`} />
+                <div>
+                  <p className="hidden md:block  text-[14px]  font-normal leading-[16px]  ">
+                    {inf?.name}
+                  </p>
+                  <inf.icon
+                    size="20"
+                     className="md:hidden block"
+                    color={` ${
+                      selectedInfo === inf?.id ? "  #fefefe" : "#26ae5f"
+                    }`}
+                  />
+                </div>
+
+                <ArrowRight2
+                  size="18"
+                  color={` ${
+                    selectedInfo === inf?.id ? "  #fefefe" : "#26ae5f"
+                  }`}
+                />
               </button>
             ))}
         </m.div>
@@ -367,7 +388,7 @@ const GetStarted = () => {
                   <input
                     type="text"
                     placeholder="Enter first name"
-                    className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     disabled={personalDisabled}
                     name="firstName"
@@ -389,11 +410,10 @@ const GetStarted = () => {
                   <input
                     type="text"
                     placeholder="Enter last name"
-                    className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     name="lastName"
                     disabled={personalDisabled}
-
                     value={formValue.lastName}
                     onChange={(e) => {
                       handleInputChange(e);
@@ -423,7 +443,6 @@ const GetStarted = () => {
                     required
                     name="email"
                     disabled={personalDisabled}
-
                     value={formValue.email}
                     onChange={(e) => {
                       handleInputChange(e);
@@ -452,7 +471,6 @@ const GetStarted = () => {
                     required
                     name="phone"
                     disabled={personalDisabled}
-
                     value={formValue.phone}
                     onChange={(e) => {
                       handleInputChange(e);
@@ -472,11 +490,10 @@ const GetStarted = () => {
                   <textarea
                     type="text"
                     placeholder="14, xxxx street"
-                    className="w-full  h-[120px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    className="w-full  h-[120px] pl-[10px] md:pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     name="address"
                     disabled={personalDisabled}
-
                     value={formValue.address}
                     onChange={(e) => {
                       handleInputChange(e);
@@ -495,11 +512,10 @@ const GetStarted = () => {
                   <input
                     type="text"
                     placeholder="2933 23XX XXX "
-                    className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     name="nin"
                     disabled={personalDisabled}
-
                     value={formValue.nin}
                     onChange={(e) => {
                       handleInputChange(e);
@@ -566,11 +582,10 @@ const GetStarted = () => {
                   <input
                     type="text"
                     placeholder="Enter business name"
-                    className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     name="busName"
                     disabled={busDisabled}
-
                     value={formValue.busName}
                     onChange={(e) => {
                       handleInputChange(e);
@@ -589,11 +604,10 @@ const GetStarted = () => {
                   <input
                     type="text"
                     placeholder="https://domain.xyz"
-                    className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     name="busWebsite"
                     disabled={busDisabled}
-
                     value={formValue.busWebsite}
                     onChange={(e) => {
                       handleInputChange(e);
@@ -612,11 +626,10 @@ const GetStarted = () => {
                   <input
                     type="text"
                     placeholder="electronics supplier"
-                    className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     name="busDescription"
                     disabled={busDisabled}
-
                     value={formValue.busDescription}
                     onChange={(e) => {
                       handleInputChange(e);
@@ -646,7 +659,6 @@ const GetStarted = () => {
                     required
                     name="busSupportEmail"
                     disabled={busDisabled}
-
                     value={formValue.busSupportEmail}
                     onChange={(e) => {
                       handleInputChange(e);
@@ -675,7 +687,6 @@ const GetStarted = () => {
                     required
                     name="chargeBackEmail"
                     disabled={busDisabled}
-
                     value={formValue.chargeBackEmail}
                     onChange={(e) => {
                       handleInputChange(e);
@@ -694,11 +705,10 @@ const GetStarted = () => {
                   <input
                     type="text"
                     placeholder=""
-                    className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     name="rcNumber"
                     disabled={busDisabled}
-
                     value={formValue.rcNumber}
                     onChange={(e) => {
                       handleInputChange(e);
@@ -717,11 +727,10 @@ const GetStarted = () => {
                   <input
                     type="date"
                     placeholder=""
-                    className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     name="incopDate"
                     disabled={busDisabled}
-
                     value={formValue.incopDate}
                     onChange={(e) => {
                       handleInputChange(e);
@@ -741,11 +750,10 @@ const GetStarted = () => {
                   <input
                     type="text"
                     placeholder=""
-                    className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     name="busCity"
                     disabled={busDisabled}
-
                     value={formValue.busCity}
                     onChange={(e) => {
                       handleInputChange(e);
@@ -764,11 +772,10 @@ const GetStarted = () => {
                   <input
                     type="text"
                     placeholder=""
-                    className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     name="busAddress"
                     disabled={busDisabled}
-
                     value={formValue.busAddress}
                     onChange={(e) => {
                       handleInputChange(e);
@@ -834,11 +841,10 @@ const GetStarted = () => {
                   <input
                     type="text"
                     placeholder="1234 XXXX XXX"
-                    className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     name="bvn"
                     disabled={bvnDisabled}
-
                     value={formValue.bvn}
                     onChange={(e) => {
                       handleInputChange(e);
@@ -852,7 +858,7 @@ const GetStarted = () => {
 
               <div className="py-[20px] border-t border-b-[#E4E7EC]  ">
                 <div className="flex-item gap-2 w-full">
-                  {(bvnData && bvnData?.bvn_status === "completed") ? (
+                  {bvnData && bvnData?.bvn_status === "completed" ? (
                     <div className="flex gap-1 items-center w-[85%] mx-auto">
                       <div className="h-[1.5px] bg-green-400 flex-1 w-full"></div>{" "}
                       <p className="text-green-600 text-[14px]">
@@ -909,7 +915,6 @@ const GetStarted = () => {
                     type="file"
                     accept=".jpg,.pdf"
                     disabled={uploadDisabled}
-
                     onChange={(e) => setIncopFile(e.target.files[0])}
                   />
                   <p className="text-[10px] text-gray-400">
@@ -930,7 +935,6 @@ const GetStarted = () => {
                     type="file"
                     accept=".jpg,.pdf"
                     disabled={uploadDisabled}
-
                     onChange={(e) => setDirectorId1File(e.target.files[0])}
                   />
                   <p className="text-[10px] text-gray-400">
@@ -951,7 +955,6 @@ const GetStarted = () => {
                     type="file"
                     accept=".jpg,.pdf"
                     disabled={uploadDisabled}
-
                     onChange={(e) => setCacForm(e.target.files[0])}
                   />
                   <p className="text-[10px] text-gray-400">
@@ -972,7 +975,6 @@ const GetStarted = () => {
                     type="file"
                     accept=".jpg,.pdf"
                     disabled={uploadDisabled}
-
                     onChange={(e) => setDirectorId2File(e.target.files[0])}
                   />
                   <p className="text-[10px] text-gray-400">
@@ -983,7 +985,9 @@ const GetStarted = () => {
 
               <div className="py-[20px] border-t border-b-[#E4E7EC]  ">
                 <div className="flex-item gap-2 w-full">
-                  {profilesData && profilesData?.default_partner?.documents_status === "completed" ? (
+                  {profilesData &&
+                  profilesData?.default_partner?.documents_status ===
+                    "completed" ? (
                     <div className="flex gap-1 items-center w-[85%] mx-auto">
                       <div className="h-[1.5px] bg-green-400 flex-1 w-full"></div>{" "}
                       <p className="text-green-600 text-[14px]">

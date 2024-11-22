@@ -85,7 +85,7 @@ const CreatePin = ({ isCreatePin, setIsCreatePin, refetch }) => {
           color="#000000"
           className="text-[18px] md:text-[20px] text-[#000000] font-medium leading-[24px] md:leading-[24px]"
         >
-          Create Pin
+          Create Transaction Pin
         </ModalHeader>
         <ModalCloseButton size={"sm"} />
         <Divider color="#98A2B3" />
@@ -102,10 +102,10 @@ const CreatePin = ({ isCreatePin, setIsCreatePin, refetch }) => {
           ) : (
             ""
           )}
-          <p className="text-[#667185] text-md mb-5 w-[90%] text-center">
+          <p className="text-[#667185] text-md mb-5  text-center">
             {validatePin
               ? "Re-enter your 4-digit pin"
-              : "Enter your 4-digit pin"}
+              : "Enter your preferred 4-digit pin"}
             {/* {hideEmail(location.state.email)} */}
           </p>
           <div className="flex justify-center my-6">

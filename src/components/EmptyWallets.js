@@ -27,12 +27,12 @@ const EmptyWallet = ({ cols, action, subheading }) => {
             <ul className="flex gap-3 items-center mt-7">
               <li>
                 <button className="rounded-md px-2 py-2 text-white text-sm flex gap-2 items-center bg-[#26ae5f]">
-                  <p>Create Payment Link</p> <Add size={14} />
+                  <p className="whitespace-nowrap">Create Payment Link</p> <Add size={14} />
                 </button>
               </li>
               <li>
                 <button className="rounded-md px-2 py-2 text-white text-sm flex gap-2 items-center bg-[#26ae5f]">
-                  <p>Create Invoice</p> <Add size={14} />
+                  <p className="whitespace-nowrap">Create Invoice</p> <Add size={14} />
                 </button>
               </li>
             </ul>
