@@ -1,14 +1,14 @@
 //production server
- //export const API_BASE_URL = 'https://dev.vantapp.com/api/partner-business/auth';
+ export const API_BASE_URL = 'https://dev.vantapp.com/api/partner-business/auth';
 
 //live server
-export const API_BASE_URL = 'https://api.vantapp.com/api/partner-business/auth';
+//export const API_BASE_URL = 'https://api.vantapp.com/api/partner-business/auth';
 export const getApiUrl = (endpoint) => API_BASE_URL + endpoint
 
 export const LOGIN = getApiUrl('/login')
 export const SIGNUP = getApiUrl('/signup')
-export const FORGOTPASSWORD = getApiUrl('/recoverpass')
-export const RESETPASSWORD = getApiUrl('/resetpassword')
+export const FORGOTPASSWORD = getApiUrl('/password/forget')
+export const RESETPASSWORD = getApiUrl('/password/reset')
 export const REQUESTOTP = getApiUrl('/sendverification')
 export const VALIDATEOTP = getApiUrl('/verify-email')
 export const RESENDOTP = getApiUrl('/resend-otp')

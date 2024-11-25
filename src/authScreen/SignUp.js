@@ -20,7 +20,7 @@ const SignUp = () => {
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [password, setPassword] = useState("");
-  const [passError, setPassError] = useState(false)
+  const [passError, setPassError] = useState(false);
   const [formValue, setFormValue] = useState({
     firstName: "",
     lastName: "",
@@ -36,8 +36,7 @@ const SignUp = () => {
 
   const deleteInput = (name) => {
     setFormValue({ ...formValue, [name]: "" });
-
-  }
+  };
 
   const nextStep = () => {
     if (currentStep < 2) {
@@ -66,29 +65,22 @@ const SignUp = () => {
     var specialCharRegExp = /(?=.*?[#?!@$%^&*-])/;
     if (!new_pass.match(upperCase)) {
       setErrorMessage("Password should contains Uppercase letters!");
-      setPassError(true)
-
+      setPassError(true);
     } else if (!new_pass.match(lowerCase)) {
       setErrorMessage("Password should contain lowercase letters!");
-      setPassError(true)
-
-
+      setPassError(true);
     } else if (!new_pass.match(numbers)) {
       setErrorMessage("Password should contains numbers also!");
-      setPassError(true)
-
+      setPassError(true);
     } else if (!new_pass.match(specialCharRegExp)) {
       setErrorMessage("Password should contains special character e.g *@#!% !");
-      setPassError(true)
-
+      setPassError(true);
     } else if (new_pass.length < 6) {
       setErrorMessage("Password length should be more than 6.");
-      setPassError(true)
-
+      setPassError(true);
     } else {
       setErrorMessage("Password is strong!");
-      setPassError(true)
-
+      setPassError(true);
     }
     // for confirm password
   }
@@ -96,46 +88,44 @@ const SignUp = () => {
     let confirm_pass = event.target.value;
     setConfirmPassword(confirm_pass);
     if (confirm_pass !== password) {
-      setConfirmPasswordError("Password does not match!")
-      setPassError(true)
+      setConfirmPasswordError("Password does not match!");
+      setPassError(true);
     } else {
       setConfirmPasswordError("Password match!");
-      setPassError(false)
-
+      setPassError(false);
     }
   };
   async function signup(e) {
     e.preventDefault();
     if (passError) {
       enqueueSnackbar("Please check your password", { variant: "error" });
-      return
+      return;
     }
 
     setIsLoading(true);
     try {
-    const payload = {first_name: formValue.firstName,
-      last_name: formValue.lastName,
-      name: formValue.businessName,
-      phone: formValue.phone,
-      email: formValue.email,
-      incorporation_date: formValue.incopDate,
-      password,
-      password_confirmation: confirmPassword,
-      rc_number: formValue.rcNumber,}
+      const payload = {
+        first_name: formValue.firstName,
+        last_name: formValue.lastName,
+        name: formValue.businessName,
+        phone: formValue.phone,
+        email: formValue.email,
+        incorporation_date: formValue.incopDate,
+        password,
+        password_confirmation: confirmPassword,
+        rc_number: formValue.rcNumber,
+      };
 
       const response = await api.signUp({
-        data : encryptaValue(payload) 
+        data: encryptaValue(payload),
       });
       const decryptRes = JSON.parse(decryptaValue(response?.data));
-
 
       enqueueSnackbar(decryptRes.message, { variant: "success" });
 
       setUserData(response?.data);
       setIsLoading(false);
-      navigate("/validate-otp",{state:{email: formValue.email} });
-     
-
+      navigate("/validate-otp", { state: { email: formValue.email } });
     } catch (error) {
       //console.log(error);
       enqueueSnackbar(error.message, { variant: "error" });
@@ -169,7 +159,10 @@ const SignUp = () => {
           Fill the form below to create an account{" "}
         </p>
 
-        <form onSubmit={signup} className="mt-[40px] max-w-[340px] md:max-w-[486px]">
+        <form
+          onSubmit={signup}
+          className="mt-[40px] max-w-[340px] md:max-w-[486px]"
+        >
           <div className="mb-[16px] md:mb-[20px]">
             <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
               First Name
@@ -179,7 +172,7 @@ const SignUp = () => {
                 size="16"
                 color="#98A2B3"
                 className="absolute right-[16px] cursor-pointer"
-onClick={()=> deleteInput("firstName")}
+                onClick={() => deleteInput("firstName")}
               />
 
               <input
@@ -208,7 +201,7 @@ onClick={()=> deleteInput("firstName")}
                 size="16"
                 color="#98A2B3"
                 className="absolute right-[16px] cursor-pointer"
-onClick={()=> deleteInput("lastName")}
+                onClick={() => deleteInput("lastName")}
               />
 
               <input
@@ -238,7 +231,7 @@ onClick={()=> deleteInput("lastName")}
                 size="16"
                 color="#98A2B3"
                 className="absolute right-[16px] cursor-pointer"
-                onClick={()=> deleteInput("businessName")}
+                onClick={() => deleteInput("businessName")}
               />
 
               <input
@@ -269,7 +262,7 @@ onClick={()=> deleteInput("lastName")}
                 size="16"
                 color="#98A2B3"
                 className="absolute right-[16px] cursor-pointer"
-                onClick={()=> deleteInput("email")}
+                onClick={() => deleteInput("email")}
               />
 
               <input
@@ -303,7 +296,7 @@ onClick={()=> deleteInput("lastName")}
                 size="16"
                 color="#98A2B3"
                 className="absolute right-[16px] cursor-pointer"
-                onClick={()=> deleteInput("phone")}
+                onClick={() => deleteInput("phone")}
               />
 
               <input
@@ -333,7 +326,7 @@ onClick={()=> deleteInput("lastName")}
                 size="16"
                 color="#98A2B3"
                 className="absolute right-[16px] cursor-pointer"
-                onClick={()=> deleteInput("rcNumber")}
+                onClick={() => deleteInput("rcNumber")}
               />
 
               <input

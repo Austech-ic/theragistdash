@@ -62,21 +62,42 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/validate-otp" element={<ValidateOtp />} />
 
-            <Route path="/forgot-password" component={ForgotPassword} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/verifyemail" element={<CreateNewPass />} />
 
             {/* Place new routes over this */}
             <Route element={<Layout />}>
               <Route path="/" exact={true} element={<Home />} />
               <Route path="/overview" exact={true} element={<OverView />} />
               <Route path="/getstarted" exact={true} element={<GetStarted />} />
-              <Route path="/user-wallets" exact={true} element={<UserWallet />} />
-              <Route path="/paymentlink" exact={true} element={<PaymentLinks />} />
-              <Route path="/transaction" exact={true} element={<Transactions />} />
+              <Route
+                path="/user-wallets"
+                exact={true}
+                element={<UserWallet />}
+              />
+              <Route
+                path="/paymentlink"
+                exact={true}
+                element={<PaymentLinks />}
+              />
+              <Route
+                path="/transaction"
+                exact={true}
+                element={<Transactions />}
+              />
               <Route path="/users" exact={true} element={<Users />} />
               <Route path="/invoice" exact={true} element={<Invoices />} />
-              <Route path="/createinvoice" exact={true} element={<CreateInvoice />} />
+              <Route
+                path="/createinvoice"
+                exact={true}
+                element={<CreateInvoice />}
+              />
               <Route path="/customers" exact={true} element={<Customer />} />
-              <Route path="/verification" exact={true} element={<Verification />} />
+              <Route
+                path="/verification"
+                exact={true}
+                element={<Verification />}
+              />
               <Route path="/wallet" exact={true} element={<Wallet />}>
                 <Route
                   path="/wallet/overview"
@@ -93,8 +114,8 @@ function App() {
                   exact={true}
                   element={<WalletDebits />}
                 />
-                </Route>
-                <Route path="/setting" exact={true} element={<Settings />}>
+              </Route>
+              <Route path="/setting" exact={true} element={<Settings />}>
                 <Route
                   path="/setting/personal-info"
                   exact={true}
@@ -110,18 +131,17 @@ function App() {
                   exact={true}
                   element={<ApiKey />}
                 />
-                 <Route
+                <Route
                   path="/setting/webhook"
                   exact={true}
                   element={<Webhook />}
                 />
-                   <Route
+                <Route
                   path="/setting/my-team"
                   exact={true}
                   element={<MyTeam />}
                 />
-                </Route>
-
+              </Route>
             </Route>
           </Routes>
         </Router>

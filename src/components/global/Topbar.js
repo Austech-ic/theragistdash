@@ -222,12 +222,7 @@ const Topbar = ({ setIsSidebar }) => {
       </div>
 
       <div className="flex flex-row gap-3">
-        {/* <div className="flex items-center gap-1">
-          <Switch colorScheme="green" onChange={() => setIsLive(!isLive)} />
-          <p className="text-[#667185] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
-            {isLive ? "Live Mode" : "Test Mode"}
-          </p>
-        </div> */}
+      
 
         <div className="flex  gap-[12px] border-[0.2px] border-[#98a2b3] px-3 py-1  items-center rounded-[8px]">
           <div className="">
@@ -270,15 +265,7 @@ const Topbar = ({ setIsSidebar }) => {
                       Settings
                     </p>
                   </Link>
-                  {/* <button
-                    onClick={() => setIsInvite(true)}
-                    className="py-[5px] px-[12px] border-[0.2px] rounded-md border-[#98A2B3]  flex-item gap-2"
-                  >
-                    <UserCirlceAdd size={13} color="#98A2B3" />{" "}
-                    <p className="text-[#98A2B3] text-[10px]  xl:text-[12px] font-normal leading-[18px] ">
-                      Invite members
-                    </p>
-                  </button> */}
+                
                 </div>
                 {(ProfileQuery?.data &&
                   ProfileQuery?.data?.partners

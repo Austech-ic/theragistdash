@@ -177,7 +177,7 @@ const Login = () => {
             </div>
           </div>
 
-          {/* <Link to="forgotpassword">
+          <Link to="/forgot-password">
             {" "}
             <button
               type="button"
@@ -185,7 +185,7 @@ const Login = () => {
             >
               Forgot password?
             </button>
-          </Link> */}
+          </Link>
 
           <button
             type="submit"

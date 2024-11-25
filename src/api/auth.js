@@ -76,6 +76,5 @@ export function logout() {
 
 
 
-// export function forgotPassword(data) {
-//     return apiPost(FORGOTPASSWORD, data)
-// }
+
+
