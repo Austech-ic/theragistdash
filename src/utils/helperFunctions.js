@@ -2,7 +2,7 @@ import api from "../api";
 import { AES, enc } from "crypto-js";
 import CryptoJS from "crypto-js";
 import AES256 from "aes-everywhere";
-import { enqueueSnackbar } from "notistack";
+import Moment from "moment";
 import { useNavigate } from "react-router-dom";
 
 
@@ -85,6 +85,19 @@ export async function getUsers() {
   }
 }
 
+export function formatTime(date) {
+  const datetime = Moment(date);
+  const formattedTime = datetime.format("hh.mm A");
+  return formattedTime;
+}
+
+export function formatDate(datetimeStr) {
+  const date = Moment(datetimeStr);
+  const formattedDate = date.format("MMM DD, YYYY");
+
+  return formattedDate;
+}
+
 
 export function formatDateToText (date) {
   const months = [
@@ -126,74 +139,37 @@ export function formatDateToText (date) {
 }
 
 export const Categories = [
-  {
-      id:1,
-      name: "Food"
-  },
-  {
-      id:2,
-      name: "Drinks"
-  },
-  {
-      id:3,
-      name: "Transportation"
-  },
-  {
-      id:4,
-      name: "Gift"
-  },
-  {
-      id:5,
-      name: "Debt"
-  },
-  {
-      id:6,
-      name: "Rent"
-  },
-  {
-      id:7,
-      name: "Education"
-  },
-  {
-      id:8,
-      name: "Shopping"
-  },
-  {
-      id:9,
-      name: "Utilities"
-  },
-  {
-      id:10,
-      name: "Others"
-  },
-  {
-      id:11,
-      name: "Medical Expenses"
-  },
-  {
-      id:12,
-      name: "Lifestyle"
-  },
-  {
-      id:13,
-      name: "Charitable Donations"
-  },
-  {
-      id:14,
-      name: "Investments"
-  },
-  {
-      id:15,
-      name: "Business Expenses"
-  },
-  {
-      id:16,
-      name: "Fitness"
-  },
-  {
-      id:17,
-      name: "Insurance"
-  },
-
+  { id: 1, name: "Salary Payment" },
+  { id: 2, name: "Vendor Payment" },
+  { id: 3, name: "Utility Bill Settlement" },
+  { id: 4, name: "Office Rent Payment" },
+  { id: 5, name: "Loan Repayment" },
+  { id: 6, name: "Equipment Purchase" },
+  { id: 7, name: "Subscription Services" },
+  { id: 8, name: "Tax Remittance" },
+  { id: 9, name: "Legal Fees Payment" },
+  { id: 10, name: "Insurance Premiums" },
+  { id: 11, name: "Customer-Focused Transfers" },
+  { id: 12, name: "Refund Processing" },
+  { id: 13, name: "Cashback Payouts" },
+  { id: 14, name: "Loyalty Rewards Payout" },
+  { id: 15, name: "Customer Credit Top-Up" },
+  { id: 16, name: "Payout to Contractors" },
+  { id: 17, name: "Inter-Branch Fund Transfer" },
+  { id: 18, name: "Petty Cash Replenishment" },
+  { id: 19, name: "Staff Expense Reimbursement" },
+  { id: 20, name: "Travel and Accommodation Payments" },
+  { id: 21, name: "Training and Workshop Fees" },
+  { id: 22, name: "IT Services and Maintenance Fees" },
+  { id: 23, name: "Marketing and Advertising Spend" },
+  { id: 24, name: "Inventory Procurement" },
+  { id: 25, name: "Event Management Fees" },
+  { id: 26, name: "Security Services Payment" },
+  { id: 27, name: "Project Funding Disbursement" },
+  { id: 28, name: "Research and Development Costs" },
+  { id: 29, name: "Construction and Renovation Payments" },
+  { id: 30, name: "Partnership/Joint Venture Payments" },
+  { id: 31, name: "Investment in Subsidiaries" },
+  { id: 31, name: "Others" },
 
 ]

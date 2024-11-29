@@ -247,11 +247,11 @@ const Customer = () => {
               onClick={() => toggleCreate()}
               className="flex items-center gap-[8px] "
             >
-              <p className="text-[14px] text-[#667185] leading-[20px]">
+              <p className="text-[14px] text-[#26ae5f] leading-[20px]">
                 Create Customer
               </p>
 
-              <Add variant="Linear" color="#667185" size="16" />
+              <Add variant="Linear" color="#26ae5f" size="16" />
             </button>
 
             <Modal

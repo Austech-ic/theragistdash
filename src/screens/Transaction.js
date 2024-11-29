@@ -834,10 +834,10 @@ const Transactions = () => {
               <div className="flex justify-end mt-3">
                 <button
                   onClick={handleDownloadPdf}
-                  className="flex gap-1 border px-[6px] py-1 text-[13px] leading-[13px] items-center rounded-md hover:bg-slate-50 mr-3"
+                  className="flex gap-1 border border-[#26ae5f] text-[#26ae5f] px-[6px] py-1 text-[13px] leading-[13px] items-center rounded-md hover:bg-slate-50 mr-3"
                 >
                    {isLoading ? <ClipLoader size={12} /> :  <DocumentDownload
-                      size="14px"
+                      size="14px" color="#26ae5f"
                     />}
                   Download Receipt
                 </button>

@@ -20,7 +20,10 @@ import {
  ADDTEAMMEMBER,GETTEAMMEMBER, GETTRANSACTIONBARCHART,
  GETOVERVIEW,
  CHECKUSERNAME, UPDATEROLE,
- INITIATEVANTTAGTRANSFER
+ INITIATEVANTTAGTRANSFER,
+ CREATEPAYMENTLINKS,
+ GETPAYMENTLINKS,
+ UPDATEPAYMENTLINKS
 } from "../utils/config";
 import { apiDelete, apiGet, apiGetCSV, apiPost, apiPut } from "../utils/utils";
 
@@ -153,6 +156,19 @@ export function checkUserName(data) {
 export function updateTeamRole(id, data) {
   return apiPut(UPDATEROLE + id + "/role" , data);
 }
+//payment link
+export function createLink(data) {
+  return apiPost(CREATEPAYMENTLINKS, data);
+}
+
+export function getLink(data) {
+  return apiGet(GETPAYMENTLINKS, data);
+}
+
+export function editLink(data) {
+  return apiPut(UPDATEPAYMENTLINKS + data);
+}
+
 
 
 

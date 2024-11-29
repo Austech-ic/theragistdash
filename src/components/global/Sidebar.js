@@ -114,45 +114,6 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                 />
                 Overview
               </Link>
-
-              <Link
-                to="/transaction"
-                className={` py-[10px] pl-[16px] flex items-center text-[14px]  mb-3   leading-[20px] md:leading-[24px] ${
-                  window.location.pathname === "/transaction"
-                    ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
-                    : "text-[#667185] font-normal"
-                }`}
-              >
-                <EmptyWalletChange
-                  className="mr-[12px]"
-                  variant={
-                    window.location.pathname === "/transaction"
-                      ? "Bold"
-                      : "Linear"
-                  }
-                />
-                Transaction
-              </Link>
-
-              <Link
-                to="/user-wallets"
-                className={` py-[10px] pl-[16px] flex items-center text-[14px]  mb-3   leading-[20px] md:leading-[24px] ${
-                  window.location.pathname === "/user-wallets"
-                    ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
-                    : "text-[#667185] font-normal"
-                }`}
-              >
-                <Wallet1
-                  className="mr-[12px]"
-                  variant={
-                    window.location.pathname === "/user-wallets"
-                      ? "Bold"
-                      : "Linear"
-                  }
-                />
-                User Wallets{" "}
-              </Link>
-
               <Link
                 to="/wallet/overview"
                 className={` py-[10px] pl-[16px] flex items-center text-[14px]  mb-3   leading-[20px] md:leading-[24px] ${
@@ -175,8 +136,48 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                 />
                 Wallet{" "}
               </Link>
-              {/* 
-            <Link
+
+              <Link
+                to="/transaction"
+                className={` py-[10px] pl-[16px] flex items-center text-[14px]  mb-3   leading-[20px] md:leading-[24px] ${
+                  window.location.pathname === "/transaction"
+                    ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
+                    : "text-[#667185] font-normal"
+                }`}
+              >
+                <EmptyWalletChange
+                  className="mr-[12px]"
+                  variant={
+                    window.location.pathname === "/transaction"
+                      ? "Bold"
+                      : "Linear"
+                  }
+                />
+                Transactions
+              </Link>
+
+              <Link
+                to="/user-wallets"
+                className={` py-[10px] pl-[16px] flex items-center text-[14px]  mb-3   leading-[20px] md:leading-[24px] ${
+                  window.location.pathname === "/user-wallets"
+                    ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
+                    : "text-[#667185] font-normal"
+                }`}
+              >
+                <Wallet1
+                  className="mr-[12px]"
+                  variant={
+                    window.location.pathname === "/user-wallets"
+                      ? "Bold"
+                      : "Linear"
+                  }
+                />
+                User Wallets{" "}
+              </Link>
+
+           
+              
+            {/* <Link
               to="/paymentlink"
               className={` py-[10px] pl-[16px] flex items-center text-[14px]   mb-3 leading-[20px] md:leading-[24px] ${
                 window.location.pathname === "/paymentlink"
@@ -193,8 +194,8 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                 }
               />
               Payment Link
-            </Link>
-
+            </Link> */}
+{/* 
             <button
               onClick={() => setIsActive("invoice")}
               className={` ${

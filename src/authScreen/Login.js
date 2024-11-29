@@ -59,7 +59,7 @@ const Login = () => {
 
       if (decryptRes?.user?.email_verified) {
         setIsLoading(false);
-        navigate("/");
+        navigate("/overview");
       } else {
         SendOtp(email);
         setIsLoading(false);

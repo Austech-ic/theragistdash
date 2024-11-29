@@ -43,6 +43,16 @@ import { Link, useNavigate } from "react-router-dom";
 import html2canvas from "html2canvas";
 
 import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
+import { enqueueSnackbar } from "notistack";
+import { useQuery } from "@tanstack/react-query";
+import api from "../api";
+import {
+  decryptaValue,
+  formatDate,
+  formatTime,
+} from "../utils/helperFunctions";
+import QRCode from "qrcode.react";
+import { NumericFormat } from "react-number-format";
 
 const PaymentLink = () => {
   const elementToCaptureRef = React.createRef();
@@ -57,9 +67,21 @@ const PaymentLink = () => {
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [linkId, setLinkId] = useState("");
+  const [linkData, setLinkData] = useState("");
   const [shouldSetAmount, setShouldSetAmount] = useState(false);
   const [isGenerate, setIsGenerate] = useState(false);
   const [isGenerateLoading, setIsGenerateLoading] = useState(false);
+  const [copiedRef, setCopiedRef] = useState(null);
+  const [searchquery, setSearchQuery] = useState("") 
+
+  const [formValue, setFormValue] = useState({
+    name: "",
+    amount: "",
+    logo: "",
+    expiry: "",
+    description: "",
+    slug: "",
+  });
 
   function closeGenerate() {
     setIsGenerate(false);
@@ -104,7 +126,6 @@ const PaymentLink = () => {
   const HandleDeleteModalClose = () => {
     setIsDeleteOpen(false);
   };
-  const result = [{ status: "Success" }];
 
   const toggleCreateLink = () => {
     setIsCreateLink(!createLink);
@@ -134,8 +155,20 @@ const PaymentLink = () => {
     },
   ];
 
-  const handleGenerate = () => {
+  // Function to copy text to the clipboard
+  const handleCopy = async (number) => {
+    try {
+      await navigator.clipboard.writeText(number);
+      setCopiedRef(number); // Set copied ref to show feedback
+      setTimeout(() => setCopiedRef(null), 2000); // Clear feedback after 2 seconds
+    } catch (err) {
+      //console.error("Failed to copy:", err);
+    }
+  };
+
+  const handleGenerate = (link) => {
     setIsGenerateLoading(true);
+    setLinkData(link);
     setTimeout(() => {
       setIsGenerateLoading(false);
       setIsGenerate(true);
@@ -154,6 +187,73 @@ const PaymentLink = () => {
       a.click();
     });
   };
+
+  function ClearForm() {
+    setFormValue({
+      name: "",
+      amount: "",
+      logo: "",
+      expiry: "",
+      description: "",
+    });
+  }
+  const createPaymentLink = async () => {
+    setIsLoading(true);
+    try {
+      const response = await api.createLink({
+        name: formValue.name,
+        description: formValue?.description,
+        amount: formValue?.amount,
+        currency: "NGN",
+        currency_symbol: "₦",
+        is_amount_fixed: shouldSetAmount,
+        type: linkId === 1 ? "single" : "multiple",
+        expiry_date: formValue?.expiry,
+        slug: formValue?.slug,
+      });
+      const decryptRes = JSON.parse(decryptaValue(response?.data));
+      enqueueSnackbar("Customer Created Successfully", { variant: "success" });
+      results.refetch();
+      setIsLoading(false);
+      // setIsCreate(false);
+      ClearForm();
+    } catch (error) {
+      //console.log(error.message);
+      enqueueSnackbar(error.message, { variant: "error" });
+
+      setIsLoading(false);
+    }
+  };
+
+  async function getLink() {
+    const response = await api.getLink({
+      // params: {
+      //   page,
+      //   search,
+      // },
+    });
+    return response;
+  }
+
+  const results = useQuery(["paymentLinks"], () => getLink(), {
+    keepPreviousData: true,
+    refetchOnWindowFocus: "always",
+  });
+
+  const PayLinkData = results?.data?.data || [];
+  const handleInputChange = (e) => {
+    setFormValue({ ...formValue, [e.target.name]: e.target.value });
+  };
+  const url = "https://vantapp.com/pay/";
+
+  function truncateString(input, maxLength) {
+    if (input.length <= maxLength) {
+      return input; // No need to truncate
+    }
+
+    const truncated = input.slice(0, maxLength - 3); // Leave space for "..."
+    return `${truncated}...`;
+  }
   return (
     <div className="p-[20px] bg-[#F2F2F2] min-h-screen ">
       <div className="border-[0.2px] border-[#98a2b3] rounded-[8px]  bg-[#ffff] ">
@@ -174,16 +274,7 @@ const PaymentLink = () => {
             </div>
           </div>
           <div className="flex items-center gap-[16px] ">
-            <button
-              onClick={() => toggleImportModal()}
-              className="flex items-center gap-[8px] "
-            >
-              <p className="text-[14px] text-[#667185] leading-[20px]">
-                Export CSV
-              </p>
-
-              <DocumentUpload variant="Linear" color="#667185" size="16" />
-            </button>
+           
 
             <button
               onClick={() => toggleCreate()}
@@ -344,8 +435,6 @@ const PaymentLink = () => {
               placeholder=""
               className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
               required
-              
-               
             />
 
             <select
@@ -353,8 +442,6 @@ const PaymentLink = () => {
               placeholder="Select Item Type"
               className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
               required
-              
-               
             >
               <option value="High">Select Status</option>
               <option value="Medium">Processing</option>
@@ -470,166 +557,189 @@ const PaymentLink = () => {
                           </h3>
                         </td>
                       </tr>
-                    )}
-                    {TaskSummaryData &&
-                      TaskSummaryData?.map((result) => ( */}
-                  <tr key="_" className="mb-2 hover:bg-light-gray">
-                    <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                      Acceptance Fee
-                    </td>
-                    <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                      #120,000.00
-                    </td>
-                    <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                      Single
-                    </td>
-                    <td className=" py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                      <div className="flex items-center gap-1">
-                        <p>https://vantapp..</p>{" "}
-                        <Copy size="13" color="#667185" variant="Linear" />
-                      </div>
-                    </td>
-                    <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                      <button
-                        onClick={handleGenerate}
-                        className="py-1 px-2 border-[0.2px] text-[12px] border-[#98a2b3] rounded-[8px] border-l-[2.5px] border-l-[#26ae5f] hover:bg-slate-100 flex items-center gap-[2px]"
-                      >
-                        Generate{" "}
-                        {isGenerateLoading && (
-                          <ClipLoader color={"#26ae5f"} size={12} />
-                        )}
-                      </button>
-                    </td>
-                    <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                      <button
-                        className={`rounded-[20px] md:rounded-[40px] w-[60px] md:w-[74px] py-[2px] md:py-[4px] mx-auto ${
-                          result.status === "Pending"
-                            ? "bg-[rgb(255,245,230)] text-[#FF9800]"
-                            : result.status === "Ongoing"
-                            ? "bg-[#F9FAFB] text-[#667185]"
-                            : "bg-[#EDF7EE] text-[#4CAF50]"
-                        }  text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px]`}
-                      >
-                        <p>Active</p>
-                      </button>{" "}
-                    </td>
-                    <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                      Sep 11, 2024 (at 03.00 AM)
-                    </td>
-                    <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                      Sep 11, 2024 (at 03.00 AM)
-                    </td>
-
-                    <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                      <More
-                        onClick={() => ToggleEditModal()}
-                        variant="Linear"
-                        color="#667185"
-                        size="24"
-                      />
-
-                      <Modal
-                        isCentered
-                        isOpen={isDeleteModal}
-                        onClose={closeDeleteModal}
-                        size="md"
-                        style={{ borderRadius: 12 }}
-                        motionPreset="slideInBottom"
-                        className="rounded-[12px]"
-                      >
-                        <ModalOverlay />
-                        <ModalContent>
-                          <ModalHeader
-                            py="4"
-                            color="#000000"
-                            className="text-[18px]   font-medium leading-[24px] md:leading-[24px]"
-                          >
-                            <svg
-                              className="mx-auto"
-                              width="56"
-                              height="56"
-                              viewBox="0 0 56 56"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <rect
-                                x="4"
-                                y="4"
-                                width="48"
-                                height="48"
-                                rx="24"
-                                fill="#FCC5C1"
-                              />
-                              <rect
-                                x="4"
-                                y="4"
-                                width="48"
-                                height="48"
-                                rx="24"
-                                stroke="#FEECEB"
-                                stroke-width="8"
-                              />
-                              <path
-                                d="M28 38C33.5 38 38 33.5 38 28C38 22.5 33.5 18 28 18C22.5 18 18 22.5 18 28C18 33.5 22.5 38 28 38Z"
-                                stroke="#F44336"
-                                stroke-width="1.5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                              <path
-                                d="M28 24V29"
-                                stroke="#F44336"
-                                stroke-width="1.5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                              <path
-                                d="M27.9961 32H28.0051"
-                                stroke="#F44336"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                            </svg>
-                          </ModalHeader>
-                          <ModalCloseButton size={"sm"} />
-                          <ModalBody
-                            py={{ base: "20px", md: "24px" }}
-                            px={{ base: "16px", md: "24px" }}
-                            className=" px-[16px] md:px-[24px] pb-[30px] md:pb-[40px]"
-                          >
-                            <p className=" text-[16px] md:text-lg text-center  text-[#000] leading-[24px] font-medium  ">
-                              Delete PaymentLink
-                            </p>
-
-                            <p className="text-[14px]  text-[#667185] leading-[20px] font-normal text-center mt-2  ">
-                              Are you sure you want to delete this PaymentLink?
-                              This action cannot be undone.
-                            </p>
-                          </ModalBody>
-                          <ModalFooter gap={"16px"}>
+                    )} */}
+                  {PayLinkData &&
+                    PayLinkData?.map((result) => (
+                      <tr key="_" className="mb-2 hover:bg-light-gray">
+                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                          {result?.name}
+                        </td>
+                        <td className="whitespace-nowrap text-center py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                          <NumericFormat
+                            value={result?.amount}
+                            displayType={"text"}
+                            thousandSeparator={true}
+                            prefix={result?.currency_symbol}
+                            decimalScale={2}
+                            fixedDecimalScale={true}
+                          />
+                        </td>
+                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                          {result?.type}{" "}
+                        </td>
+                        <td className=" py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                          <div className="flex items-center gap-1">
+                            <p> {truncateString(url + result?.slug, 20)}</p>{" "}
                             <button
-                              onClick={closeDeleteModal}
-                              className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black"
+                              onClick={() => handleCopy(url + result?.slug)}
+                              className="hover:-translate-y-1  transition-transform ease-in-out "
                             >
-                              Cancel
-                            </button>
-                            <button
-                              // onClick={handleDelete}
-                              className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
-                            >
-                              {isLoading ? (
-                                <ClipLoader color={"white"} size={20} />
+                              {" "}
+                              {copiedRef === url + result?.slug ? (
+                                <span className="font-normal leading-[12px] text-[10px]">
+                                  Copied!
+                                </span>
                               ) : (
-                                <> Delete </>
+                                <Copy
+                                  size="13"
+                                  color="#667185"
+                                  variant="Linear"
+                                />
                               )}
                             </button>
-                          </ModalFooter>
-                        </ModalContent>
-                      </Modal>
-                    </td>
-                  </tr>
-                  {/* ))} */}
+                          </div>
+                        </td>
+                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                          <button
+                            onClick={() => handleGenerate(url + result?.slug)}
+                            className="py-1 px-2 border-[0.2px] text-[12px] border-[#98a2b3] rounded-[8px] border-l-[2.5px] border-l-[#26ae5f] hover:bg-slate-100 flex items-center gap-[2px]"
+                          >
+                            Generate{" "}
+                            {isGenerateLoading && (
+                              <ClipLoader color={"#26ae5f"} size={12} />
+                            )}
+                          </button>
+                        </td>
+                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                          <button
+                            className={`rounded-[20px] md:rounded-[40px] w-[60px] md:w-[74px] py-[2px] md:py-[4px] mx-auto ${
+                              result.status === "inactive"
+                                ? "bg-[rgb(255,245,230)] text-[#FF9800]"
+                                : "bg-[#EDF7EE] text-[#4CAF50]"
+                            }  text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px]`}
+                          >
+                            <p>{result.status}</p>
+                          </button>{" "}
+                        </td>
+                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                          {formatDate(result?.expiry_date)} (at{" "}
+                          {formatTime(result?.expiry_date)})
+                        </td>
+                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                          {formatDate(result?.created_at)} (at{" "}
+                          {formatTime(result?.created_at)})
+                        </td>
+
+                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                          <More
+                            onClick={() => ToggleEditModal()}
+                            variant="Linear"
+                            color="#667185"
+                            size="24"
+                          />
+
+                          <Modal
+                            isCentered
+                            isOpen={isDeleteModal}
+                            onClose={closeDeleteModal}
+                            size="md"
+                            style={{ borderRadius: 12 }}
+                            motionPreset="slideInBottom"
+                            className="rounded-[12px]"
+                          >
+                            <ModalOverlay />
+                            <ModalContent>
+                              <ModalHeader
+                                py="4"
+                                color="#000000"
+                                className="text-[18px]   font-medium leading-[24px] md:leading-[24px]"
+                              >
+                                <svg
+                                  className="mx-auto"
+                                  width="56"
+                                  height="56"
+                                  viewBox="0 0 56 56"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <rect
+                                    x="4"
+                                    y="4"
+                                    width="48"
+                                    height="48"
+                                    rx="24"
+                                    fill="#FCC5C1"
+                                  />
+                                  <rect
+                                    x="4"
+                                    y="4"
+                                    width="48"
+                                    height="48"
+                                    rx="24"
+                                    stroke="#FEECEB"
+                                    stroke-width="8"
+                                  />
+                                  <path
+                                    d="M28 38C33.5 38 38 33.5 38 28C38 22.5 33.5 18 28 18C22.5 18 18 22.5 18 28C18 33.5 22.5 38 28 38Z"
+                                    stroke="#F44336"
+                                    stroke-width="1.5"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  />
+                                  <path
+                                    d="M28 24V29"
+                                    stroke="#F44336"
+                                    stroke-width="1.5"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  />
+                                  <path
+                                    d="M27.9961 32H28.0051"
+                                    stroke="#F44336"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  />
+                                </svg>
+                              </ModalHeader>
+                              <ModalCloseButton size={"sm"} />
+                              <ModalBody
+                                py={{ base: "20px", md: "24px" }}
+                                px={{ base: "16px", md: "24px" }}
+                                className=" px-[16px] md:px-[24px] pb-[30px] md:pb-[40px]"
+                              >
+                                <p className=" text-[16px] md:text-lg text-center  text-[#000] leading-[24px] font-medium  ">
+                                  Delete PaymentLink
+                                </p>
+
+                                <p className="text-[14px]  text-[#667185] leading-[20px] font-normal text-center mt-2  ">
+                                  Are you sure you want to delete this
+                                  PaymentLink? This action cannot be undone.
+                                </p>
+                              </ModalBody>
+                              <ModalFooter gap={"16px"}>
+                                <button
+                                  onClick={closeDeleteModal}
+                                  className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black"
+                                >
+                                  Cancel
+                                </button>
+                                <button
+                                  // onClick={handleDelete}
+                                  className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
+                                >
+                                  {isLoading ? (
+                                    <ClipLoader color={"white"} size={20} />
+                                  ) : (
+                                    <> Delete </>
+                                  )}
+                                </button>
+                              </ModalFooter>
+                            </ModalContent>
+                          </Modal>
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>
@@ -663,7 +773,10 @@ const PaymentLink = () => {
             pb={{ base: "30px", md: "40px" }}
             className="pt-[20px] md:pt-[24px] px-[16px] md:px-[24px] pb-[30px] md:pb-[40px]"
           >
-            <div ref={elementToCaptureRef} className=" rounded-lg w-[80%] mx-auto  p-[16px] md:p-[20px] relative bg-[#26ae5f]">
+            <div
+              ref={elementToCaptureRef}
+              className=" rounded-lg w-[80%] mx-auto  p-[16px] md:p-[20px] relative bg-[#26ae5f]"
+            >
               <img
                 src="./assets/hanger.png"
                 alt="hanger"
@@ -676,15 +789,22 @@ const PaymentLink = () => {
               <p className="text-[14px]  text-[#fff] text-center  leading-[20px] font-normal  mb-6  ">
                 Scan the QR code below and follow the link to pay
               </p>
-              <img src="./assets/qr.png" alt="qr" className="mx-auto mb-5" />
+
+              <QRCode
+                value={linkData}
+                imageSettings={{ height: "40%" }}
+                className="h-10 mx-auto mb-5"
+              />
+              {/* <img src="./assets/qr.png" alt="qr" className="mx-auto mb-5" /> */}
               <img
                 src="./assets/blob.png"
                 alt="blob"
                 className="absolute bottom-0 left-[33.33%]"
               />
 
-<p className="text-[14px]  text-[#fff] text-center  leading-[20px] font-normal  mb-6  ">
-Powered by Vant.              </p>
+              <p className="text-[14px]  text-[#fff] text-center  leading-[20px] font-normal  mb-6  ">
+                Powered by Vant.{" "}
+              </p>
             </div>
           </ModalBody>
           <Divider />
@@ -692,7 +812,10 @@ Powered by Vant.              </p>
             <button className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black">
               Cancel
             </button>
-            <button onClick={captureAndDownload} className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white">
+            <button
+              onClick={captureAndDownload}
+              className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
+            >
               {isLoading ? (
                 <ClipLoader color={"white"} size={20} />
               ) : (
@@ -725,51 +848,39 @@ Powered by Vant.              </p>
 
           <div className="p-[12px] md:p-[20px] xl:p-[24px]">
             <div className="mb-[24px]">
-              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
+              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px]">
                 Link Name
               </label>
-              <div className=" relative  mt-[16px]  flex items-center">
+              <div className=" relative  flex items-center">
                 <input
                   type="text"
                   placeholder=""
-                  className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  className="w-full h-[40px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                   required
-                  
-                   
-                  name="date"
-                  id="full-name"
-                  //   value={formData.date}
-                  //   onChange={(e) => handleChange(e)}
-                  autoCapitalize="off"
-                  autoCorrect="off"
-                  spellCheck="false"
+                  name="name"
+                  value={formValue.name}
+                  onChange={(e) => handleInputChange(e)}
                 />
               </div>
             </div>
 
             <div className="mb-[24px]">
-              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
+              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px]">
                 Description
               </label>
-              <div className=" relative  mt-[16px]  flex items-center">
+              <div className=" relative    flex items-center">
                 <input
                   type="text"
                   placeholder=""
-                  className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  className="w-full h-[40px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                   required
-                  
-                   
-                  name="date"
-                  id="full-name"
-                  //   value={formData.date}
-                  //   onChange={(e) => handleChange(e)}
-                  autoCapitalize="off"
-                  autoCorrect="off"
-                  spellCheck="false"
+                  name="description"
+                  value={formValue.description}
+                  onChange={(e) => handleInputChange(e)}
                 />
               </div>
             </div>
-            <div className="mb-[24px]">
+            {/* <div className="mb-[24px]">
               <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
                 Company Logo
               </label>
@@ -781,34 +892,27 @@ Powered by Vant.              </p>
                   type="file"
                 />
               </div>
-            </div>
-            {shouldSetAmount && (
-              <div className="mb-[24px]">
-                <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
-                  Amount
-                </label>
-                <div className=" relative   flex items-center">
-                  <span className="text-[14px] text-[#667185] leading-[20px] absolute left-[16px] pr-2  border-[#D0D5DD] border-r-[0.2px]">
-                    NGN
-                  </span>
-                  <input
-                    type="text"
-                    placeholder=""
-                    className="w-full h-[48px] pl-[62px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                    required
-                    
-                     
-                    name="date"
-                    id="full-name"
-                    //   value={formData.date}
-                    //   onChange={(e) => handleChange(e)}
-                    autoCapitalize="off"
-                    autoCorrect="off"
-                    spellCheck="false"
-                  />
-                </div>
+            </div> */}
+
+            <div className="mb-[24px]">
+              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
+                Amount
+              </label>
+              <div className=" relative   flex items-center">
+                <span className="text-[14px] text-[#667185] leading-[20px] absolute left-[16px] pr-2  border-[#D0D5DD] border-r-[0.2px]">
+                  NGN
+                </span>
+                <input
+                  type="text"
+                  placeholder=""
+                  className="w-full h-[40px] pl-[62px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  required
+                  name="amount"
+                  value={formValue.amount}
+                  onChange={(e) => handleInputChange(e)}
+                />
               </div>
-            )}
+            </div>
 
             <div className=" flex items-center gap-2  mb-[24px]">
               <input
@@ -824,44 +928,37 @@ Powered by Vant.              </p>
               </label>
             </div>
             <div className="mb-[24px]">
-              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
+              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px]">
                 Expiry Date
               </label>
-              <div className=" relative  mt-[16px]  flex items-center">
+              <div className=" relative    flex items-center">
                 <input
                   type="date"
                   placeholder="Enter Title"
-                  className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  className="w-full h-[40px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                   required
-                  
-                   
-                  name="date"
-                  id="full-name"
-                  //   value={formData.date}
-                  //   onChange={(e) => handleChange(e)}
-                  autoCapitalize="off"
-                  autoCorrect="off"
-                  spellCheck="false"
+                  name="expiry"
+                  value={formValue.expiry}
+                  onChange={(e) => handleInputChange(e)}
                 />
               </div>
             </div>
             <div className="mb-[24px]">
-              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]"></label>
-              <div className=" relative  mt-[16px]  flex items-center">
+              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
+                Slug
+              </label>
+              <div className=" relative   flex items-center">
+                <span className="text-[12px] text-[#667185] leading-[20px] absolute left-[16px] pr-2  border-[#D0D5DD] border-r-[0.2px]">
+                  https://vantapp.com/pay/
+                </span>
                 <input
                   type="text"
-                  placeholder="Name"
-                  className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  placeholder="stationaries"
+                  className="w-full h-[40px] pl-[162px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                   required
-                  
-                   
-                  name="full-name"
-                  id="full-name"
-                  //value=""
-                  //onChange={() => {}}
-                  autoCapitalize="off"
-                  autoCorrect="off"
-                  spellCheck="false"
+                  name="slug"
+                  value={formValue.slug}
+                  onChange={(e) => handleInputChange(e)}
                 />
               </div>
             </div>
@@ -875,7 +972,10 @@ Powered by Vant.              </p>
                 >
                   Cancel
                 </button>
-                <button className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white">
+                <button
+                  onClick={createPaymentLink}
+                  className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
+                >
                   {isLoading ? (
                     <ClipLoader color={"white"} size={20} />
                   ) : (
