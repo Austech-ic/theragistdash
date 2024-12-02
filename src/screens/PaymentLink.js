@@ -54,9 +54,7 @@ import {
 } from "../utils/helperFunctions";
 import QRCode from "qrcode.react";
 import { NumericFormat } from "react-number-format";
-import { Tooltip } from 'react-tooltip'
-
-
+import { Tooltip } from "react-tooltip";
 
 const PaymentLink = () => {
   const elementToCaptureRef = React.createRef();
@@ -95,6 +93,7 @@ const PaymentLink = () => {
   }
 
   function HandleEditModalClose() {
+    ClearForm()
     setIsEditOpen(false);
   }
 
@@ -248,7 +247,7 @@ const PaymentLink = () => {
         slug: formValue?.slug,
       });
       const decryptRes = JSON.parse(decryptaValue(response?.data));
-      enqueueSnackbar("Customer Created Successfully", { variant: "success" });
+      enqueueSnackbar(decryptRes?.message, { variant: "success" });
       results.refetch();
       setIsLoading(false);
       setIsEditOpen(false);
@@ -276,11 +275,11 @@ const PaymentLink = () => {
         slug: formValue?.slug,
       });
       const decryptRes = JSON.parse(decryptaValue(response?.data));
-      enqueueSnackbar("Customer Created Successfully", { variant: "success" });
+      enqueueSnackbar(decryptRes?.message, { variant: "success" });
       results.refetch();
       setIsLoading(false);
-      // setIsCreate(false);
-      ClearForm();
+      closeCreateLink()
+            ClearForm();
     } catch (error) {
       //console.log(error.message);
       enqueueSnackbar(error.message, { variant: "error" });
@@ -358,7 +357,6 @@ const PaymentLink = () => {
                 placeholder="Search Link Name"
                 value={searchquery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-              
               />
             </div>
           </div>
@@ -545,8 +543,6 @@ const PaymentLink = () => {
               <option value="inactive">Inactive</option>
               <option value="expired">Expired</option>
             </select>
-
-           
           </div>
         </div>
       </div>
@@ -595,7 +591,7 @@ const PaymentLink = () => {
                       className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
                     >
                       <div className="flex  whitespace-nowrap gap-[6px] md:gap-[12px] items-center my-0">
-                      Preview
+                        Preview
                       </div>
                     </th>
                     <th
@@ -700,7 +696,19 @@ const PaymentLink = () => {
                           </div>
                         </td>
                         <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#4682f2] font-medium text-left  ">
-                          <a href={url + result?.slug} rel="noreferrer" target="_blank" className="flex items-center gap-1 underline">Pay Link<img src="./assets/link.svg" alt="link out" className="h-[18px]"/></a>
+                          <a
+                            href={url + result?.slug}
+                            rel="noreferrer"
+                            target="_blank"
+                            className="flex items-center gap-1 underline"
+                          >
+                            Pay Link
+                            <img
+                              src="./assets/link.svg"
+                              alt="link out"
+                              className="h-[18px]"
+                            />
+                          </a>
                         </td>
                         <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
                           <button
@@ -955,7 +963,10 @@ const PaymentLink = () => {
           </ModalBody>
           <Divider />
           <ModalFooter gap={"16px"}>
-            <button className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black">
+            <button
+              onClick={closeGenerate}
+              className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black"
+            >
               Cancel
             </button>
             <button
@@ -1091,20 +1102,16 @@ const PaymentLink = () => {
             </div>
             <Tooltip id="my-tooltip" />
 
-
             <div className="mb-[24px]">
-              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
-                Slug <a
-  data-tooltip-id="my-tooltip"
-  data-tooltip-content="If you set your slug to be stationaries, your payment link will look like this https://vantapp.com/pay/stationaries"
-  data-tooltip-place="top"
->
-<InfoCircle
- size="16"
- color="#667185"
- variant="Bold"
-/>
-</a>
+              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px] flex items-center gap-1">
+                Slug{" "}
+                <a
+                  data-tooltip-id="my-tooltip"
+                  data-tooltip-content="If you set your slug to be stationaries, your payment link will look like this https://vantapp.com/pay/stationaries"
+                  data-tooltip-place="top"
+                >
+                  <InfoCircle size="16" color="#667185" variant="Bold" />
+                </a>
               </label>
               <div className=" relative   flex items-center">
                 <span className="text-[12px] text-[#667185] leading-[20px] absolute left-[16px] pr-2  border-[#D0D5DD] border-r-[0.2px]">
@@ -1265,8 +1272,17 @@ const PaymentLink = () => {
               </div>
             </div>
             <div className="mb-[24px]">
-              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
-                Slug
+            <Tooltip id="my-tooltip" />
+
+            <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px] flex items-center gap-1">
+                Slug{" "}
+                <a
+                  data-tooltip-id="my-tooltip"
+                  data-tooltip-content="If you set your slug to be stationaries, your payment link will look like this https://vantapp.com/pay/stationaries"
+                  data-tooltip-place="top"
+                >
+                  <InfoCircle size="16" color="#667185" variant="Bold" />
+                </a>
               </label>
               <div className=" relative   flex items-center">
                 <span className="text-[12px] text-[#667185] leading-[20px] absolute left-[16px] pr-2  border-[#D0D5DD] border-r-[0.2px]">
@@ -1288,7 +1304,7 @@ const PaymentLink = () => {
               <div className="flex-item gap-2">
                 {" "}
                 <button
-                  onClick={closeCreateModal}
+                  onClick={closeCreateLink}
                   className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black"
                 >
                   Cancel
