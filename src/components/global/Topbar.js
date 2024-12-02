@@ -287,8 +287,6 @@ const Topbar = ({ setIsSidebar }) => {
                   ProfileQuery?.data?.partners
                     ?.filter(
                       (result) =>
-                        //console.log(ProfileQuery?.data?.default_partner?.id)
-
                         ![result?.id].includes(
                           ProfileQuery?.data?.default_partner?.id
                         )
@@ -311,9 +309,7 @@ const Topbar = ({ setIsSidebar }) => {
                           </p>
                         </div>
 
-                        {/* {isLoading && (
-                          <ClipLoader color={"#26ae5f"} size={16} />
-                        )} */}
+                        
                       </button>
                     ))}
 

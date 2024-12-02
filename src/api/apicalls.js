@@ -165,8 +165,12 @@ export function getLink(data) {
   return apiGet(GETPAYMENTLINKS, data);
 }
 
-export function editLink(data) {
-  return apiPut(UPDATEPAYMENTLINKS + data);
+export function editLink(url, data) {
+  return apiPut(UPDATEPAYMENTLINKS + url, data);
+}
+
+export function deleteLink(data) {
+  return apiDelete(UPDATEPAYMENTLINKS + data);
 }
 
 

@@ -177,7 +177,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
 
            
               
-            {/* <Link
+            <Link
               to="/paymentlink"
               className={` py-[10px] pl-[16px] flex items-center text-[14px]   mb-3 leading-[20px] md:leading-[24px] ${
                 window.location.pathname === "/paymentlink"
@@ -194,7 +194,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                 }
               />
               Payment Link
-            </Link> */}
+            </Link> 
 {/* 
             <button
               onClick={() => setIsActive("invoice")}
