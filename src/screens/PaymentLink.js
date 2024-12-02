@@ -595,6 +595,14 @@ const PaymentLink = () => {
                       className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
                     >
                       <div className="flex  whitespace-nowrap gap-[6px] md:gap-[12px] items-center my-0">
+                      Preview
+                      </div>
+                    </th>
+                    <th
+                      scope="col"
+                      className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
+                    >
+                      <div className="flex  whitespace-nowrap gap-[6px] md:gap-[12px] items-center my-0">
                         QR Code
                       </div>
                     </th>
@@ -656,7 +664,7 @@ const PaymentLink = () => {
                         <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
                           {result?.name}
                         </td>
-                        <td className="whitespace-nowrap text-center py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                        <td className="whitespace-nowrap text-center py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium  ">
                           <NumericFormat
                             value={result?.amount}
                             displayType={"text"}
@@ -690,6 +698,9 @@ const PaymentLink = () => {
                               )}
                             </button>
                           </div>
+                        </td>
+                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#4682f2] font-medium text-left  ">
+                          <a href={url + result?.slug} rel="noreferrer" target="_blank" className="flex items-center gap-1 underline">Pay Link<img src="./assets/link.svg" alt="link out" className="h-[18px]"/></a>
                         </td>
                         <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
                           <button
