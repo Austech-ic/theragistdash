@@ -716,7 +716,7 @@ const PaymentLink = () => {
                             className="py-1 px-2 border-[0.2px] text-[12px] border-[#98a2b3] rounded-[8px] border-l-[2.5px] border-l-[#26ae5f] hover:bg-slate-100 flex items-center gap-[2px]"
                           >
                             Generate{" "}
-                            {isGenerateLoading && (
+                            {(isGenerateLoading  && linkData === url + result?.slug) && (
                               <ClipLoader color={"#26ae5f"} size={12} />
                             )}
                           </button>
