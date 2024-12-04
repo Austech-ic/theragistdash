@@ -381,8 +381,8 @@ const GetStarted = () => {
                 Personal Information
               </p>
               <div className="mb-[16px] md:mb-[20px]">
-                <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
-                  First Name
+              <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal flex items-center leading-[24px] text-[#000000] ">
+              First Name <span className="text-red-500 text-lg">*</span>
                 </label>
                 <div className=" relative    flex items-center">
                   <input
@@ -404,7 +404,7 @@ const GetStarted = () => {
               </div>
               <div className="mb-[16px] md:mb-[20px]">
                 <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
-                  Last Name
+                  Last Name <span className="text-red-500 text-lg">*</span>
                 </label>
                 <div className=" relative    flex items-center">
                   <input
@@ -427,7 +427,7 @@ const GetStarted = () => {
 
               <div className="mb-[16px] md:mb-[20px]">
                 <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
-                  Email
+                  Email <span className="text-red-500 text-lg">*</span>
                 </label>
                 <div className=" relative    flex items-center">
                   <Sms
@@ -455,7 +455,7 @@ const GetStarted = () => {
               </div>
               <div className="mb-[16px] md:mb-[20px]">
                 <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
-                  Phone Number
+                  Phone Number <span className="text-red-500 text-lg">*</span>
                 </label>
                 <div className=" relative    flex items-center">
                   <GiPhone
@@ -484,7 +484,7 @@ const GetStarted = () => {
 
               <div className="mb-[16px] md:mb-[20px]">
                 <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
-                  House Address
+                  House Address <span className="text-red-500 text-lg">*</span>
                 </label>
                 <div className=" relative    flex items-center">
                   <textarea
@@ -506,7 +506,7 @@ const GetStarted = () => {
               </div>
               <div className="mb-[16px] md:mb-[20px]">
                 <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
-                  NIN
+                  NIN <span className="text-red-500 text-lg">*</span>
                 </label>
                 <div className=" relative    flex items-center">
                   <input
@@ -576,7 +576,7 @@ const GetStarted = () => {
               </p>
               <div className="mb-[16px] md:mb-[20px]">
                 <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
-                  Business Name
+                  Business Name <span className="text-red-500 text-lg">*</span>
                 </label>
                 <div className=" relative    flex items-center">
                   <input
@@ -605,7 +605,7 @@ const GetStarted = () => {
                     type="text"
                     placeholder="https://domain.xyz"
                     className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                    required
+                    // required
                     name="busWebsite"
                     disabled={busDisabled}
                     value={formValue.busWebsite}
@@ -620,7 +620,7 @@ const GetStarted = () => {
               </div>
               <div className="mb-[16px] md:mb-[20px]">
                 <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
-                  Business Description
+                  Business Description <span className="text-red-500 text-lg">*</span>
                 </label>
                 <div className=" relative    flex items-center">
                   <input
@@ -642,8 +642,8 @@ const GetStarted = () => {
               </div>
 
               <div className="mb-[16px] md:mb-[20px]">
-                <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
-                  Support Email
+                <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal flex items-center leading-[24px] text-[#000000] ">
+                  Support Email 
                 </label>
                 <div className=" relative    flex items-center">
                   <Sms
@@ -656,7 +656,7 @@ const GetStarted = () => {
                     type="email"
                     placeholder="Enter email address"
                     className="w-full  h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                    required
+                    // required
                     name="busSupportEmail"
                     disabled={busDisabled}
                     value={formValue.busSupportEmail}
@@ -684,7 +684,7 @@ const GetStarted = () => {
                     type="email"
                     placeholder="Enter email address"
                     className="w-full  h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                    required
+                    // required
                     name="chargeBackEmail"
                     disabled={busDisabled}
                     value={formValue.chargeBackEmail}
@@ -706,7 +706,7 @@ const GetStarted = () => {
                     type="text"
                     placeholder=""
                     className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                    required
+                    // required
                     name="rcNumber"
                     disabled={busDisabled}
                     value={formValue.rcNumber}
@@ -728,7 +728,7 @@ const GetStarted = () => {
                     type="date"
                     placeholder=""
                     className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                    required
+                    // required
                     name="incopDate"
                     disabled={busDisabled}
                     value={formValue.incopDate}
@@ -744,7 +744,7 @@ const GetStarted = () => {
 
               <div className="mb-[16px] md:mb-[20px]">
                 <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
-                  Business City
+                  Business City <span className="text-red-500 text-lg">*</span>
                 </label>
                 <div className=" relative    flex items-center">
                   <input
@@ -766,7 +766,7 @@ const GetStarted = () => {
               </div>
               <div className="mb-[16px] md:mb-[20px]">
                 <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
-                  Business Address
+                  Business Address <span className="text-red-500 text-lg">*</span>
                 </label>
                 <div className=" relative    flex items-center">
                   <input
@@ -831,7 +831,7 @@ const GetStarted = () => {
               }}
             >
               <p className="text-[#000] text-[14px] md:text-[16px] flex gap-3 z-20 xl:text-[18px] italic font-semibold leading-[24px]  mb-6 ">
-                BVN Information
+                BVN Information <span className="text-red-500 text-lg">*</span>
               </p>
               <div className="mb-[16px] md:mb-[20px]">
                 <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
@@ -905,7 +905,7 @@ const GetStarted = () => {
               <div className="mb-[16px] md:mb-[20px]">
                 <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
                   CERTIFICATE OF INCORPORATION{" "}
-                  <sup className="text-red-400">*</sup>
+                  {/* <sup className="text-red-400">*</sup> */}
                 </label>
                 <div className=" ">
                   <input
@@ -925,7 +925,7 @@ const GetStarted = () => {
               <div className="mb-[16px] md:mb-[20px]">
                 <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
                   VALID ID OF A DIRECTOR
-                  <sup className="text-red-400">*</sup>
+                  {/* <sup className="text-red-400">*</sup> */}
                 </label>
                 <div className="">
                   <input
@@ -945,7 +945,7 @@ const GetStarted = () => {
               <div className="mb-[16px] md:mb-[20px]">
                 <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
                   CAC Form BN/1 or CAC Form 1.1 (C07 for older companies)
-                  <sup className="text-red-400">*</sup>
+                  {/* <sup className="text-red-400">*</sup> */}
                 </label>
                 <div className="">
                   <input
@@ -965,7 +965,7 @@ const GetStarted = () => {
               <div className="mb-[16px] md:mb-[20px]">
                 <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
                   VALID ID OF ANOTHER DIRECTOR
-                  <sup className="text-red-400">*</sup>
+                  {/* <sup className="text-red-400">*</sup> */}
                 </label>
                 <div className="">
                   <input
