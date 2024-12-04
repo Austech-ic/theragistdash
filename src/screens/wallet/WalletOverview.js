@@ -767,7 +767,7 @@ const WalletOverdiv = () => {
         isCentered
         isOpen={isTransferOthers}
         onClose={closeTransferOthers}
-        size="xl"
+       size={{ base: 'xs', sm: 'md', lg: 'xl' }}
         style={{ borderRadius: 12 }}
         motionPreset="slideInBottom"
         className="rounded-[12px]"
@@ -1071,7 +1071,7 @@ const WalletOverdiv = () => {
         isCentered
         isOpen={isVantTagModal}
         onClose={CloseVantTagModal}
-        size="xl"
+        size={{ base: 'xs', sm: 'md', lg: 'xl' }}
         style={{ borderRadius: 12 }}
         motionPreset="slideInBottom"
         className="rounded-[12px]"
