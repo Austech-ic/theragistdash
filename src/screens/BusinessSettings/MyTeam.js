@@ -140,6 +140,23 @@ const MyTeam = () => {
   //   }
   // }
 
+
+  const handleDelete = async() => {
+    setIsLoading(true);
+    try {
+      const response = await api.deleteTeamMember(resultId);
+      const decryptRes = JSON.parse(decryptaValue(response?.data));
+      enqueueSnackbar(decryptRes?.message, { variant: "success" });
+      results.refetch();
+      setIsLoading(false);
+      setIsDeleteModal(false);
+    } catch (error) {
+      //console.log(error.message);
+      enqueueSnackbar(error.message, { variant: "error" });
+      setIsLoading(false);
+    }
+  }
+
   const CreateTeam = async () => {
     setIsLoading(true);
     try {
@@ -215,9 +232,9 @@ const MyTeam = () => {
 
   ////console.log("transactions result", results?.data);
   return (
-    <div className="p-[20px] bg-[#F2F2F2] min-h-screen ">
+    <div className="md:p-[20px] p-[14px] bg-[#F2F2F2] min-h-screen ">
       <div className="border-[0.2px] border-[#98a2b3] rounded-[8px]  bg-[#ffff] ">
-        <div className=" h-full p-[16px] md:p-[20px] block md:flex justify-between items-center ">
+        <div className=" h-full p-[16px] md:p-[20px] flex md:flex-row flex-col md:justify-between md:items-center gap-3 ">
           <div className="flex items-center gap-[16px]">
             <div className="flex items-center">
               <p className="text-[#000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px]  ">
@@ -231,11 +248,11 @@ const MyTeam = () => {
             onClick={() => toggleCreate()}
             className="flex items-center gap-[8px] "
           >
-            <p className="text-[14px] text-[#667185] leading-[20px]">
+            <p className="text-[14px] text-[#26ae5f] leading-[20px]">
               Create Team Member
             </p>
 
-            <Add variant="Linear" color="#667185" size="16" />
+            <Add variant="Linear" color="#26ae5f" size="16" />
           </button>
         </div>
       </div>
@@ -427,7 +444,7 @@ const MyTeam = () => {
                                   Cancel
                                 </button>
                                 <button
-                                  //onClick={handleDelete}
+                                  onClick={handleDelete}
                                   className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
                                 >
                                   {isLoading ? (

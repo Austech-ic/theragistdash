@@ -60,6 +60,7 @@ import PredivModal from "../../components/wallet/PreviewModal";
 import ComingSoon from "../../components/ComingSoon";
 import debounce from "lodash/debounce";
 import Success from "../../components/Success";
+import { Link } from "react-router-dom";
 
 ChartJS.register(
   CategoryScale,
@@ -677,13 +678,12 @@ const WalletOverdiv = () => {
                 </p>
               </div>
               <div className="flex flex-col gap-1 py-2 border-l pl-2 flex-1 ">
-                <button
-                  onClick={handleComingSoon}
+              <Link to="/paymentlink"
                   className={`rounded-[14px]  flex justify-center banks-center gap-2 px-[8px]  py-[4px] md:py-[4px] border-[0.5px]
                            bg-[#EDF7EE] text-[#4CAF50] whitespace-nowrap border-[#4CAF50] text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px] `}
                 >
                   <Add color="#4CAF50" size={16} /> <p>Create Payment Link </p>
-                </button>{" "}
+                </Link>{" "}
                 <button
                   onClick={handleComingSoon}
                   className={`rounded-[14px]  flex justify-center banks-center gap-2 px-[8px]  py-[4px] md:py-[4px] border-[0.5px]

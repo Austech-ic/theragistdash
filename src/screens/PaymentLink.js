@@ -340,9 +340,9 @@ const PaymentLink = () => {
   };
 
   return (
-    <div className="p-[20px] bg-[#F2F2F2] min-h-screen ">
+    <div className="md:p-[20px] p-[14px] bg-[#F2F2F2] min-h-screen ">
       <div className="border-[0.2px] border-[#98a2b3] rounded-[8px]  bg-[#ffff] ">
-        <div className="border-b border-b-[#E4E7EC] h-full p-[16px] md:p-[20px] block md:flex justify-between items-center ">
+        <div className="border-b border-b-[#E4E7EC] h-full p-[16px] md:p-[20px] flex md:flex-row flex-col md:justify-between md:items-center gap-3">
           <div className="flex items-center gap-[16px]">
             <div className="flex items-center">
               <p className="text-[#000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px]  ">

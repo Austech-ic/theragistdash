@@ -23,7 +23,8 @@ import {
  INITIATEVANTTAGTRANSFER,
  CREATEPAYMENTLINKS,
  GETPAYMENTLINKS,
- UPDATEPAYMENTLINKS
+ UPDATEPAYMENTLINKS,
+ DELETETEAMMEMBER
 } from "../utils/config";
 import { apiDelete, apiGet, apiGetCSV, apiPost, apiPut } from "../utils/utils";
 
@@ -87,6 +88,10 @@ export function createTeamMember(data) {
 
 export function getTeamMember(data) {
   return apiGet(GETTEAMMEMBER, data);
+}
+
+export function deleteTeamMember(data) {
+  return apiDelete(DELETETEAMMEMBER + data);
 }
 
 

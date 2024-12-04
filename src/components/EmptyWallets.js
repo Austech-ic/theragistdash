@@ -2,6 +2,7 @@ import React from "react";
 import Lottie from "react-lottie";
 import animationData from "../assets/emptyList.json";
 import { Add } from "iconsax-react";
+import { Link } from "react-router-dom";
 
 const EmptyWallet = ({ cols, action, subheading }) => {
   const defaultOptions = {
@@ -26,15 +27,15 @@ const EmptyWallet = ({ cols, action, subheading }) => {
 
             <ul className="flex gap-3 items-center mt-7">
               <li>
-                <button className="rounded-md px-2 py-2 text-white text-sm flex gap-2 items-center bg-[#26ae5f]">
+                <Link to="/paymentlink" className="rounded-md px-2 py-2 text-white text-sm flex gap-2 items-center bg-[#26ae5f]">
                   <p className="whitespace-nowrap">Create Payment Link</p> <Add size={14} />
-                </button>
+                </Link>
               </li>
-              <li>
+              {/* <li>
                 <button className="rounded-md px-2 py-2 text-white text-sm flex gap-2 items-center bg-[#26ae5f]">
                   <p className="whitespace-nowrap">Create Invoice</p> <Add size={14} />
                 </button>
-              </li>
+              </li> */}
             </ul>
           </div>
           <Lottie options={defaultOptions} height={200} width={200} />
