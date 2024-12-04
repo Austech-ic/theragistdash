@@ -514,7 +514,7 @@ const WalletOverdiv = () => {
   );
 
   return (
-    <div>
+    <div className="overflow-y-auto">
       <ComingSoon
         isComingSoon={isComingSoon}
         closeComingSoon={closeComingSoon}
