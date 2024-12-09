@@ -3,6 +3,7 @@ import {
   ArrowRight3,
   Building,
   CardTick1,
+  Danger,
   DocumentCloud,
   MainComponent,
   Personalcard,
@@ -297,6 +298,81 @@ const GetStarted = () => {
         </div>
       </div>
 
+      <div className="flex md:hidden items-center space-x-2 mt-4 overflow-auto">  {info &&
+            info?.map((inf, index) => (
+              <button
+                onClick={() => setSelectedInfo(inf?.id)}
+                className={`flex-between mb-2 gap-2  ${
+                  selectedInfo === inf?.id
+                    ? "  bg-[#26ae5f] text-white"
+                    : "bg-[#fefefe]"
+                } ${
+                  index === 0 ? "" : ""
+                } hover:translate-y-1  transition-transform ease-in-out   w-[90%] border-[0.2px] border-[#98a2b3] relative rounded-[8px]  p-[6px] md:px-[10px] md:py-4`}
+              >
+                {filledSection.every((id) =>
+                  info.some((item) => item.id === id)
+                ) && filledSection.some((item) => item === inf?.id) ? (
+                  <TickCircle
+                    size="18"
+                    className="hidden md:block"
+                    color={` ${
+                      selectedInfo === inf?.id ? "  #fefefe" : "#26ae5f"
+                    }`}
+                  />
+                ) : (
+                  <MainComponent
+                    size="18"
+                    className="hidden md:block"
+                    color={` ${
+                      selectedInfo === inf?.id ? "  #fefefe" : "#26ae5f"
+                    }`}
+                  />
+                )}
+                <div className="flex items-center gap-2">
+                {/* <inf.icon
+                    size="20"
+                     className="md:hidden block"
+                    color={` ${
+                      selectedInfo === inf?.id ? "  #fefefe" : "#26ae5f"
+                    }`}
+                  /> */}
+                  {filledSection.every((id) =>
+                  info.some((item) => item.id === id)
+                ) && filledSection.some((item) => item === inf?.id) ? (
+                  <TickCircle
+                  size="14"
+                  className="block"
+                  color={` ${
+                    selectedInfo === inf?.id ? "  #fefefe" : "#26ae5f"
+                  }`}
+                />
+                ) : (
+                  <Danger
+                  size="14"
+                  className="block"
+                  color={` ${
+                    selectedInfo === inf?.id ? "  #fefefe" : "#D11414FF"
+                  }`}
+                />
+                  // <MainComponent
+                  //   size="18"
+                  //   className="hidden md:block"
+                  //   color={` ${
+                  //     selectedInfo === inf?.id ? "  #fefefe" : "#26ae5f"
+                  //   }`}
+                  // />
+                )}
+                  <p className="block  text-[14px]  font-normal leading-[16px] whitespace-nowrap ">
+                    {inf?.name}
+                  </p>
+                
+                </div>
+
+                
+              </button>
+            ))}</div>
+
       <div className="flex mt-4 md:mt-6 gap-[16px] md:gap-[24px]">
         <m.div
           initial={{ x: -30, opacity: 0.4 }}
@@ -308,7 +384,7 @@ const GetStarted = () => {
           transition={{
             duration: 0.9,
           }}
-          className="w-[25%] md:w-[30%]"
+          className="w-[25%] md:w-[30%] hidden md:block"
         >
           {info &&
             info?.map((inf, index) => (

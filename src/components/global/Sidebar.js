@@ -62,7 +62,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
               stroke-linejoin="round"
               d="M6 18L18 6M6 6l12 12"
             />
-            
+
           </svg>
         </button>
       </div>
@@ -81,6 +81,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
               {profileData?.default_partner?.is_verified !== 1 && (
                 <Link
                   to="/getstarted"
+                  onClick={onClose}
                   className={` py-[10px] pl-[16px] flex items-center text-[14px] mb-3   leading-[20px] md:leading-[24px] ${
                     window.location.pathname === "/getstarted"
                       ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
@@ -101,6 +102,8 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
 
               <Link
                 to="/overview"
+                onClick={onClose}
+
                 className={` py-[10px] pl-[16px] flex items-center text-[14px] mb-3   leading-[20px] md:leading-[24px] ${
                   window.location.pathname === "/overview"
                     ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
@@ -117,6 +120,8 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
               </Link>
               <Link
                 to="/wallet/overview"
+                onClick={onClose}
+
                 className={` py-[10px] pl-[16px] flex items-center text-[14px]  mb-3   leading-[20px] md:leading-[24px] ${
                   window.location.pathname === "/wallet/overview" ||
                   window.location.pathname === "/wallet/topup" ||
@@ -140,6 +145,8 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
 
               <Link
                 to="/transaction"
+                onClick={onClose}
+
                 className={` py-[10px] pl-[16px] flex items-center text-[14px]  mb-3   leading-[20px] md:leading-[24px] ${
                   window.location.pathname === "/transaction"
                     ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
@@ -159,6 +166,8 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
 
               <Link
                 to="/user-wallets"
+                onClick={onClose}
+
                 className={` py-[10px] pl-[16px] flex items-center text-[14px]  mb-3   leading-[20px] md:leading-[24px] ${
                   window.location.pathname === "/user-wallets"
                     ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
@@ -180,6 +189,8 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
               
             <Link
               to="/paymentlink"
+              onClick={onClose}
+
               className={` py-[10px] pl-[16px] flex items-center text-[14px]   mb-3 leading-[20px] md:leading-[24px] ${
                 window.location.pathname === "/paymentlink"
                   ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
@@ -278,6 +289,8 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
             </Link> */}
               <Link
                 to="/customers"
+                onClick={onClose}
+
                 className={` py-[10px] pl-[16px] flex items-center text-[14px]   mb-3 leading-[20px] md:leading-[24px] ${
                   window.location.pathname === "/customers"
                     ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
@@ -316,6 +329,8 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
             <div className="border-t pb-3 pt-2">
               <Link
                 to="/setting/personal-info"
+                onClick={onClose}
+
                 className={` py-[10px] pl-[16px] flex items-center text-[14px]   mb-3 leading-[20px] md:leading-[24px] ${
                   window.location.pathname === "/setting/personal-info" ||
                   window.location.pathname === "/setting/webhook" ||
