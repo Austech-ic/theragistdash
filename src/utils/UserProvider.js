@@ -1,4 +1,9 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
 import { useCopilotReadable } from "@copilotkit/react-core";
@@ -15,10 +20,11 @@ export const UserProvider = ({ children }) => {
   const [loading, setLoading] = useState(true); // To handle loading state
   const [personalInfo, setPersonalInfo] = useState(null);
   const [currency, setCurrency] = useState("Naira ₦");
+  const [customers, setCustomers] = useState([]);
   const navigate = useNavigate();
   useEffect(() => {
     let userData = localStorage.getItem("authData");
-    console.log('userdata',userData)
+    console.log("userdata", userData);
     if (!userData) {
       // If no user data in localStorage, redirect to login
       navigate("/login");
@@ -33,6 +39,8 @@ export const UserProvider = ({ children }) => {
           setTransactions(transactionsResponse?.data || []);
           const kycResponse = await api.getKyc({});
           setPersonalInfo(kycResponse?.data || null);
+          const customersResponse = await api.getCustomers({});
+          setCustomers(customersResponse?.data || []);
         } catch (error) {
           console.error("Error fetching user data:", error);
         } finally {
@@ -51,30 +59,29 @@ export const UserProvider = ({ children }) => {
     minSuggestions: 3,
     maxSuggestions: 3,
   });
-
+  // Format wallet balance with currency
+  const formattedWalletBalance = walletBalance
+    ? `${currency}${walletBalance.toLocaleString()}`
+    : `${currency}0`;
   // Initialize copilotData with nulls or default values to avoid conditional hook calls
   useCopilotReadable({
     description:
       "The user current balance, total number of team members, default currency and all the transaction history, ",
-    value: { walletBalance, totalTeamMembers, currency, transactions },
+    value: { formattedWalletBalance, totalTeamMembers, currency, transactions },
   });
 
-  useCopilotReadable(
-    {
-      description: "Current logged in user information",
-      value: { personalInfo },
-    }
-  );
+  useCopilotReadable({
+    description: "My Customer list and full information",
+    value: { customers },
+  });
 
-  if (loading) {
-    // Optionally show a loading indicator
-    return <div>Loading...</div>;
-  }
+  useCopilotReadable({
+    description: "Current logged in user information",
+    value: { personalInfo },
+  });
 
   return (
-    <UserContext.Provider
-      value={{ walletBalance, totalTeamMembers }}
-    >
+    <UserContext.Provider value={{ walletBalance, totalTeamMembers }}>
       {children}
     </UserContext.Provider>
   );
