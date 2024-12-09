@@ -61,6 +61,7 @@ import ComingSoon from "../../components/ComingSoon";
 import debounce from "lodash/debounce";
 import Success from "../../components/Success";
 import { Link } from "react-router-dom";
+import { useCopilotReadable } from "@copilotkit/react-core";
 
 ChartJS.register(
   CategoryScale,
@@ -513,6 +514,16 @@ const WalletOverdiv = () => {
     }, 300),
     []
   );
+
+  useCopilotReadable({
+    description: "Total Credit",
+    value: summaryData?.type_summary?.credit?.total,
+  });
+
+  useCopilotReadable({
+    description: "Total Debit",
+    value: summaryData?.type_summary?.debit?.total,
+  });
 
   return (
     <div className="overflow-y-auto">

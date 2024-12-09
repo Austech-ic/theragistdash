@@ -11,12 +11,14 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const [walletBalance, setWalletBalance] = useState(null);
   const [totalTeamMembers, setTotalTeamMembers] = useState(null);
+  const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true); // To handle loading state
+  const [personalInfo, setPersonalInfo] = useState(null);
+  const [currency, setCurrency] = useState("Naira ₦");
   const navigate = useNavigate();
-
   useEffect(() => {
     let userData = localStorage.getItem("authData");
-
+    console.log('userdata',userData)
     if (!userData) {
       // If no user data in localStorage, redirect to login
       navigate("/login");
@@ -27,6 +29,10 @@ export const UserProvider = ({ children }) => {
           const response = await api.getOverview({});
           setWalletBalance(response?.data?.wallet_balance);
           setTotalTeamMembers(response?.data?.total_users);
+          const transactionsResponse = await api.getTransactionFullLength({});
+          setTransactions(transactionsResponse?.data || []);
+          const kycResponse = await api.getKyc({});
+          setPersonalInfo(kycResponse?.data || null);
         } catch (error) {
           console.error("Error fetching user data:", error);
         } finally {
@@ -39,25 +45,26 @@ export const UserProvider = ({ children }) => {
 
   useCopilotChatSuggestions({
     instructions: `
-    suggest actions/information in this page related to credit cards, transactions or policies.
+    suggest actions/information in this page related to wallet balance, transactions or policies.
     Use specific items or "all items", for example:
-    "Show all transactions of Marketing department" or "Tell me how much I spent on my Mastercard"
-    If the user has permission to e.g. add credit card, then you can suggest to add a new card.
-    Do the same for other actions.
-  `,
+    "Show all transactions of uitilities" or "Tell me how much I spent on bills.`,
     minSuggestions: 3,
     maxSuggestions: 3,
   });
 
   // Initialize copilotData with nulls or default values to avoid conditional hook calls
   useCopilotReadable({
-    description: "User current balance",
-    value: walletBalance,
+    description:
+      "The user current balance, total number of team members, default currency and all the transaction history, ",
+    value: { walletBalance, totalTeamMembers, currency, transactions },
   });
-  useCopilotReadable({
-    description: "Total number of team members",
-    value: totalTeamMembers,
-  });
+
+  useCopilotReadable(
+    {
+      description: "Current logged in user information",
+      value: { personalInfo },
+    }
+  );
 
   if (loading) {
     // Optionally show a loading indicator

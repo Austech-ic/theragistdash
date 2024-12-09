@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useCopilotAction, useCopilotReadable } from "@copilotkit/react-core";
 import { Button } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom"; // React Router
 
-// Replace TypeScript enums with regular JavaScript objects
+// Page constants as JavaScript objects
 const Page = {
-  Cards: "cards",
-  Team: "team",
+  Transfer: "/wallet/overview",
+  Team: "/setting/my-team",
 };
 
-const CardsPageOperations = {
-  ChangePin: "change-pin",
+const TransferPageOperations = {
+  ChangePin: "transfer-to-bank",
 };
 
 const TeamPageOperations = {
@@ -19,15 +20,16 @@ const TeamPageOperations = {
 };
 
 const AVAILABLE_OPERATIONS_PER_PAGE = {
-  [Page.Cards]: Object.values(CardsPageOperations),
+  [Page.Transfer]: Object.values(TransferPageOperations),
   [Page.Team]: Object.values(TeamPageOperations),
 };
 
 const CopilotContext = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const navigate = useNavigate(); // React Router navigation
 
-  // Ensure hooks are called unconditionally
+  // CopilotKit Readable Hooks
   useCopilotReadable({
     description: "The current user logged into the system",
     value: currentUser,
@@ -43,11 +45,12 @@ const CopilotContext = ({ children }) => {
     },
   });
 
+  // CopilotKit Action Hook
   useCopilotAction({
     name: "navigateToPageAndPerform",
     description: `
-      Navigate to a page to perform an operation. For example, if the user asks to change a pin, 
-      they are navigated to the "Cards" page with the necessary operation parameter.
+      Navigate to a page to perform an operation. For example, if the user asks to transfer funds or money, 
+      they are navigated to the "Transfer" page with the necessary operation parameter.
     `,
     parameters: [
       {
@@ -55,7 +58,7 @@ const CopilotContext = ({ children }) => {
         type: "string",
         description: "The page in which to perform the operation",
         required: true,
-        enum: ["/cards", "/team", "/"],
+        enum: ["/wallet/overview", "/team", "/"], // Available pages
       },
       {
         name: "operation",
@@ -85,7 +88,7 @@ const CopilotContext = ({ children }) => {
               const operationParams = operationAvailable
                 ? `?operation=${operation}`
                 : "";
-              window.location.href = `${page.toLowerCase()}${operationParams}`;
+              navigate(`${page.toLowerCase()}${operationParams}`);
               handler?.(page);
             }}
             aria-label="Confirm Navigation"
@@ -107,6 +110,7 @@ const CopilotContext = ({ children }) => {
     },
   });
 
+  // Check authentication on mount
   useEffect(() => {
     const userData = localStorage.getItem("authData");
     if (userData) {
@@ -117,7 +121,7 @@ const CopilotContext = ({ children }) => {
     }
   }, []);
 
-  // Prevent rendering children if the user is not authenticated
+  // Render children only if authenticated
   if (!isAuthenticated) {
     return null;
   }
