@@ -49,7 +49,7 @@ export const UserProvider = ({ children }) => {
       };
       fetchUserSummary();
     }
-  }, [navigate]);
+  }, []);
 
   useCopilotChatSuggestions({
     instructions: `
