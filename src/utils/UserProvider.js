@@ -1,9 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-} from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
 import { useCopilotReadable } from "@copilotkit/react-core";
@@ -17,28 +12,30 @@ export const UserProvider = ({ children }) => {
   const [walletBalance, setWalletBalance] = useState(null);
   const [totalTeamMembers, setTotalTeamMembers] = useState(null);
   const [transactions, setTransactions] = useState([]);
-  const [loading, setLoading] = useState(true); // To handle loading state
   const [personalInfo, setPersonalInfo] = useState(null);
   const [currency, setCurrency] = useState("Naira ₦");
   const [customers, setCustomers] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  // Fetch user data on mount
   useEffect(() => {
-    let userData = localStorage.getItem("authData");
-    console.log("userdata", userData);
+    const userData = localStorage.getItem("authData");
     if (!userData) {
-      // If no user data in localStorage, redirect to login
       navigate("/login");
     } else {
-      // If user data exists, fetch the user summary
       const fetchUserSummary = async () => {
         try {
           const response = await api.getOverview({});
           setWalletBalance(response?.data?.wallet_balance);
           setTotalTeamMembers(response?.data?.total_users);
+
           const transactionsResponse = await api.getTransactionFullLength({});
           setTransactions(transactionsResponse?.data || []);
+
           const kycResponse = await api.getKyc({});
           setPersonalInfo(kycResponse?.data || null);
+
           const customersResponse = await api.getCustomers({});
           setCustomers(customersResponse?.data || []);
         } catch (error) {
@@ -51,37 +48,53 @@ export const UserProvider = ({ children }) => {
     }
   }, [navigate]);
 
-  useCopilotChatSuggestions({
-    instructions: `
-    suggest actions/information in this page related to wallet balance, transactions or policies.
-    Use specific items or "all items", for example:
-    "Show all transactions of uitilities" or "Tell me how much I spent on bills.`,
-    minSuggestions: 3,
-    maxSuggestions: 3,
-  });
   // Format wallet balance with currency
   const formattedWalletBalance = walletBalance
     ? `${currency}${walletBalance.toLocaleString()}`
     : `${currency}0`;
-  // Initialize copilotData with nulls or default values to avoid conditional hook calls
+
+  // Initialize Copilot data directly
   useCopilotReadable({
     description:
-      "The user current balance, total number of team members, default currency and all the transaction history, ",
-    value: { formattedWalletBalance, totalTeamMembers, currency, transactions },
+      "The user current balance, total number of team members, currency, and all the transaction history.",
+    value: {
+      formattedWalletBalance,
+      totalTeamMembers,
+      currency,
+      transactions,
+    },
   });
 
   useCopilotReadable({
-    description: "My Customer list and full information",
+    description: "My Customer list and full information.",
     value: { customers },
   });
 
   useCopilotReadable({
-    description: "Current logged in user information",
+    description: "Current logged-in user information.",
     value: { personalInfo },
   });
 
+  useCopilotChatSuggestions({
+    instructions: `
+    Suggest actions/information in this page related to wallet balance, transactions, or policies.
+    Use specific items or "all items," for example:
+    "Show all transactions of utilities" or "Tell me how much I spent on bills."`,
+    minSuggestions: 3,
+    maxSuggestions: 3,
+  });
+
   return (
-    <UserContext.Provider value={{ walletBalance, totalTeamMembers }}>
+    <UserContext.Provider
+      value={{
+        walletBalance,
+        totalTeamMembers,
+        loading,
+        personalInfo,
+        customers,
+        transactions,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );
