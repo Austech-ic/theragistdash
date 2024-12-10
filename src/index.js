@@ -26,9 +26,7 @@ root.render(
   // <React.StrictMode>
   <Suspense fallback={<ThemedSuspense />}>
     <ChakraProvider theme={AppTheme}>
-      <CopilotKitWrapper>
         <App />
-      </CopilotKitWrapper>
     </ChakraProvider>
   </Suspense>
   //</React.StrictMode> */}

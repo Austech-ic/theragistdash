@@ -16,6 +16,10 @@ import Sidebar from "../components/global/Sidebar";
 import api from "../api";
 import { useQuery } from "@tanstack/react-query";
 import Warning from "../components/Warning";
+import { CopilotKitWrapper } from "../utils/CopilotKitWrapper";
+import { CopilotPopup } from "@copilotkit/react-ui";
+import { UserProvider } from "../utils/UserProvider";
+import CopilotContext from "../components/copilot-context";
 
 function Layout() {
   // const { isSidebarOpen, closeSidebar } = useContext(SidebarContext);
@@ -57,23 +61,39 @@ function Layout() {
   }
 
   return (
-    <div id="" className="app bg-[#ffffff] flex  ">
-      <Sidebar
-        isSidebarOpen={isSidebar}
-        onClose={handleSideBarClose}
-        profileData={profileData}
-      />
+    <CopilotKitWrapper>
+      <UserProvider>
+        {/* Place new routes over this */}
+        <CopilotContext>
+          <div id="" className="app bg-[#ffffff] flex  ">
+            <Sidebar
+              isSidebarOpen={isSidebar}
+              onClose={handleSideBarClose}
+              profileData={profileData}
+            />
 
-      <div className="flex flex-col flex-1 w-full overflow-x-hidden">
-        <Topbar setIsSidebar={toggleSidebar} />
-        {profileData?.default_partner?.is_verified === 0 && <Warning />}
-        <Main>
-          <Suspense fallback={<ThemedSuspense />}>
-            <Outlet />
-          </Suspense>
-        </Main>
-      </div>
-    </div>
+            <div className="flex flex-col flex-1 w-full overflow-x-hidden">
+              <Topbar setIsSidebar={toggleSidebar} />
+              {profileData?.default_partner?.is_verified === 0 && <Warning />}
+              <Main>
+                <Suspense fallback={<ThemedSuspense />}>
+                  <Outlet />
+                </Suspense>
+              </Main>
+            </div>
+          </div>
+          <CopilotPopup
+            instructions={
+              "You are assisting the user as best as you can. Answer in the best way possible given the data you have."
+            }
+            labels={{
+              title: "Vant Assistant",
+              initial: "Need any help?",
+            }}
+          />
+        </CopilotContext>
+      </UserProvider>
+    </CopilotKitWrapper>
   );
 }
 
