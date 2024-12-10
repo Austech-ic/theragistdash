@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { Sms, CloseCircle, Eye, EyeSlash } from "iconsax-react";
 import { GoLock } from "react-icons/go";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import api from "../api";
 import { enqueueSnackbar } from "notistack";
 import { decryptaValue } from "../utils/helperFunctions";
+import { ClipLoader } from "react-spinners";
 
 const CreateNewPass = () => {
   const location = useLocation();
-
+const  navigate = useNavigate()
   const [open, setOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
@@ -16,6 +17,7 @@ const CreateNewPass = () => {
   const [password, setPassword] = useState("");
   const [passError, setPassError] = useState(false);
   const [otp, setOtp] = useState("");
+  const [isLoading, setIsLoading] =useState(false)
 
   function handlePassword(event) {
     let new_pass = event.target.value;
@@ -223,6 +225,7 @@ const CreateNewPass = () => {
             <p className="text-sm font-medium leading-[20px]">
               Change Password
             </p>
+            {isLoading && <ClipLoader color={"white"} size={20} />}
           </button>
           {/* </Link> */}
 
