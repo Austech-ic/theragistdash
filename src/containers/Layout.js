@@ -21,24 +21,19 @@ function Layout() {
   // const { isSidebarOpen, closeSidebar } = useContext(SidebarContext);
   const [isSidebar, setIsSidebar] = useState(true);
 
-  // let location = useLocation();
-
-  // useEffect(() => {
-  //   closeSidebar();
-  // }, [closeSidebar, location]);
   const ProfileQuery = useQuery(["profile"], () => getProfile(), {
     keepPreviousData: true,
     refetchOnWindowFocus: "always",
   });
   const profileData = ProfileQuery?.data || [];
 
-  let userData = localStorage.getItem("authData");
-  //console.log(userData)
-  if (!userData) {
-    return <Navigate to="/login" />;
-  } else {
-    //console.log("Valid token");
-  }
+  // let userData = localStorage.getItem("authData");
+  // //console.log(userData)
+  // if (!userData) {
+  //   return <Navigate to="/login" />;
+  // } else {
+  //   //console.log("Valid token");
+  // }
 
   // if (userData) {
   //   const decodedData = JSON.parse(atob(userData?.split(".")[1]));
