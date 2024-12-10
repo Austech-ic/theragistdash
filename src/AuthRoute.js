@@ -10,6 +10,7 @@ import {
     BrowserRouter as Router,
     Navigate,
   } from "react-router-dom";
+import ChangePassSuccess from "./authScreen/ChangepassSuccess";
 
 const AuthRoute = () => {
   return (
@@ -20,6 +21,7 @@ const AuthRoute = () => {
 
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/verifyemail" element={<CreateNewPass />} />
+      <Route path="/passwordchangesuccess" element={<ChangePassSuccess />} />
     </Routes>
   );
 };
