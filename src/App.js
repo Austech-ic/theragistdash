@@ -59,8 +59,8 @@ function App() {
       />
       <QueryClientProvider client={queryClient}>
         <Router>
-          <CopilotContext>
-            <UserProvider>
+          <UserProvider>
+            <CopilotContext>
               <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<SignUp />} />
@@ -156,8 +156,8 @@ function App() {
                   </Route>
                 </Route>
               </Routes>
-            </UserProvider>
-          </CopilotContext>
+            </CopilotContext>
+          </UserProvider>
         </Router>
       </QueryClientProvider>
     </div>

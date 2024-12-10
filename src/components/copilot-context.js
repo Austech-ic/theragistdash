@@ -121,11 +121,6 @@ const CopilotContext = ({ children }) => {
     }
   }, []);
 
-  // Render children only if authenticated
-  if (!isAuthenticated) {
-    return null;
-  }
-
   return children;
 };
 
