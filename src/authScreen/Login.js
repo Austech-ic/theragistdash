@@ -97,13 +97,13 @@ const Login = () => {
         transition={{
           duration: 0.9,
         }}
-        className="bg-[#ffff] rounded-[16px] w-[90%]  max-w-[628px] pt-[16px] md:pt-[32px]  pb-[24px] px-[16px] sm:px-[30px] md:px-[60px] xl:px-[80px]"
+        className="bg-[#ffff] rounded-[16px] w-[90%] sm:w-[440px] md:w-[500px]  max-w-[588px] pt-[16px] md:pt-[32px]  pb-[24px] px-[16px] sm:px-[30px] md:px-[50px]"
       >
         {" "}
         <img
           src="/assets/VantLogo.png"
           alt="logo"
-          className=" h-[40px] md:h-[50px] xl:h-[60px] mx-auto mb-[20px] md:mb-[40px] xl:md-[50px]"
+          className=" h-[40px] md:h-[50px] xl:h-[60px] mx-auto mb-[20px]"
         />
         {/* <h2 className="text-[20px] md:text-[24px] xl:text-[28px] text-center font-bold leading-[35px] text-black mb-[8px]">
           Hi, Welcome Back!
@@ -113,7 +113,7 @@ const Login = () => {
         </p>
         <form
           onSubmit={login}
-          className="mt-[20px] md:mt-[30px]  max-w-[340px] md:max-w-[486px]"
+          className="mt-[20px] md:mt-[30px] "
         >
           <div className="mb-[24px]">
             <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
@@ -130,7 +130,7 @@ const Login = () => {
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="w-[100%] sm:w-[400px] md:w-[486px] h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                className="w-full h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                 required
                 autoComplete="on"
                 name="email"
@@ -163,7 +163,7 @@ const Login = () => {
               <input
                 type={open === false ? "password" : "text"}
                 placeholder="Enter your password"
-                className="w-[100%]  sm:w-[400px] md:w-[486px] h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                className="w-full h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                 required
                 autoComplete="on"
                 name="password"
@@ -181,7 +181,7 @@ const Login = () => {
             {" "}
             <button
               type="button"
-              className="text-[14px] text-[#26ae5f] font-medium leading-[20px] tracking-[0.2px] mb-[39px]"
+              className="text-[14px] text-[#26ae5f] font-medium leading-[20px] tracking-[0.2px] mb-[20px]"
             >
               Forgot password?
             </button>
@@ -189,7 +189,7 @@ const Login = () => {
 
           <button
             type="submit"
-            className="w-full py-[14px] mt-[39px] text-center text-white bg-[#26ae5f] rounded-[8px] flex items-center justify-center mb-[20px] md:mb-[32px]"
+            className="w-full py-[14px] mt-[18px] text-center text-white bg-[#26ae5f] rounded-[8px] flex items-center justify-center mb-[20px] md:mb-[24px]"
           >
             <p className="text-sm font-medium leading-[20px]">Sign in</p>
             {isLoading && <ClipLoader color={"white"} size={20} />}
