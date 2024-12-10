@@ -6,8 +6,7 @@ import ThemedSuspense from "./components/ThemedSuspense";
 import { ChakraProvider } from "@chakra-ui/react";
 import { extendTheme } from "@chakra-ui/react";
 import 'react-tooltip/dist/react-tooltip.css'
-
-
+import { CopilotKitWrapper } from "./utils/CopilotKitWrapper";
 
 const overrides = extendTheme({
   styles: {
@@ -25,10 +24,12 @@ export default AppTheme;
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   // <React.StrictMode>
-    <Suspense fallback={<ThemedSuspense />}>
-      <ChakraProvider theme={AppTheme}>
+  <Suspense fallback={<ThemedSuspense />}>
+    <ChakraProvider theme={AppTheme}>
+      <CopilotKitWrapper>
         <App />
-      </ChakraProvider>
-    </Suspense>
+      </CopilotKitWrapper>
+    </ChakraProvider>
+  </Suspense>
   //</React.StrictMode> */}
 );
