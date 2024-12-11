@@ -25,6 +25,23 @@ const Settings = () => {
 
   const profileData = results?.data?.data || []
 
+  async function getProfile(page) {
+    const response = await api.getProfile({ params: { page } });
+    return response;
+  }
+
+  const ProfileQuery = useQuery(["profile"], () => getProfile(), {
+    keepPreviousData: true,
+    refetchOnWindowFocus: "always",
+  });
+  const userData = ProfileQuery?.data || [];
+
+  let role = userData?.user?.first
+  console.log("user rolleetttt----->", role)
+  
+
+
+
   
 
     return (
@@ -91,6 +108,8 @@ const Settings = () => {
                 </div>
               </li>
             </Link>
+            {(role === "manager" || role ==="owner") && 
+
             <Link to="/setting/my-team">
               <li
                 className={`py-[18px] cursor-pointer text-[14px] ${
@@ -104,7 +123,7 @@ const Settings = () => {
                   <p className="">My Team</p>
                 </div>
               </li>
-            </Link>
+            </Link>}
   
             
           </ul>

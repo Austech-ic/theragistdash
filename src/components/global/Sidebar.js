@@ -30,6 +30,9 @@ import "react-circular-progressbar/dist/styles.css";
 const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
   const router = useLocation();
 
+ 
+  let role = profileData?.user?.role
+  console.log("user rollee----->", role)
   return (
     <div
       className={` lg:block lg:relative ${
@@ -118,6 +121,8 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                 />
                 Overview
               </Link>
+
+              {(role === "manager" || role ==="owner") && 
               <Link
                 to="/wallet/overview"
                 onClick={onClose}
@@ -141,7 +146,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                   }
                 />
                 Wallet{" "}
-              </Link>
+              </Link>}
 
               <Link
                 to="/transaction"
@@ -163,6 +168,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                 />
                 Transactions
               </Link>
+              {(role === "manager" || role ==="owner") && 
 
               <Link
                 to="/user-wallets"
@@ -183,7 +189,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                   }
                 />
                 User Wallets{" "}
-              </Link>
+              </Link>}
 
            
               

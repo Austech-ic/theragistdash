@@ -175,7 +175,7 @@ const Topbar = ({ setIsSidebar }) => {
           class="h-10 w-10 bg-[#FAFAFA] hover:bg-[#eeeded] flex justify-center items-center rounded-md lg:hidden mr-2"
           onClick={setIsSidebar}
         >
-         <HambergerMenu size={18} color="#31363EFF"/>
+          <HambergerMenu size={18} color="#31363EFF" />
         </button>
         <div className="md:flex items-center gap-[16px] hidden">
           <div className="flex items-center">
@@ -222,8 +222,10 @@ const Topbar = ({ setIsSidebar }) => {
       </div>
 
       <div className="flex flex-row gap-3">
-      
-
+        <Link to="https://vantpapi.readme.io/reference/getting-started-with-your-api" target="_blank" rel="noreferrer" className="px-3 py-[4px] md:px-4 md:py-[6px] text-[14px] rounded-lg border text-gray-500 relative">
+          API Doc{" "}
+          <div className="h-[5px] w-[5px] rounded-full bg-green-500 absolute top-1 right-1" />
+        </Link>
         <div className="flex  gap-[12px] border-[0.2px] border-[#98a2b3] px-3 py-1  items-center rounded-[8px]">
           <div className="">
             <Menu>
@@ -265,23 +267,22 @@ const Topbar = ({ setIsSidebar }) => {
                       Settings
                     </p>
                   </Link>
-                
                 </div>
-                {(ProfileQuery?.data &&
-                  ProfileQuery?.data?.partners
-                    ?.filter(
-                      (result) =>
-                        //console.log(ProfileQuery?.data?.default_partner?.id)
+                {ProfileQuery?.data &&
+                  ProfileQuery?.data?.partners?.filter(
+                    (result) =>
+                      //console.log(ProfileQuery?.data?.default_partner?.id)
 
-                        ![result?.id].includes(
-                          ProfileQuery?.data?.default_partner?.id
-                        )
-                    ).length >0 ) && (
-                <div>
-                  <p className="text-[#000] text-[12px]  xl:text-[12px] font-normal leading-[18px] mb-3 ">
-                    Switch Business
-                  </p>
-                </div>)}
+                      ![result?.id].includes(
+                        ProfileQuery?.data?.default_partner?.id
+                      )
+                  ).length > 0 && (
+                    <div>
+                      <p className="text-[#000] text-[12px]  xl:text-[12px] font-normal leading-[18px] mb-3 ">
+                        Switch Business
+                      </p>
+                    </div>
+                  )}
 
                 {ProfileQuery?.data &&
                   ProfileQuery?.data?.partners
@@ -308,8 +309,6 @@ const Topbar = ({ setIsSidebar }) => {
                             {partner?.name}
                           </p>
                         </div>
-
-                        
                       </button>
                     ))}
 
