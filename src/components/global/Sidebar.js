@@ -122,7 +122,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                 Overview
               </Link>
 
-              {(role === "manager" || role ==="owner") && 
+              {/* {(role === "manager" || role ==="owner") &&  */}
               <Link
                 to="/wallet/overview"
                 onClick={onClose}
@@ -146,7 +146,8 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                   }
                 />
                 Wallet{" "}
-              </Link>}
+              </Link>
+              {/* } */}
 
               <Link
                 to="/transaction"
@@ -168,7 +169,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                 />
                 Transactions
               </Link>
-              {(role === "manager" || role ==="owner") && 
+              {/* {(role === "manager" || role ==="owner") &&  */}
 
               <Link
                 to="/user-wallets"
@@ -189,7 +190,8 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                   }
                 />
                 User Wallets{" "}
-              </Link>}
+              </Link>
+              {/* } */}
 
            
               

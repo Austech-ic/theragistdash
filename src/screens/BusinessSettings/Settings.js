@@ -108,7 +108,7 @@ const Settings = () => {
                 </div>
               </li>
             </Link>
-            {(role === "manager" || role ==="owner") && 
+            {/* {(role === "manager" || role ==="owner") &&  */}
 
             <Link to="/setting/my-team">
               <li
@@ -123,7 +123,8 @@ const Settings = () => {
                   <p className="">My Team</p>
                 </div>
               </li>
-            </Link>}
+            </Link>
+            {/* } */}
   
             
           </ul>
