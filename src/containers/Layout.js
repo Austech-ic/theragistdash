@@ -31,13 +31,13 @@ function Layout() {
   });
   const profileData = ProfileQuery?.data || [];
 
-  // let userData = localStorage.getItem("authData");
-  // //console.log(userData)
-  // if (!userData) {
-  //   return <Navigate to="/login" />;
-  // } else {
-  //   //console.log("Valid token");
-  // }
+  let userData = localStorage.getItem("authData");
+  //console.log(userData)
+  if (!userData) {
+    return <Navigate to="/login" />;
+  } else {
+    //console.log("Valid token");
+  }
 
   // if (userData) {
   //   const decodedData = JSON.parse(atob(userData?.split(".")[1]));
