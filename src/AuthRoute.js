@@ -11,6 +11,7 @@ import {
     Navigate,
   } from "react-router-dom";
 import ChangePassSuccess from "./authScreen/ChangepassSuccess";
+import Page404 from "./screens/404";
 
 const AuthRoute = () => {
   return (
@@ -22,6 +23,8 @@ const AuthRoute = () => {
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/verifyemail" element={<CreateNewPass />} />
       <Route path="/passwordchangesuccess" element={<ChangePassSuccess />} />
+      <Route path="*" element={<Page404 />} />
+
     </Routes>
   );
 };
