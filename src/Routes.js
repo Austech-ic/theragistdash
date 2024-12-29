@@ -31,6 +31,7 @@ import Webhook from "./screens/BusinessSettings/Webhook";
 import MyTeam from "./screens/BusinessSettings/MyTeam";
 import { UserProvider } from "./utils/UserProvider";
 import CopilotContext from "./components/copilot-context";
+import Page404 from "./screens/404";
 
 const DashboardRoutes = () => {
   return (
@@ -41,6 +42,8 @@ const DashboardRoutes = () => {
               <Route path="/" exact={true} element={<Home />} />
               <Route path="/overview" exact={true} element={<OverView />} />
               <Route path="/getstarted" exact={true} element={<GetStarted />} />
+                    {/* <Route path="*" element={<Page404 />} /> */}
+
               <Route
                 path="/user-wallets"
                 exact={true}

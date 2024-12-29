@@ -23,7 +23,7 @@ const AuthRoute = () => {
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/verifyemail" element={<CreateNewPass />} />
       <Route path="/passwordchangesuccess" element={<ChangePassSuccess />} />
-      {/* <Route path="*" element={<Page404 />} /> */}
+      <Route path="" element={<Page404 />} />
 
     </Routes>
   );
