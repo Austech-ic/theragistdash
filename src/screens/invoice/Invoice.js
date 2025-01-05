@@ -38,7 +38,7 @@ import {
 import React, { useState } from "react";
 import { ClipLoader } from "react-spinners";
 
-import ModalLeft from "../components/ModalLeft";
+import ModalLeft from "../../components/ModalLeft";
 import { Link, useNavigate } from "react-router-dom";
 import html2canvas from "html2canvas";
 

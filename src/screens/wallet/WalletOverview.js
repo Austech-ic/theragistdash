@@ -406,7 +406,6 @@ const WalletOverdiv = () => {
       }
       setIsLoading(false);
     } catch (error) {
-      //console.log(error.message);
       enqueueSnackbar(error.message, { variant: "error" });
       setIsLoading(false);
     }

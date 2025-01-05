@@ -11,10 +11,10 @@ import OverView from "./screens/OverView";
 import PaymentLinks from "./screens/PaymentLink";
 import Transactions from "./screens/Transaction";
 import Users from "./screens/Users";
-import Invoice from "./screens/Invoice";
-import CreateInvoice from "./screens/CreateInvoice";
+import Invoice from "./screens/invoice/Invoice";
+import CreateInvoice from "./screens/invoice/CreateInvoice";
 import Customer from "./screens/Customer";
-import Invoices from "./screens/Invoice";
+import Invoices from "./screens/invoice/Invoice";
 import GetStarted from "./screens/GetStarted";
 import Wallet from "./screens/wallet/Wallet";
 import ValidateOtp from "./authScreen/OTP";
@@ -32,6 +32,8 @@ import MyTeam from "./screens/BusinessSettings/MyTeam";
 import { UserProvider } from "./utils/UserProvider";
 import CopilotContext from "./components/copilot-context";
 import Page404 from "./screens/404";
+import Pin from "./screens/BusinessSettings/Pin";
+import SaveInvoice from "./screens/invoice/SaveInvoice";
 
 const DashboardRoutes = () => {
   return (
@@ -61,6 +63,7 @@ const DashboardRoutes = () => {
               />
               <Route path="/users" exact={true} element={<Users />} />
               <Route path="/invoice" exact={true} element={<Invoices />} />
+              <Route path="/createinvoice/save-invoice" exact={true} element={<SaveInvoice />} />
               <Route
                 path="/createinvoice"
                 exact={true}
@@ -104,6 +107,11 @@ const DashboardRoutes = () => {
                   path="/setting/api-key"
                   exact={true}
                   element={<ApiKey />}
+                />
+                <Route
+                  path="/setting/pin-reset"
+                  exact={true}
+                  element={<Pin />}
                 />
                 <Route
                   path="/setting/webhook"

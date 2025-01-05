@@ -38,9 +38,7 @@ function App() {
           <AuthRoute />
 
           <DashboardRoutes />
-            {/* <Routes>
-              <Route path="*" element={<Navigate to="/404" />} />
-            </Routes> */}
+           
         </Router>
       </QueryClientProvider>
     </div>

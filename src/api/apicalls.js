@@ -24,7 +24,8 @@ import {
  CREATEPAYMENTLINKS,
  GETPAYMENTLINKS,
  UPDATEPAYMENTLINKS,
- DELETETEAMMEMBER
+ DELETETEAMMEMBER,
+ INVOICE
 } from "../utils/config";
 import { apiDelete, apiGet, apiGetCSV, apiPost, apiPut } from "../utils/utils";
 
@@ -123,6 +124,15 @@ export function sendOtp(data) {
   return apiPost(SENDOTP, data);
 }
 
+//invoice
+export function createInvoice(data) {
+  return apiPost(INVOICE, data);
+}
+
+export function getInvoice(data) {
+  return apiGet(INVOICE, data);
+}
+
 
 
 //kyc
@@ -177,6 +187,8 @@ export function editLink(url, data) {
 export function deleteLink(data) {
   return apiDelete(UPDATEPAYMENTLINKS + data);
 }
+
+
 
 
 

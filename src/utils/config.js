@@ -33,6 +33,7 @@ export const UPDATEROLE = getApiUrl('/business/members/')
 export const GETPAYMENTLINKS = getApiUrl('/payment-links')
 export const CREATEPAYMENTLINKS = getApiUrl('/payment-links')
 export const UPDATEPAYMENTLINKS = getApiUrl('/payment-links/')
+export const INVOICE = getApiUrl('/invoices')
 export const CHECKUSERNAME = 'https://api.vantapp.com/api/verify-username'
 
 

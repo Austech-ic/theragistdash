@@ -80,6 +80,20 @@ const Settings = () => {
                 </div>
               </li>
             </Link>
+            <Link to="/setting/pin-reset">
+              <li
+                className={`py-[18px] cursor-pointer text-[14px] ${
+                 
+                  window.location.pathname === "/setting/pin-reset"
+                    ? "font-medium text-[#000] border-b-[2.4px]"
+                    : "font-normal text-[#667185]"
+                }  flex items-center justify-between border-b-[#26ae5f]`}
+              >
+                <div className="">
+                  <p className="">Pin Settings</p>
+                </div>
+              </li>
+            </Link>
             <Link to="/setting/api-key">
               <li
                 className={`py-[18px] cursor-pointer text-[14px] ${

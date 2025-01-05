@@ -173,3 +173,18 @@ export const Categories = [
   { id: 31, name: "Others" },
 
 ]
+
+export  function formatDatewithYear(datetimeStr) {
+    const date = Moment(datetimeStr);
+    const formattedDate = date.format("dddd, Do MMMM, YYYY");
+    return formattedDate;
+  }
+
+  export function getTodayDate() {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Add 1 because months are 0-based
+    const day = String(today.getDate()).padStart(2, '0');
+  
+    return `${year}-${month}-${day}`;
+  }

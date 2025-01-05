@@ -77,7 +77,7 @@ function Layout() {
               {profileData?.default_partner?.is_verified === 0 && <Warning />}
               <Main>
                 <Suspense fallback={<ThemedSuspense />}>
-                  <Outlet />
+                  <Outlet  />
                 </Suspense>
               </Main>
             </div>

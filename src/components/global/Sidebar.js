@@ -67,7 +67,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
           </svg>
         </button>
       </div>
-      <div class="max-w-[260px] min-h-screen bg-[#FFFFFF] w-[220px] md:w-[260px]  p-[16px] md:p-[20px] sticky top-0 overflow-y-auto ">
+      <div class="max-w-[260px] min-h-screen bg-[#FFFFFF] w-[220px] md:w-[230px]  p-[16px] md:p-[20px] sticky top-0 overflow-y-auto ">
         <div className="relative">
           <div className="relative h-screen overflow-y-auto no-scrollbar flex flex-col justify-between ">
             <div>

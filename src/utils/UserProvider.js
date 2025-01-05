@@ -5,7 +5,7 @@ import { useCopilotReadable } from "@copilotkit/react-core";
 import { useCopilotChatSuggestions } from "@copilotkit/react-ui";
 
 // Create Context
-const UserContext = createContext();
+export const UserContext = createContext();
 
 // Create Provider
 export const UserProvider = ({ children }) => {
@@ -16,6 +16,7 @@ export const UserProvider = ({ children }) => {
   const [currency, setCurrency] = useState("Naira ₦");
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [profile, setProfile] = useState(null);
   const navigate = useNavigate();
 
   // Fetch user data on mount
@@ -35,6 +36,9 @@ export const UserProvider = ({ children }) => {
 
           const kycResponse = await api.getKyc({});
           setPersonalInfo(kycResponse?.data || null);
+
+          const profileResponse = await api.getProfile()
+          setProfile(profileResponse?.default_partner || null);
 
           const customersResponse = await api.getCustomers({});
           setCustomers(customersResponse?.data || []);
@@ -93,6 +97,7 @@ export const UserProvider = ({ children }) => {
         personalInfo,
         customers,
         transactions,
+        profile
       }}
     >
       {children}
