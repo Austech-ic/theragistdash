@@ -25,7 +25,8 @@ import {
  GETPAYMENTLINKS,
  UPDATEPAYMENTLINKS,
  DELETETEAMMEMBER,
- INVOICE
+ INVOICE,
+ UPDATEIMAGE
 } from "../utils/config";
 import { apiDelete, apiGet, apiGetCSV, apiPost, apiPut } from "../utils/utils";
 
@@ -133,7 +134,10 @@ export function getInvoice(data) {
   return apiGet(INVOICE, data);
 }
 
-
+//upload logo
+export function updateImage(data) {
+  return apiPost(UPDATEIMAGE, data,  { 'Content-Type': 'multipart/form-data' });
+}
 
 //kyc
 export function getKyc(data) {

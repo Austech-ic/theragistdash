@@ -5,6 +5,9 @@ export const API_BASE_URL = 'https://dev.vantapp.com/api/partner-business';
 // export const API_BASE_URL = 'https://api.vantapp.com/api/partner-business';
 export const getApiUrl = (endpoint) => API_BASE_URL + endpoint
 
+export const PayInvoiceUrl = "https://vantapp.com/pay-invoice/"
+
+
 
 export const TRANSACTION = getApiUrl('/transactions')
 export const WALLETS = getApiUrl('/user-wallets')
@@ -34,6 +37,7 @@ export const GETPAYMENTLINKS = getApiUrl('/payment-links')
 export const CREATEPAYMENTLINKS = getApiUrl('/payment-links')
 export const UPDATEPAYMENTLINKS = getApiUrl('/payment-links/')
 export const INVOICE = getApiUrl('/invoices')
+export const UPDATEIMAGE = getApiUrl('/business/profile/logo')
 export const CHECKUSERNAME = 'https://api.vantapp.com/api/verify-username'
 
 

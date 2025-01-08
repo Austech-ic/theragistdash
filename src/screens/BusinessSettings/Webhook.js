@@ -4,7 +4,7 @@ import { useOutletContext } from "react-router-dom";
 
 const Webhook = () => {
   const [webhook, setWebhook] = useState("");
-  const profileData = useOutletContext();
+  const {profileData, refetch} = useOutletContext();
 
   useEffect(() => {
     //If there's no profile data, set selectedInfo to 1

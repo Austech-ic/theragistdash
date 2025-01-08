@@ -8,12 +8,12 @@ const Wallet = () => {
 
     return (
       <div className="bg-[#F2F2F2] min-h-screen ">
-        <div className="px-[10px] md:px-[16px] xl:px-[20px] py-[16px] md:py-[18px] bg-white border-b border-t border-[#98A2B38F]/50 overflow-auto">
+        <div className="px-[10px] md:px-[16px] xl:px-[20px]  bg-white border-b border-t border-[#98A2B38F]/50 overflow-auto">
           <ul className="flex items-center gap-[20px] md:gap-[32px]">
             {/* <button onClick={() => setState("Employee")}> */}
             <Link to="/wallet/overview">
               <li
-                className={`py-[18px] cursor-pointer text-[14px] ${
+                className={`py-[13px] cursor-pointer text-[14px] ${
   
                   window.location.pathname === "/wallet/overview"
                     ? "font-medium text-[#000] border-b-[2.4px]"
@@ -30,7 +30,7 @@ const Wallet = () => {
   
             <Link to="/wallet/topup">
               <li
-                className={`py-[18px] cursor-pointer text-[14px] ${
+                className={`py-[13px] cursor-pointer text-[14px] ${
                  
                   window.location.pathname === "/wallet/topup"
                     ? "font-medium text-[#000] border-b-[2.4px]"
@@ -44,7 +44,7 @@ const Wallet = () => {
             </Link>
             <Link to="/wallet/debit">
               <li
-                className={`py-[18px] cursor-pointer text-[14px] ${
+                className={`py-[13px] cursor-pointer text-[14px] ${
                  
                   window.location.pathname === "/wallet/debit"
                     ? "font-medium text-[#000] border-b-[2.4px]"

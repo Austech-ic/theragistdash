@@ -10,7 +10,7 @@ const ApiKey = () => {
   const [secretKey, setSecretKey] = useState("");
   const [keyloading, setKeyLoading] = useState(false);
 
-  const profileData = useOutletContext();
+  const {profileData, refetch} = useOutletContext();
 
   useEffect(() => {
     //If there's no profile data, set selectedInfo to 1

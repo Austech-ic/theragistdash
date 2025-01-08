@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion as m } from "framer-motion";
-import { MainComponent, Sms } from "iconsax-react";
+import { CloseCircle, MainComponent, Sms } from "iconsax-react";
 import { GiPhone } from "react-icons/gi";
 import ImageUpload from "../../components/UploadImage";
 import { ClipLoader } from "react-spinners";
@@ -8,6 +8,8 @@ import { useOutletContext } from "react-router-dom";
 import { enqueueSnackbar } from "notistack";
 import { decryptaValue, encryptaValue } from "../../utils/helperFunctions";
 import api from "../../api";
+import Modal from "../../components/Modal";
+import { API_BASE_URL } from "../../utils/config";
 
 const BusinessInfo = () => {
   const [selectedInfo, setSelectedInfo] = useState(1);
@@ -16,12 +18,18 @@ const BusinessInfo = () => {
   const [directorId1File, setDirectorId1File] = useState(null);
   const [directorId2File, setDirectorId2File] = useState(null);
   const [cacForm, setCacForm] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleCloseModal = () => {
+    setIsOpen(false);
+  };
+
   const info = [
     { id: 1, name: "Business Profile" },
     { id: 2, name: "Business Address" },
     { id: 3, name: "Business Document" },
   ];
-  const [logo, setLogo] = useState(null)
+  const [logo, setLogo] = useState(null);
   const [formValue, setFormValue] = useState({
     firstName: "",
     lastName: "",
@@ -41,35 +49,33 @@ const BusinessInfo = () => {
     address: "",
     nin: "",
   });
-  const profileData = useOutletContext();
+  const {profileData, refetch} = useOutletContext();
 
   useEffect(() => {
-     //If there's no profile data, set selectedInfo to 1
+    //If there's no profile data, set selectedInfo to 1
     if (profileData) {
-        setFormValue({
-            ...formValue,
-            firstName: profileData?.first_name,
-            lastName: profileData?.last_name,
-            phone: profileData?.phone,
-            email: profileData?.email,
-            nin: profileData?.nin,
-            address: profileData?.house_address,
-            busName: profileData?.name,
-            busWebsite: profileData?.website,
-            busDescription: profileData?.description,
-            busEmail: profileData?.email,
-            busSupportEmail: profileData?.support_email,
-            chargeBackEmail: profileData?.chargeback_email,
-            rcNumber: profileData?.rc_number,
-            incopDate: profileData?.incorporation_date,
-            busCity: profileData?.city,
-            busAddress: profileData?.address,
-            bvn: profileData?.bvn,
-          });
+      setFormValue({
+        ...formValue,
+        firstName: profileData?.first_name,
+        lastName: profileData?.last_name,
+        phone: profileData?.phone,
+        email: profileData?.email,
+        nin: profileData?.nin,
+        address: profileData?.house_address,
+        busName: profileData?.name,
+        busWebsite: profileData?.website,
+        busDescription: profileData?.description,
+        busEmail: profileData?.email,
+        busSupportEmail: profileData?.support_email,
+        chargeBackEmail: profileData?.chargeback_email,
+        rcNumber: profileData?.rc_number,
+        incopDate: profileData?.incorporation_date,
+        busCity: profileData?.city,
+        busAddress: profileData?.address,
+        bvn: profileData?.bvn,
+      });
     }
   }, [profileData]);
-
-
 
   async function submitKyb(e) {
     e.preventDefault();
@@ -78,7 +84,7 @@ const BusinessInfo = () => {
 
     try {
       const payload = {
-       // logo: logo,
+        // logo: logo,
         name: formValue?.busName,
         website: formValue?.busWebsite,
         description: formValue?.busDescription,
@@ -116,7 +122,7 @@ const BusinessInfo = () => {
         animate={{
           x: 0,
           opacity: 1,
-           scale: 1,
+          scale: 1,
         }}
         transition={{
           duration: 0.9,
@@ -151,22 +157,29 @@ const BusinessInfo = () => {
           <m.div
             initial={{ x: 30, opacity: 0.4 }}
             animate={{
-               x: selectedInfo === 1 ? 0 : 100,
-            //   x: 0,
+              x: selectedInfo === 1 ? 0 : 100,
+              //   x: 0,
               opacity: 1,
-               scale: 1,
+              scale: 1,
             }}
             transition={{
               duration: 0.9,
             }}
           >
-            {/* <div className="flex gap-3">
+            <div className="flex gap-3">
               {" "}
               <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
                 Business Logo:
               </label>{" "}
-              <ImageUpload logo={logo} setLogo={setLogo} />
-            </div> */}
+              <div className="border rounded-lg p-2">              <img src={profileData?.logo} alt="" className="h-7 md:h-10"/>
+              </div>
+              <button
+                onClick={() => setIsOpen(true)}
+                className="px-4 py-2 text-[14px] rounded-lg text-white bg-[#26ae5f] hover:bg-opacity-80 flex items-center justify-center text-md "
+              >
+                Update Business Logo
+              </button>
+            </div>
 
             <div className="mb-[16px] md:mb-[20px]">
               <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
@@ -180,7 +193,6 @@ const BusinessInfo = () => {
                   required
                   name="busName"
                   disabled={formValue.busName ? true : false}
-
                   value={formValue.busName}
                   onChange={(e) => {
                     handleInputChange(e);
@@ -223,10 +235,10 @@ const BusinessInfo = () => {
                   className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                   required
                   name="busDescription"
-                   value={formValue.busDescription}
-                   onChange={(e) => {
-                     handleInputChange(e);
-                   }}
+                  value={formValue.busDescription}
+                  onChange={(e) => {
+                    handleInputChange(e);
+                  }}
                   autoCapitalize="off"
                   autoCorrect="off"
                   spellCheck="false"
@@ -246,10 +258,10 @@ const BusinessInfo = () => {
                   required
                   name="rcNumber"
                   disabled={formValue.rcNumber ? true : false}
-                   value={formValue.rcNumber}
-                   onChange={(e) => {
-                     handleInputChange(e);
-                   }}
+                  value={formValue.rcNumber}
+                  onChange={(e) => {
+                    handleInputChange(e);
+                  }}
                   autoCapitalize="off"
                   autoCorrect="off"
                   spellCheck="false"
@@ -268,10 +280,10 @@ const BusinessInfo = () => {
                   required
                   name="incopDate"
                   disabled={formValue.incopDate ? true : false}
-                   value={formValue.incopDate}
-                   onChange={(e) => {
-                     handleInputChange(e);
-                   }}
+                  value={formValue.incopDate}
+                  onChange={(e) => {
+                    handleInputChange(e);
+                  }}
                   autoCapitalize="off"
                   autoCorrect="off"
                   spellCheck="false"
@@ -295,6 +307,27 @@ const BusinessInfo = () => {
                 </div>
               </div>
             </div>
+
+            <Modal isOpen={isOpen} onClose={handleCloseModal}>
+              <div className="inline-block relative  p-[18px] md:p-[24px] xl:p-[32px] overflow-hidden text-left align-bottom transition-all transform bg-[white] rounded-lg   shadow-xl sm:my-8 sm:align-middle w-full min-w-[360px] md:min-w-[450px] md:max-w-[750px] ">
+                <h2 className="text-[17px] md:text-[24px] text-center font-normal leading-[35px] text-black mb-[16px] md:mb-[20px] ">
+                  Update Business Logo
+                </h2>
+
+                <button
+                  onClick={handleCloseModal}
+                  className="absolute top-2 right-2 h-5 w-5 hover:bg-gray-200 flex justify-center items-center rounded-md"
+                >
+                  <CloseCircle size={14} />
+                </button>
+                <div className="flex justify-center">
+                  <ImageUpload
+                    handleCloseModal={handleCloseModal}
+                     refetch={refetch}
+                  />
+                </div>
+              </div>
+            </Modal>
           </m.div>
         )}
 
@@ -302,10 +335,10 @@ const BusinessInfo = () => {
           <m.div
             initial={{ x: 30, opacity: 0.4 }}
             animate={{
-               x: selectedInfo === 1 ? 0 : 100,
+              x: selectedInfo === 1 ? 0 : 100,
               x: 0,
               opacity: 1,
-               scale: 1,
+              scale: 1,
             }}
             transition={{
               duration: 0.9,
@@ -328,10 +361,10 @@ const BusinessInfo = () => {
                   className="w-full  h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                   required
                   name="busSupportEmail"
-                   value={formValue.busSupportEmail}
-                   onChange={(e) => {
-                     handleInputChange(e);
-                   }}
+                  value={formValue.busSupportEmail}
+                  onChange={(e) => {
+                    handleInputChange(e);
+                  }}
                   autoCapitalize="off"
                   autoCorrect="off"
                   spellCheck="false"
@@ -355,10 +388,10 @@ const BusinessInfo = () => {
                   className="w-full  h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                   required
                   name="chargeBackEmail"
-                   value={formValue.chargeBackEmail}
-                   onChange={(e) => {
-                     handleInputChange(e);
-                   }}
+                  value={formValue.chargeBackEmail}
+                  onChange={(e) => {
+                    handleInputChange(e);
+                  }}
                   autoCapitalize="off"
                   autoCorrect="off"
                   spellCheck="false"
@@ -377,11 +410,10 @@ const BusinessInfo = () => {
                   required
                   name="busCity"
                   disabled={formValue.busCity ? true : false}
-
-                   value={formValue.busCity}
-                   onChange={(e) => {
-                     handleInputChange(e);
-                   }}
+                  value={formValue.busCity}
+                  onChange={(e) => {
+                    handleInputChange(e);
+                  }}
                   autoCapitalize="off"
                   autoCorrect="off"
                   spellCheck="false"
@@ -400,11 +432,10 @@ const BusinessInfo = () => {
                   required
                   name="busAddress"
                   disabled={formValue.busAddress ? true : false}
-
-                   value={formValue.busAddress}
-                   onChange={(e) => {
-                     handleInputChange(e);
-                   }}
+                  value={formValue.busAddress}
+                  onChange={(e) => {
+                    handleInputChange(e);
+                  }}
                   autoCapitalize="off"
                   autoCorrect="off"
                   spellCheck="false"
@@ -434,10 +465,10 @@ const BusinessInfo = () => {
           <m.div
             initial={{ x: 20, opacity: 0.4 }}
             animate={{
-               x: selectedInfo === 1 ? 0 : 100,
+              x: selectedInfo === 1 ? 0 : 100,
               x: 0,
               opacity: 1,
-               scale: 1,
+              scale: 1,
             }}
             transition={{
               duration: 0.9,
@@ -455,7 +486,7 @@ const BusinessInfo = () => {
                   name="csv"
                   type="file"
                   accept=".jpg,.pdf"
-                   onChange={(e) => setIncopFile(e.target.files[0])}
+                  onChange={(e) => setIncopFile(e.target.files[0])}
                 />
                 <p className="text-[10px] text-gray-400">
                   *Maximum file size is 2MB
@@ -474,7 +505,7 @@ const BusinessInfo = () => {
                   name="csv"
                   type="file"
                   accept=".jpg,.pdf"
-                   onChange={(e) => setDirectorId1File(e.target.files[0])}
+                  onChange={(e) => setDirectorId1File(e.target.files[0])}
                 />
                 <p className="text-[10px] text-gray-400">
                   *Maximum file size is 2MB
@@ -493,7 +524,7 @@ const BusinessInfo = () => {
                   name="csv"
                   type="file"
                   accept=".jpg,.pdf"
-                   onChange={(e) => setCacForm(e.target.files[0])}
+                  onChange={(e) => setCacForm(e.target.files[0])}
                 />
                 <p className="text-[10px] text-gray-400">
                   *Maximum file size is 2MB
@@ -512,7 +543,7 @@ const BusinessInfo = () => {
                   name="csv"
                   type="file"
                   accept=".jpg,.pdf"
-                   onChange={(e) => setDirectorId2File(e.target.files[0])}
+                  onChange={(e) => setDirectorId2File(e.target.files[0])}
                 />
                 <p className="text-[10px] text-gray-400">
                   *Maximum file size is 2MB

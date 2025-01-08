@@ -37,11 +37,13 @@ const Settings = () => {
   const userData = ProfileQuery?.data || [];
 
   let role = userData?.user?.first
-  console.log("user rolleetttt----->", role)
   
+const refetch= ProfileQuery.refetch
 
-
-
+const contextData = {
+  profileData: profileData,
+  refetch: refetch,
+};
   
 
     return (
@@ -144,7 +146,7 @@ const Settings = () => {
           </ul>
         </div>
         <div className=" ">
-          <Outlet context={profileData} />
+          <Outlet context={contextData} />
   
         </div>
       </div>

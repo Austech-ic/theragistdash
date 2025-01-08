@@ -21,7 +21,7 @@ import {
   getTodayDate,
 } from "../../utils/helperFunctions";
 import { UserContext } from "../../utils/UserProvider";
-import { useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { enqueueSnackbar } from "notistack";
 import { ClipLoader } from "react-spinners";
 
@@ -31,8 +31,10 @@ const CreateInvoice = () => {
   const [date, setDate] = useState("");
   const [id, setId] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const location = useLocation();
+  const inv = location.state.invoiceNo;
 
-  const inv = "INV-0010";
+  // const inv = "INV-0010";
   const invoiceNo = () => {
     let prev = "INV-";
     if (!inv) {
@@ -44,14 +46,19 @@ const CreateInvoice = () => {
       return prev + ("0000" + num).slice(-4);
     }
   };
+
+
   const navigate = useNavigate();
   const [customerVisible, setCustomerVisible] = useState(false);
+  const [select, setSelect] = useState(1);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [formValue, setFormValue] = useState({
     id: "",
     invoice_no: invoiceNo(),
     title: "",
-    customer_id: "",
+    customer_email: "",
+    customer_phone: "",
+    customer_name: "",
     date: "",
     due_date: "",
     amount: "",
@@ -127,13 +134,19 @@ const CreateInvoice = () => {
 
   const handleSelectCustomer = (cust) => {
     setSelectedCustomer(cust);
+    setFormValue({
+      ...formValue,
+      customer_email: cust.email,
+      customer_name: cust.name,
+      customer_phone: cust.phone,
+    });
     setCustomerVisible(false);
   };
 
   const Total = () => {
     if (formValue?.tax) {
       const taxtedPrice = totalPrice.toFixed(2) * (formValue?.tax / 100);
-      const price = totalPrice.toFixed(2) - taxtedPrice;
+      const price = totalPrice.toFixed(2) + taxtedPrice;
       return price;
     } else {
       return totalPrice.toFixed(2);
@@ -164,6 +177,11 @@ const CreateInvoice = () => {
 
   const submitInvoice = async () => {
     setIsLoading(true);
+    if(!items[0]?.name) {
+      enqueueSnackbar("Please add at least one item", { variant: "warning" });
+      setIsLoading(false);
+      return;
+    }
     try {
       const response = await api.createInvoice({
         invoice_no: formValue?.invoice_no,
@@ -175,7 +193,9 @@ const CreateInvoice = () => {
         tax: formValue?.tax,
         has_tax: formValue?.has_tax,
         save_product: formValue?.save_product,
-        customer_id: 35,
+        customer_email: formValue?.customer_email,
+        customer_phone: formValue?.customer_phone,
+        customer_name: formValue?.customer_name,
         total_amount: TotalWithDiscount(),
         note: formValue?.note,
         status: "pending",
@@ -200,9 +220,9 @@ const CreateInvoice = () => {
 
       setIsLoading(false);
       const decryptRes = JSON.parse(decryptaValue(response?.data));
-      console.log("invoice response ---->>>", decryptRes)
-      navigate("saved-invoice", {
-        state: { invoiceData: decryptRes , profile:profile }
+      console.log("invoice response ---->>>", decryptRes);
+      navigate("/saved-invoice", {
+        state: { invoiceData: decryptRes?.data, profile: profile },
       });
       enqueueSnackbar(decryptRes?.message, { variant: "success" });
     } catch (e) {
@@ -228,11 +248,8 @@ const CreateInvoice = () => {
                 {formValue.title}
               </h2>
             </div>
-            <img
-              src="./assets/logo.png"
-              alt="invoice logo"
-              className=" h-[40px] md:h-[60px]"
-            />
+                          <img src={profile?.logo} alt="" className="h-7 md:h-10"/>
+
           </div>
 
           <div className="mb-4 md:mb-7">
@@ -259,14 +276,14 @@ const CreateInvoice = () => {
                   Billed to
                 </h2>
                 <p className="text-[#667185]  text-[16px]   font-medium  ">
-                  {selectedCustomer?.name}
+                  {formValue?.customer_name}
                 </p>
                 <p className="text-[#667185]  text-[14px] font-normal  ">
-                  {selectedCustomer?.address}
+                  {formValue?.customer_email}
                 </p>
-                {selectedCustomer?.phone && (
+                {formValue?.customer_phone && (
                   <p className="text-[#667185]  text-[14px] font-normal  ">
-                    <strong>Tel: </strong> {selectedCustomer?.phone}
+                    <strong>Tel: </strong> {formValue?.customer_phone}
                   </p>
                 )}
               </li>
@@ -509,126 +526,223 @@ const CreateInvoice = () => {
 
             <div className="mb-[20px] mt-[20px]">
               <p className="text-[14px] text-[#353536]  font-medium   mb-[4px ">
-                Billed To:
+                Billed To Customer:
               </p>
 
-              <label className="text-[14px] text-[#353536]  font-medium   mb-[8px] md:mb-[10px]">
-                Select Customer:
-              </label>
-
-              <div className=" gap-3   flex items-center">
-                <button
-                  onClick={() => setCustomerVisible(!customerVisible)}
-                  className="w-full h-[38px] pl-[8px] pr-[8px] flex-between py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
+              <ul className="flex items-center gap-8 justify-center my-2">
+                <li
+                  onClick={() => setSelect(1)}
+                  className="text-[12px] cursor-pointer font-semibold flex items-center gap-2"
                 >
-                  <div className="flex-row banks-center">
-                    {selectedCustomer ? (
-                      <p className="text-[#272F35] font-normal font-i_normal text-[12px] leading-[15px] tracking-[0.028px] ">
-                        {selectedCustomer?.name}
-                      </p>
-                    ) : (
-                      <p className="text-[#838383] font-normal font-i_normal text-[12px] leading-[15px]  tracking-[0.028px] ">
-                        {"Select a Customer"}
-                      </p>
-                    )}
+                  Select from existing{" "}
+                  <div
+                    className={`h-4 w-4 p-[2px] rounded-full border-2 ${
+                      select === 1 ? "bg-[#26ae5f]" : ""
+                    }`}
+                  ></div>
+                </li>
+
+                <li
+                  onClick={() => setSelect(2)}
+                  className="text-[12px] cursor-pointer font-semibold flex items-center gap-2"
+                >
+                  Manual input{" "}
+                  <div
+                    className={`h-4 w-4 rounded-full border-2 ${
+                      select === 2 ? "bg-[#26ae5f]" : ""
+                    } `}
+                  ></div>
+                </li>
+              </ul>
+              {select === 1 && (
+                <>
+                  <label className="text-[12px] text-[#353536]  font-medium   mb-[8px] md:mb-[10px]">
+                    Select Customer:
+                  </label>
+                  <div className=" gap-3   flex items-center">
+                    <button
+                      onClick={() => setCustomerVisible(!customerVisible)}
+                      className="w-full h-[38px] pl-[8px] pr-[8px] flex-between py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
+                    >
+                      <div className="flex-row banks-center">
+                        {selectedCustomer ? (
+                          <p className="text-[#272F35] font-normal font-i_normal text-[12px] leading-[15px] tracking-[0.028px] ">
+                            {selectedCustomer?.name}
+                          </p>
+                        ) : (
+                          <p className="text-[#838383] font-normal font-i_normal text-[12px] leading-[15px]  tracking-[0.028px] ">
+                            {"Select a Customer"}
+                          </p>
+                        )}
+                      </div>
+                      <ArrowDown2
+                        variant="Linear"
+                        color={"#838383"}
+                        size={14}
+                      />
+                    </button>
+
+                    <Link
+                      to="/customers"
+                      className=" text-[#fff] px-2 py-1 hover:-translate-y-1 transition-all duration-200 ease-in-out whitespace-nowrap rounded-md shadow-md  bg-[#26ae5f] flex-item gap-1 text-[12px]"
+                      // onClick={addItem}
+                    >
+                      {" "}
+                      <Add variant="Linear" color="#fff" size="16" />
+                      Create New
+                    </Link>
                   </div>
-                  <ArrowDown2 variant="Linear" color={"#838383"} size={14} />
-                </button>
-
-                <button
-                  className=" text-[#fff] px-2 py-1 hover:-translate-y-1 transition-all duration-200 ease-in-out whitespace-nowrap rounded-md shadow-md  bg-[#26ae5f] flex-item gap-1 text-[14px]"
-                  // onClick={addItem}
-                >
-                  {" "}
-                  <Add variant="Linear" color="#fff" size="16" />
-                  Create New
-                </button>
-              </div>
-              {customerVisible && (
-                <m.div
-                  initial={{ y: 10, opacity: 0.4 }}
-                  animate={{
-                    y: 0,
-                    opacity: 1,
-                    // scale: 1,
-                  }}
-                  transition={{
-                    duration: 0.3,
-                  }}
-                  className="w-full h-[300px] overflow-y-auto  px-2 py-3 text-[14px] text-[#344054] border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
-                >
-                  <div className=" relative  w-full mx-auto mb-2  flex items-center">
-                    <SearchNormal1
-                      size="14"
-                      color="#98A2B3"
-                      className="absolute left-[16px]"
-                    />
-
-                    <input
-                      type="text"
-                      placeholder="search customer"
-                      className="w-full  h-[36px] pl-[44px] py-[12px] text-[14px] text-[#344054]  bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
-                      required
-                      autoComplete="on"
-                      name="email"
-                      value={searchQuery}
-                      onChange={(e) => {
-                        setSearchQuery(e.target.value);
-                        handleSearch(e.target.value);
+                  {customerVisible && (
+                    <m.div
+                      initial={{ y: 10, opacity: 0.4 }}
+                      animate={{
+                        y: 0,
+                        opacity: 1,
+                        // scale: 1,
                       }}
-                      autoCapitalize="off"
-                      autoCorrect="off"
-                      spellCheck="false"
-                    />
-                  </div>
-                  {filteredData &&
-                    filteredData?.map((cust, index) => (
-                      <button
-                        onClick={() => handleSelectCustomer(cust)}
-                        className="w-full px-[10px] py-2 rounded-[10px] flex items-center flex-row justify-between banks-center mb-2"
-                        style={{
-                          borderColor: "rgba(18, 3, 58, 0.10)",
-                          borderWidth: 0.2,
-                        }}
-                      >
-                        <div className="flex-item">
-                          {cust.logo ? (
-                            <img
-                              src={cust?.logo}
-                              alt=""
-                              style={{ height: 24, width: 24 }}
-                              className="mr-3 rounded-full"
-                            />
-                          ) : (
-                            <div className="rounded-full bg-[#F6F6F6] border border-[#EDF2F7] py-[5px] px-[5px] mr-3 ">
-                              <ProfileCircle
-                                size="14"
-                                color="#BAB4B2FF"
+                      transition={{
+                        duration: 0.3,
+                      }}
+                      className="w-full h-[300px] overflow-y-auto  px-2 py-3 text-[14px] text-[#344054] border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
+                    >
+                      <div className=" relative  w-full mx-auto mb-2  flex items-center">
+                        <SearchNormal1
+                          size="14"
+                          color="#98A2B3"
+                          className="absolute left-[16px]"
+                        />
+
+                        <input
+                          type="text"
+                          placeholder="search customer"
+                          className="w-full  h-[36px] pl-[44px] py-[12px] text-[14px] text-[#344054]  bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
+                          required
+                          autoComplete="on"
+                          name="email"
+                          value={searchQuery}
+                          onChange={(e) => {
+                            setSearchQuery(e.target.value);
+                            handleSearch(e.target.value);
+                          }}
+                          autoCapitalize="off"
+                          autoCorrect="off"
+                          spellCheck="false"
+                        />
+                      </div>
+                      {filteredData &&
+                        filteredData?.map((cust, index) => (
+                          <button
+                            onClick={() => handleSelectCustomer(cust)}
+                            className="w-full px-[10px] py-2 rounded-[10px] flex items-center flex-row justify-between banks-center mb-2"
+                            style={{
+                              borderColor: "rgba(18, 3, 58, 0.10)",
+                              borderWidth: 0.2,
+                            }}
+                          >
+                            <div className="flex-item">
+                              {cust.logo ? (
+                                <img
+                                  src={cust?.logo}
+                                  alt=""
+                                  style={{ height: 24, width: 24 }}
+                                  className="mr-3 rounded-full"
+                                />
+                              ) : (
+                                <div className="rounded-full bg-[#F6F6F6] border border-[#EDF2F7] py-[5px] px-[5px] mr-3 ">
+                                  <ProfileCircle
+                                    size="14"
+                                    color="#BAB4B2FF"
+                                    variant="Bold"
+                                  />
+                                </div>
+                              )}
+                              <p className="text-[#272F35] flex-1 font- font-i_medium text-[12px] leading-[15.94px]  tracking-[0.2px]  ">
+                                {cust?.email}
+                              </p>
+                            </div>
+
+                            {selectedCustomer?.id === cust?.id ? (
+                              <RecordCircle
+                                size="16"
+                                color="#26ae5f"
                                 variant="Bold"
                               />
-                            </div>
-                          )}
-                          <p className="text-[#272F35] flex-1 font- font-i_medium text-[12px] leading-[15.94px]  tracking-[0.2px]  ">
-                            {cust?.name}
-                          </p>
-                        </div>
+                            ) : (
+                              <RecordCircle
+                                size="16"
+                                color="#DEDEDE"
+                                variant="Bold"
+                              />
+                            )}
+                          </button>
+                        ))}
+                    </m.div>
+                  )}{" "}
+                </>
+              )}
 
-                        {selectedCustomer?.id === cust?.id ? (
-                          <RecordCircle
-                            size="16"
-                            color="#26ae5f"
-                            variant="Bold"
-                          />
-                        ) : (
-                          <RecordCircle
-                            size="16"
-                            color="#DEDEDE"
-                            variant="Bold"
-                          />
-                        )}
-                      </button>
-                    ))}
-                </m.div>
+              {select === 2 && (
+                <>
+                  <div className="mb-[10px]">
+                    <label className="text-[12px] text-[#353536]  font-medium   mb-[8px] md:mb-[10px]">
+                      Customer Name:
+                    </label>
+                    <div className=" relative    flex items-center">
+                      <input
+                        type="text"
+                        placeholder=""
+                        className="w-full h-[34px] pl-[8px] py-[5px] text-[13px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                        required
+                        name="customer_name"
+                        value={formValue?.customer_name}
+                        onChange={(e) => handleInput(e)}
+                        autoCapitalize="off"
+                        autoCorrect="off"
+                        spellCheck="false"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mb-[10px]">
+                    <label className="text-[12px] text-[#353536]  font-medium   mb-[8px] ">
+                      Customer Email:
+                    </label>
+                    <div className=" relative    flex items-center">
+                      <input
+                        type="email"
+                        placeholder=""
+                        className="w-full h-[34px] pl-[8px] py-[5px] text-[13px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                        required
+                        name="customer_email"
+                        value={formValue?.customer_email}
+                        onChange={(e) => handleInput(e)}
+                        autoCapitalize="off"
+                        autoCorrect="off"
+                        spellCheck="false"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mb-[10px]">
+                    <label className="text-[12px] text-[#353536]  font-medium   mb-[8px] md:mb-[10px]">
+                      Customer Address:
+                    </label>
+                    <div className=" relative    flex items-center">
+                      <input
+                        type="text"
+                        placeholder=""
+                        className="w-full h-[34px] pl-[8px] py-[5px] text-[13px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                        required
+                        name="customer_phone"
+                        value={formValue?.customer_phone}
+                        onChange={(e) => handleInput(e)}
+                        autoCapitalize="off"
+                        autoCorrect="off"
+                        spellCheck="false"
+                      />
+                    </div>
+                  </div>
+                </>
               )}
             </div>
 
@@ -921,19 +1035,7 @@ const CreateInvoice = () => {
               Cancel
             </button>
             <button
-              onClick={
-                () => submitInvoice()
-                // navigate("save-invoice", {
-                //   state: {
-                //     items: items,
-                //     formValue: formValue,
-                //     customer: selectedCustomer,
-                //     total: TotalWithDiscount(),
-                //     profile: profile,
-                //     subtotal: totalPrice.toFixed(2),
-                //   },
-                // })
-              }
+              onClick={() => submitInvoice()}
               className="px-4 py-2 text-[14px] rounded-lg text-white bg-[#26ae5f] flex items-center justify-center text-md "
             >
               {isLoading ? (

@@ -23,7 +23,7 @@ import CopilotContext from "../components/copilot-context";
 
 function Layout() {
   // const { isSidebarOpen, closeSidebar } = useContext(SidebarContext);
-  const [isSidebar, setIsSidebar] = useState(true);
+  const [isSidebar, setIsSidebar] = useState(false);
 
   const ProfileQuery = useQuery(["profile"], () => getProfile(), {
     keepPreviousData: true,

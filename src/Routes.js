@@ -63,7 +63,7 @@ const DashboardRoutes = () => {
               />
               <Route path="/users" exact={true} element={<Users />} />
               <Route path="/invoice" exact={true} element={<Invoices />} />
-              <Route path="/createinvoice/save-invoice" exact={true} element={<SaveInvoice />} />
+              <Route path="/saved-invoice" exact={true} element={<SaveInvoice />} />
               <Route
                 path="/createinvoice"
                 exact={true}
