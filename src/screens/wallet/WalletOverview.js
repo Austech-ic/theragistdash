@@ -17,7 +17,11 @@ import {
   ShieldSlash,
 } from "iconsax-react";
 import React, { useEffect, useState, useCallback } from "react";
-import { decryptaValue, formatDateToText, Categories } from "../../utils/helperFunctions";
+import {
+  decryptaValue,
+  formatDateToText,
+  Categories,
+} from "../../utils/helperFunctions";
 import { NumericFormat } from "react-number-format";
 import {
   Grid,
@@ -144,7 +148,6 @@ const WalletOverdiv = () => {
 
     setAmount(numericValue);
   };
-
 
   const [pin, setPin] = useState("");
 
@@ -688,19 +691,22 @@ const WalletOverdiv = () => {
                 </p>
               </div>
               <div className="flex flex-col gap-1 py-2 border-l pl-2 flex-1 ">
-              <Link to="/paymentlink"
+                <Link
+                  to="/paymentlink"
                   className={`rounded-[14px]  flex justify-center banks-center gap-2 px-[8px]  py-[4px] md:py-[4px] border-[0.5px]
                            bg-[#EDF7EE] text-[#4CAF50] whitespace-nowrap border-[#4CAF50] text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px] `}
                 >
                   <Add color="#4CAF50" size={16} /> <p>Create Payment Link </p>
                 </Link>{" "}
-                <button
-                  onClick={handleComingSoon}
+                {/* <button
+                  onClick={handleComingSoon} */}
+                <Link
+                  to="/invoice"
                   className={`rounded-[14px]  flex justify-center banks-center gap-2 px-[8px]  py-[4px] md:py-[4px] border-[0.5px]
                            bg-[#EDF7EE] text-[#4CAF50] border-[#4CAF50] text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px] `}
                 >
                   <Add color="#4CAF50" size={16} /> <p>Create Invoice </p>
-                </button>{" "}
+                </Link>{" "}
               </div>
             </div>
           </div>
@@ -777,7 +783,7 @@ const WalletOverdiv = () => {
         isCentered
         isOpen={isTransferOthers}
         onClose={closeTransferOthers}
-       size={{ base: 'xs', sm: 'md', lg: 'xl' }}
+        size={{ base: "xs", sm: "md", lg: "xl" }}
         style={{ borderRadius: 12 }}
         motionPreset="slideInBottom"
         className="rounded-[12px]"
@@ -986,12 +992,12 @@ const WalletOverdiv = () => {
                     >
                       <option value="">Select Purpose</option>
 
-                      {Categories && Categories.map((category)=> 
-
-                      (
-                        <option value={category?.name}>{category?.name}</option>
-                      ))}
-                     
+                      {Categories &&
+                        Categories.map((category) => (
+                          <option value={category?.name}>
+                            {category?.name}
+                          </option>
+                        ))}
                     </select>
                   </div>
                 </div>
@@ -1007,7 +1013,9 @@ const WalletOverdiv = () => {
                       name="full-name"
                       id="full-name"
                       value={naration}
-                      onChange={(e) => {setNaration(e.target.value)}}
+                      onChange={(e) => {
+                        setNaration(e.target.value);
+                      }}
                       autoCapitalize="off"
                       autoCorrect="off"
                       spellCheck="false"
@@ -1081,7 +1089,7 @@ const WalletOverdiv = () => {
         isCentered
         isOpen={isVantTagModal}
         onClose={CloseVantTagModal}
-        size={{ base: 'xs', sm: 'md', lg: 'xl' }}
+        size={{ base: "xs", sm: "md", lg: "xl" }}
         style={{ borderRadius: 12 }}
         motionPreset="slideInBottom"
         className="rounded-[12px]"

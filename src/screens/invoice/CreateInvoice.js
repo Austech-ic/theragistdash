@@ -28,11 +28,11 @@ import { ClipLoader } from "react-spinners";
 const CreateInvoice = () => {
   const { profile } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
-  const [date, setDate] = useState("");
-  const [id, setId] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const location = useLocation();
-  const inv = location.state.invoiceNo;
+  const state = location?.state;
+  console.log("state=====>", state)
+  const inv = state === "undefined" ? "" : state?.invoiceNo
 
   // const inv = "INV-0010";
   const invoiceNo = () => {

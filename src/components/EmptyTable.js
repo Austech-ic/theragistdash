@@ -38,10 +38,21 @@ const EmptyTable = ({ cols }) => {
                 </Link>
               </li>
               <li>
-                <button className="rounded-md px-2 py-2 text-white text-sm flex gap-2 items-center bg-[#26ae5f]">
+                {" "}
+                <Link
+                  to="/createinvoice"
+                  className="rounded-md px-2 py-2 text-white text-sm flex gap-2 items-center bg-[#26ae5f]"
+                >
+                  <p className="whitespace-nowrap">Create Invoices</p>{" "}
+                  <Add size={14} />
+                </Link>
+              </li>
+              <li>
+                  <Link
+                  to="/wallet/overview"  className="rounded-md px-2 py-2 text-white text-sm flex gap-2 items-center bg-[#26ae5f]">
                   <p className="whitespace-nowrap">Make Transfer</p>{" "}
                   <Add size={14} />
-                </button>
+                </Link>
               </li>
             </ul>
           </div>

@@ -319,6 +319,8 @@ const UserWallet = () => {
                         subheading={
                           "Your customers wallets will appear here."
                         }
+                        paymentlinkbutton={true}
+                        invoicebutton={true}
                       />
                     )}
                     {/*  {TaskSummaryData &&

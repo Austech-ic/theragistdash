@@ -154,7 +154,7 @@ const Invoices = () => {
             </button> */}
               <button
                 onClick={() => navigate("/createinvoice", {
-                  state: { invoiceNo: InvoiceData[0].invoice_no },
+                  state: { invoiceNo: InvoiceData[0]?.invoice_no },
                 })}
                 className="flex items-center gap-[8px] "
               >
@@ -248,6 +248,8 @@ const Invoices = () => {
                       cols={8}
                       action={"Invoice"}
                       subheading={"Your invoices will appear here."}
+                      invoicebutton={true}
+                      paymentlinkbutton={true}
                     />
                   )}
 

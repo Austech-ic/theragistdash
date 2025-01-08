@@ -101,7 +101,7 @@ const Pin = () => {
 
           <div className="mb-[16px]">
             <label className="text-[14px] md:text-[14px]  font-normal  text-[#000000] mb-[8px]">
-              Password
+              New Pin
             </label>
             <div className=" relative    flex items-center">
               <div className="absolute right-[16px]">
@@ -130,7 +130,7 @@ const Pin = () => {
 
           <div className="mb-[16px]">
             <label className="text-[14px] md:text-[14px]  font-normal  text-[#000000] mb-[8px]">
-              Confirm Password
+              Confirm Pin
             </label>
             <div className=" relative    flex items-center">
               <div className="absolute right-[16px]">

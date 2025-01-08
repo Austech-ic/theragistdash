@@ -55,6 +55,8 @@ import {
 import QRCode from "qrcode.react";
 import { NumericFormat } from "react-number-format";
 import { Tooltip } from "react-tooltip";
+import EmptyWallet from "../components/EmptyWallets";
+import TableLoading from "../components/TableLoading";
 
 const PaymentLink = () => {
   const elementToCaptureRef = React.createRef();
@@ -639,21 +641,18 @@ const PaymentLink = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {/* {isLoading && <div>Loading...</div>}
-                    {!isLoading && TaskSummaryData.length === 0 && (
-                      <tr>
-                        <td className="text-center" colspan="6">
-                          <img
-                            src="./nodata.gif"
-                            className="mx-auto mt-6 h-[70px] "
-                            alt=""
-                          />
-                          <h3 className="text-[30px] leading-[35px]  text-[#1A202C] font-extrabold mb-[6px]">
-                            No Project
-                          </h3>
-                        </td>
-                      </tr>
-                    )} */}
+                {results?.isLoading && <TableLoading cols={10} />}
+                    {results?.data && results?.data?.data?.length === 0 && (
+                      <EmptyWallet
+                        cols={10}
+                        action={"Payment Links"}
+                        subheading={
+                          "Your Payment Links will appear here."
+                        }
+                        paymentlinkbutton={true}
+                        invoicebutton={true}
+                      />
+                    )}
                   {PayLinkData &&
                     PayLinkData?.map((result) => (
                       <tr key="_" className="mb-2 hover:bg-light-gray">
