@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { NumericFormat } from "react-number-format";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { formatDatewithYear } from "../../utils/helperFunctions";
 import { ClipLoader } from "react-spinners";
 import html2pdf from "html2pdf.js";
@@ -32,7 +32,18 @@ console.log(invoiceData)
 
   return (
     <div className="px-[20px] pb-[20px] pt-[10px]   bg-[#F2F2F2] min-h-screen ">
-      <div className="w-full flex justify-end mb-[14px]">
+      <div className="w-full flex justify-between items-center mb-[14px]">
+              <div className="flex items-center mb-3">
+                <Link to="/createinvoice">
+                  <p className="text-[#667185] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
+                    Create Invoice /
+                  </p>
+                </Link>
+        
+                <p className="text-[#000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px]  ">
+                  &nbsp; Saved Invoice
+                </p>
+              </div>
         <button
           onClick={downloadInvoice}
           className="px-4 py-2 text-[14px] rounded-lg text-white bg-[#26ae5f] hover:bg-opacity-80 flex items-center justify-center text-md "

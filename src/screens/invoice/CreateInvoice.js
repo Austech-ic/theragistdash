@@ -31,8 +31,8 @@ const CreateInvoice = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const location = useLocation();
   const state = location?.state;
-  console.log("state=====>", state)
-  const inv = state === "undefined" ? "" : state?.invoiceNo
+  console.log("state=====>", state);
+  const inv = state === "undefined" ? "" : state?.invoiceNo;
 
   // const inv = "INV-0010";
   const invoiceNo = () => {
@@ -46,7 +46,6 @@ const CreateInvoice = () => {
       return prev + ("0000" + num).slice(-4);
     }
   };
-
 
   const navigate = useNavigate();
   const [customerVisible, setCustomerVisible] = useState(false);
@@ -177,11 +176,38 @@ const CreateInvoice = () => {
 
   const submitInvoice = async () => {
     setIsLoading(true);
-    if(!items[0]?.name) {
+
+    if (!formValue?.title) {
+      enqueueSnackbar("Invoice title is required", { variant: "warning" });
+      setIsLoading(false);
+      return;
+    }
+
+    if (!formValue?.due_date) {
+      enqueueSnackbar("Invoice due date is required", { variant: "warning" });
+      setIsLoading(false);
+      return;
+    }
+    if (!items[0]?.name || !items[0]?.price || items[0]?.quantity < 1) {
       enqueueSnackbar("Please add at least one item", { variant: "warning" });
       setIsLoading(false);
       return;
     }
+
+    if (TotalWithDiscount() < 100) {
+      enqueueSnackbar("Total amount must be greater than 100", {
+        variant: "warning",
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    if (!formValue?.customer_email || !formValue?.customer_name) {
+      enqueueSnackbar("Customer details is missing", { variant: "warning" });
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const response = await api.createInvoice({
         invoice_no: formValue?.invoice_no,
@@ -232,7 +258,18 @@ const CreateInvoice = () => {
     }
   };
   return (
-    <div className="p-[20px] bg-[#F2F2F2] min-h-screen ">
+    <div className="p-4 md:px-[20px] md:pb-[20px] md:pt-[12px] bg-[#F2F2F2] min-h-screen ">
+      <div className="flex items-center mb-3">
+        <Link to="/invoice">
+          <p className="text-[#667185] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
+            Invoices /
+          </p>
+        </Link>
+
+        <p className="text-[#000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px]  ">
+          &nbsp; Create Invoice
+        </p>
+      </div>
       <div className="flex gap-3 ">
         <div className="w-full  md:w-[60%] xl:w-[65%]  bg-white  pt-4 pb-7 px-[10px] md:p-4 md:pb-7 rounded-lg border  ">
           <div className="flex-between mb-7 md:mb-[42px]">
@@ -248,8 +285,7 @@ const CreateInvoice = () => {
                 {formValue.title}
               </h2>
             </div>
-                          <img src={profile?.logo} alt="" className="h-7 md:h-10"/>
-
+            <img src={profile?.logo} alt="" className="h-7 md:h-10" />
           </div>
 
           <div className="mb-4 md:mb-7">
@@ -582,7 +618,7 @@ const CreateInvoice = () => {
                       />
                     </button>
 
-                    <Link
+                    {/* <Link
                       to="/customers"
                       className=" text-[#fff] px-2 py-1 hover:-translate-y-1 transition-all duration-200 ease-in-out whitespace-nowrap rounded-md shadow-md  bg-[#26ae5f] flex-item gap-1 text-[12px]"
                       // onClick={addItem}
@@ -590,7 +626,7 @@ const CreateInvoice = () => {
                       {" "}
                       <Add variant="Linear" color="#fff" size="16" />
                       Create New
-                    </Link>
+                    </Link> */}
                   </div>
                   {customerVisible && (
                     <m.div
@@ -774,54 +810,50 @@ const CreateInvoice = () => {
               </div>
             </div>
 
-            <Tooltip id="my-tooltip" />
-
-            <div className="mb-[10px]">
-              <label className="text-[14px] text-[#353536] leading-[20px]   mb-[8px] flex items-center gap-1">
-                Slug{" "}
-                <a
-                  data-tooltip-id="my-tooltip"
-                  data-tooltip-content="If you set your slug to be stationaries, your payment link will look like this https://vantapp.com/pay/stationaries"
-                  data-tooltip-place="top"
-                >
-                  <InfoCircle size="16" color="#667185" variant="Bold" />
-                </a>
+            <div className=" gap-2  flex items-center">
+              <label className="text-[14px] text-[#353536]  font-medium">
+                Has Tax:
               </label>
-              <div className=" relative   flex items-center">
-                <span className="text-[12px] text-[#667185] leading-[20px] absolute left-[16px] pr-2  border-[#D0D5DD] border-r-[0.2px]">
-                  https://vantapp.com/pay/
-                </span>
-                <input
-                  type="text"
-                  placeholder="stationaries"
-                  className="w-full h-[38px] pl-[158px] py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                  required
-                  name="slug"
-                  value={formValue.slug}
-                  onChange={(e) => handleInput(e)}
-                />
-              </div>
+              <input
+                type="checkbox"
+                placeholder=""
+                className="   text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                required
+                name="has_tax"
+                value={formValue?.has_tax}
+                onChange={() =>
+                  setFormValue({
+                    ...formValue,
+                    has_tax: !formValue?.has_tax,
+                  })
+                }
+                autoCapitalize="off"
+                autoCorrect="off"
+                spellCheck="false"
+              />
             </div>
 
-            <div className="mb-[18px]">
-              <label className="text-[14px] text-[#353536]  font-medium   mb-[8px] md:mb-[10px]">
-                Tax(%)
-              </label>
-              <div className=" relative  flex items-center">
-                <input
-                  type="number"
-                  placeholder=""
-                  className="w-full h-[38px] pl-[8px] py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                  required
-                  name="tax"
-                  value={formValue?.tax}
-                  onChange={(e) => handleInput(e)}
-                  autoCapitalize="off"
-                  autoCorrect="off"
-                  spellCheck="false"
-                />
+            {formValue?.has_tax && (
+              <div className="mb-[18px]">
+                <label className="text-[14px] text-[#353536]  font-medium   mb-[8px] md:mb-[10px]">
+                  Tax(%)
+                </label>
+                <div className=" relative  flex items-center">
+                  <input
+                    type="number"
+                    placeholder=""
+                    className="w-full h-[38px] pl-[8px] py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    required
+                    name="tax"
+                    value={formValue?.tax}
+                    onChange={(e) => handleInput(e)}
+                    autoCapitalize="off"
+                    autoCorrect="off"
+                    spellCheck="false"
+                  />
+                </div>
               </div>
-            </div>
+            )}
             <div className="mb-[18px]">
               <label className="text-[14px] text-[#353536]  font-medium   mb-[8px] md:mb-[10px]">
                 Note
@@ -866,19 +898,23 @@ const CreateInvoice = () => {
                   spellCheck="false"
                 >
                   <option value="">-- select type --</option>
-                  <option value="percentage">percentage</option>
-                  {/* <option value="value">value</option> */}
+                  <option value="percentage">Percentage</option>
+                  <option value="flat_fee">Flate Fee</option>
                 </select>
               </div>
 
               <div className="mt-[10px]">
                 <label className="text-[14px] text-[#353536] leading-[20px] font-medium   mb-[8px] md:mb-[10px]">
-                  Discount Amount:
+                  Discount{" "}
+                  {formValue?.discount_type === "percentage"
+                    ? "Percentage (%)"
+                    : "Amount"}{" "}
+                  :
                 </label>
                 <div className=" relative    flex items-center">
                   <input
                     type="text"
-                    placeholder="200"
+                    placeholder=""
                     className="w-full h-[38px] pl-[8px] py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     disabled={!formValue?.discount_type}
                     name="discount"
