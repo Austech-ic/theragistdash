@@ -1,8 +1,8 @@
 //production server
-export const API_BASE_URL = 'https://dev.vantapp.com/api/partner-business';
+//export const API_BASE_URL = 'https://dev.vantapp.com/api/partner-business';
 
 //live server
-// export const API_BASE_URL = 'https://api.vantapp.com/api/partner-business';
+export const API_BASE_URL = 'https://api.vantapp.com/api/partner-business';
 export const getApiUrl = (endpoint) => API_BASE_URL + endpoint
 
 export const PayInvoiceUrl = "https://vantapp.com/pay-invoice/"
