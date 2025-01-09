@@ -125,8 +125,8 @@ const CreateInvoice = () => {
   }, [CustomerQuery.data]);
 
   const handleSearch = (query) => {
-    const filteredbanks = CustomerQuery.data.filter((cust) =>
-      cust.name.toLowerCase().includes(query.toLowerCase())
+    const filteredbanks = CustomerQuery?.data?.data?.filter((cust) =>
+      cust?.email.toLowerCase().includes(query.toLowerCase())
     );
     setFilteredData(filteredbanks);
   };
@@ -257,6 +257,9 @@ const CreateInvoice = () => {
       setIsLoading(false);
     }
   };
+
+  const today = new Date().toISOString().split('T')[0];
+
   return (
     <div className="p-4 md:px-[20px] md:pb-[20px] md:pt-[12px] bg-[#F2F2F2] min-h-screen ">
       <div className="flex items-center mb-3">
@@ -489,7 +492,7 @@ const CreateInvoice = () => {
                     Discount
                   </p>
                   <p className="text-[#667185]  text-[16px]   font-normal  ">
-                    {formValue?.discount}{" "}
+                    {formValue?.discount}
                     {formValue?.discount_type === "percentage" ? "%" : ""}
                   </p>
                 </li>
@@ -650,7 +653,7 @@ const CreateInvoice = () => {
 
                         <input
                           type="text"
-                          placeholder="search customer"
+                          placeholder="search by email"
                           className="w-full  h-[36px] pl-[44px] py-[12px] text-[14px] text-[#344054]  bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
                           required
                           autoComplete="on"
@@ -899,7 +902,7 @@ const CreateInvoice = () => {
                 >
                   <option value="">-- select type --</option>
                   <option value="percentage">Percentage</option>
-                  <option value="flat_fee">Flate Fee</option>
+                  <option value="flat_fee">Flat Fee</option>
                 </select>
               </div>
 
@@ -1004,6 +1007,8 @@ const CreateInvoice = () => {
                   name="due_date"
                   value={formValue?.due_date}
                   onChange={(e) => handleInput(e)}
+                  min={today} // Restricts the date input to today or future dates
+
                   autoCapitalize="off"
                   autoCorrect="off"
                   spellCheck="false"
