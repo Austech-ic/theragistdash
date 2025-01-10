@@ -27,23 +27,22 @@ const SaveInvoice = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const { invoiceData, profile } = location.state;
-// console.log(invoiceData)
-
+  // console.log(invoiceData)
 
   return (
     <div className="px-[20px] pb-[20px] pt-[10px]   bg-[#F2F2F2] min-h-screen ">
       <div className="w-full flex justify-between items-center mb-[14px]">
-              <div className="flex items-center mb-3">
-                <Link to="/createinvoice">
-                  <p className="text-[#667185] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
-                    Create Invoice /
-                  </p>
-                </Link>
-        
-                <p className="text-[#000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px]  ">
-                  &nbsp; Saved Invoice
-                </p>
-              </div>
+        <div className="flex items-center mb-3">
+          <Link to="/createinvoice">
+            <p className="text-[#667185] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
+              Create Invoice /
+            </p>
+          </Link>
+
+          <p className="text-[#000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px]  ">
+            &nbsp; Saved Invoice
+          </p>
+        </div>
         <button
           onClick={downloadInvoice}
           className="px-4 py-2 text-[14px] rounded-lg text-white bg-[#26ae5f] hover:bg-opacity-80 flex items-center justify-center text-md "
@@ -73,8 +72,7 @@ const SaveInvoice = () => {
                 {invoiceData.title}
               </h2>
             </div>
-            <img src={profile?.logo} alt="" className="h-7 md:h-12"/>
-
+            <img src={profile?.logo} alt="" className="h-7 md:h-12" />
           </div>
 
           <div className="mb-4 md:mb-7">
@@ -106,7 +104,10 @@ const SaveInvoice = () => {
                 <p className="text-[#667185]  text-[14px] font-normal  ">
                   {invoiceData?.customer?.email}
                 </p>
-                {invoiceData?.customer?.phone&& (
+                <p className="text-[#667185]  text-[14px] font-normal  ">
+                  {invoiceData?.customer?.address}
+                </p>
+                {invoiceData?.customer?.phone && (
                   <p className="text-[#667185]  text-[14px] font-normal  ">
                     <strong>Tel: </strong> {invoiceData?.customer?.phone}
                   </p>
@@ -230,11 +231,15 @@ const SaveInvoice = () => {
               href={PayInvoiceUrl + invoiceData?.slug}
               rel="noreferrer"
               target="_blank"
-              style={{paddingTop: "8px", paddingBottom: "8px"}}
+              style={{ paddingTop: "8px", paddingBottom: "8px" }}
               className="px-4  flex flex-col  justify-center text-[14px] rounded-lg text-white bg-[#26ae5f] hover:bg-opacity-80  items-center  text-md "
             >
-             <p                style={{paddingTop: "8px", matginBottom: "8px"}}
- className=" ">Click To Pay</p> 
+              <p
+                style={{ paddingTop: "8px", matginBottom: "8px" }}
+                className=" "
+              >
+                Click To Pay
+              </p>
             </a>
           </div>
         </div>

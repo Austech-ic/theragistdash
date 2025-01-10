@@ -58,6 +58,7 @@ const CreateInvoice = () => {
     customer_email: "",
     customer_phone: "",
     customer_name: "",
+    customer_address: "",
     date: "",
     due_date: "",
     amount: "",
@@ -222,6 +223,7 @@ const CreateInvoice = () => {
         customer_email: formValue?.customer_email,
         customer_phone: formValue?.customer_phone,
         customer_name: formValue?.customer_name,
+        customer_address: formValue?.customer_address,
         total_amount: TotalWithDiscount(),
         note: formValue?.note,
         status: "pending",
@@ -319,6 +321,9 @@ const CreateInvoice = () => {
                 </p>
                 <p className="text-[#667185]  text-[14px] font-normal  ">
                   {formValue?.customer_email}
+                </p>
+                <p className="text-[#667185]  text-[14px] font-normal  ">
+                  {formValue?.customer_address}
                 </p>
                 {formValue?.customer_phone && (
                   <p className="text-[#667185]  text-[14px] font-normal  ">
@@ -774,6 +779,24 @@ const CreateInvoice = () => {
                         required
                         name="customer_phone"
                         value={formValue?.customer_phone}
+                        onChange={(e) => handleInput(e)}
+                        autoCapitalize="off"
+                        autoCorrect="off"
+                        spellCheck="false"
+                      />
+                    </div>
+                  </div>
+                  <div className="mb-[10px]">
+                    <label className="text-[12px] text-[#353536]  font-medium   mb-[8px] md:mb-[10px]">
+                      Customer address:
+                    </label>
+                    <div className=" relative    flex items-center">
+                      <textarea
+                        type="text"
+                        placeholder=""
+                        className="w-full h-[100px] pl-[8px] py-[5px] text-[13px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                        name="customer_address"
+                        value={formValue?.customer_address}
                         onChange={(e) => handleInput(e)}
                         autoCapitalize="off"
                         autoCorrect="off"
