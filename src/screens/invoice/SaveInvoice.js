@@ -15,8 +15,8 @@ const SaveInvoice = () => {
       const pdfOptions = {
         margin: 10,
         filename: "invoice.pdf",
-        image: { type: "jpeg", quality: 1 },
-        html2canvas: { useCORS: true, scale: 2 },
+        image: { type: "img", quality: 1 },
+        toPdf: { useCORS: true, scale: 1 },
         jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
       };
 
@@ -27,7 +27,7 @@ const SaveInvoice = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const { invoiceData, profile } = location.state;
-console.log(invoiceData)
+// console.log(invoiceData)
 
 
   return (
@@ -138,10 +138,10 @@ console.log(invoiceData)
               {" "}
               <thead className="pb-4">
                 <tr>
-                  <th className="pb-1 border-b-[0.2px] border">Item Name</th>
-                  <th className="pb-1 border-b-[0.2px] border">Quantity</th>
-                  <th className="pb-1 border-b-[0.2px] border">Price</th>
-                  <th className="pb-1 border-b-[0.2px] border">Line total</th>
+                  <th className="pb-1 border-b-[0.2px] ">Item Name</th>
+                  <th className="pb-1 border-b-[0.2px] ">Quantity</th>
+                  <th className="pb-1 border-b-[0.2px] ">Price</th>
+                  <th className="pb-1 border-b-[0.2px] ">Line total</th>
                 </tr>
               </thead>
               <tbody>
@@ -230,9 +230,11 @@ console.log(invoiceData)
               href={PayInvoiceUrl + invoiceData?.slug}
               rel="noreferrer"
               target="_blank"
-              className="px-4 py-2 text-[14px] rounded-lg text-white bg-[#26ae5f] hover:bg-opacity-80 flex items-center justify-center text-md "
+              style={{paddingTop: "8px", paddingBottom: "8px"}}
+              className="px-4  flex flex-col  justify-center text-[14px] rounded-lg text-white bg-[#26ae5f] hover:bg-opacity-80  items-center  text-md "
             >
-              Click To Pay
+             <p                style={{paddingTop: "8px", matginBottom: "8px"}}
+ className=" ">Click To Pay</p> 
             </a>
           </div>
         </div>

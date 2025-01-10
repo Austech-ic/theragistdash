@@ -764,7 +764,7 @@ const CreateInvoice = () => {
 
                   <div className="mb-[10px]">
                     <label className="text-[12px] text-[#353536]  font-medium   mb-[8px] md:mb-[10px]">
-                      Customer Address:
+                      Customer Phone Number:
                     </label>
                     <div className=" relative    flex items-center">
                       <input
