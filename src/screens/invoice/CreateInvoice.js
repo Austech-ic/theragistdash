@@ -335,7 +335,7 @@ const CreateInvoice = () => {
           <div className="mb-4 md:mb-7">
             <ul className=" grid grid-cols-1 md:grid-cols-3">
               <li className="p-2 md:p-3 border-t-[0.2px] border-b-[0.2px] border-[#98a2b3]">
-                <div className="flex flex-row md:flex-col items-center gap-[3px]  mb-2">
+                <div className="flex flex-row md:flex-col items-center md:items-start gap-[3px]  mb-2">
                   <h2 className="text-[#000] text-[13px] md:text-[16px]   font-medium   ">
                     Issue date:
                   </h2>
@@ -343,7 +343,7 @@ const CreateInvoice = () => {
                     {formatDatewithYear()}
                   </p>
                 </div>
-                <div className="flex flex-row md:flex-col items-center gap-[2px] ">
+                <div className="flex flex-row md:flex-col items-center  md:items-start gap-[2px] ">
                   <h2 className="text-[#000] text-[12px]  md:text-[14px]   font-medium   ">
                     Due date:
                   </h2>
@@ -675,7 +675,7 @@ const CreateInvoice = () => {
             </ul>
           </div>
         </div>
-        <div className="w-full  overflow-auto md:w-[40%] xl:w-[35%] flex flex-col gap-5">
+        <div className="w-full md:h-[100vh]  overflow-auto md:w-[40%] xl:w-[35%] flex flex-col gap-5">
           <div className=" w-full bg-white p-3  rounded-lg border-[0.2px] border-[#98a2b3] ">
             <h2 className="text-[#000] text-[18px] md:text-[22px] font-semibold mb-[2px] text-center  ">
               Review

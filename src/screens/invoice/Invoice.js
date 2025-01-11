@@ -138,6 +138,8 @@ const Invoices = () => {
               <input
                 className="w-full lg:w-[300px] py-[6px] text-[16px] text-[#344054] leading-[20px] placeholder:text-[#98A2B3] placeholder:text-[12px] border border-transparent  focus:outline-none focus:ring-[#26ae5f] focus:border-b-[#26ae5f] "
                 placeholder="Search"
+                value={searchquery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
           </div>
@@ -158,11 +160,11 @@ const Invoices = () => {
                 })}
                 className="flex items-center gap-[8px] "
               >
-                <p className="text-[14px] text-[#667185] leading-[20px]">
+                <p className="text-[14px] text-[#26ae5f] leading-[20px]">
                   Create Invoice
                 </p>
 
-                <Add variant="Linear" color="#667185" size="16" />
+                <Add variant="Linear" color="#26ae5f" size="16" />
               </button>
           </div>
         </div>
