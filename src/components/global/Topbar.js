@@ -222,7 +222,7 @@ const Topbar = ({ setIsSidebar }) => {
       </div>
 
       <div className="flex flex-row gap-3">
-        <Link to="https://vantpapi.readme.io/reference/getting-started-with-your-api" target="_blank" rel="noreferrer" className="px-3 py-[4px] md:px-4 md:py-[6px] text-[14px] rounded-lg border text-gray-500 relative">
+        <Link to="https://vantpapi.readme.io/reference/getting-started-with-your-api" target="_blank" rel="noreferrer" className="px-3 py-[4px] md:px-4 md:py-[6px] text-[12px] h-[24px] shadow bg-slate-100 rounded-lg border text-gray-500 relative leading-[12px]">
           API Doc{" "}
           <div className="h-[5px] w-[5px] rounded-full bg-green-500 absolute top-1 right-1" />
         </Link>

@@ -26,7 +26,10 @@ import {
  UPDATEPAYMENTLINKS,
  DELETETEAMMEMBER,
  INVOICE,
- UPDATEIMAGE
+ UPDATEIMAGE,
+ CREATEPRODUCT,
+ UPDATEPRODUCT,
+ GETPRODUCT
 } from "../utils/config";
 import { apiDelete, apiGet, apiGetCSV, apiPost, apiPut } from "../utils/utils";
 
@@ -191,6 +194,25 @@ export function editLink(url, data) {
 export function deleteLink(data) {
   return apiDelete(UPDATEPAYMENTLINKS + data);
 }
+
+//products
+export function createProducts(data) {
+  return apiPost(CREATEPRODUCT, data,  { 'Content-Type': 'multipart/form-data' });
+}
+
+export function getProduct(data) {
+  return apiGet(GETPRODUCT, data);
+}
+
+export function updateProduct(id, data) {
+  return apiPut(UPDATEPRODUCT +id, data, { 'Content-Type': 'multipart/form-data'});
+}
+
+
+export function deleteProduct(id, data) {
+  return apiDelete(UPDATEPRODUCT +id, data, { 'Content-Type': 'multipart/form-data'});
+}
+
 
 
 

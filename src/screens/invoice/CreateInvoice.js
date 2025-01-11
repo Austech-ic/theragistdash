@@ -24,11 +24,13 @@ import { UserContext } from "../../utils/UserProvider";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { enqueueSnackbar } from "notistack";
 import { ClipLoader } from "react-spinners";
+import { Package } from "lucide-react";
 
 const CreateInvoice = () => {
   const { profile } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchProdQuery, setSearchProdQuery] = useState("");
   const location = useLocation();
   const state = location?.state;
   console.log("state=====>", state);
@@ -49,6 +51,7 @@ const CreateInvoice = () => {
 
   const navigate = useNavigate();
   const [customerVisible, setCustomerVisible] = useState(false);
+  const [productVisible, setProductVisible] = useState(false);
   const [select, setSelect] = useState(1);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [formValue, setFormValue] = useState({
@@ -100,6 +103,13 @@ const CreateInvoice = () => {
     setItems([...items, { id: Date.now(), name: "", quantity: 1, price: 0 }]);
   };
 
+  const addProductItem = (data) => {
+    setItems([
+      ...items,
+      { id: Date.now(), name: data?.name, quantity: 1, price: data?.price },
+    ]);
+  };
+
   const totalPrice = items.reduce(
     (total, item) => total + item.price * item.quantity,
     0
@@ -141,6 +151,35 @@ const CreateInvoice = () => {
       customer_phone: cust.phone,
     });
     setCustomerVisible(false);
+  };
+
+  async function getProducts(page) {
+    const response = await api.getProduct({
+      params: {
+        search: searchProdQuery,
+      },
+    });
+    return response;
+  }
+
+  const ProductQuery = useQuery(["ProductQuery"], () => getProducts(), {
+    keepPreviousData: true,
+    refetchOnWindowFocus: "always",
+  });
+
+  let Products = ProductQuery?.data?.data;
+  const [filteredProductData, setFiltereProductdData] = useState(
+    Products || []
+  );
+  useEffect(() => {
+    setFiltereProductdData(ProductQuery.data?.data);
+  }, [ProductQuery.data]);
+
+  const handleSearchProduct = (query) => {
+    const filtereproducts = ProductQuery?.data?.data?.filter((cust) =>
+      cust?.name.toLowerCase().includes(query.toLowerCase())
+    );
+    setFiltereProductdData(filtereproducts);
   };
 
   const Total = () => {
@@ -260,7 +299,7 @@ const CreateInvoice = () => {
     }
   };
 
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date().toISOString().split("T")[0];
 
   return (
     <div className="p-4 md:px-[20px] md:pb-[20px] md:pt-[12px] bg-[#F2F2F2] min-h-screen ">
@@ -275,9 +314,9 @@ const CreateInvoice = () => {
           &nbsp; Create Invoice
         </p>
       </div>
-      <div className="flex gap-3 ">
+      <div className="flex flex-col md:flex-row gap-3 ">
         <div className="w-full  md:w-[60%] xl:w-[65%]  bg-white  pt-4 pb-7 px-[10px] md:p-4 md:pb-7 rounded-lg border  ">
-          <div className="flex-between mb-7 md:mb-[42px]">
+          <div className="flex-between mb-5 md:mb-[42px]">
             <div>
               {" "}
               <h2 className="text-[#000] text-[18px] md:text-[22px]  font-semibold mb-[1px]  ">
@@ -294,58 +333,61 @@ const CreateInvoice = () => {
           </div>
 
           <div className="mb-4 md:mb-7">
-            <ul className=" grid grid-cols-3">
+            <ul className=" grid grid-cols-1 md:grid-cols-3">
               <li className="p-2 md:p-3 border-t-[0.2px] border-b-[0.2px] border-[#98a2b3]">
-                <h2 className="text-[#000] text-[16px]   font-medium mb-[2px]  ">
-                  Issue date
-                </h2>
-                <p className="text-[#667185]  text-[14px]  font-normal  mb-2 ">
-                  {formatDatewithYear()}
-                </p>
-
-                <h2 className="text-[#000] text-[16px]   font-medium mb-[2px]  ">
-                  Due date
-                </h2>
-                {formValue?.due_date && (
-                  <p className="text-[#667185]  text-[14px] font-normal  ">
-                    {formatDatewithYear(formValue?.due_date)}
+                <div className="flex flex-row md:flex-col items-center gap-[3px]  mb-2">
+                  <h2 className="text-[#000] text-[13px] md:text-[16px]   font-medium   ">
+                    Issue date:
+                  </h2>
+                  <p className="text-[#667185] text-[12px]  md:text-[14px]  font-normal  ">
+                    {formatDatewithYear()}
                   </p>
-                )}
+                </div>
+                <div className="flex flex-row md:flex-col items-center gap-[2px] ">
+                  <h2 className="text-[#000] text-[12px]  md:text-[14px]   font-medium   ">
+                    Due date:
+                  </h2>
+                  {formValue?.due_date && (
+                    <p className="text-[#667185]  text-[12px]  md:text-[14px] font-normal  ">
+                      {formatDatewithYear(formValue?.due_date)}
+                    </p>
+                  )}
+                </div>
               </li>
               <li className="p-2 md:p-3 border-[0.2px]  border-[#98a2b3]">
-                <h2 className="text-[#000] text-[16px]   font-medium mb-[2px]  ">
+                <h2 className="text-[#000]  text-[14px]  md:text-[16px]   font-medium mb-[2px]  ">
                   Billed to
                 </h2>
-                <p className="text-[#667185]  text-[16px]   font-medium  ">
+                <p className="text-[#667185]   text-[14px]  md:text-[16px]   font-medium  ">
                   {formValue?.customer_name}
                 </p>
-                <p className="text-[#667185]  text-[14px] font-normal  ">
+                <p className="text-[#667185] text-[12px]  md:text-[14px] font-normal  ">
                   {formValue?.customer_email}
                 </p>
-                <p className="text-[#667185]  text-[14px] font-normal  ">
+                <p className="text-[#667185]  text-[12px]  md:text-[14px] font-normal  ">
                   {formValue?.customer_address}
                 </p>
                 {formValue?.customer_phone && (
-                  <p className="text-[#667185]  text-[14px] font-normal  ">
+                  <p className="text-[#667185]  text-[12px]  md:text-[14px] font-normal  ">
                     <strong>Tel: </strong> {formValue?.customer_phone}
                   </p>
                 )}
               </li>
               <li className="p-2 md:p-3 border-t-[0.2px] border-b-[0.2px] border-[#98a2b3]">
-                <h2 className="text-[#000] text-[16px]   font-medium mb-[2px]  ">
+                <h2 className="text-[#000]  text-[14px]  md:text-[16px]  font-medium mb-[2px]  ">
                   From
                 </h2>
-                <p className="text-[#667185]  text-[16px]   font-medium  ">
+                <p className="text-[#667185]  text-[14px]  md:text-[16px]   font-medium  ">
                   {profile?.name}
                 </p>
-                <p className="text-[#667185]  text-[14px]   font-normal  ">
+                <p className="text-[#667185]  text-[12px]  md:text-[14px]   font-normal  ">
                   {profile?.address}
                 </p>
-                <p className="text-[#667185]  text-[14px] font-normal  ">
+                <p className="text-[#667185] text-[12px]  md:text-[14px] font-normal  ">
                   {profile?.email}
                 </p>
                 {profile?.phone && (
-                  <p className="text-[#667185]  text-[14px] font-normal  ">
+                  <p className="text-[#667185] text-[12px]  md:text-[14px] font-normal  ">
                     <strong>Tel: </strong> {profile?.phone}
                   </p>
                 )}
@@ -355,12 +397,12 @@ const CreateInvoice = () => {
           <div className="overflow-auto">
             <table>
               {" "}
-              <thead className="pb-4">
+              <thead className="">
                 <tr>
-                  <th className="pb-4">Item Name</th>
-                  <th className="pb-4">Quantity</th>
-                  <th className="pb-4">Price</th>
-                  <th className="pb-4">Line total</th>
+                  <th className="pb-4 text-[12px]  md:text-[14px]">Item Name</th>
+                  <th className="pb-4 text-[12px]  md:text-[14px]">Quantity</th>
+                  <th className="pb-4 text-[12px]  md:text-[14px]">Price</th>
+                  <th className="pb-4 text-[12px]  md:text-[14px]">Line total</th>
                 </tr>
               </thead>
               <tbody>
@@ -374,7 +416,7 @@ const CreateInvoice = () => {
                           handleInputChange(item.id, "name", e.target.value)
                         }
                         placeholder="Enter item name"
-                        className="border-[0.2px] w-[200px]  border-[#98a2b3] px-1 py-1 text-[16px] text-[#344054] leading-[20px] placeholder:text-[#98A2B3] placeholder:text-[14px]    focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                        className="border-[0.2px] w-[150px] md:w-[200px]  border-[#98a2b3] px-1 py-1 text-[16px] text-[#344054] leading-[20px] placeholder:text-[#98A2B3] placeholder:text-[14px]    focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                       />
                     </td>
                     <td className="pb-2">
@@ -412,20 +454,129 @@ const CreateInvoice = () => {
                         className="border-[0.2px] min-w-[100px]  border-[#98a2b3] px-1 py-1 text-[16px] text-[#344054] leading-[20px] placeholder:text-[#98A2B3] placeholder:text-[12px]    focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                       />
                     </td>
-                    {index > 0 && (
-                      <td className="pb-2 pl-4">
-                        <Trash
-                          size={14}
-                          onClick={() => onDeleteItemHandler(index)}
-                          color="red"
-                          className="cursor-pointer "
-                        />
-                      </td>
-                    )}
+                    {/* {index > 0 && ( */}
+                    <td className="pb-2 pl-4">
+                      <Trash
+                        size={14}
+                        onClick={() => onDeleteItemHandler(index)}
+                        color="red"
+                        className="cursor-pointer "
+                      />
+                    </td>
+                    {/* )} */}
                   </tr>
                 ))}
               </tbody>
             </table>
+          </div>
+          <div>
+            <div>
+              <div className="mt-[10px] flex gap-1 items-center">
+                <label className="text-[14px] whitespace-nowrap text-[#353536] leading-[20px] font-medium ">
+                  Pick from existing product(s) :
+                </label>
+
+                <input
+                  type="checkbox"
+                  placeholder=""
+                  className="   text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  required
+                  name="save_product"
+                  value={productVisible}
+                  onChange={() => setProductVisible(!productVisible)}
+                  autoCapitalize="off"
+                  autoCorrect="off"
+                  spellCheck="false"
+                />
+              </div>
+            </div>
+            {productVisible && (
+              <m.div
+                initial={{ y: 10, opacity: 0.4 }}
+                animate={{
+                  y: 0,
+                  opacity: 1,
+                  // scale: 1,
+                }}
+                transition={{
+                  duration: 0.3,
+                }}
+                className="w-full h-[300px] overflow-y-auto  px-2 py-3 text-[14px] text-[#344054] border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
+              >
+                <div className=" relative  w-full mx-auto mb-2  flex items-center">
+                  <SearchNormal1
+                    size="14"
+                    color="#98A2B3"
+                    className="absolute left-[16px]"
+                  />
+
+                  <input
+                    type="text"
+                    placeholder="search by name"
+                    className="w-full  h-[36px] pl-[44px] py-[12px] text-[14px] text-[#344054]  bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
+                    required
+                    autoComplete="on"
+                    name=""
+                    value={searchProdQuery}
+                    onChange={(e) => {
+                      setSearchProdQuery(e.target.value);
+                      handleSearchProduct(e.target.value);
+                    }}
+                    autoCapitalize="off"
+                    autoCorrect="off"
+                    spellCheck="false"
+                  />
+                </div>
+                {filteredProductData &&
+                  filteredProductData?.map((prod, index) => (
+                    <button
+                      onClick={() => addProductItem(prod)}
+                      className="w-full px-[10px] py-2 rounded-[10px] flex items-center flex-row justify-between banks-center mb-2"
+                      style={{
+                        borderColor: "rgba(18, 3, 58, 0.10)",
+                        borderWidth: 0.2,
+                      }}
+                    >
+                      <div className="flex-item">
+                        {prod.logo ? (
+                          <img
+                            src={prod?.logo}
+                            alt=""
+                            style={{ height: 24, width: 24 }}
+                            className="mr-3 rounded-full"
+                          />
+                        ) : (
+                          <div className="rounded-full bg-[#F6F6F6] border border-[#EDF2F7] py-[5px] px-[5px] mr-3 ">
+                            <Package
+                              size="14"
+                              color="#BAB4B2FF"
+                              variant="Bold"
+                            />
+                          </div>
+                        )}
+                        <p className="text-[#272F35] flex-1 font- font-i_medium text-[12px] leading-[15.94px]  tracking-[0.2px]  ">
+                          {prod?.name}
+                        </p>
+                      </div>
+                      <p className="text-[#272F35] flex-1 font- font-i_medium text-[12px] leading-[15.94px]  tracking-[0.2px]  ">
+                        <NumericFormat
+                          value={prod?.price}
+                          displayType={"text"}
+                          thousandSeparator={true}
+                          prefix={"₦"}
+                          decimalScale={2}
+                          fixedDecimalScale={true}
+                          renderText={(value) => (
+                            <p className="text-[#667185]  text-[16px]   font-normal  ">
+                              {value}
+                            </p>
+                          )}
+                        />
+                      </p>
+                    </button>
+                  ))}
+              </m.div>
+            )}{" "}
           </div>
 
           <div>
@@ -524,7 +675,7 @@ const CreateInvoice = () => {
             </ul>
           </div>
         </div>
-        <div className="w-full h-screen overflow-auto md:w-[40%] xl:w-[35%] flex flex-col gap-5">
+        <div className="w-full  overflow-auto md:w-[40%] xl:w-[35%] flex flex-col gap-5">
           <div className=" w-full bg-white p-3  rounded-lg border-[0.2px] border-[#98a2b3] ">
             <h2 className="text-[#000] text-[18px] md:text-[22px] font-semibold mb-[2px] text-center  ">
               Review
@@ -1031,7 +1182,6 @@ const CreateInvoice = () => {
                   value={formValue?.due_date}
                   onChange={(e) => handleInput(e)}
                   min={today} // Restricts the date input to today or future dates
-
                   autoCapitalize="off"
                   autoCorrect="off"
                   spellCheck="false"

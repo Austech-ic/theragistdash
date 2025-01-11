@@ -23,6 +23,7 @@ import {
   Setting,
   Setting2,
   Setting3,
+  ShoppingCart,
 } from "iconsax-react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
@@ -31,7 +32,6 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
   const router = useLocation();
 
   let role = profileData?.user?.role;
-  console.log("user rollee----->", role);
   return (
     <div
       className={` lg:block lg:relative ${
@@ -77,13 +77,13 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                 alt="logo"
               />
 
-              <div className="border border-[#98A2B3]/50 my-5 " />
+              <div className="border border-[#98A2B3]/50 my-4 " />
 
               {profileData?.default_partner?.is_verified !== 1 && (
                 <Link
                   to="/getstarted"
                   onClick={onClose}
-                  className={` py-[10px] pl-[16px] flex items-center text-[14px] mb-3   leading-[20px] md:leading-[24px] ${
+                  className={` py-[10px] pl-[16px] flex items-center text-[14px]     leading-[20px] md:leading-[24px] ${
                     window.location.pathname === "/getstarted"
                       ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
                       : "text-[#667185] font-normal"
@@ -91,6 +91,8 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                 >
                   <ClipboardExport
                     className="mr-[12px]"
+                    size={20}
+
                     variant={
                       window.location.pathname === "/getstarted"
                         ? "Bold"
@@ -104,7 +106,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
               <Link
                 to="/overview"
                 onClick={onClose}
-                className={` py-[10px] pl-[16px] flex items-center text-[14px] mb-3   leading-[20px] md:leading-[24px] ${
+                className={` py-[10px] pl-[16px] flex items-center text-[14px]     leading-[20px] md:leading-[24px] ${
                   window.location.pathname === "/overview"
                     ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
                     : "text-[#667185] font-normal"
@@ -112,6 +114,8 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
               >
                 <Home
                   className="mr-[12px]"
+                  size={20}
+
                   variant={
                     window.location.pathname === "/overview" ? "Bold" : "Linear"
                   }
@@ -123,7 +127,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
               <Link
                 to="/wallet/overview"
                 onClick={onClose}
-                className={` py-[10px] pl-[16px] flex items-center text-[14px]  mb-3   leading-[20px] md:leading-[24px] ${
+                className={` py-[10px] pl-[16px] flex items-center text-[14px]      leading-[20px] md:leading-[24px] ${
                   window.location.pathname === "/wallet/overview" ||
                   window.location.pathname === "/wallet/topup" ||
                   window.location.pathname === "/wallet/debit"
@@ -133,6 +137,8 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
               >
                 <WalletMoney
                   className="mr-[12px]"
+                  size={20}
+
                   variant={
                     window.location.pathname === "/wallet/overview" ||
                     window.location.pathname === "/wallet/topup" ||
@@ -148,7 +154,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
               <Link
                 to="/transaction"
                 onClick={onClose}
-                className={` py-[10px] pl-[16px] flex items-center text-[14px]  mb-3   leading-[20px] md:leading-[24px] ${
+                className={` py-[10px] pl-[16px] flex items-center text-[14px]      leading-[20px] md:leading-[24px] ${
                   window.location.pathname === "/transaction"
                     ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
                     : "text-[#667185] font-normal"
@@ -156,6 +162,8 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
               >
                 <EmptyWalletChange
                   className="mr-[12px]"
+                  size={20}
+
                   variant={
                     window.location.pathname === "/transaction"
                       ? "Bold"
@@ -169,7 +177,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
               <Link
                 to="/user-wallets"
                 onClick={onClose}
-                className={` py-[10px] pl-[16px] flex items-center text-[14px]  mb-3   leading-[20px] md:leading-[24px] ${
+                className={` py-[10px] pl-[16px] flex items-center text-[14px]      leading-[20px] md:leading-[24px] ${
                   window.location.pathname === "/user-wallets"
                     ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
                     : "text-[#667185] font-normal"
@@ -177,6 +185,8 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
               >
                 <Wallet1
                   className="mr-[12px]"
+                  size={20}
+
                   variant={
                     window.location.pathname === "/user-wallets"
                       ? "Bold"
@@ -190,7 +200,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
               <Link
                 to="/paymentlink"
                 onClick={onClose}
-                className={` py-[10px] pl-[16px] flex items-center text-[14px]   mb-3 leading-[20px] md:leading-[24px] ${
+                className={` py-[10px] pl-[16px] flex items-center text-[14px]     leading-[20px] md:leading-[24px] ${
                   window.location.pathname === "/paymentlink"
                     ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
                     : "text-[#667185] font-normal"
@@ -198,6 +208,8 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
               >
                 <Note
                   className="mr-[12px]"
+                  size={20}
+
                   variant={
                     window.location.pathname === "/paymentlink"
                       ? "Bold"
@@ -207,11 +219,74 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                 Payment Link
               </Link>
 
+              {/* 
+            <button
+              onClick={() => setIsActive("invoice")}
+              className={` ${
+                isActive === "invoice" ? "" : " "
+              } py-[10px] pl-[16px] flex items-center  justify-between w-full text-[14px]    leading-[20px] md:leading-[24px] 
+                ${
+                  window.location.pathname === "/invoice" ||
+                  window.location.pathname === "/createinvoice"
+                    ? "text-[#26ae5f] font-medium rounded-md"
+                    : "text-[#667185] font-normal "
+                }`}
+            >
+              <div className="flex items-center">
+                {" "}
+                <Folder2
+                  className="mr-[12px]"
+                  variant={
+                    window.location.pathname === "/invoice" ||
+                    window.location.pathname === "/customers" ||
+                    window.location.pathname === "/createinvoice"
+                      ? "Bold"
+                      : "Linear"
+                  }
+                />
+                Invoice
+              </div>
+
+              {isActive === "invoice" ? (
+                <ArrowUp2 size="14" variant="Linear" color="#667185" />
+              ) : (
+                <ArrowDown2 size="14" variant="Linear" color="#667185" />
+              )}
+            </button>
+
+            {isActive === "invoice" && (
+              <ul className="ml-[26px] pl-[12px] py-[14px]   border-l border-[#98A2B3]/50">
+                <Link
+                  to="/invoice"
+                  className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]    leading-[18px] md:leading-[24px]  mb-[14px] ${
+                    window.location.pathname === "/invoice" ||
+                    window.location.pathname === "/createinvoice"
+                      ? "bg-[#F7F9FC] font-medium "
+                      : " font-normal"
+                  }`}
+                >
+                  <li className="">Issue Invoice</li>
+                </Link>
+
+                <Link
+                  to="/customers"
+                  className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]  leading-[18px] md:leading-[24px]  ${
+                    window.location.pathname === "/customers"
+                      ? "bg-[#F7F9FC] font-medium  "
+                      : " font-normal"
+                  }`}
+                >
+                  <li className="">Customers</li>
+                </Link>
+              </ul>
+            )} */}
+
               <Link
                 to="/invoice"
                 onClick={onClose}
-                className={` py-[10px] pl-[16px] flex items-center text-[14px]   mb-3 leading-[20px] md:leading-[24px] ${
+                className={` py-[10px] pl-[16px] flex items-center text-[14px]     leading-[20px] md:leading-[24px] ${
                   window.location.pathname === "/invoice" ||
+                  window.location.pathname === "/saveinvoice" ||
                   window.location.pathname === "/createinvoice"
                     ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
                     : "text-[#667185] font-normal"
@@ -219,8 +294,11 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
               >
                 <Folder2
                   className="mr-[12px]"
+                  size={20}
+
                   variant={
                     window.location.pathname === "/invoice" ||
+                    window.location.pathname === "/saveinvoice" ||
                     window.location.pathname === "/createinvoice"
                       ? "Bold"
                       : "Linear"
@@ -231,7 +309,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
 
               {/* <Link
               to="/verification"
-              className={` py-[10px] pl-[16px] flex items-center text-[14px]   mb-3 leading-[20px] md:leading-[24px] ${
+              className={` py-[10px] pl-[16px] flex items-center text-[14px]     leading-[20px] md:leading-[24px] ${
                 window.location.pathname === "/verification"
                   ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
                   : "text-[#667185] font-normal"
@@ -248,9 +326,27 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
               Verifications
             </Link> */}
               <Link
+                to="/store"
+                onClick={onClose}
+                className={` py-[10px] pl-[16px] flex items-center text-[14px]    leading-[20px] md:leading-[24px] ${
+                  window.location.pathname === "/store"
+                    ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
+                    : "text-[#667185] font-normal"
+                }`}
+              >
+                <ShoppingCart
+                  className="mr-[12px]"
+                  size={20}
+                  variant={
+                    window.location.pathname === "/store" ? "Bold" : "Linear"
+                  }
+                />
+                Store
+              </Link>
+              <Link
                 to="/customers"
                 onClick={onClose}
-                className={` py-[10px] pl-[16px] flex items-center text-[14px]   mb-3 leading-[20px] md:leading-[24px] ${
+                className={` py-[10px] pl-[16px] flex items-center text-[14px]     leading-[20px] md:leading-[24px] ${
                   window.location.pathname === "/customers"
                     ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
                     : "text-[#667185] font-normal"
@@ -258,6 +354,8 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
               >
                 <Profile
                   className="mr-[12px]"
+                  size={20}
+
                   variant={
                     window.location.pathname === "/customers"
                       ? "Bold"
@@ -269,7 +367,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
 
               {/* <Link
               to="/users"
-              className={` py-[10px] pl-[16px] flex items-center text-[14px]   mb-3 leading-[20px] md:leading-[24px] ${
+              className={` py-[10px] pl-[16px] flex items-center text-[14px]     leading-[20px] md:leading-[24px] ${
                 window.location.pathname === "/users"
                   ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
                   : "text-[#667185] font-normal"
@@ -289,7 +387,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
               <Link
                 to="/setting/personal-info"
                 onClick={onClose}
-                className={` py-[10px] pl-[16px] flex items-center text-[14px]   mb-3 leading-[20px] md:leading-[24px] ${
+                className={` py-[10px] pl-[16px] flex items-center text-[14px]     leading-[20px] md:leading-[24px] ${
                   window.location.pathname === "/setting/personal-info" ||
                   window.location.pathname === "/setting/webhook" ||
                   window.location.pathname === "/setting/api-key" ||

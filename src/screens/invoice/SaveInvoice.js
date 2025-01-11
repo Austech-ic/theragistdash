@@ -76,58 +76,61 @@ const SaveInvoice = () => {
           </div>
 
           <div className="mb-4 md:mb-7">
-            <ul className=" grid grid-cols-3">
+            <ul className=" grid grid-cols-1 md:grid-cols-3">
               <li className="p-2 md:p-3 border-t-[0.2px] border-b-[0.2px] border-[#98a2b3]">
-                <h2 className="text-[#000] text-[16px]   font-medium mb-[2px]  ">
-                  Issue date
-                </h2>
-                <p className="text-[#667185]  text-[14px]  font-normal  mb-2 ">
-                  {invoiceData?.date}
-                </p>
-
-                <h2 className="text-[#000] text-[16px]   font-medium mb-[2px]  ">
-                  Due date
-                </h2>
-                {invoiceData?.due_date && (
-                  <p className="text-[#667185]  text-[14px] font-normal  ">
-                    {invoiceData?.due_date}
+                <div className="flex flex-row md:flex-col items-center gap-[3px]  mb-2">
+                  <h2 className="text-[#000] text-[13px] md:text-[16px]   font-medium   ">
+                    Issue date:
+                  </h2>
+                  <p className="text-[#667185] text-[12px]  md:text-[14px]  font-normal  ">
+                    {formatDatewithYear()}
                   </p>
-                )}
+                </div>
+                <div className="flex flex-row md:flex-col items-center gap-[2px] ">
+                  <h2 className="text-[#000] text-[12px]  md:text-[14px]   font-medium   ">
+                    Due date:
+                  </h2>
+                  {invoiceData?.due_date && (
+                    <p className="text-[#667185]  text-[12px]  md:text-[14px] font-normal  ">
+                    {invoiceData?.due_date}
+                    </p>
+                  )}
+                </div>
               </li>
               <li className="p-2 md:p-3 border-[0.2px]  border-[#98a2b3]">
-                <h2 className="text-[#000] text-[16px]   font-medium mb-[2px]  ">
+                <h2 className="text-[#000]  text-[14px]  md:text-[16px]   font-medium mb-[2px]  ">
                   Billed to
                 </h2>
-                <p className="text-[#667185]  text-[16px]   font-medium  ">
+                <p className="text-[#667185]   text-[14px]  md:text-[16px]   font-medium  ">
                   {invoiceData?.customer?.name}
                 </p>
-                <p className="text-[#667185]  text-[14px] font-normal  ">
+                <p className="text-[#667185] text-[12px]  md:text-[14px] font-normal  ">
                   {invoiceData?.customer?.email}
                 </p>
-                <p className="text-[#667185]  text-[14px] font-normal  ">
+                <p className="text-[#667185]  text-[12px]  md:text-[14px] font-normal  ">
                   {invoiceData?.customer?.address}
                 </p>
                 {invoiceData?.customer?.phone && (
-                  <p className="text-[#667185]  text-[14px] font-normal  ">
+                  <p className="text-[#667185]  text-[12px]  md:text-[14px] font-normal  ">
                     <strong>Tel: </strong> {invoiceData?.customer?.phone}
                   </p>
                 )}
               </li>
               <li className="p-2 md:p-3 border-t-[0.2px] border-b-[0.2px] border-[#98a2b3]">
-                <h2 className="text-[#000] text-[16px]   font-medium mb-[2px]  ">
+                <h2 className="text-[#000]  text-[14px]  md:text-[16px]  font-medium mb-[2px]  ">
                   From
                 </h2>
-                <p className="text-[#667185]  text-[16px]   font-medium  ">
+                <p className="text-[#667185]  text-[14px]  md:text-[16px]   font-medium  ">
                   {profile?.name}
                 </p>
-                <p className="text-[#667185]  text-[14px]   font-normal  ">
+                <p className="text-[#667185]  text-[12px]  md:text-[14px]   font-normal  ">
                   {profile?.address}
                 </p>
-                <p className="text-[#667185]  text-[14px] font-normal  ">
+                <p className="text-[#667185] text-[12px]  md:text-[14px] font-normal  ">
                   {profile?.email}
                 </p>
                 {profile?.phone && (
-                  <p className="text-[#667185]  text-[14px] font-normal  ">
+                  <p className="text-[#667185] text-[12px]  md:text-[14px] font-normal  ">
                     <strong>Tel: </strong> {profile?.phone}
                   </p>
                 )}
@@ -157,7 +160,7 @@ const SaveInvoice = () => {
               </tbody>
             </table>
           </div>
-          <div className="flex flex-col md:flex-row gap-5 mt-[43px] mb-9">
+          <div className="flex flex-col-reverse md:flex-row gap-5 mt-[43px] mb-9">
             <div className="w-full md:w-[40%] border rounded-lg p-2 bg-slate-100 min-h-[100px] md:min-h-[130px]">
               <p className="text-[12px] md:text-[14px]">
                 Note: {invoiceData?.note}

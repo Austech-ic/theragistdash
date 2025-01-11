@@ -34,6 +34,7 @@ import CopilotContext from "./components/copilot-context";
 import Page404 from "./screens/404";
 import Pin from "./screens/BusinessSettings/Pin";
 import SaveInvoice from "./screens/invoice/SaveInvoice";
+import Store from "./screens/Store";
 
 const DashboardRoutes = () => {
   return (
@@ -60,6 +61,11 @@ const DashboardRoutes = () => {
                 path="/transaction"
                 exact={true}
                 element={<Transactions />}
+              />
+               <Route
+                path="/store"
+                exact={true}
+                element={<Store />}
               />
               <Route path="/users" exact={true} element={<Users />} />
               <Route path="/invoice" exact={true} element={<Invoices />} />
