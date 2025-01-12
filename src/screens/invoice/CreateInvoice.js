@@ -680,6 +680,7 @@ const CreateInvoice = () => {
             <h2 className="text-[#000] text-[18px] md:text-[22px] font-semibold mb-[2px] text-center  ">
               Review
             </h2>
+            
             <div className="mb-[10px]">
               <label className="text-[14px] text-[#353536] leading-[20px] font-medium   mb-[8px] md:mb-[10px]">
                 Invoice Number
