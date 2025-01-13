@@ -590,7 +590,7 @@ const Customer = () => {
       {/* Create Modal */}
       <ModalLeft isOpen={isCreate} onClose={closeCreateModal}>
         <div>
-          <div className="border-b border-b-[#E4E7EC] p-[16px] md:p-[20px]  md:flex justify-between items-center ">
+          <div className="border-b border-b-[#E4E7EC] p-[16px] md:p-[20px]  flex justify-between items-center ">
             <div className="flex items-center gap-[16px]">
               <Maximize4 variant="Linear" color="#667185" size="16" />{" "}
               <div className="h-[32px] w-[1px] bg-[#D0D5DD]" />

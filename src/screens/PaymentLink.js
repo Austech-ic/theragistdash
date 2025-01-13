@@ -331,9 +331,10 @@ const PaymentLink = () => {
     try {
       const response = await api.deleteLink(linkDetails?.slug);
       const decryptRes = JSON.parse(decryptaValue(response?.data));
-      enqueueSnackbar("Customer Created Successfully", { variant: "success" });
+      enqueueSnackbar("Payment Link Deleted Successfully", { variant: "success" });
       results.refetch();
       setIsLoading(false);
+      closeDeleteModal()
     } catch (error) {
       //console.log(error.message);
       enqueueSnackbar(error.message, { variant: "error" });
@@ -342,7 +343,7 @@ const PaymentLink = () => {
   };
 
   return (
-    <div className="md:p-[20px] p-[14px] bg-[#F2F2F2] min-h-screen ">
+    <div className="md:p-[20px] p-[10px] bg-[#F2F2F2] min-h-screen ">
       <div className="border-[0.2px] border-[#98a2b3] rounded-[8px]  bg-[#ffff] ">
         <div className="border-b border-b-[#E4E7EC] h-full p-[16px] md:p-[20px] flex md:flex-row flex-col md:justify-between md:items-center gap-3">
           <div className="flex items-center gap-[16px]">
@@ -649,7 +650,7 @@ const PaymentLink = () => {
                         subheading={
                           "Your Payment Links will appear here."
                         }
-                        paymentlinkbutton={true}
+                        // paymentlinkbutton={true}
                         invoicebutton={true}
                       />
                     )}
@@ -1156,7 +1157,7 @@ const PaymentLink = () => {
       {/* Create Modal */}
       <ModalLeft isOpen={createLink} onClose={closeCreateLink}>
         <div>
-          <div className="border-b border-b-[#E4E7EC] p-[16px] md:p-[20px]  md:flex justify-between items-center ">
+          <div className="border-b border-b-[#E4E7EC] p-[16px] md:p-[20px]  flex justify-between items-center ">
             <div className="flex items-center gap-[16px]">
               <Maximize4 variant="Linear" color="#667185" size="16" />{" "}
               <div className="h-[32px] w-[1px] bg-[#D0D5DD]" />

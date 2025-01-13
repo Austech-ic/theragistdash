@@ -231,7 +231,7 @@ const Topbar = ({ setIsSidebar }) => {
             <Menu>
               <MenuButton bg={"none"}>
                 <div className="flex items-center gap-3">
-                  <p className="text-[#475367] font-medium text-[14px] md:text-[14px] xl:text-[16px]  leading-[24px] ">
+                  <p className="text-[#475367] whitespace-nowrap font-medium text-[14px] md:text-[14px] xl:text-[16px]  leading-[24px] ">
                     {profileData?.default_partner?.name}
                   </p>
 

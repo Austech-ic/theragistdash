@@ -23,9 +23,7 @@ import {
 import React, { useContext, useState } from "react";
 import { ClipLoader } from "react-spinners";
 
-import ModalLeft from "../../components/ModalLeft";
 import { Link, useNavigate } from "react-router-dom";
-import html2canvas from "html2canvas";
 
 import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import api from "../../api";
@@ -37,7 +35,6 @@ import { NumericFormat } from "react-number-format";
 import { UserContext } from "../../utils/UserProvider";
 
 const Invoices = () => {
-  const elementToCaptureRef = React.createRef();
   const { profile } = useContext(UserContext);
 
   const navigate = useNavigate();
@@ -52,11 +49,7 @@ const Invoices = () => {
   const [searchquery, setSearchQuery] = useState("");
 
 
-  const [isGenerate, setIsGenerate] = useState(false);
 
-  function closeGenerate() {
-    setIsGenerate(false);
-  }
 
   function HandleEditModalClose() {
     setIsEditOpen(false);
@@ -250,7 +243,7 @@ const Invoices = () => {
                       cols={8}
                       action={"Invoice"}
                       subheading={"Your invoices will appear here."}
-                      invoicebutton={true}
+                      // invoicebutton={true}
                       paymentlinkbutton={true}
                     />
                   )}

@@ -25,6 +25,14 @@ const Login = () => {
   const toggle = () => {
     setOpen(!open);
   };
+  useEffect(()=> {
+    const user = localStorage.getItem("authData");
+    if (user) {
+      navigate("/overview");
+    }
+  }, [])
+
+  
 
   // useEffect(() => {
 

@@ -183,9 +183,9 @@ const OverView = () => {
   const summaryData = SummaryQuery?.data?.data || [];
 
   return (
-    <div className="p-[20px] bg-[#F2F2F2]  ">
-      <ul className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5">
-        <li className="border-[0.2px] border-[#98a2b3] rounded-[8px] h-[176px] w-full   mx-auto bg-[#ffff] flex flex-col justify-between ">
+    <div className="p-[10px] md:p-[20px] bg-[#F2F2F2]  ">
+      <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5">
+        <li className="border-[0.2px] border-[#98a2b3] shadow rounded-[8px] h-[140px]  md:h-[176px]   w-full   mx-auto bg-[#ffff] flex flex-col justify-between ">
           <div className="px-[20px] py-[24px]  flex-between">
             <p className="text-[#000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px]  ">
               Wallet Balance
@@ -208,7 +208,7 @@ const OverView = () => {
             </p>
           </div>
         </li>
-        <li className="border-[0.2px] border-[#98a2b3] rounded-[8px] h-[176px] w-full mx-auto   bg-[#ffff] flex flex-col justify-between ">
+        <li className="border-[0.2px] border-[#98a2b3]  rounded-[8px] h-[140px] md:h-[176px]  w-full mx-auto   bg-[#ffff] flex flex-col justify-between ">
           <div className="px-[20px] py-[24px]  flex-between">
             {" "}
             <p className="text-[#000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px]  ">
@@ -233,7 +233,7 @@ const OverView = () => {
             </p>
           </div>
         </li>
-        {/* <li className="border-[0.2px] border-[#98a2b3] rounded-[8px] h-[176px] w-full mx-auto   bg-[#ffff] flex flex-col justify-between ">
+        {/* <li className="border-[0.2px] border-[#98a2b3] rounded-[8px] h-[140px] md:h-[176px]  w-full mx-auto   bg-[#ffff] flex flex-col justify-between ">
           <div className="px-[20px] py-[24px]  flex-between">
             {" "}
             <p className="text-[#000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px]  ">
@@ -250,7 +250,7 @@ const OverView = () => {
             </p>
           </div>
         </li> */}
-        <li className="border-[0.2px] border-[#98a2b3] rounded-[8px] h-[176px] w-full   mx-auto bg-[#ffff] flex flex-col justify-between ">
+        <li className="border-[0.2px] border-[#98a2b3] shadow rounded-[8px] h-[140px] md:h-[176px]  w-full   mx-auto bg-[#ffff] flex flex-col justify-between ">
           <div className="px-[20px] py-[24px]  flex-between">
             {" "}
             <p className="text-[#000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px]  ">
@@ -273,8 +273,8 @@ const OverView = () => {
           </div>
         </li>
       </ul>
-      <div className="bg-white rounded-lg border-[0.2px] border-[#98a2b3] mt-[20px] h-[359px] md:h-[459px] w-full  mt">
-        <div className="p-[16px] md:p-[20px] flex-between bg-white rounded-tr-lg rounded-tl-lg  border-b-[0.8px]  border-[#D0D5DD]">
+      <div className="bg-white rounded-lg border-[0.2px] border-[#98a2b3] mt-[20px] h-[280px] md:h-[459px] w-full  mt">
+        <div className="p-[10px] md:p-[14px] flex-between bg-white rounded-tr-lg rounded-tl-lg  border-b-[0.8px]  border-[#D0D5DD]">
           <p className="text-[18px] whitespace-nowrap leading-[27px] text-[#000]  ">
             Transaction Chart
           </p>
@@ -282,7 +282,7 @@ const OverView = () => {
           <select
               type="text"
               placeholder=""
-              className="w-[120px] md:w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+              className="w-[120px] md:w-[240px]  bg-[#F9FAFB]  px-2 py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
            
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
@@ -298,7 +298,7 @@ const OverView = () => {
         </div>
       </div>
       <div className="bg-white rounded-lg border-[0.2px] border-[#98a2b3] mt-[20px]  w-full  mt">
-        <div className="p-[16px] md:p-[20px] flex-between bg-white rounded-tr-lg rounded-tl-lg  border-b-[0.8px]  border-[#D0D5DD]">
+        <div className="p-[10px] md:p-[14px] flex-between bg-white rounded-tr-lg rounded-tl-lg  border-b-[0.8px]  border-[#D0D5DD]">
           <p className="text-[18px]  leading-[27px] text-[#000]  ">
             Recent Transaction
           </p>
