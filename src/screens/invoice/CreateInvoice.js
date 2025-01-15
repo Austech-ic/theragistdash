@@ -1077,7 +1077,7 @@ const CreateInvoice = () => {
                 >
                   <option value="">-- select type --</option>
                   <option value="percentage">Percentage</option>
-                  <option value="flat_fee">Flat Fee</option>
+                  <option value="fixed">Fixed</option>
                 </select>
               </div>
 

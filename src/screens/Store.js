@@ -364,7 +364,7 @@ const Store = () => {
                       scope="col"
                       className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
                     >
-                      <div className="flex px-5   gap-[6px] md:gap-[12px] items-center">
+                      <div className="flex justify-center text-center px-5   gap-[6px] md:gap-[12px] items-center">
                         Image
                       </div>
                     </th>
@@ -372,7 +372,7 @@ const Store = () => {
                       scope="col"
                       className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
                     >
-                      <div className="flex px-5   gap-[6px] md:gap-[12px] items-center">
+                      <div className="flex justify-center text-center px-5   gap-[6px] md:gap-[12px] items-center">
                         Name
                       </div>
                     </th>
@@ -380,7 +380,7 @@ const Store = () => {
                       scope="col"
                       className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
                     >
-                      <div className="flex px-5 whitespace-nowrap  gap-[6px] md:gap-[12px] items-center">
+                      <div className="flex justify-center text-center px-5 whitespace-nowrap  gap-[6px] md:gap-[12px] items-center">
                         Price
                       </div>
                     </th>
@@ -388,7 +388,7 @@ const Store = () => {
                       scope="col"
                       className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
                     >
-                      <div className="flex px-5 whitespace-nowrap  gap-[6px] md:gap-[12px] items-center">
+                      <div className="flex justify-center text-center px-5 whitespace-nowrap  gap-[6px] md:gap-[12px] items-center">
                         Description
                       </div>
                     </th>
@@ -397,7 +397,7 @@ const Store = () => {
                       scope="col"
                       className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium leading-[20px] md:leading-[24px] tracking-[0.2%]"
                     >
-                      <div className="flex  gap-[6px] md:gap-[12px] items-center my-0">
+                      <div className="flex justify-center text-center  gap-[6px] md:gap-[12px] items-center my-0">
                         Date Created
                       </div>
                     </th>
@@ -455,16 +455,16 @@ const Store = () => {
                             fixedDecimalScale={true}
                           />
                         </td>
-                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-center  ">
                           {result?.description}
                         </td>
 
-                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-center  ">
                           {moment(result?.created_at).format("MMM DD yyyy")}
                         </td>
 
-                        <td className="whitespace-nowrap py-[16px]  gap-2 bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#1A202C] font-medium text-left  ">
-                        <div className="flex items-center gap-2">
+                        <td className="whitespace-nowrap py-[16px]  gap-2 bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#1A202C] font-medium text-center  ">
+                        <div className="flex items-center justify-center gap-2">
                         <button onClick={() => ToggleEditModal(result)}>
                             <Edit variant="Linear" color="#667185" size="16" />
                           </button>
