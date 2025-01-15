@@ -30,7 +30,7 @@ const profileData = ProfileQuery?.data?.data || []
   return (
     <div className="p-4 md:p-6">
       {" "}
-      <div className="border-[0.2px] overflow-hidden flex-1 border-[#98a2b3] relative rounded-[8px] bg-[#fff]    p-[16px] md:p-[20px] ">
+      <div className="border-[0.2px] overflow-hidden flex-1 border-[#98a2b3] relative rounded-[8px] bg-[#fff]    p-[10px] md:p-[20px] ">
         <m.div
           initial={{ x: 30, opacity: 0.4 }}
           animate={{

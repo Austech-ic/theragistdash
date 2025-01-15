@@ -83,16 +83,21 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                 <Link
                   to="/getstarted"
                   onClick={onClose}
-                  className={` py-[10px] pl-[16px] flex items-center text-[14px]     leading-[20px] md:leading-[24px] ${
+                  className={`relative py-[10px] pl-[16px] flex items-center text-[14px]     leading-[20px] md:leading-[24px] ${
                     window.location.pathname === "/getstarted"
                       ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
                       : "text-[#667185] font-normal"
                   }`}
                 >
+                  <div className="absolute top-2 right-14">
+                  <div className="flex h-[9px] w-[9px] relative">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-[9px] w-[9px] bg-red-500"></span>
+                  </div>
+                  </div>
                   <ClipboardExport
                     className="mr-[12px]"
                     size={20}
-
                     variant={
                       window.location.pathname === "/getstarted"
                         ? "Bold"
@@ -115,7 +120,6 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                 <Home
                   className="mr-[12px]"
                   size={20}
-
                   variant={
                     window.location.pathname === "/overview" ? "Bold" : "Linear"
                   }
@@ -138,7 +142,6 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                 <WalletMoney
                   className="mr-[12px]"
                   size={20}
-
                   variant={
                     window.location.pathname === "/wallet/overview" ||
                     window.location.pathname === "/wallet/topup" ||
@@ -163,7 +166,6 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                 <EmptyWalletChange
                   className="mr-[12px]"
                   size={20}
-
                   variant={
                     window.location.pathname === "/transaction"
                       ? "Bold"
@@ -186,7 +188,6 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                 <Wallet1
                   className="mr-[12px]"
                   size={20}
-
                   variant={
                     window.location.pathname === "/user-wallets"
                       ? "Bold"
@@ -209,7 +210,6 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                 <Note
                   className="mr-[12px]"
                   size={20}
-
                   variant={
                     window.location.pathname === "/paymentlink"
                       ? "Bold"
@@ -295,7 +295,6 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                 <Folder2
                   className="mr-[12px]"
                   size={20}
-
                   variant={
                     window.location.pathname === "/invoice" ||
                     window.location.pathname === "/saveinvoice" ||
@@ -355,7 +354,6 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                 <Profile
                   className="mr-[12px]"
                   size={20}
-
                   variant={
                     window.location.pathname === "/customers"
                       ? "Bold"

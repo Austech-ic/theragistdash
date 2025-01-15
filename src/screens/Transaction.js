@@ -810,7 +810,7 @@ const Transactions = () => {
       {/* Create Modal */}
       <ModalLeft isOpen={isViewModal} onClose={closeViewModal}>
         <div>
-          <div className="border-b border-b-[#E4E7EC] p-[16px] mflex justify-between items-center ">
+          <div className="border-b border-b-[#E4E7EC] p-[10px] flex justify-between items-center ">
             <div className="flex items-center gap-[16px]">
               <button>
                 {" "}
@@ -834,10 +834,10 @@ const Transactions = () => {
               <div className="flex justify-end mt-3">
                 <button
                   onClick={handleDownloadPdf}
-                  className="flex gap-1 border border-[#26ae5f] text-[#26ae5f] px-[6px] py-1 text-[13px] leading-[13px] items-center rounded-md hover:bg-slate-50 mr-3"
+                  className="flex gap-1 border  bg-[#26ae5f] text-[#fff] px-[6px] py-2 text-[13px] leading-[13px] items-center rounded-md hover:opacity-80 mr-3"
                 >
                    {isLoading ? <ClipLoader size={12} /> :  <DocumentDownload
-                      size="14px" color="#26ae5f"
+                      size="14px" color="#fff"
                     />}
                   Download Receipt
                 </button>
@@ -863,7 +863,7 @@ const Transactions = () => {
             <table className="mt-[18px] md:mt-[24px] max-w-[490px] mx-[16px] md:mx-[20px]  ">
               <tr className="">
                 <th className="text-[14px] pb-[20px] text-[#667185] leading-[20px] font-medium text-left ">
-                  Reference
+                  Reference:
                 </th>
                 <td className="pb-[20px] pl-4 md:pl-6 ">
                   {transacDetails?.reference}
@@ -871,7 +871,7 @@ const Transactions = () => {
               </tr>
               <tr className="">
                 <th className="text-[14px] pb-[20px] text-[#667185] leading-[20px] font-medium text-left ">
-                  Reason
+                  Reason:
                 </th>
                 <td className="pb-[20px] pl-4 md:pl-6 ">
                   {transacDetails?.reason}
@@ -879,9 +879,9 @@ const Transactions = () => {
               </tr>
               <tr className="">
                 <th className="text-[14px] pb-[20px] text-[#667185] leading-[20px] font-medium text-left ">
-                  Amount
+                  Amount:
                 </th>
-                <td className="pb-[20px] pl-4 md:pl-6 ">
+                <td className="pb-[20px] pl-4 md:pl-6 font-medium">
                   <NumericFormat
                     value={transacDetails?.amount}
                     displayType={"text"}
@@ -889,19 +889,15 @@ const Transactions = () => {
                     prefix={"₦"}
                     decimalScale={2}
                     fixedDecimalScale={true}
-                    // renderText={(value) => (
-                    //   <Text className="text-[#fff]  font-semibold font-i_medium text-[16px] leading-[19px]  tracking-[0.2px]   ">
-                    //     {value}
-                    //   </Text>
-                    // )}
+                   
                   />
                 </td>
               </tr>
               <tr className="">
                 <th className="text-[14px] pb-[20px] text-[#667185] leading-[20px] font-medium text-left ">
-                  Balance Before
+                  Balance Before:
                 </th>
-                <td className="pb-[20px] pl-4 md:pl-6 ">
+                <td className="pb-[20px] pl-4 md:pl-6 font-medium ">
                   <NumericFormat
                     value={transacDetails?.balance_before}
                     displayType={"text"}
@@ -909,19 +905,15 @@ const Transactions = () => {
                     prefix={"₦"}
                     decimalScale={2}
                     fixedDecimalScale={true}
-                    // renderText={(value) => (
-                    //   <Text className="text-[#fff]  font-semibold font-i_medium text-[16px] leading-[19px]  tracking-[0.2px]   ">
-                    //     {value}
-                    //   </Text>
-                    // )}
+                   
                   />
                 </td>
               </tr>
               <tr className="">
                 <th className="text-[14px] pb-[20px] text-[#667185] leading-[20px] font-medium text-left ">
-                  Balace After
+                  Balace After:
                 </th>
-                <td className="pb-[20px] pl-4 md:pl-6 ">
+                <td className="pb-[20px] pl-4 md:pl-6 font-medium ">
                   <NumericFormat
                     value={transacDetails?.balance_after}
                     displayType={"text"}
@@ -929,17 +921,13 @@ const Transactions = () => {
                     prefix={"₦"}
                     decimalScale={2}
                     fixedDecimalScale={true}
-                    // renderText={(value) => (
-                    //   <Text className="text-[#fff]  font-semibold font-i_medium text-[16px] leading-[19px]  tracking-[0.2px]   ">
-                    //     {value}
-                    //   </Text>
-                    // )}
+                   
                   />
                 </td>
               </tr>
               <tr>
                 <th className="pb-5 text-[14px] text-[#667185] leading-[20px] font-medium text-left ">
-                  Transaction Type
+                  Transaction Type:
                 </th>
                 <td className="pb-[20px] pl-4 md:pl-6 ">
                   <div className="flex-item gap-1">
@@ -956,7 +944,7 @@ const Transactions = () => {
               {transacDetails?.fee && (
                 <tr>
                   <th className="pb-5 text-[14px] text-[#667185] leading-[20px] font-medium text-left ">
-                    Fee
+                    Fee:
                   </th>
                   <td className="pb-[20px] pl-4 md:pl-6 ">
                     <p className=" text-[14px]  text-[#000] leading-[20px] font-medium text-left ">
@@ -968,7 +956,7 @@ const Transactions = () => {
               {transacDetails?.channel && (
                 <tr>
                   <th className="pb-5 text-[14px] text-[#667185] leading-[20px] font-medium text-left ">
-                    Channel
+                    Channel:
                   </th>
                   <td className="pb-[20px] pl-4 md:pl-6 ">
                     <p className=" text-[14px]  text-[#000] leading-[20px] font-medium text-left ">
@@ -981,7 +969,7 @@ const Transactions = () => {
               {transacDetails?.beneficiary && (
                 <tr>
                   <th className="pb-5 text-[14px] text-[#667185] leading-[20px] font-medium text-left ">
-                    Beneficiary
+                    Beneficiary:
                   </th>
                   <td className="pb-[20px] pl-4 md:pl-6 ">
                     <p className=" text-[14px]  text-[#000] leading-[20px] font-medium text-left ">
@@ -994,7 +982,7 @@ const Transactions = () => {
               {transacDetails?.remark && (
                 <tr>
                   <th className="pb-5 text-[14px] text-[#667185] leading-[20px] font-medium text-left ">
-                    Remark
+                    Remark:
                   </th>
                   <td className="pb-[20px] pl-4 md:pl-6 ">
                     <p className=" text-[14px]  text-[#000] leading-[20px] font-medium text-left ">
@@ -1007,7 +995,7 @@ const Transactions = () => {
               {transacDetails?.meta && (
                 <tr>
                   <th className="pb-5 text-[14px] text-[#667185] leading-[20px] font-medium text-left ">
-                    Meta
+                    Meta:
                   </th>
                   <td className="pb-[20px] pl-4 md:pl-6 ">
                     <p className=" text-[14px]  text-[#000] leading-[20px] font-medium text-left ">
@@ -1019,7 +1007,7 @@ const Transactions = () => {
               {transacDetails?.webhook && (
                 <tr>
                   <th className="pb-5 text-[14px] text-[#667185] leading-[20px] font-medium text-left ">
-                    Webhook
+                    Webhook:
                   </th>
                   <td className="pb-[20px] pl-4 md:pl-6 ">
                     <p className=" text-[14px]  text-[#000] leading-[20px] max-w-[200px] font-medium text-left ">
@@ -1031,11 +1019,11 @@ const Transactions = () => {
 
               <tr>
                 <th className="pb-5 text-[14px] text-[#667185] leading-[20px] font-medium text-left ">
-                  Status
+                  Status:
                 </th>
                 <td className="pb-[20px] pl-4 md:pl-6 ">
                   <button
-                    className={`rounded-[20px] md:rounded-[40px] flex justify-center items-center gap-2 px-[12px]  py-[4px] md:py-[4px] border-[0.5px] ${
+                    className={`rounded-[8px]  flex justify-center items-center gap-2 px-[12px]  py-[4px] md:py-[4px] border-[0.5px] ${
                       transacDetails?.status === "failed"
                         ? "bg-[#FEECEB] text-[#F44336] border-[#F44336]"
                         : // : c.mode === "Medium"

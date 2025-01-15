@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { motion as m } from "framer-motion";
-import { CloseCircle, MainComponent, Sms } from "iconsax-react";
+import { Add, CloseCircle, MainComponent, Sms } from "iconsax-react";
 import { GiPhone } from "react-icons/gi";
 import ImageUpload from "../../components/UploadImage";
 import { ClipLoader } from "react-spinners";
-import { useOutletContext } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import { enqueueSnackbar } from "notistack";
 import { decryptaValue, encryptaValue } from "../../utils/helperFunctions";
 import api from "../../api";
 import Modal from "../../components/Modal";
-import { API_BASE_URL } from "../../utils/config";
+import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
 
 const BusinessInfo = () => {
   const [selectedInfo, setSelectedInfo] = useState(1);
@@ -49,7 +49,7 @@ const BusinessInfo = () => {
     address: "",
     nin: "",
   });
-  const {profileData, refetch} = useOutletContext();
+  const { profileData, refetch } = useOutletContext();
 
   useEffect(() => {
     //If there's no profile data, set selectedInfo to 1
@@ -74,6 +74,7 @@ const BusinessInfo = () => {
         busAddress: profileData?.address,
         bvn: profileData?.bvn,
       });
+      setLogo(profileData?.logo)
     }
   }, [profileData]);
 
@@ -99,7 +100,6 @@ const BusinessInfo = () => {
 
       const response = await api.editBusInfo({ data: encryptaValue(payload) });
       const decr = JSON.parse(decryptaValue(response?.data));
-      //console.log("decrypt for bus info", decr);
       enqueueSnackbar(decr?.message, { variant: "success" });
 
       setIsLoading(false);
@@ -116,7 +116,7 @@ const BusinessInfo = () => {
   };
 
   return (
-    <div className="p-4 md:p-6 flex gap-4 md:gap-6">
+    <div className="p-4 md:p-6 flex flex-col md:flex-row gap-4 md:gap-6">
       <m.div
         initial={{ x: -30, opacity: 0.4 }}
         animate={{
@@ -127,7 +127,7 @@ const BusinessInfo = () => {
         transition={{
           duration: 0.9,
         }}
-        className="w-[25%]"
+        className="w-[25%] hidden md:block"
       >
         {info &&
           info?.map((inf, index) => (
@@ -152,7 +152,42 @@ const BusinessInfo = () => {
             </button>
           ))}
       </m.div>{" "}
-      <div className="border-[0.2px] overflow-hidden flex-1 border-[#98a2b3] relative rounded-[8px] bg-[#fff]    p-[16px] md:p-[20px] ">
+      <m.div
+        initial={{ x: -30, opacity: 0.4 }}
+        animate={{
+          x: 0,
+          opacity: 1,
+          scale: 1,
+        }}
+        transition={{
+          duration: 0.9,
+        }}
+        className="w-full  md:hidden overflow-hidden "
+      >
+        <div className="overflow-auto flex items-center gap-3">
+        {info &&
+          info?.map((inf, index) => (
+            <button
+              onClick={() => setSelectedInfo(inf?.id)}
+              className={`flex-item gap-3  ${
+                selectedInfo === inf?.id
+                  ? "  bg-[#26ae5f] text-white"
+                  : "bg-[#fefefe]"
+              } ${
+                index === 0 ? "" : ""
+              }  transition-transform ease-in-out   w-[90%] border-[0.2px] border-[#98a2b3] relative rounded-[8px]  p-[10px] md:px-[20px] md:py-4`}
+            >
+            
+
+              <p className="  text-[14px] whitespace-nowrap  font-normal leading-[16px]  ">
+                {inf?.name}
+              </p>
+            </button>
+          ))}
+          </div>
+      </m.div>{" "}
+      
+      <div className="border-[0.2px] overflow-hidden flex-1 border-[#98a2b3] relative rounded-[8px] bg-[#fff]    p-[10px] md:p-[20px] ">
         {selectedInfo === 1 && (
           <m.div
             initial={{ x: 30, opacity: 0.4 }}
@@ -166,19 +201,34 @@ const BusinessInfo = () => {
               duration: 0.9,
             }}
           >
-            <div className="flex gap-3">
+            <div className="flex flex-col md:flex-row gap-3">
               {" "}
               <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
                 Business Logo:
               </label>{" "}
-              <div className="border rounded-lg p-2">              <img src={profileData?.logo} alt="" className="h-7 md:h-10"/>
-              </div>
-              <button
+              {logo ? (
+                <div className="flex items-center gap-4">
+                  {" "}
+                  <img src={logo} alt="" className="h-7 md:h-10" />
+                  <button
+                    onClick={() => setIsOpen(true)}
+                    className="px-4 py-2 text-[14px] rounded-lg text-white bg-[#26ae5f] hover:bg-opacity-80 flex items-center justify-center text-md "
+                  >
+                    Update Business Logo
+                  </button>
+                </div>
+              ) : (
+                <button
                 onClick={() => setIsOpen(true)}
-                className="px-4 py-2 text-[14px] rounded-lg text-white bg-[#26ae5f] hover:bg-opacity-80 flex items-center justify-center text-md "
-              >
-                Update Business Logo
-              </button>
+
+                  className="h-14 w-14 md:h-20 md:w-20 flex flex-col items-center justify-center border-2 border-dashed border-spacing-1 rounded-md hover:bg-slate-50"
+                >
+                  <Add color="gray" />
+                  <p className="text-[9px] text-gray-500">Add Logo</p>
+                  {profileData?.logo}
+
+                </button>
+              )}
             </div>
 
             <div className="mb-[16px] md:mb-[20px]">
@@ -323,7 +373,7 @@ const BusinessInfo = () => {
                 <div className="flex justify-center">
                   <ImageUpload
                     handleCloseModal={handleCloseModal}
-                     refetch={refetch}
+                    refetch={refetch}
                   />
                 </div>
               </div>

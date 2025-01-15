@@ -41,7 +41,7 @@ const Settings = () => {
 const refetch= ProfileQuery.refetch
 
 const contextData = {
-  profileData: profileData,
+  profileData: ProfileQuery?.data?.default_partner,
   refetch: refetch,
 };
   

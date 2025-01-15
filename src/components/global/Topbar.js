@@ -12,6 +12,7 @@ import {
   HambergerMenu,
   InfoCircle,
   Logout,
+  Notification,
   SecuritySafe,
   Send2,
   Setting,
@@ -172,7 +173,7 @@ const Topbar = ({ setIsSidebar }) => {
     <div className="flex w-full items-center justify-between px-6 gap-[16px] py-2 border-l-[0.2px] border-[#D0D5DD]">
       <div className="flex items-center">
         <button
-          class="h-10 w-10 bg-[#FAFAFA] hover:bg-[#eeeded] flex justify-center items-center rounded-md lg:hidden mr-2"
+          class="h-8 w-8 sm:h-10 sm:w-10 bg-[#FAFAFA] hover:bg-[#bebcbc] flex justify-center items-center rounded-md lg:hidden mr-2"
           onClick={setIsSidebar}
         >
           <HambergerMenu size={18} color="#31363EFF" />
@@ -221,11 +222,36 @@ const Topbar = ({ setIsSidebar }) => {
         </h4>{" "}
       </div>
 
-      <div className="flex flex-row gap-3">
-        <Link to="https://vantpapi.readme.io/reference/getting-started-with-your-api" target="_blank" rel="noreferrer" className="px-3 py-[4px] md:px-4 md:py-[6px] text-[12px] h-[24px] shadow bg-slate-100 rounded-lg border text-gray-500 relative leading-[12px]">
+      <div className="flex flex-row items-center gap-3">
+        <Link
+          to="https://vantpapi.readme.io/reference/getting-started-with-your-api"
+          target="_blank"
+          rel="noreferrer"
+          className="px-3 py-[4px] md:px-4 md:py-[6px] text-[12px] h-[24px] shadow bg-slate-100 rounded-lg border text-gray-500 relative leading-[12px]"
+        >
           API Doc{" "}
           <div className="h-[5px] w-[5px] rounded-full bg-green-500 absolute top-1 right-1" />
         </Link>
+
+        <Menu>
+          <MenuButton bg={"none"}>
+            <button className="bg-gray-100 p-2 rounded-full relative hover:opacity-80 ">
+              <div className="h-3 w-3 rounded-full flex justify-center items-center bg-red-500 absolute right-0 -top-1 text-white text-[8px] font-semibold">
+                0
+              </div>
+              <Notification size={14} color="gray" />
+            </button>
+          </MenuButton>
+          <MenuList
+            maxW="289px"
+            w="210px"
+            className="border-[2px] p-[10px] md:p-[16px] shadow"
+          >
+
+            Notification
+          </MenuList>
+        </Menu>
+
         <div className="flex  gap-[12px] border-[0.2px] border-[#98a2b3] px-3 py-1  items-center rounded-[8px]">
           <div className="">
             <Menu>
@@ -242,11 +268,11 @@ const Topbar = ({ setIsSidebar }) => {
               </MenuButton>
               <MenuList
                 maxW="289px"
-                w="289px"
-                className="border-[2px] p-[10px] md:p-[16px]"
+                w="210px"
+                className="border-[2px] p-[10px] md:p-[16px] shadow-xl"
               >
                 <div className="flex-item gap-[16px]">
-                  <div className="h-[28px] w-[28px] md:h-[32px] md:w-[32px] rounded-[4px] bg-[#d3d3d4] flex justify-center items-center">
+                  <div className="h-[28px] w-[28px] md:h-[32px] md:w-[32px] rounded-[4px] bg-[#F0F2F5] flex justify-center items-center">
                     {" "}
                     <p className="text-[#475367] text-[12px] md:text-[12px] xl:text-[12px] font-bold leading-[24px] ">
                       {firstAndLastLetter(profileData?.default_partner?.name)}
@@ -256,14 +282,14 @@ const Topbar = ({ setIsSidebar }) => {
                     {profileData?.default_partner?.name}
                   </p>
                 </div>
-                <div className="flex-item justify-between mb-[20px] mt-[12px]">
+                <div className="flex-item justify-between mb-[14px] mt-[12px]">
                   <Link
                     // onClick={() => setIsSettingsModal(true)}
                     to="/setting/personal-info"
-                    className="py-[5px] px-[12px] border-[0.2px] rounded-md border-[#98A2B3] w-[96px] flex-item gap-2"
+                    className="py-[5px] px-[12px] w-full border-[0.2px] bg-[#26ae5f] rounded-md border-[#26ae5f] shadow flex-item gap-2"
                   >
-                    <Setting2 size={13} color="#98A2B3" />{" "}
-                    <p className="text-[#98A2B3] text-[10px]  xl:text-[12px] font-normal leading-[18px] ">
+                    <Setting2 size={13} color="#fff" />{" "}
+                    <p className="text-[#fff] text-[10px]  md:text-[12px] font-normal leading-[16px] ">
                       Settings
                     </p>
                   </Link>
@@ -299,7 +325,7 @@ const Topbar = ({ setIsSidebar }) => {
                         onClick={() => handleSwitchModal(partner)}
                       >
                         <div className="flex-item gap-2">
-                          <div className="h-[28px] w-[28px] md:h-[32px] md:w-[32px] rounded-[4px] bg-[#d3d3d4] flex justify-center items-center">
+                          <div className="h-[28px] w-[28px] md:h-[32px] md:w-[32px] rounded-[4px] bg-[#F0F2F5] flex justify-center items-center">
                             {" "}
                             <p className="text-[#475367] text-[12px] md:text-[12px] xl:text-[12px] font-bold leading-[24px] ">
                               {firstAndLastLetter(partner?.name)}
@@ -341,7 +367,7 @@ const Topbar = ({ setIsSidebar }) => {
                       navigate("/login");
                       // setIsOpen(false);
                     }}
-                    className="flex-item gap-2 mt-[20px]"
+                    className="flex-item gap-2 "
                   >
                     {" "}
                     <Logout size={20} color="#26ae5f" />{" "}

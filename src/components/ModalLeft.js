@@ -19,11 +19,11 @@ const ModalLeft = ({ isOpen, onClose, children }) => {
   <div class="fixed inset-0 overflow-hidden">
 
     <div  class="absolute inset-0 overflow-hidden">
-    <div onClick={onClose}  class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+    <div onClick={onClose}  class="fixed inset-0 bg-gray-500 bg-opacity-65 transition-opacity"></div>
 
       <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
        
-        <div class="pointer-events-auto relative w-screen  max-w-[350px] md:max-w-[430px] lg:max-w-[617px]">
+        <div class="pointer-events-auto relative w-screen  max-w-[340px] md:max-w-[430px] ">
           <div class="absolute left-0 top-0 -ml-8 flex pr-2 pt-4 sm:-ml-10 sm:pr-4">
             <button onClick={onClose} type="button" class="relative rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white">
               <span class="absolute -inset-2.5"></span>
@@ -33,7 +33,7 @@ const ModalLeft = ({ isOpen, onClose, children }) => {
             </button>
           </div>
 
-          <div class="flex h-full w-full flex-col overflow-y-scroll bg-white max-w-[350px] md:max-w-[430px] lg:max-w-[617px] shadow-xl">
+          <div class="flex h-full w-full flex-col overflow-y-scroll bg-white max-w-[340px] md:max-w-[430px]  shadow-xl">
             {children}
           </div>
         </div>

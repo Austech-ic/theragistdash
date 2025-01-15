@@ -208,7 +208,7 @@ const OverView = () => {
             </p>
           </div>
         </li>
-        <li className="border-[0.2px] border-[#98a2b3]  rounded-[8px] h-[140px] md:h-[176px]  w-full mx-auto   bg-[#ffff] flex flex-col justify-between ">
+        <li className="border-[0.2px] border-[#98a2b3] shadow  rounded-[8px] h-[140px] md:h-[176px]  w-full mx-auto   bg-[#ffff] flex flex-col justify-between ">
           <div className="px-[20px] py-[24px]  flex-between">
             {" "}
             <p className="text-[#000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px]  ">

@@ -104,10 +104,20 @@ const CreateInvoice = () => {
   };
 
   const addProductItem = (data) => {
-    setItems([
-      ...items,
-      { id: Date.now(), name: data?.name, quantity: 1, price: data?.price },
-    ]);
+    if(items[0]?.name === ""){
+      alert("yoooo")
+      setItems(null)
+      setItems([
+        
+        { id: Date.now(), name: data?.name, quantity: 1, price: data?.price },
+      ]);
+    }else {
+      setItems([
+        ...items,
+        { id: Date.now(), name: data?.name, quantity: 1, price: data?.price },
+      ]);
+    }
+   
   };
 
   const totalPrice = items.reduce(
@@ -329,7 +339,14 @@ const CreateInvoice = () => {
                 {formValue.title}
               </h2>
             </div>
-            <img src={profile?.logo} alt="" className="h-7 md:h-10" />
+            {profile?.logo ? (
+              <img src={profile?.logo} alt="" className="h-7 md:h-10" />
+            ) : (
+              <Link to="/setting/business-info" className="h-12 w-12 md:h-20 md:w-20 flex flex-col items-center justify-center border-2 border-dashed border-spacing-1 rounded-md hover:bg-slate-50">
+                <Add color="gray" />
+                <p className="text-[9px] text-gray-500">Add Logo</p>
+              </Link>
+            )}
           </div>
 
           <div className="mb-4 md:mb-7">
@@ -399,10 +416,14 @@ const CreateInvoice = () => {
               {" "}
               <thead className="">
                 <tr>
-                  <th className="pb-4 text-[12px]  md:text-[14px]">Item Name</th>
+                  <th className="pb-4 text-[12px]  md:text-[14px]">
+                    Item Name
+                  </th>
                   <th className="pb-4 text-[12px]  md:text-[14px]">Quantity</th>
                   <th className="pb-4 text-[12px]  md:text-[14px]">Price</th>
-                  <th className="pb-4 text-[12px]  md:text-[14px]">Line total</th>
+                  <th className="pb-4 text-[12px]  md:text-[14px]">
+                    Line total
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -680,7 +701,7 @@ const CreateInvoice = () => {
             <h2 className="text-[#000] text-[18px] md:text-[22px] font-semibold mb-[2px] text-center  ">
               Review
             </h2>
-            
+
             <div className="mb-[10px]">
               <label className="text-[14px] text-[#353536] leading-[20px] font-medium   mb-[8px] md:mb-[10px]">
                 Invoice Number

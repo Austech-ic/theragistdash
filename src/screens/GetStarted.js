@@ -282,7 +282,7 @@ const GetStarted = () => {
             Hello {formValue.busName}
           </p>
           <p className="text-[#000] text-[14px] md:text-[16px] z-20 xl:text-[18px] font-medium leading-[24px]  mt-2 ">
-            Welcome to Vant's KYC Verification
+            Welcome to Vant's Verification
           </p>
 
           <p className="text-[#667185] text-[14px] md:text-[14px]  font-normal leading-[24px] mt-5 w-full md:w-[70%] xl:w-[60%] ">
@@ -325,7 +325,7 @@ const GetStarted = () => {
                     size="18"
                     className="hidden md:block"
                     color={` ${
-                      selectedInfo === inf?.id ? "  #fefefe" : "#26ae5f"
+                      selectedInfo === inf?.id ? "  #fefefe" : "#D11414FF"
                     }`}
                   />
                 )}
