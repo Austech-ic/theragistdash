@@ -233,7 +233,7 @@ const Topbar = ({ setIsSidebar }) => {
           <div className="h-[5px] w-[5px] rounded-full bg-green-500 absolute top-1 right-1" />
         </Link>
 
-        <Menu>
+        {/* <Menu>
           <MenuButton bg={"none"}>
             <button className="bg-gray-100 p-2 rounded-full relative hover:opacity-80 ">
               <div className="h-3 w-3 rounded-full flex justify-center items-center bg-red-500 absolute right-0 -top-1 text-white text-[8px] font-semibold">
@@ -250,7 +250,7 @@ const Topbar = ({ setIsSidebar }) => {
 
             Notification
           </MenuList>
-        </Menu>
+        </Menu> */}
 
         <div className="flex  gap-[12px] border-[0.2px] border-[#98a2b3] px-3 py-1  items-center rounded-[8px]">
           <div className="">
