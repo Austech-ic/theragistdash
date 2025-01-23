@@ -30,7 +30,7 @@ import "react-circular-progressbar/dist/styles.css";
 
 const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
   const router = useLocation();
-  const [isActive, setIsActive] = useState(null)
+  const [isActive, setIsActive] = useState(false)
 
   let role = profileData?.user?.role;
   return (
@@ -130,7 +130,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
 
 
             <button
-              onClick={() => setIsActive("wallet")}
+              onClick={() => setIsActive(!isActive)}
               className={` ${
                 isActive === "wallet" ? "" : " "
               } py-[10px] pl-[16px] flex items-center  justify-between w-full text-[14px]    leading-[20px] md:leading-[24px] 
@@ -167,14 +167,14 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                   </div>
               </div>
 
-              {isActive === "wallet" ? (
+              {isActive  ? (
                 <ArrowUp2 size="12" variant="Linear" color="#667185" />
               ) : (
                 <ArrowDown2 size="12" variant="Linear" color="#667185" />
               )}
             </button>
 
-            {isActive === "wallet" && (
+            {isActive  && (
               <ul className="ml-[26px] pl-[12px] py-[8px]   border-l border-[#98A2B3]/50 mb-1">
                 <Link
                   to="/wallet/overview"
