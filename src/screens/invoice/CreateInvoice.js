@@ -105,7 +105,6 @@ const CreateInvoice = () => {
 
   const addProductItem = (data) => {
     if(items[0]?.name === ""){
-      alert("yoooo")
       setItems(null)
       setItems([
         
