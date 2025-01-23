@@ -35,6 +35,7 @@ import Page404 from "./screens/404";
 import Pin from "./screens/BusinessSettings/Pin";
 import SaveInvoice from "./screens/invoice/SaveInvoice";
 import Store from "./screens/Store";
+import UsdWallet from "./screens/wallet/usdWallet/wallet";
 
 const DashboardRoutes = () => {
   return (
@@ -80,6 +81,11 @@ const DashboardRoutes = () => {
                 path="/verification"
                 exact={true}
                 element={<Verification />}
+              />
+               <Route
+                path="/usd-wallet"
+                exact={true}
+                element={<UsdWallet />}
               />
               <Route path="/wallet" exact={true} element={<Wallet />}>
                 <Route

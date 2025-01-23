@@ -122,6 +122,52 @@ const WalletOverdiv = () => {
   const [isVantTagModal, setIsVantTagModal] = useState(false);
   const [transferVantPhase, setTransferVantPhase] = useState(1);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isSwitchWallet, setIsSwitchWallet] = useState(false);
+
+  async function getProfile(page) {
+    const response = await api.getProfile({ params: { page } });
+    return response;
+  }
+
+  const ProfileQuery = useQuery(["profile"], () => getProfile(), {
+    keepPreviousData: true,
+    refetchOnWindowFocus: "always",
+  });
+  const profileData = ProfileQuery?.data || [];
+
+  const toggleWallet = () => {
+    setIsSwitchWallet(!isSwitchWallet);
+  };
+  const initialSelect = {
+    name: "NGN Wallet",
+    Image: "/assets/ng.png",
+    abb: "NGN",
+    symbol: "₦",
+    color: "#26AE5F",
+    balance: profileData?.default_partner?.wallet_balance,
+  };
+
+  const [selectedCard, setSelectedCard] = useState(initialSelect || []);
+
+  const Card = [
+    {
+      name: "NGN Wallet",
+      Image: "/assets/ng.png",
+      abb: "NGN",
+      symbol: "₦",
+      color: "#26AE5F",
+      balance: profileData?.default_partner?.wallet_balance,
+    },
+    {
+      name: "USD Wallet",
+      abb: "USD",
+      Image: "/assets/USbig.png",
+
+      symbol: "$",
+      color: "#3B6896",
+      balance: profileData?.default_partner?.dollar_wallet_balance,
+    },
+  ];
 
   const CloseVantTagModal = () => {
     setIsVantTagModal(!isVantTagModal);
@@ -442,17 +488,6 @@ const WalletOverdiv = () => {
     }
   };
 
-  async function getProfile(page) {
-    const response = await api.getProfile({ params: { page } });
-    return response;
-  }
-
-  const ProfileQuery = useQuery(["profile"], () => getProfile(), {
-    keepPreviousData: true,
-    refetchOnWindowFocus: "always",
-  });
-  const profileData = ProfileQuery?.data || [];
-
   useEffect(() => {
     if (profileData?.default_partner?.hasPin === false) {
       setIsCreatePin(true);
@@ -542,30 +577,62 @@ const WalletOverdiv = () => {
 
       <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-[16px] md:gap-[20px] mt-5 ">
         <li>
-          <div className="rounded-[12px] px-[16px] pt-4 pb-6 bg-[#26ae5f] ">
-            <div className="flex-between">
-              <div className="flex-item gap-2">
-                <div className="py-[5px] text-[12px] px-[10px] flex cursor-pointer bg-white rounded-[48px] w-[90px]  gap-[8px] banks-center ">
-                  <img
-                    src="/assets/ng.png"
-                    className="h-[13px] w-[13px]"
-                    alt="flag ng"
-                  />
+          <div
+            className={`rounded-[12px] px-[16px] pt-4 pb-6 `}
+            style={{ backgroundColor: selectedCard?.color }}
+          >
+            <div>
+              <div className="flex-between">
+                <div className="flex-item gap-2">
+                  <div>
+                    <div
+                      onClick={toggleWallet}
+                      className="py-[5px] text-[12px] px-[10px] flex items-center cursor-pointer bg-white rounded-[48px] w-[90px]  gap-[8px] banks-center "
+                    >
+                      <img
+                        src={selectedCard?.Image}
+                        className="h-[13px] w-[13px]"
+                        alt="flag ng"
+                      />
 
-                  <p>NGN</p>
-                  <ArrowDown2 variant="Bold" size={20} />
+                      <p>{selectedCard?.abb}</p>
+                      <ArrowDown2 variant="Bold" size={20} />
+                    </div>
+                  </div>
+
+                  <button onClick={hideMyBalance}>
+                    {hideBalance ? (
+                      <Eye color="#fff" variant="Linear" size={14} />
+                    ) : (
+                      <EyeSlash color="#fff" variant="Linear" size={14} />
+                    )}
+                  </button>
                 </div>
-                <button onClick={hideMyBalance}>
-                  {hideBalance ? (
-                    <Eye color="#fff" variant="Linear" size={14} />
-                  ) : (
-                    <EyeSlash color="#fff" variant="Linear" size={14} />
-                  )}
-                </button>
+                <p className="text-[#fff]  font-medium  text-[12px] leading-[14px]  tracking-[0.2px]   ">
+                  {formatDateToText(new Date())}
+                </p>
               </div>
-              <p className="text-[#fff]  font-medium  text-[12px] leading-[14px]  tracking-[0.2px]   ">
-                {formatDateToText(new Date())}
-              </p>
+              {isSwitchWallet && (
+                <div className="mt-1">
+                  {Card &&
+                    Card.filter((item) => item?.abb !== selectedCard?.abb).map(
+                      (item, index) => (
+                        <div
+                          onClick={() => setSelectedCard(item)}
+                          className="py-[4px] text-[10px] px-[10px] flex items-center cursor-pointer bg-gray-100 rounded-[48px] w-[90px]  justify-between banks-center "
+                        >
+                          <img
+                            src={item?.Image}
+                            className="h-[13px] w-[13px]"
+                            alt="flag ng"
+                          />
+
+                          <p>{item?.abb}</p>
+                        </div>
+                      )
+                    )}
+                </div>
+              )}
             </div>
 
             <div className="flex-between mt-6">
@@ -577,10 +644,10 @@ const WalletOverdiv = () => {
                   </p>
                 ) : (
                   <NumericFormat
-                    value={profileData?.default_partner?.wallet_balance}
+                    value={selectedCard?.balance}
                     displayType={"text"}
                     thousandSeparator={true}
-                    prefix={"₦"}
+                    prefix={selectedCard?.symbol}
                     decimalScale={2}
                     fixedDecimalScale={true}
                     renderText={(value) => (
@@ -606,50 +673,54 @@ const WalletOverdiv = () => {
               </button>
             </div>
           </div>
-          {profileData?.default_partner?.account_numbers.length > 0 && (
-            <div className=" bg-[#1B2026] relative   rounded-[12px]  px-[16px] pb-[34px] pt-[24px] -mt-[16px]    ">
-              <p className="text-[#fff]  font-medium  text-[12px] leading-[14px]  tracking-[0.2px]  mb-[8px]  ">
-                {profileData?.default_partner?.account_numbers[0]?.bank}
-              </p>
-              <div
-                style={{
-                  flexDirection: "row",
-                  alignbanks: "center",
-                  justifyContent: "space-between",
-                }}
-              >
-                <p className="text-[#fff]  font-semibold  text-[14px] leading-[17px]  tracking-[0.2px]    ">
-                  {
-                    profileData?.default_partner?.account_numbers[0]
-                      ?.account_number
-                  }
+          {profileData?.default_partner?.account_numbers.length > 0 &&
+            selectedCard?.abb === "NGN" && (
+              <div className=" bg-[#1B2026] relative   rounded-[12px]  px-[16px] pb-[34px] pt-[24px] -mt-[16px]    ">
+                <p className="text-[#fff]  font-medium  text-[12px] leading-[14px]  tracking-[0.2px]  mb-[8px]  ">
+                  {profileData?.default_partner?.account_numbers[0]?.bank}
                 </p>
-                <button
-                  onClick={() =>
-                    handleCopy(
+                <div
+                  style={{
+                    flexDirection: "row",
+                    alignbanks: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <p className="text-[#fff]  font-semibold  text-[14px] leading-[17px]  tracking-[0.2px]    ">
+                    {
                       profileData?.default_partner?.account_numbers[0]
                         ?.account_number
-                    )
-                  }
-                  className="absolute top-[12px] right-[16px]"
-                >
-                  <p className="text-[#fff] font-semibold font-i_medium text-[10px] leading-[9.68px]  ">
-                    {copiedRef ===
-                    profileData?.default_partner?.account_numbers[0]
-                      ?.account_number ? (
-                      "Copied!"
-                    ) : (
-                      <Copy size={20} variant="Bold" color="#fff" />
-                    )}
-                    {/* <Copy size={20} variant="Bold" color="#fff" /> */}
+                    }
                   </p>
-                </button>
+                  <button
+                    onClick={() =>
+                      handleCopy(
+                        profileData?.default_partner?.account_numbers[0]
+                          ?.account_number
+                      )
+                    }
+                    className="absolute top-[12px] right-[16px]"
+                  >
+                    <p className="text-[#fff] font-semibold font-i_medium text-[10px] leading-[9.68px]  ">
+                      {copiedRef ===
+                      profileData?.default_partner?.account_numbers[0]
+                        ?.account_number ? (
+                        "Copied!"
+                      ) : (
+                        <Copy size={20} variant="Bold" color="#fff" />
+                      )}
+                      {/* <Copy size={20} variant="Bold" color="#fff" /> */}
+                    </p>
+                  </button>
+                </div>
+                <p className="text-[#fff]  font-normal font-i_normal text-[12px] leading-[14px]  tracking-[0.2px] ">
+                  {
+                    profileData?.default_partner?.account_numbers[0]
+                      ?.account_name
+                  }
+                </p>
               </div>
-              <p className="text-[#fff]  font-normal font-i_normal text-[12px] leading-[14px]  tracking-[0.2px] ">
-                {profileData?.default_partner?.account_numbers[0]?.account_name}
-              </p>
-            </div>
-          )}
+            )}
         </li>
 
         <li className="rounded-lg overflow-hidden border-[0.8px] border-[#E4E7EC] bg-[#fefefeec] shadow p-2 md:p-4 ">

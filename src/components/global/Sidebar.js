@@ -30,6 +30,7 @@ import "react-circular-progressbar/dist/styles.css";
 
 const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
   const router = useLocation();
+  const [isActive, setIsActive] = useState(null)
 
   let role = profileData?.user?.role;
   return (
@@ -127,8 +128,80 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                 Overview
               </Link>
 
-              {/* {(role === "manager" || role ==="owner") &&  */}
-              <Link
+
+            <button
+              onClick={() => setIsActive("wallet")}
+              className={` ${
+                isActive === "wallet" ? "" : " "
+              } py-[10px] pl-[16px] flex items-center  justify-between w-full text-[14px]    leading-[20px] md:leading-[24px] 
+                ${
+                  window.location.pathname === "/wallet/overview" ||
+                  window.location.pathname === "/wallet/topup" ||
+                  window.location.pathname === "/usd-wallet"||
+                  window.location.pathname === "/wallet/debit"
+                    ? "text-[#26ae5f] font-medium rounded-md"
+                    : "text-[#667185] font-normal "
+                }`}
+            >
+              <div className="flex items-center relative ">
+                {" "}
+                <WalletMoney
+                  className="mr-[12px]"
+                  size={20}
+                  variant={
+                    window.location.pathname === "/wallet/overview" ||
+                    window.location.pathname === "/wallet/topup" ||
+                    window.location.pathname === "/usd-wallet" ||
+                    window.location.pathname === "/wallet/debit"
+                      ? "Bold"
+                      : "Linear"
+                  }
+                />
+                Wallet
+
+                <div className="absolute -right-3 ">
+                  <div className="flex h-[8px] w-[8px] relative">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-300 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-[8px] w-[8px] bg-orange-400"></span>
+                  </div>
+                  </div>
+              </div>
+
+              {isActive === "wallet" ? (
+                <ArrowUp2 size="12" variant="Linear" color="#667185" />
+              ) : (
+                <ArrowDown2 size="12" variant="Linear" color="#667185" />
+              )}
+            </button>
+
+            {isActive === "wallet" && (
+              <ul className="ml-[26px] pl-[12px] py-[8px]   border-l border-[#98A2B3]/50 mb-1">
+                <Link
+                  to="/wallet/overview"
+                  className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]    mb-[14px] ${
+                      window.location.pathname === "/wallet/overview" ||
+                  window.location.pathname === "/wallet/topup" ||
+                  window.location.pathname === "/wallet/debit"
+                      ? "bg-[#F7F9FC] font-medium "
+                      : " font-normal"
+                  }`}
+                >
+                  <li className="">Naira Wallet</li>
+                </Link>
+
+                <Link
+                  to="/usd-wallet"
+                  className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]  ${
+                    window.location.pathname === "/usd-wallet"
+                      ? "bg-[#F7F9FC] font-medium  "
+                      : " font-normal"
+                  }`}
+                >
+                  <li className="">Dollar Wallet</li>
+                </Link>
+              </ul>
+            )} 
+              {/* <Link
                 to="/wallet/overview"
                 onClick={onClose}
                 className={` py-[10px] pl-[16px] flex items-center text-[14px]      leading-[20px] md:leading-[24px] ${
