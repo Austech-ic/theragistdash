@@ -11,6 +11,9 @@ body {
   font-optical-sizing: auto;
 
 }
+input {
+  font-size: 16px;
+}
 
 *::-webkit-scrollbar {
   display: none;

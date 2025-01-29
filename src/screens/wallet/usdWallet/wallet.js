@@ -711,7 +711,7 @@ const UsdWallet = () => {
         isCentered
         isOpen={isFundUSD}
         onClose={closeFundUSD}
-        size={{ base: "xs", sm: "md", lg: "xl" }}
+        size={{ sm: "md", lg: "xl" }}
         style={{ borderRadius: 12 }}
         motionPreset="slideInBottom"
         className="rounded-[12px]"
@@ -732,9 +732,9 @@ const UsdWallet = () => {
               <Divider color="#98A2B3" />
               <ModalBody
                 pt={{ base: "20px", md: "24px" }}
-                px={{ base: "16px", md: "24px" }}
+                px={{ base: "10px", md: "18px" }}
                 pb={{ base: "30px", md: "40px" }}
-                className="pt-[16px] md:pt-[20px] px-[16px] md:px-[20px] pb-[24px] md:pb-[30px]"
+                className="pt-[16px] md:pt-[20px] px-[10px] md:px-[20px] pb-[24px] md:pb-[30px]"
               >
                 <div className="p-2 py-3 mb-3 border-[#3B6896] border bg-[#3B6896] bg-opacity-35 rounded-lg">
                   <p className="text-sm  ">Naira Wallet Balance</p>
