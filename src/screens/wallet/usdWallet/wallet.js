@@ -677,12 +677,12 @@ const UsdWallet = () => {
               }}
             >
               <p className="text-[#fff]  font-semibold  text-[14px] leading-[17px]  tracking-[0.2px]    ">
-                1 NGN
+                1 USD
               </p>
               <ArrowSwapHorizontal className="w-5 h-5 text-white" />
 
               <p className="text-[#fff]  font-semibold  text-[14px] leading-[17px]  tracking-[0.2px]    ">
-                USD {rate?.buy_rate}
+                NGN {rate?.buy_rate}
               </p>
             </div>
           </div>
