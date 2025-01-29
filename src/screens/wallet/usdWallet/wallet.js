@@ -107,8 +107,7 @@ const UsdWallet = () => {
   const navigation = useNavigate();
   const [hideBalance, setHideBalance] = useState(false);
   const [isFundUSD, setIsFundUSD] = useState(false);
-  const [bankName, setBankName] = useState("");
-  const [banksVisible, setBanksVisible] = useState(false);
+
   const [selectedBank, setSelectedBank] = useState(null);
   const [accountNumber, setAccountNumber] = useState("");
   const [nameLoading, setNameLoading] = useState(false);
@@ -126,10 +125,8 @@ const UsdWallet = () => {
   const [purpose, setPurpose] = useState("");
   const [isComingSoon, setIsComingSoon] = useState(false);
   const [copiedRef, setCopiedRef] = useState(null);
-  const [phoneFocus, setPhoneFocus] = useState(false);
   const [tag, setTag] = useState("");
-  const [vantUser, setVantUser] = useState(null);
-  const [isTitleValid, setTitleValid] = useState(false);
+ 
   const [isVantTagModal, setIsVantTagModal] = useState(false);
   const [withdrawUsdPhase, setwithdrawUsdPhase] = useState(1);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -174,18 +171,10 @@ const UsdWallet = () => {
     }
   };
 
-  const handleAmountChange = (e) => {
-    const value = e.target.value;
 
-    // Only allow digits (no letters, special characters, or signs)
-    const numericValue = value.replace(/[^0-9]/g, "");
-
-    setAmount(numericValue);
-  };
 
   const [pin, setPin] = useState("");
 
-  const isPin = false;
 
   const closeFundUSD = () => {
     setIsFundUSD(false);
@@ -216,39 +205,14 @@ const UsdWallet = () => {
     setFilteredData(BankQuery.data);
   }, [BankQuery.data]);
 
-  const handleSearch = (query) => {
-    const filteredbanks = BankQuery.data.filter((bank) =>
-      bank.name.toLowerCase().includes(query.toLowerCase())
-    );
-    setFilteredData(filteredbanks);
-  };
+
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleChange = (text) => {
-    //console.log(accountNumber);
-    if (accountNumber !== "" && selectedBank == "") {
-      // Show an error message or do something else here
-      enqueueSnackbar("Please Select a bank", { variant: "error" });
+ 
 
-      return;
-    }
 
-    if (text.length == 10) {
-      // Search from the API here, using the input text as the search query
-      // searchAPI(text);
 
-      verifyAccount();
-    }
-  };
 
-  useEffect(() => {
-    handleChange(accountNumber);
-  }, [accountNumber]);
-
-  const handleSelectBank = (bank) => {
-    setSelectedBank(bank);
-    setBanksVisible(false);
-  };
 
 
   const verifyAccount = async () => {
@@ -395,7 +359,6 @@ const UsdWallet = () => {
     setPin("");
     setfundPhase(1);
     setwithdrawUsdPhase(1);
-    setTag("");
     setSelectedBank(null);
   }
 
@@ -422,7 +385,7 @@ const UsdWallet = () => {
     }
   };
 
-  const handleVantTransfer = async () => {
+  const handlewithdrawUSD= async () => {
     setIsLoading(true);
     try {
       const response = await api.withdrawUSD({
@@ -503,33 +466,7 @@ const UsdWallet = () => {
   const closeComingSoon = () => {
     setIsComingSoon(false);
   };
-  const checkTitle = useCallback(
-    debounce(async (title) => {
-      try {
-        const response = await api.checkUserName({
-          name: title,
-        });
 
-        setTitleValid(response.userExists);
-        setVantUser(response.user);
-        // //console.log(response.user)
-      } catch (error) {
-        //console.log("Error checking title:", error);
-        // Handle the error appropriately
-      }
-    }, 300),
-    []
-  );
-
-  useCopilotReadable({
-    description: "Total Credit",
-    value: summaryData?.type_summary?.credit?.total,
-  });
-
-  useCopilotReadable({
-    description: "Total Debit",
-    value: summaryData?.type_summary?.debit?.total,
-  });
 
   const quickAction = [
     {
@@ -570,11 +507,7 @@ const UsdWallet = () => {
     },
   ];
 
-  const amountToNaira = () => {
-    const amountInNaira = amount * parseFloat(rate?.buy_rate);
-    console.log("amountInNaira", amountInNaira);
-    return amountInNaira;
-  };
+
 
   return (
     <div className="overflow-y-auto px-[10px] md:px-[16px] xl:px-[20px] border">
@@ -1054,7 +987,7 @@ const UsdWallet = () => {
             <>
               <PredivModal
                 tag={tag}
-                action={handleVantTransfer}
+                action={handlewithdrawUSD}
                 handleClose={ClosewithdrawUsdModal}
                 amount={amount}
                 onClose={ClosewithdrawUsdModal}

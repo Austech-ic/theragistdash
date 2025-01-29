@@ -411,7 +411,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                 Issue Invoice
               </Link>
 
-              <Link
+              {/* <Link
                 to="/card"
                 onClick={onClose}
                 className={` py-[10px] pl-[16px] flex items-center text-[14px]     leading-[20px] md:leading-[24px] ${
@@ -428,7 +428,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                   }
                 />
                 Expense Card
-              </Link>
+              </Link> */}
 
               {/* <Link
               to="/verification"
