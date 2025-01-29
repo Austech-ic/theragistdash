@@ -170,7 +170,7 @@ const RecentTransaction = () => {
                               value={result?.amount}
                               displayType={"text"}
                               thousandSeparator={true}
-                              prefix={"₦"}
+                              prefix={result?.reason === "Dollar Wallet Funding" ? "$" :"₦"}
                               decimalScale={2}
                               fixedDecimalScale={true}
                               // renderText={(value) => (

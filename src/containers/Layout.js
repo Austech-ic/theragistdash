@@ -39,14 +39,7 @@ function Layout() {
     //console.log("Valid token");
   }
 
-  // if (userData) {
-  //   const decodedData = JSON.parse(atob(userData?.split(".")[1]));
-  //   let currentDate = new Date();
-  //   if (decodedData?.exp * 1000 < currentDate.getTime()) {
-  //     localStorage.removeItem("userData");
-  //     return <Navigate to="/login" />;
-  //   }
-  // }
+
 
   const toggleSidebar = () => {
     setIsSidebar(!isSidebar);

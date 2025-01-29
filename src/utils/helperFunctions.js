@@ -98,6 +98,17 @@ export function formatDate(datetimeStr) {
   return formattedDate;
 }
 
+export const getExchangeRate = (currency, rates) => {
+  for (const item of rates) {
+    if (item?.name == currency) {
+      return item;
+    }
+    if (item?.name == currency) {
+      return item;
+    }
+  }
+}
+
 
 export function formatDateToText (date) {
   const months = [

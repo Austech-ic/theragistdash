@@ -36,6 +36,8 @@ import Pin from "./screens/BusinessSettings/Pin";
 import SaveInvoice from "./screens/invoice/SaveInvoice";
 import Store from "./screens/Store";
 import UsdWallet from "./screens/wallet/usdWallet/wallet";
+import DollarCard from "./screens/ExpenseCard/DollarCard";
+import NairaCard from "./screens/ExpenseCard/NairaCard";
 
 const DashboardRoutes = () => {
   return (
@@ -62,6 +64,17 @@ const DashboardRoutes = () => {
                 path="/transaction"
                 exact={true}
                 element={<Transactions />}
+              />
+
+               <Route
+                path="/usd-card"
+                exact={true}
+                element={<DollarCard />}
+              />
+                 <Route
+                path="/naira-card"
+                exact={true}
+                element={<NairaCard />}
               />
                <Route
                 path="/store"

@@ -17,6 +17,7 @@ export const UserProvider = ({ children }) => {
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState(null);
+  const [exchangeRate, setExchangeRate] = useState(null);
   const navigate = useNavigate();
 
   // Fetch user data on mount
@@ -37,11 +38,14 @@ export const UserProvider = ({ children }) => {
           const kycResponse = await api.getKyc({});
           setPersonalInfo(kycResponse?.data || null);
 
-          const profileResponse = await api.getProfile()
+          const profileResponse = await api.getProfile();
           setProfile(profileResponse?.default_partner || null);
 
           const customersResponse = await api.getCustomers({});
           setCustomers(customersResponse?.data || []);
+
+          const exchangeRateResponse = await api.exchangeRates({});
+          setExchangeRate(exchangeRateResponse?.data || null);
         } catch (error) {
           console.error("Error fetching user data:", error);
         } finally {
@@ -97,7 +101,8 @@ export const UserProvider = ({ children }) => {
         personalInfo,
         customers,
         transactions,
-        profile
+        profile,
+        exchangeRate,
       }}
     >
       {children}

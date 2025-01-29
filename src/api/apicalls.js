@@ -29,7 +29,9 @@ import {
  UPDATEIMAGE,
  CREATEPRODUCT,
  UPDATEPRODUCT,
- GETPRODUCT
+ GETPRODUCT,
+ EXCHANGERATES,
+ FUNDUSD, WITHDRAWUSD
 } from "../utils/config";
 import { apiDelete, apiGet, apiGetCSV, apiPost, apiPut } from "../utils/utils";
 
@@ -213,6 +215,23 @@ export function deleteProduct(id, data) {
   return apiDelete(UPDATEPRODUCT +id, data, { 'Content-Type': 'multipart/form-data'});
 }
 
+
+
+//exchange rate
+export function exchangeRates(data = null) {
+  return apiGet(EXCHANGERATES, data);
+}
+
+
+//Fund USD
+export function fundUSD(data) {
+  return apiPost(FUNDUSD, data);
+}
+
+//Withdraw USD
+export function withdrawUSD(data) {
+  return apiPost(WITHDRAWUSD, data);
+}
 
 
 

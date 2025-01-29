@@ -9,11 +9,18 @@ import 'react-tooltip/dist/react-tooltip.css'
 import { CopilotKitWrapper } from "./utils/CopilotKitWrapper";
 
 const overrides = extendTheme({
+  fonts: {
+    body: '"Jost", sans-serif', // For headings
+    custom: '"Space Mono", monospace', // For body text
+  },
   styles: {
     global: () => ({
       body: {
-        fontFamily: '"Jost", sans-serif',
+        fontFamily: 'body',
       },
+      ".robot": {
+        fontFamily: 'custom'
+      }
     }),
   },
 });
