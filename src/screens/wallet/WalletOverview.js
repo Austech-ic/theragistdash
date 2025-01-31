@@ -1145,7 +1145,7 @@ const WalletOverdiv = () => {
                 name={accountName}
                 purpose={purpose}
                 naration={naration}
-                handleTransfer={handleTransfer}
+                action={handleTransfer}
                 handleClose={closeTransferOthers}
                 bank={selectedBank?.name}
                 amount={amount}
