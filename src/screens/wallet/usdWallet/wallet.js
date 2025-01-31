@@ -637,7 +637,7 @@ const UsdWallet = () => {
             ))}
           </div>
         </li>
-        <li className="rounded-lg relative overflow-hidden border-[0.8px] bg-[#fefefe]  border-[#E4E7EC] shadow p-2 md:p-4 h-[225px] flex justify-center  flex-col items-center">
+        {/* <li className="rounded-lg relative overflow-hidden border-[0.8px] bg-[#fefefe]  border-[#E4E7EC] shadow p-2 md:p-4 h-[225px] flex justify-center  flex-col items-center">
           <p className="text-[#000] text-center   font-semibold text-[14px] leading-[14px]   tracking-[0.2px] ">
             Transaction Chart
           </p>
@@ -702,7 +702,7 @@ const UsdWallet = () => {
               </p>
             </div>
           </div>
-        </li>
+        </li> */}
       </ul>
 
       <Modal

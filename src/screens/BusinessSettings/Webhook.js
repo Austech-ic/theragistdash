@@ -8,40 +8,88 @@ import api from "../../api";
 
 const Webhook = () => {
   const [webhook, setWebhook] = useState("");
-  const {profileData, refetch} = useOutletContext();
-  const [isLoading, setIsLoading]= useState(false);
+  const { profileData, refetch } = useOutletContext();
+  const [isLoading, setIsLoading] = useState(false);
+  const [formValue, setFormValue] = useState({
+    firstName: "",
+    lastName: "",
+    busName: "",
+    busWebsite: "",
+    busDescription: "",
+    busEmail: "",
+    busSupportEmail: "",
+    chargeBackEmail: "",
+    busCity: "",
+    busAddress: "",
+    bvn: "",
+    rcNumber: "",
+    email: "",
+    phone: "",
+    incopDate: "",
+    address: "",
+    nin: "",
+    postalCode: "",
+    houseNumber: "",
+    state: "",
+    Country: "",
+  });
 
   useEffect(() => {
     //If there's no profile data, set selectedInfo to 1
     if (profileData) {
       setWebhook(profileData.webhook_url);
+
+      setFormValue({
+        ...formValue,
+        firstName: profileData?.first_name,
+        lastName: profileData?.last_name,
+        phone: profileData?.phone,
+        email: profileData?.email,
+        nin: profileData?.nin,
+        address: profileData?.house_address,
+        busName: profileData?.name,
+        busWebsite: profileData?.website,
+        busDescription: profileData?.description,
+        busEmail: profileData?.email,
+        busSupportEmail: profileData?.support_email,
+        chargeBackEmail: profileData?.chargeback_email,
+        rcNumber: profileData?.rc_number,
+        incopDate: profileData?.incorporation_date,
+        busCity: profileData?.city,
+        busAddress: profileData?.address,
+        bvn: profileData?.bvn,
+        houseNumber: profileData?.house_no,
+        state: profileData?.state,
+        Country: profileData?.country,
+        postalCode: profileData?.postal_code,
+      });
     }
   }, [profileData]);
 
+  async function submitKyb(e) {
+    e.preventDefault();
 
-   async function submitKyb(e) {
-      e.preventDefault();
-  
-      setIsLoading(true);
-  
-      try {
-        const payload = {
-          webhook_url: webhook
-         
-        };
-  
-        const response = await api.editBusInfo({ data: encryptaValue(payload) });
-        const decr = JSON.parse(decryptaValue(response?.data));
-        enqueueSnackbar(decr?.message, { variant: "success" });
-  
-        setIsLoading(false);
-      } catch (error) {
-        //console.log("error", error);
-        enqueueSnackbar(error.message, { variant: "error" });
-        // enqueueSnackbar("errooor", { variant: "error" });
-        setIsLoading(false);
-      }
+    setIsLoading(true);
+
+    try {
+      const payload = {
+        webhook_url: webhook,
+       
+       
+      };
+
+      const response = await api.updateBusinessProfile({ data: encryptaValue(payload) });
+      const decr = JSON.parse(decryptaValue(response?.data));
+      enqueueSnackbar(decr?.message, { variant: "success" });
+      refetch()
+      setIsLoading(false);
+    } catch (error) {
+      //console.log("error", error);
+      enqueueSnackbar(error.message, { variant: "error" });
+      // enqueueSnackbar("errooor", { variant: "error" });
+      setIsLoading(false);
     }
+  }
 
   const handleChange = (e) => {
     setWebhook(e.target.value);
@@ -82,7 +130,6 @@ const Webhook = () => {
                 placeholder="https://mywebhook.com"
                 className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                 required
-                name="firstName"
                 value={webhook}
                 onChange={(e) => {
                   setWebhook(e.target.value);
@@ -94,23 +141,22 @@ const Webhook = () => {
             </div>
           </div>
           <div className="py-[20px] border-t border-b-[#E4E7EC]  ">
-              <div className="flex-item gap-2 w-full">
-                <div className="flex-item justify-end">
-                  {" "}
-                  <button
-                    onClick={submitKyb}
-                    className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[8px] text-[14px] font-medium text-white"
-                  >
-                    {isLoading ? (
-                      <ClipLoader color={"white"} size={20} />
-                    ) : (
-                      <> Submit</>
-                    )}
-                  </button>
-                </div>
+            <div className="flex-item gap-2 w-full">
+              <div className="flex-item justify-end">
+                {" "}
+                <button
+                  onClick={submitKyb}
+                  className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[8px] text-[14px] font-medium text-white"
+                >
+                  {isLoading ? (
+                    <ClipLoader color={"white"} size={20} />
+                  ) : (
+                    <> Submit</>
+                  )}
+                </button>
               </div>
             </div>
-
+          </div>
         </m.div>
       </div>
     </div>

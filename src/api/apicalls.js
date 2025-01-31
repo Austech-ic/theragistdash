@@ -105,7 +105,10 @@ export function deleteTeamMember(data) {
   return apiDelete(DELETETEAMMEMBER + data);
 }
 
-
+//update businessprofile
+export function updateBusinessProfile(data) {
+  return apiPut(GETBUSINESSPROFILE, data);
+}
 
 //transfer
 export function initiateTransfer(data) {
