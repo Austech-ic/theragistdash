@@ -9,6 +9,7 @@ import { enqueueSnackbar } from "notistack";
 import api from "../api";
 import { setUserData } from "../utils/utils";
 import { decryptaValue, encryptaValue } from "../utils/helperFunctions";
+import { industries, RegistrationType } from "../utils/Data";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -29,6 +30,9 @@ const SignUp = () => {
     email: "",
     phone: "",
     incopDate: "",
+    industry: "",
+    registrationType: "",
+    isRegistered: null,
   });
   const handleInputChange = (e) => {
     setFormValue({ ...formValue, [e.target.name]: e.target.value });
@@ -114,7 +118,11 @@ const SignUp = () => {
         password,
         password_confirmation: confirmPassword,
         rc_number: formValue.rcNumber,
+        industry: formValue.industry,
+        business_registration_type: formValue.registrationType,
+        business_registered: formValue.isRegistered,
       };
+      console.log("Register", payload)
 
       const response = await api.signUp({
         data: encryptaValue(payload),
@@ -316,56 +324,134 @@ const SignUp = () => {
               />
             </div>
           </div>
-
           <div className="mb-[24px]">
             <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
-              RC Number
+              Industry Type
             </label>
             <div className=" relative    flex items-center">
-              <CloseCircle
-                size="16"
-                color="#98A2B3"
-                className="absolute right-[16px] cursor-pointer"
-                onClick={() => deleteInput("rcNumber")}
-              />
-
-              <input
-                type="text"
-                placeholder="000000"
-                className="w-full sm:w-[400px] md:w-[486px] h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                autoComplete
-                name="rcNumber"
-                value={formValue.rcNumber}
-                onChange={(e) => {
-                  handleInputChange(e);
-                }}
-                autoCapitalize="off"
-                autoCorrect="off"
-                spellCheck="false"
-              />
-            </div>
-          </div>
-          <div className="mb-[24px]">
-            <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
-              Incorporation Date
-            </label>
-            <div className=" relative    flex items-center">
-              <input
-                type="date"
+              <select
                 placeholder=""
                 className="w-full sm:w-[400px] md:w-[486px] h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                autoComplete
-                name="incopDate"
-                value={formValue.incopDate}
+                name="industry"
+                value={formValue.industry}
                 onChange={(e) => {
                   handleInputChange(e);
                 }}
-                autoCapitalize="off"
-                autoCorrect="off"
-                spellCheck="false"
-              />
+                required
+              >
+                <option value="">-- Select Industry Type--</option>
+                {industries.map((industy, index) => {
+                  return (
+                    <option key={index} value={industy}>
+                      {industy}
+                    </option>
+                  );
+                })}
+              </select>
             </div>
           </div>
+          <div className="mb-[24px]">
+            <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
+              Is Your Business Registered
+            </label>
+            <div className=" relative    flex items-center">
+              <select
+                placeholder=""
+                className="w-full sm:w-[400px] md:w-[486px] h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                name="isRegistered"
+                value={formValue.isRegistered}
+                onChange={(e) => {
+                  handleInputChange(e);
+                }}
+                required
+              >
+                <option value="">-- Select Options --</option>
+                <option value={1}>Yes</option>
+                <option value={0}>No</option>
+              </select>
+            </div>
+          </div>
+
+          {formValue.isRegistered == 1 && (
+            <>
+              <div className="mb-[24px]">
+                <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
+                  Business Registration Type
+                </label>
+                <div className=" relative    flex items-center">
+                  <select
+                    placeholder=""
+                    className="w-full sm:w-[400px] md:w-[486px] h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    name="registrationType"
+                    value={formValue.registrationType}
+                    onChange={(e) => {
+                      handleInputChange(e);
+                    }}
+                    required
+                  >
+                    <option value="">-- Select Options --</option>
+                    {RegistrationType.map((type, index) => {
+                      return (
+                        <option key={index} value={type}>
+                          {type}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
+              </div>
+
+              <div className="mb-[24px]">
+                <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
+                  RC Number
+                </label>
+                <div className=" relative    flex items-center">
+                  <CloseCircle
+                    size="16"
+                    color="#98A2B3"
+                    className="absolute right-[16px] cursor-pointer"
+                    onClick={() => deleteInput("rcNumber")}
+                  />
+
+                  <input
+                    type="text"
+                    placeholder="XXXXX"
+                    className="w-full sm:w-[400px] md:w-[486px] h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    autoComplete
+                    name="rcNumber"
+                    value={formValue.rcNumber}
+                    onChange={(e) => {
+                      handleInputChange(e);
+                    }}
+                    autoCapitalize="off"
+                    autoCorrect="off"
+                    spellCheck="false"
+                  />
+                </div>
+              </div>
+              <div className="mb-[24px]">
+                <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
+                  Incorporation Date
+                </label>
+                <div className=" relative    flex items-center">
+                  <input
+                    type="date"
+                    placeholder=""
+                    className="w-full sm:w-[400px] md:w-[486px] h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    autoComplete
+                    name="incopDate"
+                    value={formValue.incopDate}
+                    onChange={(e) => {
+                      handleInputChange(e);
+                    }}
+                    autoCapitalize="off"
+                    autoCorrect="off"
+                    spellCheck="false"
+                  />
+                </div>
+              </div>
+            </>
+          )}
 
           <div className="mb-[24px]">
             <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">

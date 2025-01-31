@@ -2,18 +2,21 @@ import React from 'react';
 
 const CreditCard = () => {
   return (
-    <div className="w-96 h-56 relative  group">
+    <div className="w-full h-56 relative  group">
       {/* Card Container with flip animation */}
       <div className="relative w-full h-full transition-transform duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
         {/* Front of the card */}
-        <div className="absolute w-full h-full [backface-visibility:hidden] bg-gradient-to-r from-indigo-500 to-[#26ae5f] rounded-xl p-6 text-white shadow-xl">
+        <div className="absolute w-full h-full [backface-visibility:hidden] bg-gradient-to-r from-[#3B6896] to-[#26ae5f] rounded-xl p-6 text-white shadow-xl">
           {/* Chip */}
-          <div className="w-12 h-10 bg-yellow-400/80 rounded-md mb-4"></div>
+          <div className=" rounded-md mb-4">
+          
+          <img   src='/assets/chip.png' alt='chip'  className='w-12 h-8'/>
+          </div>
           
           {/* Card Number */}
           <div className="space-y-2 mb-8">
             <div className="text-2xl robot tracking-wider font-medium">
-              4242 4242 4242 4242
+              4242 4242 4242 4243
             </div>
           </div>
           
@@ -30,7 +33,7 @@ const CreditCard = () => {
           </div>
           
           {/* Card Brand */}
-          <div className="absolute bottom-6 right-6 text-2xl font-bold opacity-70">
+          <div className="absolute bottom-5 right-6 text-2xl font-bold opacity-70">
             VISA
           </div>
         </div>

@@ -31,7 +31,11 @@ import {
  UPDATEPRODUCT,
  GETPRODUCT,
  EXCHANGERATES,
- FUNDUSD, WITHDRAWUSD
+ FUNDUSD, WITHDRAWUSD,
+ GETCARDDETAILS,
+ GETCARDHOLDERDETAILS,
+ CREATECARD,
+ CREATECARDHOLDER
 } from "../utils/config";
 import { apiDelete, apiGet, apiGetCSV, apiPost, apiPut } from "../utils/utils";
 
@@ -234,7 +238,24 @@ export function withdrawUSD(data) {
 }
 
 
+// usd Card
+export function getCardDetails(data) {
+  return apiGet(GETCARDDETAILS, data);
+}
+export function getCardHolderDetails(data) {
+  return apiGet(GETCARDHOLDERDETAILS, data);
+}
+export function createCard(data) {
+  return apiPost(CREATECARD, data);
+}
+export function createCardHolder(data) {
+  return apiPost(CREATECARDHOLDER, data);
+}
 
+
+
+
+// transaction history
 
 
 

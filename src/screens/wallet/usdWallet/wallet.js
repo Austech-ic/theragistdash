@@ -62,7 +62,6 @@ import { Doughnut, Pie } from "react-chartjs-2";
 import { ClipLoader } from "react-spinners";
 import api from "../../../api";
 import { useQuery } from "@tanstack/react-query";
-import { motion as m } from "framer-motion";
 import { enqueueSnackbar } from "notistack";
 import RecentTransaction from "../../../components/wallet/RecentTransaction";
 import OtpModal from "../../../components/wallet/OtpModal";
@@ -74,8 +73,7 @@ import ComingSoon from "../../../components/ComingSoon";
 import debounce from "lodash/debounce";
 import Success from "../../../components/Success";
 import { Link, useNavigate } from "react-router-dom";
-import { useCopilotReadable } from "@copilotkit/react-core";
-import { useUserContext } from "../../../utils/UserProvider";
+
 import InputField from "../../../components/InputField";
 
 ChartJS.register(
@@ -510,7 +508,7 @@ const UsdWallet = () => {
 
 
   return (
-    <div className="overflow-y-auto px-[10px] md:px-[16px] xl:px-[20px] border">
+    <div className="overflow-y-auto min-h-screen px-[10px] md:px-[16px] xl:px-[20px] border">
       <ComingSoon
         isComingSoon={isComingSoon}
         closeComingSoon={closeComingSoon}

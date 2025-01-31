@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { motion as m } from "framer-motion";
 import { useOutletContext } from "react-router-dom";
+import { enqueueSnackbar } from "notistack";
+import { decryptaValue, encryptaValue } from "../../utils/helperFunctions";
+import { ClipLoader } from "react-spinners";
+import api from "../../api";
 
 const Webhook = () => {
   const [webhook, setWebhook] = useState("");
   const {profileData, refetch} = useOutletContext();
+  const [isLoading, setIsLoading]= useState(false);
 
   useEffect(() => {
     //If there's no profile data, set selectedInfo to 1
@@ -12,6 +17,35 @@ const Webhook = () => {
       setWebhook(profileData.webhook_url);
     }
   }, [profileData]);
+
+
+   async function submitKyb(e) {
+      e.preventDefault();
+  
+      setIsLoading(true);
+  
+      try {
+        const payload = {
+          webhook_url: webhook
+         
+        };
+  
+        const response = await api.editBusInfo({ data: encryptaValue(payload) });
+        const decr = JSON.parse(decryptaValue(response?.data));
+        enqueueSnackbar(decr?.message, { variant: "success" });
+  
+        setIsLoading(false);
+      } catch (error) {
+        //console.log("error", error);
+        enqueueSnackbar(error.message, { variant: "error" });
+        // enqueueSnackbar("errooor", { variant: "error" });
+        setIsLoading(false);
+      }
+    }
+
+  const handleChange = (e) => {
+    setWebhook(e.target.value);
+  };
 
   return (
     <div className="p-4 md:p-6">
@@ -59,6 +93,24 @@ const Webhook = () => {
               />
             </div>
           </div>
+          <div className="py-[20px] border-t border-b-[#E4E7EC]  ">
+              <div className="flex-item gap-2 w-full">
+                <div className="flex-item justify-end">
+                  {" "}
+                  <button
+                    onClick={submitKyb}
+                    className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[8px] text-[14px] font-medium text-white"
+                  >
+                    {isLoading ? (
+                      <ClipLoader color={"white"} size={20} />
+                    ) : (
+                      <> Submit</>
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+
         </m.div>
       </div>
     </div>

@@ -48,6 +48,11 @@ export const UPDATEPRODUCT = getApiUrl("/products/");
 export const CREATEPRODUCT = getApiUrl("/products");
 export const FUNDUSD = getApiUrl("/fund-dollar");
 export const WITHDRAWUSD = getApiUrl("/withdraw-dollar");
+export const CREATECARDHOLDER = getApiUrl("/virtual-card/create-card-holder");
+export const CREATECARD = getApiUrl("/virtual-card/create-card");
+export const GETCARDHOLDERDETAILS = getApiUrl("/virtual-card/get-card-holder-details");
+export const GETCARDDETAILS = getApiUrl("/virtual-card/get-full-card-details");
+
 
 //Vantapp API
 export const VANTAPP_API_BASE_URL = "https://dev.vantapp.com/api";

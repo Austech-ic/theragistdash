@@ -9,7 +9,8 @@ import { enqueueSnackbar } from "notistack";
 import { decryptaValue, encryptaValue } from "../../utils/helperFunctions";
 import api from "../../api";
 import Modal from "../../components/Modal";
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
+import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
+import { countries } from "../../utils/Data";
 
 const BusinessInfo = () => {
   const [selectedInfo, setSelectedInfo] = useState(1);
@@ -48,6 +49,10 @@ const BusinessInfo = () => {
     incopDate: "",
     address: "",
     nin: "",
+    postalCode: "",
+    houseNumber: "",
+    state: "",
+    Country: "",
   });
   const { profileData, refetch } = useOutletContext();
 
@@ -73,8 +78,12 @@ const BusinessInfo = () => {
         busCity: profileData?.city,
         busAddress: profileData?.address,
         bvn: profileData?.bvn,
+        houseNumber: profileData?.house_no,
+        state: profileData?.state,
+        Country: profileData?.country,
+        postalCode: profileData?.postal_code,
       });
-      setLogo(profileData?.logo)
+      setLogo(profileData?.logo);
     }
   }, [profileData]);
 
@@ -96,6 +105,10 @@ const BusinessInfo = () => {
         rc_number: formValue?.rcNumber,
         incorporation_date: formValue?.incopDate,
         address: formValue?.busAddress,
+        house_no: formValue?.houseNumber,
+        state: formValue?.state,
+        country: formValue?.Country,
+        postal_code: formValue?.postalCode,
       };
 
       const response = await api.editBusInfo({ data: encryptaValue(payload) });
@@ -165,28 +178,25 @@ const BusinessInfo = () => {
         className="w-full  md:hidden overflow-hidden "
       >
         <div className="overflow-auto flex items-center gap-3">
-        {info &&
-          info?.map((inf, index) => (
-            <button
-              onClick={() => setSelectedInfo(inf?.id)}
-              className={`flex-item gap-3  ${
-                selectedInfo === inf?.id
-                  ? "  bg-[#26ae5f] text-white"
-                  : "bg-[#fefefe]"
-              } ${
-                index === 0 ? "" : ""
-              }  transition-transform ease-in-out   w-[90%] border-[0.2px] border-[#98a2b3] relative rounded-[8px]  p-[10px] md:px-[20px] md:py-4`}
-            >
-            
-
-              <p className="  text-[14px] whitespace-nowrap  font-normal leading-[16px]  ">
-                {inf?.name}
-              </p>
-            </button>
-          ))}
-          </div>
+          {info &&
+            info?.map((inf, index) => (
+              <button
+                onClick={() => setSelectedInfo(inf?.id)}
+                className={`flex-item gap-3  ${
+                  selectedInfo === inf?.id
+                    ? "  bg-[#26ae5f] text-white"
+                    : "bg-[#fefefe]"
+                } ${
+                  index === 0 ? "" : ""
+                }  transition-transform ease-in-out   w-[90%] border-[0.2px] border-[#98a2b3] relative rounded-[8px]  p-[10px] md:px-[20px] md:py-4`}
+              >
+                <p className="  text-[14px] whitespace-nowrap  font-normal leading-[16px]  ">
+                  {inf?.name}
+                </p>
+              </button>
+            ))}
+        </div>
       </m.div>{" "}
-      
       <div className="border-[0.2px] overflow-hidden flex-1 border-[#98a2b3] relative rounded-[8px] bg-[#fff]    p-[10px] md:p-[20px] ">
         {selectedInfo === 1 && (
           <m.div
@@ -219,14 +229,12 @@ const BusinessInfo = () => {
                 </div>
               ) : (
                 <button
-                onClick={() => setIsOpen(true)}
-
+                  onClick={() => setIsOpen(true)}
                   className="h-14 w-14 md:h-20 md:w-20 flex flex-col items-center justify-center border-2 border-dashed border-spacing-1 rounded-md hover:bg-slate-50"
                 >
                   <Add color="gray" />
                   <p className="text-[9px] text-gray-500">Add Logo</p>
                   {profileData?.logo}
-
                 </button>
               )}
             </div>
@@ -450,7 +458,7 @@ const BusinessInfo = () => {
             </div>
             <div className="mb-[16px] md:mb-[20px]">
               <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
-                Business City
+                Business House Number
               </label>
               <div className=" relative    flex items-center">
                 <input
@@ -458,9 +466,8 @@ const BusinessInfo = () => {
                   placeholder=""
                   className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                   required
-                  name="busCity"
-                  disabled={formValue.busCity ? true : false}
-                  value={formValue.busCity}
+                  name="houseNumber"
+                  value={formValue.houseNumber}
                   onChange={(e) => {
                     handleInputChange(e);
                   }}
@@ -481,7 +488,6 @@ const BusinessInfo = () => {
                   className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                   required
                   name="busAddress"
-                  disabled={formValue.busAddress ? true : false}
                   value={formValue.busAddress}
                   onChange={(e) => {
                     handleInputChange(e);
@@ -492,6 +498,101 @@ const BusinessInfo = () => {
                 />
               </div>
             </div>
+
+            <div className="mb-[16px] md:mb-[20px]">
+              <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
+                Business City
+              </label>
+              <div className=" relative    flex items-center">
+                <input
+                  type="text"
+                  placeholder=""
+                  className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  required
+                  name="busCity"
+                  value={formValue.busCity}
+                  onChange={(e) => {
+                    handleInputChange(e);
+                  }}
+                  autoCapitalize="off"
+                  autoCorrect="off"
+                  spellCheck="false"
+                />
+              </div>
+            </div>
+            <div className="mb-[16px] md:mb-[20px]">
+              <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
+                Postal Code
+              </label>
+              <div className=" relative    flex items-center">
+                <input
+                  type="text"
+                  placeholder=""
+                  className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  required
+                  name="postalCode"
+                  value={formValue.postalCode}
+                  onChange={(e) => {
+                    handleInputChange(e);
+                  }}
+                  autoCapitalize="off"
+                  autoCorrect="off"
+                  spellCheck="false"
+                />
+              </div>
+            </div>
+
+            <div className="mb-[16px] md:mb-[20px]">
+              <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
+                State/Province
+              </label>
+              <div className=" relative    flex items-center">
+                <input
+                  type="text"
+                  placeholder=""
+                  className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  required
+                  name="state"
+                  value={formValue.state}
+                  onChange={(e) => {
+                    handleInputChange(e);
+                  }}
+                  autoCapitalize="off"
+                  autoCorrect="off"
+                  spellCheck="false"
+                />
+              </div>
+            </div>
+
+            <div className="mb-[16px] md:mb-[20px]">
+              <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
+                Country
+              </label>
+              <div className=" relative    flex items-center">
+                <select
+                  type="text"
+                  placeholder=""
+                  className="w-full  h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  required
+                  name="Country"
+                  value={formValue.Country}
+                  onChange={(e) => {
+                    handleInputChange(e);
+                  }}
+                  autoCapitalize="off"
+                  autoCorrect="off"
+                  spellCheck="false"
+                >
+                  <option value="">-- Select Country --</option>
+                  {countries.map((country, index) => (
+                    <option key={index} value={country}>
+                      {country}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
             <div className="py-[20px] border-t border-b-[#E4E7EC]  ">
               <div className="flex-item gap-2 w-full">
                 <div className="flex-item justify-end">

@@ -133,7 +133,7 @@ const CreatePin = ({ isCreatePin, setIsCreatePin, refetch }) => {
               />
             ) : (
               <OTPInput
-                //   className=" h-[44px] bg-[#DBDCDDFF]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                //   className=" h-[44px] bg-[#DBDCDDFF]  px-2 py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                 value={pin2}
                 className="border-[#000] "
                 onChange={setPin2}
@@ -160,13 +160,13 @@ const CreatePin = ({ isCreatePin, setIsCreatePin, refetch }) => {
         <ModalFooter gap={"16px"}>
           <button
             onClick={() => setIsCreatePin(false)}
-            className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black"
+            className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[8px] text-[14px] font-medium text-black"
           >
             Cancel
           </button>
           <button
             onClick={handlePin}
-            className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex banks-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
+            className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex banks-center justify-center text-center rounded-[8px] py-[8px] text-[14px] font-medium text-white"
           >
             {isLoading ? <ClipLoader color={"white"} size={20} /> : <> Send </>}
           </button>

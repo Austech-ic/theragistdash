@@ -27,6 +27,7 @@ import {
 } from "../utils/helperFunctions";
 import { enqueueSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
+import { countries } from "../utils/Data";
 
 const GetStarted = () => {
   const navigate = useNavigate();
@@ -464,7 +465,7 @@ const GetStarted = () => {
                   <input
                     type="text"
                     placeholder="Enter first name"
-                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[8px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     disabled={personalDisabled}
                     name="firstName"
@@ -486,7 +487,7 @@ const GetStarted = () => {
                   <input
                     type="text"
                     placeholder="Enter last name"
-                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[8px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     name="lastName"
                     disabled={personalDisabled}
@@ -515,7 +516,7 @@ const GetStarted = () => {
                   <input
                     type="email"
                     placeholder="Enter email address"
-                    className="w-full  h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    className="w-full  h-[48px] pl-[44px] py-[8px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     name="email"
                     disabled={personalDisabled}
@@ -543,7 +544,7 @@ const GetStarted = () => {
                   <input
                     type="text"
                     placeholder="8083XXXXXXX"
-                    className="w-full  h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    className="w-full  h-[48px] pl-[44px] py-[8px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     name="phone"
                     disabled={personalDisabled}
@@ -566,7 +567,7 @@ const GetStarted = () => {
                   <textarea
                     type="text"
                     placeholder="14, xxxx street"
-                    className="w-full  h-[120px] pl-[10px] md:pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    className="w-full  h-[120px] pl-[10px] md:pl-[16px] py-[8px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     name="address"
                     disabled={personalDisabled}
@@ -588,7 +589,7 @@ const GetStarted = () => {
                   <input
                     type="text"
                     placeholder="2933 23XX XXX "
-                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[8px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     name="nin"
                     disabled={personalDisabled}
@@ -619,7 +620,7 @@ const GetStarted = () => {
                       {" "}
                       <button
                         onClick={submitKyc}
-                        className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
+                        className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[8px] text-[14px] font-medium text-white"
                       >
                         {isLoading ? (
                           <ClipLoader color={"white"} size={20} />
@@ -658,7 +659,7 @@ const GetStarted = () => {
                   <input
                     type="text"
                     placeholder="Enter business name"
-                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[8px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     name="busName"
                     disabled={busDisabled}
@@ -672,28 +673,7 @@ const GetStarted = () => {
                   />
                 </div>
               </div>
-              <div className="mb-[16px] md:mb-[20px]">
-                <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
-                  Business Website
-                </label>
-                <div className=" relative    flex items-center">
-                  <input
-                    type="text"
-                    placeholder="https://domain.xyz"
-                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                    // required
-                    name="busWebsite"
-                    disabled={busDisabled}
-                    value={formValue.busWebsite}
-                    onChange={(e) => {
-                      handleInputChange(e);
-                    }}
-                    autoCapitalize="off"
-                    autoCorrect="off"
-                    spellCheck="false"
-                  />
-                </div>
-              </div>
+            
               <div className="mb-[16px] md:mb-[20px]">
                 <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
                   Business Description <span className="text-red-500 text-lg">*</span>
@@ -702,7 +682,7 @@ const GetStarted = () => {
                   <input
                     type="text"
                     placeholder="electronics supplier"
-                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[8px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     name="busDescription"
                     disabled={busDisabled}
@@ -731,7 +711,7 @@ const GetStarted = () => {
                   <input
                     type="email"
                     placeholder="Enter email address"
-                    className="w-full  h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    className="w-full  h-[48px] pl-[44px] py-[8px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     // required
                     name="busSupportEmail"
                     disabled={busDisabled}
@@ -759,11 +739,33 @@ const GetStarted = () => {
                   <input
                     type="email"
                     placeholder="Enter email address"
-                    className="w-full  h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    className="w-full  h-[48px] pl-[44px] py-[8px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     // required
                     name="chargeBackEmail"
                     disabled={busDisabled}
                     value={formValue.chargeBackEmail}
+                    onChange={(e) => {
+                      handleInputChange(e);
+                    }}
+                    autoCapitalize="off"
+                    autoCorrect="off"
+                    spellCheck="false"
+                  />
+                </div>
+              </div>
+              <div className="mb-[16px] md:mb-[20px]">
+                <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
+                  Business Website
+                </label>
+                <div className=" relative    flex items-center">
+                  <input
+                    type="text"
+                    placeholder="https://domain.xyz"
+                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[8px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    // required
+                    name="busWebsite"
+                    disabled={busDisabled}
+                    value={formValue.busWebsite}
                     onChange={(e) => {
                       handleInputChange(e);
                     }}
@@ -781,7 +783,7 @@ const GetStarted = () => {
                   <input
                     type="text"
                     placeholder=""
-                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[8px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     // required
                     name="rcNumber"
                     disabled={busDisabled}
@@ -803,11 +805,55 @@ const GetStarted = () => {
                   <input
                     type="date"
                     placeholder=""
-                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[8px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     // required
                     name="incopDate"
                     disabled={busDisabled}
                     value={formValue.incopDate}
+                    onChange={(e) => {
+                      handleInputChange(e);
+                    }}
+                    autoCapitalize="off"
+                    autoCorrect="off"
+                    spellCheck="false"
+                  />
+                </div>
+              </div>
+              <div className="mb-[16px] md:mb-[20px]">
+                <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
+                  Business House Number <span className="text-red-500 text-lg">*</span>
+                </label>
+                <div className=" relative    flex items-center">
+                  <input
+                    type="text"
+                    placeholder=""
+                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[8px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    required
+                    name="busHouseNo"
+                    disabled={busDisabled}
+                    value={formValue.busHouseNo}
+                    onChange={(e) => {
+                      handleInputChange(e);
+                    }}
+                    autoCapitalize="off"
+                    autoCorrect="off"
+                    spellCheck="false"
+                  />
+                </div>
+              </div>
+              <div className="mb-[16px] md:mb-[20px]">
+                <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
+                  Business Address <span className="text-red-500 text-lg">*</span>
+                </label>
+                <div className=" relative    flex items-center">
+                  <input
+                    type="text"
+                    placeholder=""
+                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[8px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    required
+                    name="busAddress"
+                    disabled={busDisabled}
+                    value={formValue.busAddress}
                     onChange={(e) => {
                       handleInputChange(e);
                     }}
@@ -826,7 +872,7 @@ const GetStarted = () => {
                   <input
                     type="text"
                     placeholder=""
-                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[8px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     name="busCity"
                     disabled={busDisabled}
@@ -842,17 +888,17 @@ const GetStarted = () => {
               </div>
               <div className="mb-[16px] md:mb-[20px]">
                 <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
-                  Business Address <span className="text-red-500 text-lg">*</span>
+                  Postal Code <span className="text-red-500 text-lg">*</span>
                 </label>
                 <div className=" relative    flex items-center">
                   <input
                     type="text"
                     placeholder=""
-                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[8px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
-                    name="busAddress"
+                    name="postalCode"
                     disabled={busDisabled}
-                    value={formValue.busAddress}
+                    value={formValue.postalCode}
                     onChange={(e) => {
                       handleInputChange(e);
                     }}
@@ -862,6 +908,62 @@ const GetStarted = () => {
                   />
                 </div>
               </div>
+              <div className="mb-[16px] md:mb-[20px]">
+                <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
+                  Business State <span className="text-red-500 text-lg">*</span>
+                </label>
+                <div className=" relative    flex items-center">
+                  <input
+                    type="text"
+                    placeholder=""
+                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[8px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    required
+                    name="busState"
+                    disabled={busDisabled}
+                    value={formValue.busState}
+                    onChange={(e) => {
+                      handleInputChange(e);
+                    }}
+                    autoCapitalize="off"
+                    autoCorrect="off"
+                    spellCheck="false"
+                  />
+                </div>
+              </div>
+              <div className="mb-[16px] md:mb-[20px]">
+                <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
+                  Country <span className="text-red-500 text-lg">*</span>
+                </label>
+                <div className=" relative    flex items-center">
+                  <select
+                    type="text"
+                    placeholder=""
+                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[8px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    required
+                    name="country"
+                    disabled={busDisabled}
+                    value={formValue.country}
+                    onChange={(e) => {
+                      handleInputChange(e);
+                    }}
+                    autoCapitalize="off"
+                    autoCorrect="off"
+                    spellCheck="false"
+                  >
+
+                    <option value="">-- Select Country --</option>
+                    {countries?.map((country, index)=> {
+                      return (
+                        <option key={index} value={country}>
+                          {country}
+                        </option>
+                      );
+                    })}
+
+                    </select>
+                </div>
+              </div>
+
 
               <div className="py-[20px] border-t border-b-[#E4E7EC]  ">
                 <div className="flex-item gap-2 w-full">
@@ -878,7 +980,7 @@ const GetStarted = () => {
                       {" "}
                       <button
                         onClick={submitKyb}
-                        className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
+                        className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[8px] text-[14px] font-medium text-white"
                       >
                         {isLoading ? (
                           <ClipLoader color={"white"} size={20} />
@@ -917,7 +1019,7 @@ const GetStarted = () => {
                   <input
                     type="text"
                     placeholder="1234 XXXX XXX"
-                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    className="w-full  h-[48px] pl-[10px] md:pl-[16px] py-[8px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                     required
                     name="bvn"
                     disabled={bvnDisabled}
@@ -947,7 +1049,7 @@ const GetStarted = () => {
                       {" "}
                       <button
                         onClick={submitBvn}
-                        className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
+                        className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[8px] text-[14px] font-medium text-white"
                       >
                         {isLoading ? (
                           <ClipLoader color={"white"} size={20} />
@@ -1076,7 +1178,7 @@ const GetStarted = () => {
                       {" "}
                       <button
                         onClick={handleSubmit}
-                        className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
+                        className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[8px] text-[14px] font-medium text-white"
                       >
                         {isLoading ? (
                           <ClipLoader color={"white"} size={20} />
