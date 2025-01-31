@@ -63,6 +63,6 @@ export const VANTAPP_API_BASE_URL = "https://api.vantapp.com/api";
 
 export const getVntApiUrl = (endpoint) => VANTAPP_API_BASE_URL + endpoint;
 
-export const CHECKUSERNAME = getApiUrl("/verify-username");
+export const CHECKUSERNAME = getVntApiUrl("/verify-username");
 export const EXCHANGERATES = getVntApiUrl('/exchange-rates');
 
