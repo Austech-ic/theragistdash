@@ -481,14 +481,14 @@ const UsdWallet = () => {
       setIsVantTagModal(true)
       },
     },
-    {
-      icon: <CardEdit size={20} color="#3B6896" />,
-      label: "Create USD Card",
-      action: () => {
-        navigation("/usd-card");
+    // {
+    //   icon: <CardEdit size={20} color="#3B6896" />,
+    //   label: "Create USD Card",
+    //   action: () => {
+    //     navigation("/usd-card");
 
-      },
-    },
+    //   },
+    // },
     {
       icon: <Note size={20} color="#3B6896" />,
       label: "Payment Link",

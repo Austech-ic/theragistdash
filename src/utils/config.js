@@ -54,8 +54,12 @@ export const GETCARDHOLDERDETAILS = getApiUrl("/virtual-card/get-card-holder-det
 export const GETCARDDETAILS = getApiUrl("/virtual-card/get-full-card-details");
 
 
-//Vantapp API
-export const VANTAPP_API_BASE_URL = "https://dev.vantapp.com/api";
+//Vantapp API Dev
+//export const VANTAPP_API_BASE_URL = "https://dev.vantapp.com/api";
+
+//Vantapp API LIVE
+
+export const VANTAPP_API_BASE_URL = "https://api.vantapp.com/api";
 
 export const getVntApiUrl = (endpoint) => VANTAPP_API_BASE_URL + endpoint;
 
