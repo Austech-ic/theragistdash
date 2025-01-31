@@ -887,7 +887,7 @@ const WalletOverdiv = () => {
                     <input
                       type="text"
                       placeholder="2,000"
-                      className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
+                      className="w-full h-[48px] pl-[24px] pr-[8px] py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
                       name="amount"
                       value={amount}
                       onChange={(e) => handleAmountChange(e)}
@@ -903,7 +903,7 @@ const WalletOverdiv = () => {
                   </label>
                   <button
                     onClick={() => setBanksVisible(!banksVisible)}
-                    className="w-full h-[48px] pl-[24px] pr-[8px] flex-between py-[12px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
+                    className="w-full h-[48px] pl-[24px] pr-[8px] flex-between py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
                   >
                     <div className="flex-row banks-center">
                       {selectedBank ? (
@@ -941,7 +941,7 @@ const WalletOverdiv = () => {
                         <input
                           type="email"
                           placeholder="search bank"
-                          className="w-full  h-[36px] pl-[44px] py-[12px] text-[14px] text-[#344054]  bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
+                          className="w-full  h-[36px] pl-[44px] py-[8px] text-[14px] text-[#344054]  bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
                           required
                           autoComplete="on"
                           name="email"
@@ -1013,7 +1013,7 @@ const WalletOverdiv = () => {
                       <input
                         type="text"
                         placeholder="0002-XXXX-XX"
-                        className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
+                        className="w-full h-[48px] pl-[24px] pr-[8px] py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
                         name="accountNumber"
                         id="full-name"
                         value={accountNumber}
@@ -1049,7 +1049,7 @@ const WalletOverdiv = () => {
                     <select
                       type="text"
                       placeholder="Name"
-                      className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
+                      className="w-full h-[48px] pl-[16px] py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
                       name="full-name"
                       id="full-name"
                       value={purpose}
@@ -1098,13 +1098,13 @@ const WalletOverdiv = () => {
               <ModalFooter gap={"16px"}>
                 <button
                   onClick={closeTransferOthers}
-                  className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black"
+                  className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[8px] text-[14px] font-medium text-black"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={sendOtp}
-                  className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex banks-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
+                  className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex banks-center justify-center text-center rounded-[8px] py-[8px] text-[14px] font-medium text-white"
                 >
                   {isLoading ? (
                     <ClipLoader color={"white"} size={20} />
@@ -1173,7 +1173,7 @@ const WalletOverdiv = () => {
               <ModalHeader
                 py="4"
                 color="#000000"
-                className="text-[18px] md:text-[20px] text-[#000000] font-medium leading-[24px] md:leading-[24px]"
+                className="text-[16px] md:text-[18px] text-[#000000] font-medium leading-[18px] md:leading-[20px]"
               >
                 Transfer To Vant Tag
               </ModalHeader>
@@ -1183,7 +1183,7 @@ const WalletOverdiv = () => {
                 pt={{ base: "20px", md: "24px" }}
                 px={{ base: "16px", md: "24px" }}
                 pb={{ base: "30px", md: "40px" }}
-                className="pt-[20px] md:pt-[24px] px-[16px] md:px-[24px] pb-[30px] md:pb-[40px]"
+                className="pt-[16px] md:pt-[20px] px-[10px] md:px-[20px] pb-[24px] md:pb-[30px]"
               >
                 <div className="mb-[18px]">
                   <label className="text-[14px] text-[#667185]    mb-[8px] ">
@@ -1193,7 +1193,7 @@ const WalletOverdiv = () => {
                     <input
                       type="text"
                       placeholder="2,000"
-                      className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
+                      className="w-full h-[48px] pl-[24px] pr-[8px] py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
                       name="amount"
                       value={amount}
                       onChange={(e) => handleAmountChange(e)}
@@ -1211,7 +1211,7 @@ const WalletOverdiv = () => {
                     <input
                       type="text"
                       placeholder=""
-                      className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
+                      className="w-full h-[48px] pl-[24px] pr-[8px] py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
                       name=""
                       id="full-name"
                       value={tag}
@@ -1252,14 +1252,14 @@ const WalletOverdiv = () => {
               <ModalFooter gap={"16px"}>
                 <button
                   onClick={CloseVantTagModal}
-                  className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black"
+                  className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[8px] text-[14px] font-medium text-black"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={sendOtpVant}
                   disabled={!tag && !isTitleValid}
-                  className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex banks-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
+                  className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex banks-center justify-center text-center rounded-[8px] py-[8px] text-[14px] font-medium text-white"
                 >
                   {isLoading ? (
                     <ClipLoader color={"white"} size={20} />
