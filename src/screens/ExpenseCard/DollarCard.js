@@ -205,7 +205,7 @@ const DollarCard = () => {
                 Hover on card to flip
               </p>
               <CreditCard cardDetails={cardDetails} />
-              <div className="p-2 rounded-md shadow border flex items-center gap-3 w-full">
+              <div className="p-2 rounded-md shadow border flex items-center gap-3 w-full  max-w-96 sm:w-96">
                 {!cardDetails && (
                   <button onClick={() => getCardDetails(card?.card_id)}>
                     <div className="flex items-center justify-center px-4 py-[6px] text-sm text-gray-800 border border-gray-300 rounded-md hover:bg-gray-200 hover:text-gray-600">
