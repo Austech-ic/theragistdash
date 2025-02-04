@@ -248,7 +248,7 @@ const DollarCard = () => {
           ))}
 
         <div className=" w-full md:w-96">
-          <div className="-mt-6">
+          <div className="md:-mt-6">
           <NewCard action={openCreateCard} />
 
           </div>
