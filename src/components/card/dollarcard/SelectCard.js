@@ -70,7 +70,7 @@ const SelectCard = ({
     {
       id: 1,
       type: "Mastercard ($5,000 monthly limit)",
-      limit: 10000,
+      limit: 5000,
       icon: "/assets/mastercard.png",
       color: "#F0384D",
     },

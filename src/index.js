@@ -11,7 +11,9 @@ import { CopilotKitWrapper } from "./utils/CopilotKitWrapper";
 const overrides = extendTheme({
   fonts: {
     body: '"Jost", sans-serif', // For headings
-    custom: '"Space Mono", monospace', // For body text
+    // custom: '"Space Mono", monospace',
+    custom: '"Share Tech Mono", monospace',
+    // For body text
   },
   styles: {
     global: () => ({

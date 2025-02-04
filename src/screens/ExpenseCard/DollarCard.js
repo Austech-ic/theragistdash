@@ -24,6 +24,7 @@ import {
   ArrowRight2,
   Building,
   Buildings2,
+  Eye,
   InfoCircle,
   TickCircle,
 } from "iconsax-react";
@@ -33,6 +34,9 @@ import { useUserContext } from "../../utils/UserProvider";
 import { decryptaValue } from "../../utils/helperFunctions";
 import api from "../../api";
 import { Link } from "react-router-dom";
+import { enqueueSnackbar } from "notistack";
+import { useQuery } from "@tanstack/react-query";
+import { EyeClosed, EyeOff } from "lucide-react";
 
 const DollarCard = () => {
   const [createCardPhase, setCreateCardPhase] = useState(0);
@@ -43,16 +47,20 @@ const DollarCard = () => {
   const [verifySuccess, setVerifySuccess] = useState(false);
   const [verifyFailed, setVerifyFailed] = useState(false);
   const [isConsent, setIsConsent] = useState(false);
-  const [confirmPin, setConfirmPin] = useState("")
-
+  const [confirmPin, setConfirmPin] = useState("");
+  const [cardDetails, setCardDetails] = useState(null);
+  const [viewAmount, setViewAmount] = useState(true);
 
   const { profile } = useUserContext();
+  function toggleViewAmount() {
+    setViewAmount(!viewAmount);
+  }
 
   const closeCraeteCard = () => {
     setIsCreateCard(false);
     setVerifySuccess(false);
     setVerifyFailed(false);
-    setConfirmPin("")
+    setConfirmPin("");
     setSelectedCard(null);
   };
 
@@ -102,7 +110,6 @@ const DollarCard = () => {
   const handleCreateCard = async () => {
     setIsLoading(true);
 
-   
     try {
       if (!profile?.card_holder_id) {
         const response = await api.createCardHolder();
@@ -113,48 +120,138 @@ const DollarCard = () => {
         const decryptRes = JSON.parse(decryptaValue(response?.data));
         setVerifySuccess(false);
         setVerifyFailed(false);
+        setIsLoading(false);
+        setCreateCardPhase(2);
+      } else {
+        setIsLoading(false);
+        setCreateCardPhase(2);
       }
     } catch (e) {
       console.log("error in creating card holder", e);
     }
-
-    // setCreateCardPhase(2);
   };
 
   const createCard = async () => {
+    if (!selectedCard) {
+      enqueueSnackbar("Please select a card", { variant: "warning" });
+      return;
+    }
+
     if (!confirmPin) {
-      setPinError("Please enter both PINs!");
+      enqueueSnackbar("Pin is required", { variant: "warning" });
       return;
     }
     setIsLoading(true);
     try {
-      // call API to create card
-
       const response = await api.createCard({
-      
         card_limit: selectedCard?.limit,
-        pin: confirmPin
-        
-        
+        pin: confirmPin,
       });
-      console.log("response of create card==>>>>>",decryptaValue(response?.data));
+      const decr = JSON.parse(decryptaValue(response?.data));
+      enqueueSnackbar(decr?.message, { variant: "success" });
+      setIsLoading(false);
+      setIsCreateCard(false);
     } catch (error) {
-      console.error(error);
+      enqueueSnackbar(error?.message, { variant: "error" });
       setIsLoading(false);
     }
   };
 
+  async function getCards() {
+    const response = await api.getCards({
+      // params: { cardholder_id: profile?.card_holder_id},
+    });
+
+    return response;
+  }
+
+  const cardHolderQuery = useQuery(["cardHolderQuery"], () => getCards(), {
+    keepPreviousData: true,
+    refetchOnWindowFocus: "always",
+  });
+  const cardData = cardHolderQuery?.data?.data || [];
+
+  async function getCardDetails(id) {
+    setIsLoading(true);
+    if (!id) {
+      setIsLoading(false);
+      return;
+    }
+    try {
+      const response = await api.getCardDetails({
+        params: { card_id: id },
+      });
+      setCardDetails(response?.data);
+      setIsLoading(false);
+    } catch (e) {
+      console.log("error in fetching card details", e);
+      setIsLoading(false);
+    }
+  }
+
+  // const cardQuery = useQuery(["cardQuery", cardHolderData], () => getCardDetails(), {
+  //   keepPreviousData: true,
+  //   refetchOnWindowFocus: "always",
+  // });
+  // const cardData = cardQuery?.data || [];
+
   return (
     <div className="min-h-screen bg-gray-200  p-4 md:p-6 ">
-      <div className="flex flex-col md:flex-row items-center  gap-4">
-        <div className="w-full md:w-96">
-          <p className="text-sm text-center text-gray-600 animate-pulse mb-3 transition-transform duration-500 ease-in-out">
-            Hover on card to flip
-          </p>
-          <CreditCard />
-        </div>
-        <div className="md:self-end w-full md:w-96">
+      <div className="flex flex-col md:flex-row flex-wrap items-center  gap-4">
+        {cardData &&
+          cardData?.map((card, index) => (
+            <div className="w-full md:w-96">
+              <p className="text-sm text-center text-gray-600 animate-pulse mb-3 transition-transform duration-500 ease-in-out">
+                Hover on card to flip
+              </p>
+              <CreditCard cardDetails={cardDetails} />
+              <div className="p-2 rounded-md shadow border flex items-center gap-3 w-full">
+                {!cardDetails && (
+                  <button onClick={() => getCardDetails(card?.card_id)}>
+                    <div className="flex items-center justify-center px-4 py-[6px] text-sm text-gray-800 border border-gray-300 rounded-md hover:bg-gray-200 hover:text-gray-600">
+                      {isLoading ? (
+                        <ClipLoader color={"#3B6896"} size={20} />
+                      ) : (
+                        <> Fetch Card Details </>
+                      )}
+                    </div>
+                  </button>
+                )}
+                {cardDetails && (
+                  <div className="flex items-center gap-3 w-full">
+                    <p className="text-sm text-gray-600">
+                      <span className="text-xs text-gray-400">
+                        Card Balance:{" "}
+                      </span>
+                      {!viewAmount ? "XX.XX" :  <NumericFormat
+                        value={cardDetails?.balance}
+                        displayType={"text"}
+                        thousandSeparator={true}
+                        prefix={"$"}
+                        decimalScale={2}
+                        fixedDecimalScale={true}
+                        renderText={(value) => (
+                          <p className="text-[#667185] robot font-semibold  text-[24px] leading-[26px] text-center  tracking-[0.2px]   ">
+                            {value}
+                          </p>
+                        )}
+                      />}
+                     
+                    </p>
+                    <button onClick={toggleViewAmount} className="flex">
+                      {viewAmount ? <EyeClosed color="gray" size={16} /> : <Eye color="gray" size={16} /> } 
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+
+        <div className=" w-full md:w-96">
+          <div className="-mt-6">
           <NewCard action={openCreateCard} />
+
+          </div>
         </div>
       </div>{" "}
       <Modal
@@ -213,11 +310,11 @@ const DollarCard = () => {
                         <div className="h-8 w-8 bg-[#3B6896]/20 rounded-full flex justify-center items-center ">
                           <Building color="#3B6896" size={14} />
                         </div>
-                        <div className="ml-[8px]  text-sm">
+                        <div className="ml-[8px] flex-1  text-sm">
                           <p className="font-semibold">Business Verification</p>
                           <p>Confirmed</p>
                         </div>
-                        <div className="flex-1 text-right">
+                        <div className=" text-right">
                           <TickCircle
                             color="green"
                             size={18}
@@ -230,11 +327,11 @@ const DollarCard = () => {
                         <div className="h-8 w-8 bg-[#3B6896]/20 rounded-full flex justify-center items-center ">
                           <Buildings2 color="#3B6896" size={14} />
                         </div>
-                        <div className="ml-[8px]  text-sm">
+                        <div className="ml-[8px]  text-sm flex-1">
                           <p className="font-semibold">Address Verification</p>
                           <p>Confirmed</p>
                         </div>
-                        <div className="flex-1 text-right">
+                        <div className=" text-right">
                           <TickCircle
                             color="green"
                             size={18}
@@ -275,11 +372,14 @@ const DollarCard = () => {
                     </div>
 
                     <ul className="flex flex-col gap-4 px-2 md:px-6">
-                      <Link to="/setting/business-info" className="flex items-center justify-between pb-2 border-b">
+                      <Link
+                        to="/setting/business-info"
+                        className="flex items-center justify-between pb-2 border-b"
+                      >
                         <div className="h-8 w-8 bg-[#3B6896]/20 rounded-full flex justify-center items-center ">
                           <Building color="#3B6896" size={14} />
                         </div>
-                        <div className="ml-[8px]  text-sm">
+                        <div className="ml-[8px] flex-1  text-sm">
                           <p className="font-semibold">Business Verification</p>
                           {IsBusinessVerivied ? (
                             <p>Confirmed</p>
@@ -287,7 +387,7 @@ const DollarCard = () => {
                             <p className="text-red-500">Failed</p>
                           )}
                         </div>
-                        <div className="flex-1 text-right">
+                        <div className="text-right">
                           <TickCircle
                             color={IsBusinessVerivied ? "green" : "red"}
                             size={18}
@@ -296,11 +396,14 @@ const DollarCard = () => {
                           />
                         </div>
                       </Link>
-                      <Link to="/setting/business-info" className="flex items-center justify-between pb-2 border-b">
+                      <Link
+                        to="/setting/business-info"
+                        className="flex items-center justify-between pb-2 border-b"
+                      >
                         <div className="h-8 w-8 bg-[#3B6896]/20 rounded-full flex justify-center items-center ">
                           <Buildings2 color="#3B6896" size={14} />
                         </div>
-                        <div className="ml-[8px]  text-sm">
+                        <div className="ml-[8px]  flex-1 text-sm">
                           <p className="font-semibold">Address Verification</p>
                           {calculateProgress() !== 100 ? (
                             <p className="text-red-500">Failed</p>
@@ -308,7 +411,7 @@ const DollarCard = () => {
                             <p>Confirmed</p>
                           )}
                         </div>
-                        <div className="flex-1 text-right">
+                        <div className=" text-right">
                           <TickCircle
                             color={
                               calculateProgress() !== 100 ? "red" : "green"
@@ -333,8 +436,11 @@ const DollarCard = () => {
                 </button>
                 {!failedVerification && (
                   <button
+                    disabled={!isConsent}
                     onClick={handleCreateCard}
-                    className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#3B6896] hover:bg-opacity-75 flex banks-center justify-center text-center rounded-[8px] py-[8px] text-[14px] font-medium text-white"
+                    className={`border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#3B6896] hover:bg-opacity-75 flex banks-center justify-center text-center rounded-[8px] py-[8px] text-[14px] font-medium text-white ${
+                      isConsent ? "cursor-pointer" : "cursor-not-allowed"
+                    }`}
                   >
                     {isLoading ? (
                       <ClipLoader color={"white"} size={20} />

@@ -867,7 +867,7 @@ const WalletOverdiv = () => {
               <ModalHeader
                 py="4"
                 color="#000000"
-                className="text-[18px] md:text-[20px] text-[#000000] font-medium leading-[24px] md:leading-[24px]"
+                className="text-[16px] md:text-[18px] text-[#000000] font-medium leading-[18px] md:leading-[20px]"
               >
                 Transfer Money
               </ModalHeader>
@@ -887,7 +887,7 @@ const WalletOverdiv = () => {
                     <input
                       type="text"
                       placeholder="2,000"
-                      className="w-full h-[48px] pl-[24px] pr-[8px] py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
+                      className="w-full h-[38px] pl-[10px] pr-[8px] py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
                       name="amount"
                       value={amount}
                       onChange={(e) => handleAmountChange(e)}
@@ -903,7 +903,7 @@ const WalletOverdiv = () => {
                   </label>
                   <button
                     onClick={() => setBanksVisible(!banksVisible)}
-                    className="w-full h-[48px] pl-[24px] pr-[8px] flex-between py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
+                    className="w-full h-[38px] pl-[10px] pr-[8px] flex-between py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
                   >
                     <div className="flex-row banks-center">
                       {selectedBank ? (
@@ -1013,7 +1013,7 @@ const WalletOverdiv = () => {
                       <input
                         type="text"
                         placeholder="0002-XXXX-XX"
-                        className="w-full h-[48px] pl-[24px] pr-[8px] py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
+                        className="w-full h-[38px] pl-[10px] pr-[8px] py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
                         name="accountNumber"
                         id="full-name"
                         value={accountNumber}
@@ -1049,7 +1049,7 @@ const WalletOverdiv = () => {
                     <select
                       type="text"
                       placeholder="Name"
-                      className="w-full h-[48px] pl-[16px] py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
+                      className="w-full h-[38px] pl-[10px] py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
                       name="full-name"
                       id="full-name"
                       value={purpose}
@@ -1193,7 +1193,7 @@ const WalletOverdiv = () => {
                     <input
                       type="text"
                       placeholder="2,000"
-                      className="w-full h-[48px] pl-[24px] pr-[8px] py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
+                      className="w-full h-[38px] pl-[10px] pr-[8px] py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
                       name="amount"
                       value={amount}
                       onChange={(e) => handleAmountChange(e)}
@@ -1211,7 +1211,7 @@ const WalletOverdiv = () => {
                     <input
                       type="text"
                       placeholder=""
-                      className="w-full h-[48px] pl-[24px] pr-[8px] py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
+                      className="w-full h-[38px] pl-[10px] pr-[8px] py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
                       name=""
                       id="full-name"
                       value={tag}
