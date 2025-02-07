@@ -122,7 +122,7 @@ const SignUp = () => {
         business_registration_type: formValue.registrationType,
         business_registered: formValue.isRegistered,
       };
-      console.log("Register", payload)
+      // console.log("Register", payload)
 
       const response = await api.signUp({
         data: encryptaValue(payload),

@@ -24,6 +24,7 @@ import {
   ArrowRight2,
   Building,
   Buildings2,
+  CardAdd,
   Eye,
   InfoCircle,
   TickCircle,
@@ -37,10 +38,12 @@ import { Link } from "react-router-dom";
 import { enqueueSnackbar } from "notistack";
 import { useQuery } from "@tanstack/react-query";
 import { EyeClosed, EyeOff } from "lucide-react";
+import OTPInput from "otp-input-react";
 
 const DollarCard = () => {
   const [createCardPhase, setCreateCardPhase] = useState(0);
   const [isCreateCard, setIsCreateCard] = useState(false);
+  const [isFundCard, setIsFundCard] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const [cardVisible, setCardVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -50,6 +53,9 @@ const DollarCard = () => {
   const [confirmPin, setConfirmPin] = useState("");
   const [cardDetails, setCardDetails] = useState(null);
   const [viewAmount, setViewAmount] = useState(true);
+  const [amount, setAmount] = useState("");
+  const [pin, setPin] = useState("");
+  const [fundingCard, setFundingCard] = useState(null);
 
   const { profile } = useUserContext();
   function toggleViewAmount() {
@@ -62,6 +68,15 @@ const DollarCard = () => {
     setVerifyFailed(false);
     setConfirmPin("");
     setSelectedCard(null);
+  };
+  const closeFundCard = () => {
+    setIsFundCard(false);
+    setPin("");
+    setAmount("");
+  };
+  const toggleFundCard = (cardId, cardName) => {
+    setIsFundCard(!isFundCard);
+    setFundingCard([cardId, cardName]);
   };
 
   const openCreateCard = () => {
@@ -189,11 +204,68 @@ const DollarCard = () => {
     }
   }
 
-  // const cardQuery = useQuery(["cardQuery", cardHolderData], () => getCardDetails(), {
-  //   keepPreviousData: true,
-  //   refetchOnWindowFocus: "always",
-  // });
-  // const cardData = cardQuery?.data || [];
+  const fundCard = async () => {
+    if (!fundingCard) {
+      enqueueSnackbar("Please select a card", { variant: "warning" });
+      return;
+    }
+    if (!fundingCard[0] || !fundingCard[1]) {
+      enqueueSnackbar("Please select a card", { variant: "warning" });
+      return;
+    }
+    if (!amount) {
+      enqueueSnackbar("Amount is required", { variant: "warning" });
+      return;
+    }
+
+    if (!pin) {
+      enqueueSnackbar("Pin is required", { variant: "warning" });
+      return;
+    }
+    if (pin.length < 4) {
+      enqueueSnackbar("Pin is incomplete", { variant: "warning" });
+      return;
+    }
+
+    if (amount <= 0) {
+      enqueueSnackbar("Amount should be greater than 0", {
+        variant: "warning",
+      });
+      return;
+    }
+    if (amount > profileData?.default_partner?.dollar_wallet_balance) {
+      enqueueSnackbar("Insufficient Dollar Balance ", { variant: "error" });
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const response = await api.fundCard({
+        card_id: fundingCard && fundingCard[0],
+        card_name: fundingCard && fundingCard[1],
+        amount: amount,
+        pin: pin,
+      });
+      const decr = JSON.parse(decryptaValue(response?.data));
+      enqueueSnackbar(decr?.message, { variant: "success" });
+      setIsLoading(false);
+      setIsFundCard(false);
+    } catch (error) {
+      enqueueSnackbar(error?.message, { variant: "error" });
+      setIsLoading(false);
+    }
+  };
+
+  async function getProfile(page) {
+    const response = await api.getProfile({ params: { page } });
+    return response;
+  }
+
+  const ProfileQuery = useQuery(["profile"], () => getProfile(), {
+    keepPreviousData: true,
+    refetchOnWindowFocus: "always",
+  });
+  const profileData = ProfileQuery?.data || [];
 
   return (
     <div className="min-h-screen bg-gray-200  p-4 md:p-6 ">
@@ -218,28 +290,49 @@ const DollarCard = () => {
                   </button>
                 )}
                 {cardDetails && (
-                  <div className="flex items-center gap-3 w-full">
-                    <p className="text-sm text-gray-600">
-                      <span className="text-xs text-gray-400">
-                        Card Balance:{" "}
-                      </span>
-                      {!viewAmount ? "XX.XX" :  <NumericFormat
-                        value={cardDetails?.balance}
-                        displayType={"text"}
-                        thousandSeparator={true}
-                        prefix={"$"}
-                        decimalScale={2}
-                        fixedDecimalScale={true}
-                        renderText={(value) => (
-                          <p className="text-[#667185] robot font-semibold  text-[24px] leading-[26px] text-center  tracking-[0.2px]   ">
-                            {value}
-                          </p>
+                  <div className="w-full flex justify-between">
+                    <div className="flex items-center gap-3">
+                      <p className="text-sm text-gray-600 flex flex-col">
+                        <span className="text-xs text-gray-400">
+                          Card Balance:{" "}
+                        </span>
+                        {!viewAmount ? (
+                          "XX.XX"
+                        ) : (
+                          <NumericFormat
+                            value={cardDetails?.balance / 100}
+                            displayType={"text"}
+                            thousandSeparator={true}
+                            prefix={"$"}
+                            decimalScale={2}
+                            fixedDecimalScale={true}
+                            renderText={(value) => (
+                              <p className="text-[#667185] robot font-semibold  text-[24px] leading-[26px] text-center  tracking-[0.2px]   ">
+                                {value}
+                              </p>
+                            )}
+                          />
                         )}
-                      />}
-                     
-                    </p>
-                    <button onClick={toggleViewAmount} className="flex">
-                      {viewAmount ? <EyeClosed color="gray" size={16} /> : <Eye color="gray" size={16} /> } 
+                      </p>
+                      <button onClick={toggleViewAmount} className="flex">
+                        {viewAmount ? (
+                          <EyeClosed color="gray" size={16} />
+                        ) : (
+                          <Eye color="gray" size={16} />
+                        )}
+                      </button>
+                    </div>
+
+                    <button
+                      onClick={() =>
+                        toggleFundCard(card?.card_id, cardDetails?.card_name)
+                      }
+                      className="flex items-center text-[#3B6896] hover:text-gray-500 transition-transform delay-100 flex-col"
+                    >
+                      <p className="text-sm  flex flex-col">
+                        <span className="text-xs ">Fund Card</span>
+                      </p>
+                      <CardAdd size={18} />
                     </button>
                   </div>
                 )}
@@ -249,11 +342,125 @@ const DollarCard = () => {
 
         <div className=" w-full md:w-96">
           <div className="md:-mt-6">
-          <NewCard action={openCreateCard} />
-
+            <NewCard action={openCreateCard} />
           </div>
         </div>
       </div>{" "}
+      <Modal
+        isCentered
+        isOpen={isFundCard}
+        onClose={closeFundCard}
+        size={{ sm: "md", lg: "xl" }}
+        style={{ borderRadius: 12 }}
+        motionPreset="slideInBottom"
+        className="rounded-[12px]"
+      >
+        <ModalOverlay />
+
+        <ModalContent>
+          <ModalHeader
+            py="3"
+            color="#000000"
+            className="text-[16px] md:text-[18px] text-[#000000] font-medium leading-[18px] md:leading-[20px]"
+          >
+            Fund Card
+          </ModalHeader>
+          <ModalCloseButton size={"sm"} />
+          <Divider color="#98A2B3" />
+          <ModalBody
+            pt={{ base: "20px", md: "24px" }}
+            px={{ base: "10px", md: "18px" }}
+            pb={{ base: "30px", md: "40px" }}
+            className="pt-[16px] md:pt-[20px] px-[10px] md:px-[20px] pb-[24px] md:pb-[30px]"
+          >
+            <div className="p-2 py-3 mb-3 shadow border bg-[#111111]  rounded-lg flex gap-1">
+              <InfoCircle
+                color="white"
+                variant="Bold"
+                size={16}
+                className="w-[20px]"
+              />
+              <p className="text-sm text-white  ">
+                Important: The card funding amount will be directly deducted
+                from your USD wallet balance.
+              </p>
+            </div>
+
+            <div className="p-2 py-3 mb-3 border-[#3B6896] border bg-[#3B6896] bg-opacity-35 rounded-lg">
+              <p className="text-sm  ">Dollar Wallet Balance</p>
+              <p className="text-base mt-2 ">
+                <NumericFormat
+                  value={profileData?.default_partner?.dollar_wallet_balance}
+                  displayType={"text"}
+                  thousandSeparator={true}
+                  prefix={"USD"}
+                  decimalScale={2}
+                  fixedDecimalScale={true}
+                />
+              </p>
+            </div>
+            <div className="mb-[18px]">
+              <label className="text-[14px] text-[#667185]    mb-[8px] ">
+                Amount($)
+              </label>
+              <div className="">
+                <InputField
+                  type="text"
+                  placeholder="20"
+                  value={amount}
+                  name="amount"
+                  onChange={(e) => setAmount(e.target?.value)}
+                />
+                {amount  >
+                      profileData?.default_partner?.dollar_wallet_balance && (
+                      <p className="text-xs text-red-400 mt-1">
+                        You do not enough Dollar balance
+                      </p>
+                    )}
+              </div>
+            </div>
+            <div className="mb-[18px]">
+              <label className="text-[14px] text-[#667185]    mb-[8px] ">
+                Pin
+              </label>
+              <div className="flex">
+                <OTPInput
+                  //   className=" h-[44px] bg-[#DBDCDDFF]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  value={pin}
+                  className="border-[#000] "
+                  onChange={setPin}
+                  autoFocus
+                  OTPLength={4}
+                  otpType="number"
+                  disabled={false}
+                  secure
+                  //   style
+                  inputStyles={{
+                    padding: "5px",
+                    backgroundColor: "#DBDCDDFF",
+                    border: "#000",
+                    borderRadius: "5px",
+                  }}
+                />
+              </div>
+            </div>
+          </ModalBody>
+          <Divider />
+
+          <ModalFooter>
+            <button
+              onClick={fundCard}
+              className={`border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#3B6896] hover:bg-opacity-75 flex banks-center justify-center text-center rounded-[8px] py-[8px] text-[14px] font-medium text-white `}
+            >
+              {isLoading ? (
+                <ClipLoader color={"white"} size={20} />
+              ) : (
+                <> Submit </>
+              )}
+            </button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
       <Modal
         isCentered
         isOpen={isCreateCard}

@@ -53,6 +53,7 @@ export const CREATECARD = getApiUrl("/virtual-card/create");
 export const GETCARDHOLDERDETAILS = getApiUrl("/virtual-card/get-card-holder-details");
 export const GETCARDDETAILS = getApiUrl("/virtual-card/get-full-card-details");
 export const GETCARDS = getApiUrl("/virtual-card/get-cards");
+export const FUNDCARDS = getApiUrl("/virtual-card/fund");
 
 
 //Vantapp API Dev

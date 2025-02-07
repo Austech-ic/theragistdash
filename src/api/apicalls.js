@@ -36,7 +36,8 @@ import {
  GETCARDHOLDERDETAILS,
  CREATECARD,
  CREATECARDHOLDER,
- GETCARDS
+ GETCARDS,
+ FUNDCARDS
 } from "../utils/config";
 import { apiDelete, apiGet, apiGetCSV, apiPost, apiPut } from "../utils/utils";
 
@@ -257,6 +258,9 @@ export function createCard(data) {
 }
 export function createCardHolder(data) {
   return apiPost(CREATECARDHOLDER, data);
+}
+export function fundCard(data) {
+  return apiPost(FUNDCARDS, data);
 }
 
 

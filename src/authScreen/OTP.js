@@ -21,7 +21,7 @@ const ValidateOtp = () => {
     setIsLoading(true);
     try {
       const response = await api.validateOtp({
-        email: location.state.email,
+        email: location?.state?.email,
         otp: otp,
       });
       enqueueSnackbar("Email Verified Successfully", { variant: "success" });
@@ -29,7 +29,6 @@ const ValidateOtp = () => {
       setIsLoading(false);
       navigate("/");
 
-      // navigate("/signUp");
     } catch (error) {
       console.log(error);
       enqueueSnackbar(error.message, { variant: "error" });
@@ -132,11 +131,10 @@ const ValidateOtp = () => {
         </h3>
         <p className="text-[#667185] text-md mb-5 w-[90%] text-center">
           We have sent a verification code to your email
-          {hideEmail(location.state.email)}
+          {hideEmail(location?.state?.email)}
         </p>
         <div className="flex justify-center my-6">
           <OTPInput
-            //   className=" h-[44px] bg-[#DBDCDDFF]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
             value={otp}
             className="border-[#000] "
             onChange={setOtp}
@@ -146,11 +144,8 @@ const ValidateOtp = () => {
             otpType="number"
             disabled={false}
             secure
-            //   style
             inputStyles={{
               padding: "5px",
-              // width: "46px",
-              // height: "46px",
               backgroundColor: "#DBDCDDFF",
               border: "#000",
               borderRadius: "5px",
