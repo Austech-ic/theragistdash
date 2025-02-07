@@ -39,6 +39,8 @@ import { enqueueSnackbar } from "notistack";
 import { useQuery } from "@tanstack/react-query";
 import { EyeClosed, EyeOff } from "lucide-react";
 import OTPInput from "otp-input-react";
+import PredivModal from "../../components/wallet/PreviewModal";
+
 
 const DollarCard = () => {
   const [createCardPhase, setCreateCardPhase] = useState(0);
@@ -56,6 +58,14 @@ const DollarCard = () => {
   const [amount, setAmount] = useState("");
   const [pin, setPin] = useState("");
   const [fundingCard, setFundingCard] = useState(null);
+  const [isPrevFundCard, setPrevFundCard] = useState(false);
+
+  const togglePrevFundCard = () => {
+    setPrevFundCard(!isPrevFundCard);
+  };
+  function closePrevFundCard() {
+    setPrevFundCard(false);
+  }
 
   const { profile } = useUserContext();
   function toggleViewAmount() {
@@ -74,9 +84,9 @@ const DollarCard = () => {
     setPin("");
     setAmount("");
   };
-  const toggleFundCard = (cardId, cardName) => {
+  const toggleFundCard = (cardId, cardName, lastDigit) => {
     setIsFundCard(!isFundCard);
-    setFundingCard([cardId, cardName]);
+    setFundingCard([cardId, cardName, lastDigit]);
   };
 
   const openCreateCard = () => {
@@ -325,14 +335,15 @@ const DollarCard = () => {
 
                     <button
                       onClick={() =>
-                        toggleFundCard(card?.card_id, cardDetails?.card_name)
+                        toggleFundCard(card?.card_id, cardDetails?.card_name, cardDetails?.last_4)
                       }
                       className="flex items-center text-[#3B6896] hover:text-gray-500 transition-transform delay-100 flex-col"
                     >
+                      <CardAdd size={18} />
+
                       <p className="text-sm  flex flex-col">
                         <span className="text-xs ">Fund Card</span>
                       </p>
-                      <CardAdd size={18} />
                     </button>
                   </div>
                 )}
@@ -346,6 +357,32 @@ const DollarCard = () => {
           </div>
         </div>
       </div>{" "}
+      <Modal
+        isCentered
+        isOpen={isPrevFundCard}
+        onClose={closePrevFundCard}
+        size={{ sm: "md", lg: "xl" }}
+        style={{ borderRadius: 12 }}
+        motionPreset="slideInBottom"
+        className="rounded-[12px]"
+      >
+        <ModalOverlay />
+
+        <ModalContent>
+          <PredivModal
+            isLoading={isLoading}
+            lastDigit={fundingCard && fundingCard[2]}
+            name={fundingCard && fundingCard[1]}
+            purpose="Fund Dollar Card"
+            action={fundCard}
+            handleClose={closePrevFundCard}
+            amount={amount}
+            onClose={closePrevFundCard}
+            color="#3B6896"
+            isFundDollarCard={true}
+          />
+        </ModalContent>
+      </Modal>
       <Modal
         isCentered
         isOpen={isFundCard}
@@ -408,15 +445,15 @@ const DollarCard = () => {
                   type="text"
                   placeholder="20"
                   value={amount}
-                  name="amount"
+                  name=""
                   onChange={(e) => setAmount(e.target?.value)}
                 />
-                {amount  >
-                      profileData?.default_partner?.dollar_wallet_balance && (
-                      <p className="text-xs text-red-400 mt-1">
-                        You do not enough Dollar balance
-                      </p>
-                    )}
+                {amount >
+                  profileData?.default_partner?.dollar_wallet_balance && (
+                  <p className="text-xs text-red-400 mt-1">
+                    You do not enough Dollar balance
+                  </p>
+                )}
               </div>
             </div>
             <div className="mb-[18px]">
@@ -449,7 +486,7 @@ const DollarCard = () => {
 
           <ModalFooter>
             <button
-              onClick={fundCard}
+              onClick={togglePrevFundCard}
               className={`border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#3B6896] hover:bg-opacity-75 flex banks-center justify-center text-center rounded-[8px] py-[8px] text-[14px] font-medium text-white `}
             >
               {isLoading ? (

@@ -32,7 +32,7 @@ const PreviewModal = ({
   color,
   isFundDollar,
   rate,
-  isWithdrawDollar
+  isWithdrawDollar,isFundDollarCard, lastDigit
 }) => {
   const userRef = useRef();
   function getFormattedCurrentDay(format = "full") {
@@ -67,40 +67,53 @@ const PreviewModal = ({
         <div className="px-[10px] py-[18px] rounded-lg bg-slate-100 text-[#667185] w-[85%] mx-auto">
           <div className="mx-auto">
             {" "}
-
-            {(isFundDollar || isWithdrawDollar) ?  ( 
-            <NumericFormat
-              value={amount}
-              displayType={"text"}
-              thousandSeparator={true}
-              prefix={"$"}
-              decimalScale={2}
-              fixedDecimalScale={true}
-              renderText={(value) => (
-                <p className="text-[#667185] font-semibold font-i_medium text-[24px] leading-[26px] text-center  tracking-[0.2px]   ">
-                  {value}
-                </p>
-              )}
-            />) : (
+            {isFundDollar || isWithdrawDollar ? (
               <NumericFormat
-              value={amount}
-              displayType={"text"}
-              thousandSeparator={true}
-              prefix={"₦"}
-              decimalScale={2}
-              fixedDecimalScale={true}
-              renderText={(value) => (
-                <p className="text-[#667185] font-semibold font-i_medium text-[24px] leading-[26px] text-center  tracking-[0.2px]   ">
-                  {value}
-                </p>
-              )}
-            />
-            ) }
+                value={amount}
+                displayType={"text"}
+                thousandSeparator={true}
+                prefix={"$"}
+                decimalScale={2}
+                fixedDecimalScale={true}
+                renderText={(value) => (
+                  <p className="text-[#667185] font-semibold font-i_medium text-[24px] leading-[26px] text-center  tracking-[0.2px]   ">
+                    {value}
+                  </p>
+                )}
+              />
+            ) : isFundDollarCard  ? (
+              <NumericFormat
+                value={amount}
+                displayType={"text"}
+                thousandSeparator={true}
+                prefix={"$"}
+                decimalScale={2}
+                fixedDecimalScale={true}
+                renderText={(value) => (
+                  <p className="text-[#667185] font-semibold font-i_medium text-[24px] leading-[26px] text-center  tracking-[0.2px]   ">
+                    {value}
+                  </p>
+                )}
+              />
+            ) :(
+              <NumericFormat
+                value={amount}
+                displayType={"text"}
+                thousandSeparator={true}
+                prefix={"₦"}
+                decimalScale={2}
+                fixedDecimalScale={true}
+                renderText={(value) => (
+                  <p className="text-[#667185] font-semibold font-i_medium text-[24px] leading-[26px] text-center  tracking-[0.2px]   ">
+                    {value}
+                  </p>
+                )}
+              />
+            )}
           </div>
 
           <ul className="gap-[8px] flex flex-col mt-4">
-
-          {(isWithdrawDollar || isFundDollar) && (
+            {(isWithdrawDollar || isFundDollar) && (
               <li className="flex-between ">
                 <p className="text-[14px] leading-[14px] ">Naira Equivalent:</p>
                 <p className="text-[14px] leading-[14px] font-medium">
@@ -119,10 +132,18 @@ const PreviewModal = ({
                       </p>
                     )}
                   />
-            </p>
+                </p>
               </li>
             )}
 
+            {lastDigit && (
+              <li className="flex-between ">
+                <p className="text-[14px] leading-[14px] ">Card Last Digit:</p>
+                <p className="text-[14px] leading-[14px] font-medium">
+                  {"XXXX - " + lastDigit}
+                </p>
+              </li>
+            )}
 
             {tag && (
               <li className="flex-between ">
@@ -136,7 +157,7 @@ const PreviewModal = ({
                 <p className="text-[14px] leading-[14px] font-medium">{name}</p>
               </li>
             )}
-            {(!isWithdrawDollar && !isFundDollar && amount)  && (
+            {!isWithdrawDollar && !isFundDollar && amount && (
               <li className="flex-between ">
                 <p className="text-[14px] leading-[14px] ">Amount:</p>
                 <p className="text-[14px] leading-[14px] font-medium">
@@ -209,9 +230,13 @@ const PreviewModal = ({
           Cancel
         </button>
 
-        <button  onClick={action}disabled={isLoading} className={`border-[0.2px]  border-[#98A2B3] w-[99px] ${color ? `bg-[${color}]` : "bg-[#26ae5f]"  } flex banks-center justify-center text-center rounded-[8px] py-[8px] text-[14px] font-medium text-white`}>
-
-       
+        <button
+          onClick={action}
+          disabled={isLoading}
+          className={`border-[0.2px]  border-[#98A2B3] w-[99px] ${
+            color ? `bg-[${color}]` : "bg-[#26ae5f]"
+          } flex banks-center justify-center text-center rounded-[8px] py-[8px] text-[14px] font-medium text-white`}
+        >
           {isLoading ? (
             <ClipLoader color={"white"} size={20} />
           ) : (
