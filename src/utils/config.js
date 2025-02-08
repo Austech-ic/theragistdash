@@ -1,8 +1,8 @@
 //production server
-export const API_BASE_URL = 'https://dev.vantapp.com/api/partner-business';
+//export const API_BASE_URL = 'https://dev.vantapp.com/api/partner-business';
 
 //live server
-//export const API_BASE_URL = "https://api.vantapp.com/api/partner-business";
+export const API_BASE_URL = "https://api.vantapp.com/api/partner-business";
 
 export const getApiUrl = (endpoint) => API_BASE_URL + endpoint;
 
@@ -57,11 +57,11 @@ export const FUNDCARDS = getApiUrl("/virtual-card/fund");
 
 
 //Vantapp API Dev
-export const VANTAPP_API_BASE_URL = "https://dev.vantapp.com/api";
+//export const VANTAPP_API_BASE_URL = "https://dev.vantapp.com/api";
 
 //Vantapp API LIVE
 
-//export const VANTAPP_API_BASE_URL = "https://api.vantapp.com/api";
+export const VANTAPP_API_BASE_URL = "https://api.vantapp.com/api";
 
 export const getVntApiUrl = (endpoint) => VANTAPP_API_BASE_URL + endpoint;
 

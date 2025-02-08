@@ -1160,7 +1160,7 @@ const WalletOverdiv = () => {
         isCentered
         isOpen={isVantTagModal}
         onClose={CloseVantTagModal}
-        size={{ base: "xs", sm: "md", lg: "xl" }}
+        size={{ sm: "md", lg: "xl" }}
         style={{ borderRadius: 12 }}
         motionPreset="slideInBottom"
         className="rounded-[12px]"
@@ -1297,7 +1297,7 @@ const WalletOverdiv = () => {
             <>
               <PredivModal
                 tag={tag}
-                handleTransfer={handleVantTransfer}
+                action={handleVantTransfer}
                 handleClose={CloseVantTagModal}
                 amount={amount}
                 onClose={CloseVantTagModal}
