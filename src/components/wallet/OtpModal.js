@@ -39,7 +39,7 @@ const OtpModal = ({isLoading, otp,setOtp, handleOtp,onClose, color}) => {
         pb={{ base: "30px", md: "40px" }}
         className="pt-[20px] md:pt-[24px] px-[16px] md:px-[24px] pb-[30px] md:pb-[40px]"
       >
-        <p className="text-[#667185] text-md mb-5 w-[90%] text-center">
+        <p className="text-[#667185] text-md mb-5 px-4 text-center">
           We have sent a verification code to your email
           {/* {hideEmail(location.state.email)} */}
         </p>
@@ -58,8 +58,7 @@ const OtpModal = ({isLoading, otp,setOtp, handleOtp,onClose, color}) => {
             //   style
             inputStyles={{
               padding: "5px",
-              // width: "46px",
-              // height: "46px",
+              
               backgroundColor: "#DBDCDDFF",
               border: "#000",
               borderRadius: "5px",

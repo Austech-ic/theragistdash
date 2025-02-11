@@ -38,120 +38,62 @@ import Store from "./screens/Store";
 import UsdWallet from "./screens/wallet/usdWallet/wallet";
 import DollarCard from "./screens/ExpenseCard/DollarCard";
 import NairaCard from "./screens/ExpenseCard/NairaCard";
+import Beneficiaries from "./screens/wallet/beneficiaries/Beneficiaries";
+import BulkPayment from "./screens/wallet/bulkPayment.js/BulkPayment";
 
 const DashboardRoutes = () => {
   return (
-  
-            
-          <Routes>
-            <Route element={<Layout />}>
-              <Route path="/" exact={true} element={<Home />} />
-              <Route path="/overview" exact={true} element={<OverView />} />
-              <Route path="/getstarted" exact={true} element={<GetStarted />} />
-                    {/* <Route path="*" element={<Page404 />} /> */}
+    <Routes>
+      <Route element={<Layout />}>
+        <Route path="/" exact={true} element={<Home />} />
+        <Route path="/overview" exact={true} element={<OverView />} />
+        <Route path="/getstarted" exact={true} element={<GetStarted />} />
+        {/* <Route path="*" element={<Page404 />} /> */}
 
-              <Route
-                path="/user-wallets"
-                exact={true}
-                element={<UserWallet />}
-              />
-              <Route
-                path="/paymentlink"
-                exact={true}
-                element={<PaymentLinks />}
-              />
-              <Route
-                path="/transaction"
-                exact={true}
-                element={<Transactions />}
-              />
+        <Route path="/user-wallets" exact={true} element={<UserWallet />} />
+        <Route path="/paymentlink" exact={true} element={<PaymentLinks />} />
+        <Route path="/transaction" exact={true} element={<Transactions />} />
 
-               <Route
-                path="/usd-card"
-                exact={true}
-                element={<DollarCard />}
-              />
-                 <Route
-                path="/naira-card"
-                exact={true}
-                element={<NairaCard />}
-              />
-               <Route
-                path="/store"
-                exact={true}
-                element={<Store />}
-              />
-              <Route path="/users" exact={true} element={<Users />} />
-              <Route path="/invoice" exact={true} element={<Invoices />} />
-              <Route path="/saved-invoice" exact={true} element={<SaveInvoice />} />
-              <Route
-                path="/createinvoice"
-                exact={true}
-                element={<CreateInvoice />}
-              />
-              <Route path="/customers" exact={true} element={<Customer />} />
-              <Route
-                path="/verification"
-                exact={true}
-                element={<Verification />}
-              />
-               <Route
-                path="/usd-wallet"
-                exact={true}
-                element={<UsdWallet />}
-              />
-              <Route path="/wallet" exact={true} element={<Wallet />}>
-                <Route
-                  path="/wallet/overview"
-                  exact={true}
-                  element={<WalletOverview />}
-                />
-                <Route
-                  path="/wallet/topup"
-                  exact={true}
-                  element={<WalletTopup />}
-                />
-                <Route
-                  path="/wallet/debit"
-                  exact={true}
-                  element={<WalletDebits />}
-                />
-              </Route>
-              <Route path="/setting" exact={true} element={<Settings />}>
-                <Route
-                  path="/setting/personal-info"
-                  exact={true}
-                  element={<PersonalInfo />}
-                />
-                <Route
-                  path="/setting/business-info"
-                  exact={true}
-                  element={<BusinessInfo />}
-                />
-                <Route
-                  path="/setting/api-key"
-                  exact={true}
-                  element={<ApiKey />}
-                />
-                <Route
-                  path="/setting/pin-reset"
-                  exact={true}
-                  element={<Pin />}
-                />
-                <Route
-                  path="/setting/webhook"
-                  exact={true}
-                  element={<Webhook />}
-                />
-                <Route
-                  path="/setting/my-team"
-                  exact={true}
-                  element={<MyTeam />}
-                />
-              </Route>
-            </Route>
-          </Routes>
-      
+        <Route path="/usd-card" exact={true} element={<DollarCard />} />
+        <Route path="/naira-card" exact={true} element={<NairaCard />} />
+        <Route path="/store" exact={true} element={<Store />} />
+        <Route path="/users" exact={true} element={<Users />} />
+        <Route path="/invoice" exact={true} element={<Invoices />} />
+        <Route path="/saved-invoice" exact={true} element={<SaveInvoice />} />
+        <Route path="/createinvoice" exact={true} element={<CreateInvoice />} />
+        <Route path="/customers" exact={true} element={<Customer />} />
+        <Route path="/verification" exact={true} element={<Verification />} />
+        <Route path="/usd-wallet" exact={true} element={<UsdWallet />} />
+        <Route path="/beneficiaries" exact={true} element={<Beneficiaries />} />
+        <Route path="/bulk-payment" exact={true} element={<BulkPayment />} />
+
+        <Route path="/wallet" exact={true} element={<Wallet />}>
+          <Route
+            path="/wallet/overview"
+            exact={true}
+            element={<WalletOverview />}
+          />
+          <Route path="/wallet/topup" exact={true} element={<WalletTopup />} />
+          <Route path="/wallet/debit" exact={true} element={<WalletDebits />} />
+        </Route>
+        <Route path="/setting" exact={true} element={<Settings />}>
+          <Route
+            path="/setting/personal-info"
+            exact={true}
+            element={<PersonalInfo />}
+          />
+          <Route
+            path="/setting/business-info"
+            exact={true}
+            element={<BusinessInfo />}
+          />
+          <Route path="/setting/api-key" exact={true} element={<ApiKey />} />
+          <Route path="/setting/pin-reset" exact={true} element={<Pin />} />
+          <Route path="/setting/webhook" exact={true} element={<Webhook />} />
+          <Route path="/setting/my-team" exact={true} element={<MyTeam />} />
+        </Route>
+      </Route>
+    </Routes>
   );
 };
 

@@ -109,6 +109,18 @@ export const getExchangeRate = (currency, rates) => {
   }
 }
 
+export function getFormattedCurrentDay(format = "full") {
+  const date = new Date();
+  const options = {
+    full: { weekday: "long", year: "numeric", month: "long", day: "numeric" },
+    short: { weekday: "short", month: "short", day: "numeric" },
+    weekday: { weekday: "long" },
+    compact: { weekday: "short" },
+  };
+
+  return date.toLocaleDateString("en-US", options[format]);
+}
+
 
 export function formatDateToText (date) {
   const months = [

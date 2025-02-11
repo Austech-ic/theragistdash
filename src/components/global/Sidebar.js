@@ -195,6 +195,26 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                   >
                     <li className="">Dollar Wallet</li>
                   </Link>
+                  <Link
+                    to="/bulk-payment"
+                    className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]  ${
+                      window.location.pathname === "/bulk-payment"
+                        ? "bg-[#F7F9FC] font-medium  "
+                        : " font-normal"
+                    }`}
+                  >
+                    <li className="">Bulk Payment</li>
+                  </Link>
+                  <Link
+                    to="/beneficiaries"
+                    className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]  ${
+                      window.location.pathname === "/beneficiaries"
+                        ? "bg-[#F7F9FC] font-medium  "
+                        : " font-normal"
+                    }`}
+                  >
+                    <li className="">Beneficiaries</li>
+                  </Link>
                 </ul>
               )}
 
@@ -218,7 +238,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                 />
                 Transactions
               </Link>
-              {/* <button
+              <button
                 onClick={() => setIsExpenseActive(!isExpenseActive)}
                 className={`py-[10px] pl-[16px] flex items-center  justify-between w-full text-[14px]    leading-[20px] md:leading-[24px] 
                 ${
@@ -280,7 +300,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                     <li className="">Dollar Card</li>
                   </Link>
                 </ul>
-              )} */}
+              )}
               <Link
                 to="/user-wallets"
                 onClick={onClose}

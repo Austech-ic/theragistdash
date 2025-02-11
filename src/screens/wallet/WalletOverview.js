@@ -197,7 +197,6 @@ const WalletOverdiv = () => {
 
   const [pin, setPin] = useState("");
 
-  const isPin = false;
 
   const closeTransferOthers = () => {
     setIsTransferOthers(false);
@@ -854,7 +853,7 @@ const WalletOverdiv = () => {
         isCentered
         isOpen={isTransferOthers}
         onClose={closeTransferOthers}
-        size={{ base: "xs", sm: "md", lg: "xl" }}
+        size={{ sm: "md", lg: "xl" }}
         style={{ borderRadius: 12 }}
         motionPreset="slideInBottom"
         className="rounded-[12px]"

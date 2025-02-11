@@ -37,7 +37,10 @@ import {
  CREATECARD,
  CREATECARDHOLDER,
  GETCARDS,
- FUNDCARDS
+ FUNDCARDS,
+ CREATEBENEFICIARY,
+ GETBENEFICIARY,
+ BULKTRANSFER
 } from "../utils/config";
 import { apiDelete, apiGet, apiGetCSV, apiPost, apiPut } from "../utils/utils";
 
@@ -262,6 +265,19 @@ export function createCardHolder(data) {
 export function fundCard(data) {
   return apiPost(FUNDCARDS, data);
 }
+
+
+
+export function createBeneficiaries(data) {
+  return apiPost(CREATEBENEFICIARY, data);
+}
+export function getBeneficiary(data) {
+  return apiGet(GETBENEFICIARY, data);
+}
+export function bulkTransfer(data) {
+  return apiPost(BULKTRANSFER, data);
+}
+
 
 
 

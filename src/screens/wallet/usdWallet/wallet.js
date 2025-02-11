@@ -132,11 +132,11 @@ const UsdWallet = () => {
 
   const refreshRate = () => {
     setIsRotating(true);
+    exchangeRateQuery.refetch();
 
     setTimeout(() => {
       setIsRotating(false);
     }, 1000); // Match this with animation duration
-    exchangeRateQuery.refetch();
   };
 
   const getExchangeRates = async () => {
