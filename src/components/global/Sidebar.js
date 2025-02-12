@@ -135,6 +135,8 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                   window.location.pathname === "/wallet/overview" ||
                   window.location.pathname === "/wallet/topup" ||
                   window.location.pathname === "/usd-wallet" ||
+                  window.location.pathname === "/beneficiaries" ||
+                  window.location.pathname === "/bulk-payment" ||
                   window.location.pathname === "/wallet/debit"
                     ? "text-[#26ae5f] font-medium rounded-md"
                     : "text-[#667185] font-normal "
@@ -149,6 +151,8 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                       window.location.pathname === "/wallet/overview" ||
                       window.location.pathname === "/wallet/topup" ||
                       window.location.pathname === "/usd-wallet" ||
+                      window.location.pathname === "/beneficiaries" ||
+                      window.location.pathname === "/bulk-payment" ||
                       window.location.pathname === "/wallet/debit"
                         ? "Bold"
                         : "Linear"
