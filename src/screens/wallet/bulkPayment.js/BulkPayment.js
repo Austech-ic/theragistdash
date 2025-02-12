@@ -48,6 +48,7 @@ import { Package } from "lucide-react";
 import PinModal from "../../../components/wallet/PinModal";
 import OtpModal from "../../../components/wallet/OtpModal";
 import Success from "../../../components/Success";
+import EmptyList from "../../../components/EmptyList";
 
 const BulkPayment = () => {
   const { profile } = useContext(UserContext);
@@ -597,7 +598,11 @@ const BulkPayment = () => {
                   spellCheck="false"
                 />
               </div>
-              {filteredBeneficiaryData &&
+              {filteredBeneficiaryData?.length < 1 ? (<EmptyList title="Beneficiary" action={()=> navigate("/beneficiaries")} />) :
+              
+              
+              
+              filteredBeneficiaryData &&
                 filteredBeneficiaryData?.map((Beneficiary, index) => (
                   <button
                     onClick={() => addBeneficiaryItem(Beneficiary)}
@@ -614,7 +619,7 @@ const BulkPayment = () => {
                       {Beneficiary?.account_number}
                     </p>
                   </button>
-                ))}
+                )) }
             </m.div>
           </div>
 
