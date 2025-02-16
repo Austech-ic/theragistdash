@@ -10,49 +10,12 @@ import {
 } from "@react-pdf/renderer";
 import { saveAs } from "file-saver";
 import logo from "../assets/VantLogo.png";
+import signature from "../assets/signature.png";
+import verified from "../assets/verified.avif";
 import { ArrowDown, ArrowUp } from "iconsax-react";
 import { getFormattedCurrentDay } from "../utils/helperFunctions";
 import { NumericFormat } from "react-number-format";
-
-// Sample transaction data
-const transactions = [
-  {
-    reference: "VNT_3Tc_1736492265",
-    amount: 120,
-    reason: "Payment via Invoice",
-    status: "failed",
-    type: "credit",
-    date: "2025-01-10T06:57:45.000000Z",
-    email: "ogundelecaleb13@gmail.com",
-    fee: "30.84",
-    balance_before: 147.06,
-    balance_after: 147.06,
-  },
-  {
-    reference: "VNT_imm_1736459044",
-    amount: 120,
-    reason: "Payment via Invoice",
-    status: "successful",
-    type: "credit",
-    date: "2025-01-09T21:44:04.000000Z",
-    email: "ogundelecaleb13@gmail.com",
-    fee: "30.84",
-    balance_before: 57.9,
-    balance_after: 147.06,
-  },
-  {
-    reference: "VNT_syS_1736458419",
-    amount: 100,
-    reason: "Payment via link",
-    status: "failed",
-    type: "credit",
-    date: "2025-01-09T21:33:39.000000Z",
-    email: "ogundelecaleb13@gmail.com",
-    fee: "30.70",
-    balance_before: 57.9,
-    balance_after: 57.9,
-  },
-];
+import { color } from "framer-motion";
 
 // Define styles for the PDF document
 const styles = StyleSheet.create({
@@ -111,7 +74,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderBottom: "1 solid gray",
     paddingVertical: 9,
-    backgroundColor: "#E1E2E4FF",
+    backgroundColor: "#E2E1E4FF",
     borderTopLeftRadius: 6,
     borderTopRightRadius: 6,
   },
@@ -139,7 +102,9 @@ export const StatementOfAccountPDF = ({
   startDate,
   endDate,
 }) => {
-  const address = profile?.address + " " + profile?.state;
+  const home = profile?.address !== null ? profile.address : "";
+  const state = profile?.state !== null ? profile.state : "";
+  const address = home + " " + state;
   const totalCredit = data?.filter((item) => item.type === "credit")?.length;
   const totalDebit = data?.filter((item) => item.type === "debit")?.length;
 
@@ -318,7 +283,9 @@ export const StatementOfAccountPDF = ({
               <Text style={[styles.cell, { width: 180, marginRight: 8 }]}>
                 {txn.reference}
               </Text>
-              <Text style={[styles.cell]}>{txn.reason || "---"}</Text>
+              <Text style={[styles.cell, { width: 200, marginRight: 2 }]}>
+                {txn.reason || "---"}
+              </Text>
               <Text style={styles.cell}>{txn.remark || "---"}</Text>
 
               <Text style={styles.cell}>
@@ -368,6 +335,75 @@ export const StatementOfAccountPDF = ({
         <View style={{ marginTop: 60 }}>
           <View
             style={{
+              border: "1 solid green",
+              borderBottom: "2 solid green",
+              borderRadius: 6,
+              padding: 6,
+              width: "32%",
+              marginBottom: 7,
+            }}
+          >
+            {" "}
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 16,
+              }}
+            >
+              <Image
+                style={{ width: 44, height: 26, alignSelf: "center" }}
+                src={logo}
+              />
+              <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+                Vant Inc.{" "}
+              </Text>
+             
+            </View>
+            <Text
+              style={{
+                fontSize: 12,
+                fontWeight: "bold",
+                color: "#2D1C57FF",
+                marginBottom: 5,
+                textAlign: "center",
+              }}
+            >
+              -- Certified True Copy --
+            </Text>
+            <View>
+              <Text style={{ fontSize: 10, color: "green", marginBottom: 2 }}>
+                Name:{" "}
+                <Text style={{ textDecoration: "underline" }}>
+                  Akolade Paul
+                </Text>{" "}
+              </Text>
+              <Text style={{ fontSize: 10, color: "green", marginBottom: 2 }}>
+                Date:{" "}
+                <Text style={{ textDecoration: "underline" }}>
+                  {currentDate}
+                </Text>{" "}
+              </Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  gap: 4,
+                  alignItems: "center"
+                }}
+              >
+                <Text style={{ fontSize: 10, color: "green" }}>Signature:</Text>
+                <View>
+                  <Image
+                    style={{ width: 20, height: 20, alignSelf: "center" }}
+                    src={signature}
+                  />
+                </View>
+              </View>
+            </View>
+          </View>
+
+          <View
+            style={{
               flexDirection: "row",
               justifyContent: "space-between",
               marginBottom: 30,
@@ -377,7 +413,7 @@ export const StatementOfAccountPDF = ({
             <Text style={styles.footerText}>
               22 Glover Rd, Ikoyi, Lagos 106104, Lagos
             </Text>
-            <Text style={styles.footerText}></Text>
+            <Text style={styles.footerText}>+234 913 579 2534</Text>
           </View>
 
           <Text style={styles.cell}>

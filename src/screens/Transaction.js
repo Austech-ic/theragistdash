@@ -96,6 +96,8 @@ const Transactions = () => {
   function HandleStatementModalClose() {
     setStatement(false);
     setStatementPhase(1);
+    setStartdate("");
+    setEndDate("");
   }
 
   function ToggleStatementModal() {
@@ -211,6 +213,7 @@ const Transactions = () => {
       params: {
         from: startdate,
         until: enddate,
+        currency: "NGN"
        
       },
     });
@@ -792,7 +795,7 @@ const Transactions = () => {
                     className="text-center mx-auto mb-5"
                   />
                   <p className="text-[16px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px] text-center">
-                    Your Account State is Ready!!{" "}
+                    Your Account Statement is Ready!!{" "}
                   </p>
 
                   <p className="text-[14px] text-[#44444f] leading-[20px] font-semibold  mb-[8px] md:mb-[16px] text-center">
