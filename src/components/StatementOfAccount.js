@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 6,
     borderTopRightRadius: 6,
   },
-  cell: { flex: 1, textAlign: "center", fontSize: 8 },
+  cell: { flex: 1, textAlign: "center", fontSize: 7 },
   cellHead: {
     flex: 1,
     textAlign: "center",
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     fontSize: 8,
     textAlign: "center",
     color: "#666672",
-  }
+  },
 });
 
 // PDF Document Component with Logo
@@ -146,6 +146,8 @@ export const StatementOfAccountPDF = ({
   const closingBalance = data.slice(-1)[0]?.balance_after;
   const openingBalance = data[0]?.balance_before;
   const totalTransactions = data.length;
+  const currentDate = new Date().toISOString().split("T")[0];
+
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -278,9 +280,7 @@ export const StatementOfAccountPDF = ({
             </View>
             <View>
               <Text>Request Date:</Text>
-              <Text style={styles.subHeadText}>
-                {getFormattedCurrentDay("short")}
-              </Text>
+              <Text style={styles.subHeadText}>{currentDate}</Text>
             </View>
             <View>
               <Text>Start Date:</Text>
@@ -318,8 +318,8 @@ export const StatementOfAccountPDF = ({
               <Text style={[styles.cell, { width: 180, marginRight: 8 }]}>
                 {txn.reference}
               </Text>
-              <Text style={[styles.cell]}>{txn.reason || "-- || --"}</Text>
-              <Text style={styles.cell}>{txn.remark || "-- || --"}</Text>
+              <Text style={[styles.cell]}>{txn.reason || "---"}</Text>
+              <Text style={styles.cell}>{txn.remark || "---"}</Text>
 
               <Text style={styles.cell}>
                 {" "}
@@ -365,20 +365,20 @@ export const StatementOfAccountPDF = ({
           ))}
         </View>
 
-        <View style={{marginTop: 60}}>
-
-            <View style={{flexDirection: "row", justifyContent: "space-between" , marginBottom: 30}}> 
-                <Text style={styles.footerText}>
-                    www.vantapp.com
-                </Text>
-                <Text style={styles.footerText}>
-                22 Glover Rd, Ikoyi, Lagos 106104, Lagos
-
-                </Text>
-                <Text style={styles.footerText}>
-
-                </Text>
-              </View>
+        <View style={{ marginTop: 60 }}>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              marginBottom: 30,
+            }}
+          >
+            <Text style={styles.footerText}>www.vantapp.com</Text>
+            <Text style={styles.footerText}>
+              22 Glover Rd, Ikoyi, Lagos 106104, Lagos
+            </Text>
+            <Text style={styles.footerText}></Text>
+          </View>
 
           <Text style={styles.cell}>
             Vant™️ is a registered trademark representing proprietary financial
