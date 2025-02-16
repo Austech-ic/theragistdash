@@ -389,7 +389,7 @@ const WalletOverdiv = () => {
 
   const handleOtp = () => {
     if (!otp || otp?.length < 6) {
-      enqueueSnackbar("Please input otp received via email😞", {
+      enqueueSnackbar("Please input otp received via email", {
         variant: "error",
       });
 

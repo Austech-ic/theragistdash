@@ -244,7 +244,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
               </Link>
 
               {/* //expense Card */}
-              {/* <button
+               {/* <button
                 onClick={() => setIsExpenseActive(!isExpenseActive)}
                 className={`py-[10px] pl-[16px] flex items-center  justify-between w-full text-[14px]    leading-[20px] md:leading-[24px] 
                 ${
@@ -306,7 +306,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                     <li className="">Dollar Card</li>
                   </Link>
                 </ul>
-              )} */}
+              )}  */}
               <Link
                 to="/user-wallets"
                 onClick={onClose}

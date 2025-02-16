@@ -74,7 +74,7 @@ const Customer = () => {
 
   function HandleEditModalClose() {
     setIsEditOpen(false);
-    ClearForm()
+    ClearForm();
   }
 
   function ToggleEditModal(id) {
@@ -84,7 +84,7 @@ const Customer = () => {
       name: id?.name,
       email: id?.email,
       phone: id?.phone,
-      status: id?.isActive === 0 ? false :true,
+      status: id?.isActive === 0 ? false : true,
     });
   }
 
@@ -93,7 +93,7 @@ const Customer = () => {
   };
   const closeCreateModal = () => {
     setIsCreate(false);
-    ClearForm()
+    ClearForm();
   };
 
   function ToggleDeleteModal(id) {
@@ -126,20 +126,20 @@ const Customer = () => {
     setIsViewModal(false);
   };
 
-  const ClearForm =()=> {
+  const ClearForm = () => {
     setFormValue({
       name: "",
       lastName: "",
       email: "",
       phone: "",
       status: null,
-    })
-  }
+    });
+  };
 
   const UpdateCustomer = async () => {
     setIsLoading(true);
     try {
-      const response = await api.updateCustomers(resultId?.id,{
+      const response = await api.updateCustomers(resultId?.id, {
         email: formValue?.email,
         isActive: formValue?.status === "true" ? true : false,
         name: formValue?.name,
@@ -150,14 +150,13 @@ const Customer = () => {
       results.refetch();
       setIsLoading(false);
       setIsEditOpen(false);
-      ClearForm()
+      ClearForm();
     } catch (error) {
       enqueueSnackbar(error.message, { variant: "error" });
 
       setIsLoading(false);
     }
   };
-
 
   const CreateCustomer = async () => {
     setIsLoading(true);
@@ -173,7 +172,7 @@ const Customer = () => {
       results.refetch();
       setIsLoading(false);
       setIsCreate(false);
-      ClearForm()
+      ClearForm();
     } catch (error) {
       //console.log(error.message);
       enqueueSnackbar(error.message, { variant: "error" });
@@ -616,7 +615,7 @@ const Customer = () => {
                 <input
                   type="text"
                   placeholder="Enter Name"
-                  className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  className="w-full h-[38px] pl-[10px] pr-[8px] py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
                   name="name"
                   value={formValue.name}
                   onChange={(e) => handleInputChange(e)}
@@ -634,7 +633,7 @@ const Customer = () => {
                 <input
                   type="text"
                   placeholder="XXXX XXXX XXX"
-                  className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  className="w-full h-[38px] pl-[10px] pr-[8px] py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
                   name="phone"
                   value={formValue.phone}
                   onChange={(e) => handleInputChange(e)}
@@ -652,7 +651,7 @@ const Customer = () => {
                 <input
                   type="email"
                   placeholder=""
-                  className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  className="w-full h-[38px] pl-[10px] pr-[8px] py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
                   name="email"
                   value={formValue.email}
                   onChange={(e) => handleInputChange(e)}
@@ -670,7 +669,7 @@ const Customer = () => {
                 <select
                   type="text"
                   placeholder=""
-                  className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  className="w-full h-[38px] pl-[10px] pr-[8px] py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
                   name="status"
                   value={formValue.status}
                   onChange={(e) => handleInputChange(e)}
@@ -714,7 +713,7 @@ const Customer = () => {
         isCentered
         isOpen={isEditOpen}
         onClose={ToggleEditModal}
-        size="xl"
+        size={{ sm: "md", lg: "xl" }}
         style={{ borderRadius: 12 }}
         motionPreset="slideInBottom"
         className="rounded-[12px]"
@@ -744,7 +743,7 @@ const Customer = () => {
                 <input
                   type="text"
                   placeholder="Enter Name"
-                  className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  className="w-full h-[38px] pl-[10px] pr-[8px] py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
                   name="name"
                   value={formValue.name}
                   onChange={(e) => handleInputChange(e)}
@@ -762,7 +761,7 @@ const Customer = () => {
                 <input
                   type="text"
                   placeholder="XXXX XXXX XXX"
-                  className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  className="w-full h-[38px] pl-[10px] pr-[8px] py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
                   name="phone"
                   value={formValue.phone}
                   onChange={(e) => handleInputChange(e)}
@@ -780,7 +779,7 @@ const Customer = () => {
                 <input
                   type="email"
                   placeholder=""
-                  className="w-full h-[48px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  className="w-full h-[38px] pl-[10px] pr-[8px] py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
                   name="email"
                   disabled
                   value={formValue.email}
@@ -799,7 +798,7 @@ const Customer = () => {
                 <select
                   type="text"
                   placeholder=""
-                  className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  className="w-full h-[38px] pl-[10px] pr-[8px] py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
                   name="status"
                   value={formValue.status}
                   onChange={(e) => handleInputChange(e)}
@@ -823,7 +822,7 @@ const Customer = () => {
               Cancel
             </button>
             <button
-               onClick={UpdateCustomer}
+              onClick={UpdateCustomer}
               className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex banks-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
             >
               {isLoading ? (
@@ -836,7 +835,6 @@ const Customer = () => {
         </ModalContent>
       </Modal>
     </div>
-
   );
 };
 

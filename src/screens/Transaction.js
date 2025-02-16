@@ -4,6 +4,7 @@ import {
   ArrowUp,
   Book,
   Calendar,
+  Calendar2,
   Clipboard,
   ClipboardText,
   CloseCircle,
@@ -54,6 +55,9 @@ import { saveAs } from "file-saver";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import TransactionReceipt from "../components/transaction-receipt";
+import { StatementOfAccountPDF } from "../components/StatementOfAccount";
+import { pdf } from "@react-pdf/renderer";
+import { useUserContext } from "../utils/UserProvider";
 
 const Transactions = () => {
   const navigate = useNavigate();
@@ -76,58 +80,54 @@ const Transactions = () => {
   const [status, setStatus] = useState("");
   const [currency, setCurrency] = useState("");
   const [reason, setReason] = useState("");
+  const [statement, setStatement] = useState(false);
+  const [statementPhase, setStatementPhase] = useState(1);
 
+  const { profile } = useUserContext();
   // Function to copy text to the clipboard
   const handleCopy = async (transactionRef) => {
     try {
       await navigator.clipboard.writeText(transactionRef);
       setCopiedRef(transactionRef); // Set copied ref to show feedback
       setTimeout(() => setCopiedRef(null), 2000); // Clear feedback after 2 seconds
-    } catch (err) {
-      //console.error("Failed to copy:", err);
+    } catch (err) {}
+  };
+
+  function HandleStatementModalClose() {
+    setStatement(false);
+    setStatementPhase(1);
+  }
+
+  function ToggleStatementModal() {
+    setStatement(!statement);
+  }
+
+  const handleSort = () => {
+    if (!startdate) {
+      enqueueSnackbar("Please select a start date", {
+        variant: "error",
+      });
+      return;
     }
-  };
+    if (!enddate) {
+      enqueueSnackbar("Please select an end date", {
+        variant: "error",
+      });
+      return;
+    }
+    if (startdate > enddate) {
+      enqueueSnackbar("Start date cannot be greater than end date", {
+        variant: "error",
+      });
+      return;
+    }
 
-  function HandleEditModalClose() {
-    setIsEditOpen(false);
-  }
-
-  function ToggleEditModal() {
-    setIsEditOpen(!isEditOpen);
-  }
-
-  const toggleCreate = () => {
-    setIsCreate(!isCreate);
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      setStatementPhase(2);
+    }, 3000);
   };
-  const closeCreateModal = () => {
-    setIsCreate(false);
-  };
-
-  function ToggleDeleteModal(id) {
-    setIsDeleteModal(!isDeleteModal);
-  }
-  function closeDeleteModal() {
-    setIsDeleteModal(false);
-  }
-
-  const toggleCreateModal = () => {
-    setIsCreateModal(!isCreateModal);
-  };
-
-  const toggleImportModal = () => {
-    setIsOpenImportModal(!isOpenImportModal);
-  };
-  const closeImportModal = () => {
-    setIsOpenImportModal(false);
-  };
-
-  const toggleDelete = () => {
-    setIsDeleteOpen(!isDeleteOpen);
-  };
-  const HandleDeleteModalClose = () => {
-    setIsDeleteOpen(false);
-  };
-  const result = [{ status: "Success" }];
 
   const handleDetails = (result) => {
     setIsViewModal(true);
@@ -165,7 +165,7 @@ const Transactions = () => {
   };
 
   const handleDownloadPdf = () => {
-    setIsLoading(true)
+    setIsLoading(true);
     if (receiptRef.current) {
       receiptRef.current.generatePDF();
     }
@@ -206,6 +206,35 @@ const Transactions = () => {
     }
   );
 
+  async function getexportTransaction(page) {
+    const response = await api.getTransactionFullLength({
+      params: {
+        from: startdate,
+        until: enddate,
+       
+      },
+    });
+    return response;
+  }
+
+  const exportdata = useQuery(
+    [
+      "exportdata",
+      page,
+      startdate,
+      enddate,
+
+    ],
+    () => getexportTransaction(page),
+    {
+      keepPreviousData: true,
+      refetchOnWindowFocus: "always",
+    }
+  );
+
+   const statementData = exportdata?.data?.data?.filter((item)=> item.status === "successful")
+
+
   const handlePrev = (event) => {
     if (event) {
       setPage(page - 1);
@@ -233,6 +262,16 @@ const Transactions = () => {
 
     saveAs(blob, "Transaction-Report.xlsx");
   };
+
+  const generateAndDownloadPDF = async () => {
+    const blob = await pdf(
+      <StatementOfAccountPDF profile={profile} data={statementData} startDate={startdate} endDate={enddate} />
+    ).toBlob();
+    saveAs(blob, "Transaction_Statement.pdf");
+  };
+
+  console.log("Profile", profile);
+  console.log("data", results?.data?.data);
 
   return (
     <div className="md:p-[20px] p-[10px] bg-[#F2F2F2] min-h-screen ">
@@ -266,6 +305,12 @@ const Transactions = () => {
 
               <DocumentUpload variant="Linear" color="#667185" size="16" />
             </button>
+            <button
+              onClick={ToggleStatementModal}
+              className="border-[0.2px] px-2  border-[#98A2B3]  bg-[#26ae5f] flex banks-center justify-center text-center rounded-[8px] py-[7px] text-[12px] font-medium text-white hover:bg-opacity-80"
+            >
+              Generate Account Statement
+            </button>
 
             <div className="hidden">
               {" "}
@@ -277,72 +322,6 @@ const Transactions = () => {
                 showDownloadButton={false} // Hide the built-in download button
               />
             </div>
-
-            <Modal
-              isCentered
-              isOpen={isOpenImportModal}
-              onClose={closeImportModal}
-              size="xl"
-              style={{ borderRadius: 12 }}
-              motionPreset="slideInBottom"
-              className="rounded-[12px]"
-            >
-              <ModalOverlay />
-              <ModalContent>
-                <ModalHeader
-                  py="4"
-                  color="#000000"
-                  className="text-[18px] md:text-[20px] text-[#000000] font-medium leading-[24px] md:leading-[24px]"
-                >
-                  Export Transactions
-                </ModalHeader>
-                <ModalCloseButton size={"sm"} />
-                <Divider color="#98A2B3" />
-                <ModalBody
-                  pt={{ base: "20px", md: "24px" }}
-                  px={{ base: "16px", md: "24px" }}
-                  pb={{ base: "30px", md: "40px" }}
-                  className="pt-[20px] md:pt-[24px] px-[16px] md:px-[24px] pb-[30px] md:pb-[40px]"
-                >
-                  <p className="text-[14px] text-[#667185] leading-[20px] mb-[20px] ">
-                    Select CSV File
-                  </p>
-
-                  <input
-                    className="flex mb-[20px] h-9 w-full rounded-md  border-input bg-background  text-sm shadow-sm text-[#667185] border-[0.2px] border-[#98A2B3] transition-colors file:border-0 file:border-r-[0.2px] file:h-9 file:bg-[#F9FAFB] file:text-[#667185] file:border-[#D0D5DD] file:text-sm file:font-medium placeholder:text-muted-foreground focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f]  disabled:opacity-50"
-                    id="csv"
-                    name="csv"
-                    type="file"
-                  />
-
-                  <div className="flex gap-[8px] items-center">
-                    {" "}
-                    <p className="text-[14px] underline text-[#667185] leading-[20px]  ">
-                      Download Sample Transactions CSV File
-                    </p>
-                    
-                    <DocumentDownload
-                      color="#4CAF50"
-                      variant="Bold"
-                      size="20px"
-                    />
-                  </div>
-                </ModalBody>
-                <Divider />
-                <ModalFooter gap={"16px"}>
-                  <button className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black">
-                    Cancel
-                  </button>
-                  <button className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white">
-                    {!isLoading ? (
-                      <ClipLoader color={"white"} size={20} />
-                    ) : (
-                      <> Upload </>
-                    )}
-                  </button>
-                </ModalFooter>
-              </ModalContent>
-            </Modal>
           </div>
         </div>
         <div className="p-[10px] md:p-[16px] lg:p-[20px]">
@@ -351,14 +330,14 @@ const Transactions = () => {
             <input
               type="text"
               placeholder="Transaction Reference"
-              className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+              className="w-[200px] h-[36px] bg-[#F9FAFB]  px-2 py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
               value={reference}
               onChange={(e) => setReference(e.target.value)}
             />
             <select
               type="text"
               placeholder=""
-              className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+              className="w-[200px] h-[36px] bg-[#F9FAFB]  px-2 py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
               value={currency}
               onChange={(e) => setCurrency(e.target.value)}
             >
@@ -368,20 +347,20 @@ const Transactions = () => {
               <option value="GBP">GBP</option>
             </select>
             <DatePicker
-              className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+              className="w-[200px] h-[36px] bg-[#F9FAFB]  px-2 py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
               placeholderText="Start Date"
               selected={startdate}
               onChange={(date) => setStartdate(date)}
             />
             <DatePicker
-              className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+              className="w-[200px] h-[36px] bg-[#F9FAFB]  px-2 py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
               placeholderText="End Date"
               selected={enddate}
               onChange={(date) => setEndDate(date)}
             />
             <select
               type="text"
-              className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+              className="w-[200px] h-[36px] bg-[#F9FAFB]  px-2 py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
               value={type}
               onChange={(e) => setType(e.target.value)}
             >
@@ -393,7 +372,7 @@ const Transactions = () => {
             <select
               type="text"
               placeholder="Select Item Type"
-              className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+              className="w-[200px] h-[36px] bg-[#F9FAFB]  px-2 py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
               value={status}
               onChange={(e) => setStatus(e.target.value)}
             >
@@ -405,7 +384,7 @@ const Transactions = () => {
             </select>
             <select
               type="text"
-              className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+              className="w-[200px] h-[36px] bg-[#F9FAFB]  px-2 py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
               value={reason}
               onChange={(e) => setReason(e.target.value)}
             >
@@ -545,7 +524,11 @@ const Transactions = () => {
                             value={result?.amount}
                             displayType={"text"}
                             thousandSeparator={true}
-                            prefix={result?.reason === "Dollar Wallet Funding" ? "$" :"₦"}
+                            prefix={
+                              result?.reason === "Dollar Wallet Funding"
+                                ? "$"
+                                : "₦"
+                            }
                             decimalScale={2}
                             fixedDecimalScale={true}
                             // renderText={(value) => (
@@ -577,7 +560,7 @@ const Transactions = () => {
                             // renderText={(value) => (
                             //   <Text className="text-[#fff]  font-semibold font-i_medium text-[16px] leading-[19px]  tracking-[0.2px]   ">
                             //     {value}
-                            //   </Text>
+                            //   </Text>x
                             // )}
                           />
                         </td>
@@ -648,106 +631,6 @@ const Transactions = () => {
                               </MenuItem>
                             </MenuList>
                           </Menu>
-
-                          <Modal
-                            isCentered
-                            isOpen={isDeleteModal}
-                            onClose={closeDeleteModal}
-                            size="md"
-                            style={{ borderRadius: 12 }}
-                            motionPreset="slideInBottom"
-                            className="rounded-[12px]"
-                          >
-                            <ModalOverlay />
-                            <ModalContent>
-                              <ModalHeader
-                                py="4"
-                                color="#000000"
-                                className="text-[18px]   font-medium leading-[24px] md:leading-[24px]"
-                              >
-                                <svg
-                                  className="mx-auto"
-                                  width="56"
-                                  height="56"
-                                  viewBox="0 0 56 56"
-                                  fill="none"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                >
-                                  <rect
-                                    x="4"
-                                    y="4"
-                                    width="48"
-                                    height="48"
-                                    rx="24"
-                                    fill="#FCC5C1"
-                                  />
-                                  <rect
-                                    x="4"
-                                    y="4"
-                                    width="48"
-                                    height="48"
-                                    rx="24"
-                                    stroke="#FEECEB"
-                                    stroke-width="8"
-                                  />
-                                  <path
-                                    d="M28 38C33.5 38 38 33.5 38 28C38 22.5 33.5 18 28 18C22.5 18 18 22.5 18 28C18 33.5 22.5 38 28 38Z"
-                                    stroke="#26ae5f"
-                                    stroke-width="1.5"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                  />
-                                  <path
-                                    d="M28 24V29"
-                                    stroke="#26ae5f"
-                                    stroke-width="1.5"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                  />
-                                  <path
-                                    d="M27.9961 32H28.0051"
-                                    stroke="#26ae5f"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                  />
-                                </svg>
-                              </ModalHeader>
-                              <ModalCloseButton size={"sm"} />
-                              <ModalBody
-                                py={{ base: "20px", md: "24px" }}
-                                px={{ base: "16px", md: "24px" }}
-                                className=" px-[16px] md:px-[24px] pb-[30px] md:pb-[40px]"
-                              >
-                                <p className=" text-[16px] md:text-lg text-center  text-[#000] leading-[24px] font-medium  ">
-                                  Delete Transactions
-                                </p>
-
-                                <p className="text-[14px]  text-[#667185] leading-[20px] font-normal text-center mt-2  ">
-                                  Are you sure you want to delete this
-                                  Transactions? This action cannot be undone.
-                                </p>
-                              </ModalBody>
-                              <ModalFooter gap={"16px"}>
-                                <button
-                                  onClick={closeDeleteModal}
-                                  className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black"
-                                >
-                                  Cancel
-                                </button>
-                                <button
-                                  // onClick={handleDelete}
-                                  className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
-                                >
-                                  {isLoading ? (
-                                    <ClipLoader color={"white"} size={20} />
-                                  ) : (
-                                    <> Delete </>
-                                  )}
-                                </button>
-                              </ModalFooter>
-                            </ModalContent>
-                          </Modal>
                         </td>
                       </tr>
                     ))}
@@ -807,7 +690,130 @@ const Transactions = () => {
           </button>
         </div>
       </div>
-      {/* Create Modal */}
+
+      {/* Generate statement */}
+      <Modal
+        isCentered
+        isOpen={statement}
+        onClose={HandleStatementModalClose}
+        size={{ sm: "md", lg: "xl" }}
+        style={{ borderRadius: 12 }}
+        motionPreset="slideInBottom"
+        className="rounded-[12px]"
+      >
+        <ModalOverlay />
+        <ModalContent>
+          {statementPhase === 1 && (
+            <>
+              <ModalHeader
+                py="4"
+                color="#000000"
+                className="text-[18px] md:text-[20px] text-[#000000] font-medium leading-[24px] md:leading-[24px]"
+              >
+                Generate Account Statement
+              </ModalHeader>
+              <ModalCloseButton size={"sm"} />
+              <Divider color="#98A2B3" />
+              <ModalBody
+                pt={{ base: "20px", md: "24px" }}
+                px={{ base: "16px", md: "24px" }}
+                pb={{ base: "30px", md: "40px" }}
+                className="pt-[20px] md:pt-[24px] px-[16px] md:px-[24px] pb-[30px] md:pb-[40px]"
+              >
+                <div className="mb-[24px] w-full">
+                  <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
+                    Start Date
+                  </label>
+                  <div className=" ">
+                    <input
+                      type="date"
+                      className="w-full h-[38px] pl-[10px] pr-[8px] py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
+                      name="startDate"
+                      value={startdate}
+                      onChange={(e) => setStartdate(e.target.value)}
+                      autoCapitalize="off"
+                      autoCorrect="off"
+                      spellCheck="false"
+                    />
+                  </div>
+                </div>
+                <div className="mb-[24px] w-full">
+                  <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
+                    End Date
+                  </label>
+                  <div className="w-full ">
+                    <input
+                      type="date"
+                      className="w-full h-[38px] pl-[10px] pr-[8px] py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none  focus:border-[#26ae5f] "
+                      value={enddate}
+                      onChange={(e) => setEndDate(e.target.value)}
+                      autoCapitalize="off"
+                      autoCorrect="off"
+                    />
+                  </div>
+                </div>
+              </ModalBody>
+              <Divider />
+              <ModalFooter gap={"16px"}>
+                <button
+                  onClick={HandleStatementModalClose}
+                  className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[8px] text-[14px] font-medium text-black"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSort}
+                  className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex banks-center justify-center text-center rounded-[8px] py-[8px] text-[14px] font-medium text-white"
+                >
+                  {isLoading ? (
+                    <ClipLoader color={"white"} size={20} />
+                  ) : (
+                    <> Generate </>
+                  )}
+                </button>
+              </ModalFooter>
+            </>
+          )}
+
+          {statementPhase === 2 && (
+            <>
+                          <ModalCloseButton size={"sm"} />
+
+              <ModalBody
+                pt={{ base: "20px", md: "24px" }}
+                px={{ base: "16px", md: "24px" }}
+                pb={{ base: "30px", md: "40px" }}
+                className="pt-[20px] md:pt-[24px] px-[16px] md:px-[24px] pb-[30px] md:pb-[40px]"
+              >
+                <div className="mb-[24px] w-full">
+                  <Calendar2
+                    size="32"
+                    color="#667185"
+                    className="text-center mx-auto mb-5"
+                  />
+                  <p className="text-[16px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px] text-center">
+                    Your Account State is Ready!!{" "}
+                  </p>
+
+                  <p className="text-[14px] text-[#44444f] leading-[20px] font-semibold  mb-[8px] md:mb-[16px] text-center">
+                    {startdate + " " + "-" + " " + enddate}{" "}
+                  </p>
+                </div>
+                <div className="mb-[24px] w-full">
+                  <button
+                    onClick={generateAndDownloadPDF}
+                    className="border-[0.2px]  border-[#98A2B3] px-3 mx-auto bg-[#26ae5f] flex banks-center hover:bg-opacity-85 justify-center text-center rounded-[8px] py-[8px] text-[14px] font-medium text-white"
+                  >
+                    Download Account Statement
+                  </button>
+                </div>
+              </ModalBody>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+
+      {/* view Modal */}
       <ModalLeft isOpen={isViewModal} onClose={closeViewModal}>
         <div>
           <div className="border-b border-b-[#E4E7EC] p-[10px] flex justify-between items-center ">
@@ -836,9 +842,11 @@ const Transactions = () => {
                   onClick={handleDownloadPdf}
                   className="flex gap-1 border  bg-[#26ae5f] text-[#fff] px-[6px] py-2 text-[13px] leading-[13px] items-center rounded-md hover:opacity-80 mr-3"
                 >
-                   {isLoading ? <ClipLoader size={12} /> :  <DocumentDownload
-                      size="14px" color="#fff"
-                    />}
+                  {isLoading ? (
+                    <ClipLoader size={12} />
+                  ) : (
+                    <DocumentDownload size="14px" color="#fff" />
+                  )}
                   Download Receipt
                 </button>
               </div>{" "}
@@ -889,7 +897,6 @@ const Transactions = () => {
                     prefix={"₦"}
                     decimalScale={2}
                     fixedDecimalScale={true}
-                   
                   />
                 </td>
               </tr>
@@ -905,7 +912,6 @@ const Transactions = () => {
                     prefix={"₦"}
                     decimalScale={2}
                     fixedDecimalScale={true}
-                   
                   />
                 </td>
               </tr>
@@ -921,7 +927,6 @@ const Transactions = () => {
                     prefix={"₦"}
                     decimalScale={2}
                     fixedDecimalScale={true}
-                   
                   />
                 </td>
               </tr>
