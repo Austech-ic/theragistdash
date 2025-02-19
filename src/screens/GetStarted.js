@@ -153,12 +153,20 @@ const GetStarted = () => {
     ProfilesQuery?.data,
   ]);
 
+  const IsRegisteredBusiness = profilesData?.default_partner?.business_registered === 0 ? false : true
+
   const info = [
     { id: 1, name: "Personal Information" , icon: Personalcard },
     { id: 2, name: "Business Information", icon: Building },
     { id: 3, name: "BVN Of Manager", icon: CardTick1 },
     { id: 4, name: "Upload Document", icon:DocumentCloud },
+
+
   ];
+
+  const filteredInfo = info.filter((item)=> IsRegisteredBusiness ? item : item.id !== 4  )
+
+
   const handleInputChange = (e) => {
     setFormValue({ ...formValue, [e.target.name]: e.target.value });
   };
@@ -299,8 +307,8 @@ const GetStarted = () => {
         </div>
       </div>
 
-      <div className="flex md:hidden items-center space-x-2 mt-4 overflow-auto">  {info &&
-            info?.map((inf, index) => (
+      <div className="flex md:hidden items-center space-x-2 mt-4 overflow-auto">  {filteredInfo &&
+            filteredInfo?.map((inf, index) => (
               <button
                 onClick={() => setSelectedInfo(inf?.id)}
                 className={`flex-between mb-2 gap-2  ${
@@ -387,8 +395,8 @@ const GetStarted = () => {
           }}
           className="w-[25%] md:w-[30%] hidden md:block"
         >
-          {info &&
-            info?.map((inf, index) => (
+          {filteredInfo &&
+            filteredInfo?.map((inf, index) => (
               <button
                 onClick={() => setSelectedInfo(inf?.id)}
                 className={`flex-between  ${
@@ -775,7 +783,10 @@ const GetStarted = () => {
                   />
                 </div>
               </div>
-              <div className="mb-[16px] md:mb-[20px]">
+
+              {IsRegisteredBusiness && (
+                <>
+                 <div className="mb-[16px] md:mb-[20px]">
                 <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
                   Business RC Number
                 </label>
@@ -819,6 +830,9 @@ const GetStarted = () => {
                   />
                 </div>
               </div>
+                </>
+              )}
+             
               <div className="mb-[16px] md:mb-[20px]">
                 <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
                   Business House Number <span className="text-red-500 text-lg">*</span>
