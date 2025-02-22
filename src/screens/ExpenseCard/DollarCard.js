@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import CreditCard from "../../components/creditcard";
 import NewCard from "../../components/NewCard";
-import { ClipLoader, RotateLoader } from "react-spinners";
+import { ClipLoader } from "react-spinners";
 import { NumericFormat } from "react-number-format";
 import {
   Grid,
