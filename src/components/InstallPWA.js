@@ -53,12 +53,12 @@ const InstallPWA = () => {
     <div className="install-prompt">
       {isIOS && isIOSPromptShown ? (
         <div className="ios-prompt whitespace-nowrap">
-          <p className="whitespace-nowrap" >To install this app on your iPhone:</p>
+          <p className="whitespace-nowrap" >To install Vant Business on your iPhone:</p>
           <ol>
             <li>Tap the Share button <span>📤</span></li>
             <li>Tap "Add to Home Screen" <span>🏠</span></li>
           </ol>
-          <button className='mt-2 mx-auto px-2 py-[2px] text-center bg-[#26ae5f] ' onClick={() => setIsIOSPromptShown(false)}>Got it!</button>
+          <button className='mt-2 mx-auto px-2 py-[2px] text-center bg-[#26ae5f] hover:bg-opacity-80 text-white rounded-md ' onClick={() => setIsIOSPromptShown(false)}>Got it!</button>
         </div>
       ) : supportsPWA ? (
         <button className="install-button" onClick={handleInstallClick}>
