@@ -1,5 +1,5 @@
 {
-  "short_name": "Vant Business",
+  "short_name": "Vant",
   "name": "Vant For Business",
   "icons": [
     {
@@ -18,8 +18,10 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "background_color": "#ffffff",
+  "orientation": "portrait"
+
 }
