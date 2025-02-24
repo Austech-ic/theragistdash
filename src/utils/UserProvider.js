@@ -64,11 +64,13 @@ export const UserProvider = ({ children }) => {
   // Initialize Copilot data directly
   useCopilotReadable({
     description:
-      "The user current balance, total number of team members, currency, and all the transaction history.",
+      "The user current balance, total number of team members, currency, customers information, current exchange rate , and all the transaction history.",
     value: {
       formattedWalletBalance,
       totalTeamMembers,
       currency,
+      customers,
+      exchangeRate,
       transactions,
     },
   });

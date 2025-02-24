@@ -7,10 +7,15 @@ import { useNavigate } from "react-router-dom"; // React Router
 const Page = {
   Transfer: "/wallet/overview",
   Team: "/setting/my-team",
+  Transaction: "/transaction",
+  Customers: "/customers",
+  Store: "/store",
+  CreateInvoice: "/createinvoice",
+  PaymentLink: "/paymentlink",
 };
 
 const TransferPageOperations = {
-  ChangePin: "transfer-to-bank",
+  TransferToBank: "transfer-to-bank",
 };
 
 const TeamPageOperations = {
@@ -19,9 +24,38 @@ const TeamPageOperations = {
   EditMember: "edit-member",
 };
 
+const TransactionPageOperations = {
+  TransferToBank: "transfer-to-bank",
+};
+
+const CustomersPageOperations = {
+  AddCustomer: "add-customer",
+  EditCustomer: "edit-customer",
+};
+
+const StorePageOperations = {
+  AddProduct: "add-product",
+  EditProduct: "edit-product",
+  RemoveProduct: "remove-product",
+};
+
+const CreateInvoicePageOperations = {
+  AddInvoice: "add-invoice",
+  ViewInvoice: "view-invoice",
+};
+
+const PaymentLinkPageOperations = {
+  AddPaymentLink: "add-payment-link",
+};
+
 const AVAILABLE_OPERATIONS_PER_PAGE = {
   [Page.Transfer]: Object.values(TransferPageOperations),
   [Page.Team]: Object.values(TeamPageOperations),
+  [Page.Transaction]: Object.values(TransactionPageOperations),
+  [Page.Customers]: Object.values(CustomersPageOperations),
+  [Page.Store]: Object.values(StorePageOperations),
+  [Page.CreateInvoice]: Object.values(CreateInvoicePageOperations),
+  [Page.PaymentLink]: Object.values(PaymentLinkPageOperations),
 };
 
 const CopilotContext = ({ children }) => {
@@ -49,8 +83,20 @@ const CopilotContext = ({ children }) => {
   useCopilotAction({
     name: "navigateToPageAndPerform",
     description: `
-      Navigate to a page to perform an operation. For example, if the user asks to transfer funds or money, 
-      they are navigated to the "Transfer" page with the necessary operation parameter.
+      Navigate to a page to perform an operation. Use this if you are asked to perform an action outside of page context. For example:
+      The user is viewing a dashboard but asks to make changes to a team member or a card. 
+
+      If you are on the cards page for example, and are requested to perform a card related operation, you are allowed to perform it.
+
+      if the user asks to transfer funds or money, they are navigated to the "Transfer" page with the necessary operation parameter.
+      
+      If the operation is unavailable, tell the user to navigate themselves to the page.
+      Let them know which page that is.
+      Advise them to re-ask co-pilot once they arrive at the right page.
+      You can suggest making the navigation part yourself
+      Example: "Adding new card is not available in this page. Navigate to "Cards" page and try to ask me again there. Would you like me to take you there?"
+      
+      Otherwise, initiate the navigation without asking
     `,
     parameters: [
       {
@@ -58,13 +104,12 @@ const CopilotContext = ({ children }) => {
         type: "string",
         description: "The page in which to perform the operation",
         required: true,
-        enum: ["/wallet/overview", "/team", "/"], // Available pages
+        enum: ["/wallet/overview", "/team", "/", "/transaction","/customers","/store", "/setting/my-team", "/createinvoice", "/paymentlink", "/saved-invoice"], // Available pages
       },
       {
         name: "operation",
         type: "string",
-        description:
-          "The operation to perform. Use operation code from available operations per page.",
+        description: "The operation to perform. Use operation code from available operations per page.",
         required: false,
       },
       {
