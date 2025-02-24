@@ -89,7 +89,9 @@ export const UserProvider = ({ children }) => {
     instructions: `
     Suggest actions/information in this page related to wallet balance, transactions, or policies.
     Use specific items or "all items," for example:
-    "Show all transactions of utilities" or "Tell me how much I spent on bills."`,
+    "Show all transactions of utilities" or "Tell me how much I spent on bills."
+    Also suggest actions/information related to team members, customers, store, and invoices.
+    `,
     minSuggestions: 3,
     maxSuggestions: 3,
   });

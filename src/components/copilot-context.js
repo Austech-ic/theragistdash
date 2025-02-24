@@ -83,39 +83,37 @@ const CopilotContext = ({ children }) => {
   useCopilotAction({
     name: "navigateToPageAndPerform",
     description: `
-      Navigate to a page to perform an operation. Use this if you are asked to perform an action outside of page context. For example:
-      The user is viewing a dashboard but asks to make changes to a team member or a card. 
-
-      If you are on the cards page for example, and are requested to perform a card related operation, you are allowed to perform it.
-
-      if the user asks to transfer funds or money, they are navigated to the "Transfer" page with the necessary operation parameter.
+      This action facilitates navigation to a specified page to perform a given operation. 
+      It is particularly useful when an action is requested that is outside the current page context.
       
-      If the operation is unavailable, tell the user to navigate themselves to the page.
-      Let them know which page that is.
-      Advise them to re-ask co-pilot once they arrive at the right page.
-      You can suggest making the navigation part yourself
-      Example: "Adding new card is not available in this page. Navigate to "Cards" page and try to ask me again there. Would you like me to take you there?"
-      
-      Otherwise, initiate the navigation without asking
+      For instance, if a user is on the dashboard and requests to modify a team member or perform a transaction, 
+      this action will navigate them to the appropriate page with the necessary operation parameters.
+
+      If the requested operation is not available on the current page, inform the user and suggest navigating to the correct page. 
+      You can offer to perform the navigation for them, or advise them to re-ask once they are on the correct page.
+
+      Example: "Adding a new card is not available on this page. Would you like to navigate to the 'Cards' page and try again?"
+
+      If the operation is available, proceed with the navigation automatically.
     `,
     parameters: [
       {
         name: "page",
         type: "string",
-        description: "The page in which to perform the operation",
+        description: "The target page for the operation",
         required: true,
-        enum: ["/wallet/overview", "/team", "/", "/transaction","/customers","/store", "/setting/my-team", "/createinvoice", "/paymentlink", "/saved-invoice"], // Available pages
+        enum: ["/wallet/overview", "/transaction","/customers","/store", "/setting/my-team", "/createinvoice", "/paymentlink", "/saved-invoice","/team", "/"], // Available pages
       },
       {
         name: "operation",
         type: "string",
-        description: "The operation to perform. Use operation code from available operations per page.",
+        description: "The specific operation to perform on the target page",
         required: false,
       },
       {
         name: "operationAvailable",
         type: "boolean",
-        description: "Flag if the operation is available",
+        description: "Indicates if the operation is available on the target page",
         required: true,
       },
     ],
@@ -123,30 +121,42 @@ const CopilotContext = ({ children }) => {
     renderAndWait: ({ args, handler }) => {
       const { page, operation, operationAvailable } = args;
 
+      console.log("Render and Wait called with:", args);
+
       return (
-        <div className="flex items-center justify-center space-x-4 rounded-lg bg-white p-4">
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '20px', backgroundColor: 'white', borderRadius: '8px' }}>
           <div>Navigate to {page}?</div>
           <Button
             variant="outline"
             size="icon"
             onClick={() => {
-              const operationParams = operationAvailable
-                ? `?operation=${operation}`
-                : "";
+              console.log("Navigating to:", page);
+              const operationParams = operationAvailable ? `?operation=${operation}` : "";
               navigate(`${page.toLowerCase()}${operationParams}`);
-              handler?.(page);
+              if (handler) {
+                handler(page);
+              } else {
+                console.error("Handler is not defined");
+              }
             }}
             aria-label="Confirm Navigation"
-            className="h-12 w-12 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 hover:text-blue-700 dark:bg-blue-900/20 dark:text-blue-400 dark:hover:bg-blue-900/30 dark:hover:text-blue-300"
+            style={{ margin: '0 10px', backgroundColor: '#e0f7fa', color: '#00796b' }}
           >
             Yes
           </Button>
           <Button
             variant="outline"
             size="icon"
-            onClick={() => handler?.("cancelled")}
+            onClick={() => {
+              console.log("Navigation cancelled");
+              if (handler) {
+                handler("cancelled");
+              } else {
+                console.error("Handler is not defined");
+              }
+            }}
             aria-label="Cancel Navigation"
-            className="h-12 w-12 rounded-full bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-900/20 dark:text-gray-400 dark:hover:bg-gray-900/30 dark:hover:text-gray-300"
+            style={{ margin: '0 10px', backgroundColor: '#fbe9e7', color: '#d84315' }}
           >
             No
           </Button>

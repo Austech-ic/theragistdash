@@ -39,8 +39,6 @@ function Layout() {
     //console.log("Valid token");
   }
 
-
-
   const toggleSidebar = () => {
     setIsSidebar(!isSidebar);
   };
@@ -75,7 +73,7 @@ function Layout() {
               </Main>
             </div>
           </div>
-          <CopilotPopup
+          {/* <CopilotPopup
             instructions={
               "You are assisting the user as best as you can. Answer in the best way possible given the data you have."
             }
@@ -83,7 +81,7 @@ function Layout() {
               title: "Vant Assistant",
               initial: "Need any help?",
             }}
-          />
+          /> */}
         </CopilotContext>
       </UserProvider>
     </CopilotKitWrapper>

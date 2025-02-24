@@ -40,7 +40,7 @@ import DollarCard from "./screens/ExpenseCard/DollarCard";
 import NairaCard from "./screens/ExpenseCard/NairaCard";
 import Beneficiaries from "./screens/wallet/beneficiaries/Beneficiaries";
 import BulkPayment from "./screens/wallet/bulkPayment.js/BulkPayment";
-
+import VantAssistant from "./screens/VantAssistant";
 const DashboardRoutes = () => {
   return (
     <Routes>
@@ -66,7 +66,7 @@ const DashboardRoutes = () => {
         <Route path="/usd-wallet" exact={true} element={<UsdWallet />} />
         <Route path="/beneficiaries" exact={true} element={<Beneficiaries />} />
         <Route path="/bulk-payment" exact={true} element={<BulkPayment />} />
-
+        <Route path="/vant-assistant" exact={true} element={<VantAssistant />} />
         <Route path="/wallet" exact={true} element={<Wallet />}>
           <Route
             path="/wallet/overview"
