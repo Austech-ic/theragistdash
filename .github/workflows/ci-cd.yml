@@ -24,9 +24,12 @@ jobs:
         # Allows passing additional parameters to the action, in this case, specifying the Node.js version.
         with:
           node-version: 20
+
       #Installs project dependencies using the `npm install` command.
       - name: Install Dependencies
         run: npm install
+                  - name: Build project
+  run: CI=false npm run build
       #Builds the React app using the `npm run build` command.
       - name: Build React App
         run: npm run build --force
