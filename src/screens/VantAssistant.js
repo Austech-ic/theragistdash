@@ -224,7 +224,7 @@ const VantAssistant = () => {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 border">
       <CopilotChat
         instructions={
           "You are assisting the user as best as you can. Answer in the best way possible given the data you have."
