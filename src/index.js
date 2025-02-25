@@ -7,7 +7,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { extendTheme } from "@chakra-ui/react";
 import 'react-tooltip/dist/react-tooltip.css'
 import { CopilotKitWrapper } from "./utils/CopilotKitWrapper";
-import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+// import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 
 const overrides = extendTheme({
@@ -44,6 +44,6 @@ root.render(
 );
 
 
-serviceWorkerRegistration.register();
+// serviceWorkerRegistration.register();
 
 
