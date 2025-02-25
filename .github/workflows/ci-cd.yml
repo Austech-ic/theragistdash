@@ -29,8 +29,9 @@ jobs:
       - name: Install Dependencies
         run: npm install
      
-   - name: Build project
-        run: CI=false npm run build  # ✅ Prevents CI from failing on warnings
+      #Builds the React app using the `npm run build` command.
+      - name: Build React App
+        run: npm run build --force
       #Adds an SSH private key to the SSH agent
       - name: Add SSH Key to Agent
         uses: webfactory/ssh-agent@v0.5.4
