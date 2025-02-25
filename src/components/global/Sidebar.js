@@ -21,6 +21,7 @@ import {
   Setting3,
   ShoppingCart,
   Card,
+  CommandSquare,
 } from "iconsax-react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
@@ -244,7 +245,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
               </Link>
 
               {/* //expense Card */}
-               {/* <button
+              {/* <button
                 onClick={() => setIsExpenseActive(!isExpenseActive)}
                 className={`py-[10px] pl-[16px] flex items-center  justify-between w-full text-[14px]    leading-[20px] md:leading-[24px] 
                 ${
@@ -511,6 +512,26 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                   }
                 />
                 Customers
+              </Link>
+              <Link
+                to="/vant-assistant"
+                onClick={onClose}
+                className={` py-[10px] pl-[16px] flex items-center text-[14px]     leading-[20px] md:leading-[24px] ${
+                  window.location.pathname === "/vant-assistant"
+                    ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
+                    : "text-[#667185] font-normal"
+                }`}
+              >
+                <CommandSquare
+                  className="mr-[12px]"
+                  size={20}
+                  variant={
+                    window.location.pathname === "/vant-assistant"
+                      ? "Bold"
+                      : "Linear"
+                  }
+                />
+                Vant Assistant
               </Link>
 
               {/* <Link
