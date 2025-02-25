@@ -54,23 +54,23 @@ registerRoute(
   })
 );
 
-// ✅ Cache external fonts (Google Fonts, CDNJS, etc.)
-registerRoute(
-  ({ url }) =>
-    url.origin.includes("fonts.googleapis.com") ||
-    url.origin.includes("fonts.gstatic.com") ||
-    url.origin.includes("cdnjs.cloudflare.com") ||
-    url.origin.includes("fonts.cdnjs.com"),
-  new StaleWhileRevalidate({
-    cacheName: "external-fonts",
-    plugins: [
-      new ExpirationPlugin({
-        maxEntries: 10,
-        maxAgeSeconds: 30 * 24 * 60 * 60, // Cache for 30 days
-      }),
-    ],
-  })
-);
+// // ✅ Cache external fonts (Google Fonts, CDNJS, etc.)
+// registerRoute(
+//   ({ url }) =>
+//     url.origin.includes("fonts.googleapis.com") ||
+//     url.origin.includes("fonts.gstatic.com") ||
+//     url.origin.includes("cdnjs.cloudflare.com") ||
+//     url.origin.includes("fonts.cdnjs.com"),
+//   new StaleWhileRevalidate({
+//     cacheName: "external-fonts",
+//     plugins: [
+//       new ExpirationPlugin({
+//         maxEntries: 10,
+//         maxAgeSeconds: 30 * 24 * 60 * 60, // Cache for 30 days
+//       }),
+//     ],
+//   })
+// );
 
 // This allows the web app to trigger skipWaiting via
 // registration.waiting.postMessage({type: 'SKIP_WAITING'})
