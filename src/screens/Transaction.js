@@ -235,8 +235,7 @@ const Transactions = () => {
     }
   );
 
-   const statementData = exportdata?.data?.data?.filter((item)=> item.status === "successful")
-
+  const statementData = exportdata?.data?.data?.filter((item)=> item.status === "successful")
 
   const handlePrev = (event) => {
     if (event) {
