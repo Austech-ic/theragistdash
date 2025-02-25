@@ -2,8 +2,7 @@
   "name": "vantforbusiness",
   "version": "0.1.0",
   "private": true,
-  "workbox": "workbox.config.js",
-
+  "build": "react-scripts build && workbox injectManifest workbox.config.js",
   "dependencies": {
     "@chakra-ui/react": "^2.8.2",
     "@copilotkit/react-core": "^1.4.0",
