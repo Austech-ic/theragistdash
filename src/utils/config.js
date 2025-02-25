@@ -1,5 +1,5 @@
 //production server
-export const API_BASE_URL = 'https://dev.vantapp.com/api/partner-business';
+export const API_BASE_URL = 'https://api.vantapp.com/api/partner-business';
 
 //live server
 //export const API_BASE_URL = "https://api.vantapp.com/api/partner-business";
@@ -9,7 +9,7 @@ export const getApiUrl = (endpoint) => API_BASE_URL + endpoint;
 export const PayInvoiceUrl = "https://vantapp.com/pay-invoice/";
 
 //dev url
-export const DocUrl = "https://dev.vantapp.com/uploads/partner/documents/";
+export const DocUrl = "https://api.vantapp.com/uploads/partner/documents/";
 
 //live url
 // export const DocUrl = "https://api.vantapp.com/uploads/partner/documents/"
@@ -59,7 +59,7 @@ export const GETBENEFICIARY = getApiUrl("/beneficiaries");
 export const BULKTRANSFER = getApiUrl("/transfer/bulk-transfer");
 
 //Vantapp API Dev
-export const VANTAPP_API_BASE_URL = "https://dev.vantapp.com/api";
+export const VANTAPP_API_BASE_URL = "https://api.vantapp.com/api";
 
 //Vantapp API LIVE
 
