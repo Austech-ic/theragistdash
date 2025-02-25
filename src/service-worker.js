@@ -37,23 +37,6 @@ registerRoute(
   createHandlerBoundToURL(process.env.PUBLIC_URL + '/index.html')
 );
 
-// Cache images, CSS, and JavaScript files
-registerRoute(
-  ({ request }) =>
-    request.destination === 'image' ||
-    request.destination === 'style' ||
-    request.destination === 'script',
-  new StaleWhileRevalidate({
-    cacheName: 'assets',
-    plugins: [
-      new ExpirationPlugin({
-        maxEntries: 50,
-        maxAgeSeconds: 24 * 60 * 60, // 24 hours
-      }),
-    ],
-  })
-);
-
 // ✅ Cache external fonts (Google Fonts, CDNJS, etc.)
 registerRoute(
   ({ url }) =>
@@ -71,6 +54,25 @@ registerRoute(
     ],
   })
 );
+
+// Cache images, CSS, and JavaScript files
+registerRoute(
+  ({ request }) =>
+    request.destination === 'image' ||
+    request.destination === 'style' ||
+    request.destination === 'script',
+  new StaleWhileRevalidate({
+    cacheName: 'assets',
+    plugins: [
+      new ExpirationPlugin({
+        maxEntries: 50,
+        maxAgeSeconds: 24 * 60 * 60, // 24 hours
+      }),
+    ],
+  })
+);
+
+
 
 // This allows the web app to trigger skipWaiting via
 // registration.waiting.postMessage({type: 'SKIP_WAITING'})
