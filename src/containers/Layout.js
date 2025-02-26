@@ -20,10 +20,10 @@ import { CopilotKitWrapper } from "../utils/CopilotKitWrapper";
 import { CopilotPopup } from "@copilotkit/react-ui";
 import { UserProvider } from "../utils/UserProvider";
 import CopilotContext from "../components/copilot-context";
-import { registerServiceWorker } from "../serviceWorkerRegistration";
+// import { registerServiceWorker } from "../serviceWorkerRegistration";
 import { LoginCurve } from "iconsax-react";
 import Modal from "../components/Modal";
-import InstallPWA from "../components/InstallPWA";
+// import InstallPWA from "../components/InstallPWA";
 
 function Layout() {
   // const { isSidebarOpen, closeSidebar } = useContext(SidebarContext);
@@ -116,7 +116,7 @@ function Layout() {
                 </Suspense>
               </Main>
 
-                    <InstallPWA />
+                    {/* <InstallPWA /> */}
 
             </div>
           </div>
