@@ -185,17 +185,17 @@ const Category = () => {
             <tbody>
               {isLoading && <div>Loading...</div>}
               {!isLoading &&
-                getCatQuery?.data?.data?.product_categories?.length ===
+                getCatQuery?.data?.data?.length ===
                   0 && (
                   <tr>
                     <td className="text-center" colspan="5">
                       <img
-                        src="./nodata.gif"
+                        src="/file.png"
                         className="mx-auto mt-6 h-[70px] "
                         alt=""
                       />
-                      <h3 className="text-[30px] leading-[35px]  text-[#1A202C] font-extrabold mb-[6px]">
-                        No Category
+                    <h3 className="text-[24px]   text-[#1A202C] font-bold mb-[6px]">
+                    No Category
                       </h3>
                     </td>
                   </tr>

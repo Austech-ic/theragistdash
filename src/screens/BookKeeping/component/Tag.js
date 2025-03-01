@@ -163,7 +163,7 @@ const Tag = () => {
                   scope="col"
                   className=" px-5  border-b-[0.8px] border-[#E4E7EC] py-[12px] gap-[6px] md:gap-[12px] text-[14px] text-[#98A2B3]  font-medium tracking-[0.2%]"
                 >
-                  Category
+                  Tag
                 </th>
 
                 <th
@@ -178,18 +178,19 @@ const Tag = () => {
               {isLoading && <div>Loading...</div>}
               {!isLoading && getTagQuery?.data?.data?.length === 0 && (
                 <tr>
-                  <td className="text-center" colspan="5">
+                  <td className="text-center" colspan="3">
                     <img
-                      src="./nodata.gif"
-                      className="mx-auto mt-6 h-[70px] "
+                        src="/file.png"
+                        className="mx-auto mt-6 h-[70px] "
                       alt=""
                     />
-                    <h3 className="text-[30px] leading-[35px]  text-[#1A202C] font-extrabold mb-[6px]">
+                    <h3 className="text-[24px]   text-[#1A202C] font-bold mb-[6px]">
                       No Tag Yet
                     </h3>
                   </td>
                 </tr>
               )}
+            
               {getTagQuery?.data?.data &&
                 getTagQuery?.data?.data?.map((result) => (
                   <tr key={result.name} className="mb-2 hover:bg-light-gray">
