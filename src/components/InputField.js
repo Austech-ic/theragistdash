@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 export default function InputField(props) {
-  const [isFocused, setIsFocused] = useState(false);
 
   return (
     <div>

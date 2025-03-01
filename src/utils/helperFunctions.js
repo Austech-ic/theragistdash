@@ -120,7 +120,13 @@ export function getFormattedCurrentDay(format = "full") {
 
   return date.toLocaleDateString("en-US", options[format]);
 }
-
+export function truncateSentence(sentence, maxLength) {
+  if(!sentence) return " "
+  if (sentence.length > maxLength) {
+    return sentence.slice(0, maxLength) + "...";
+  }
+  return sentence; 
+}
 
 export function formatDateToText (date) {
   const months = [

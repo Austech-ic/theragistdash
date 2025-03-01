@@ -22,6 +22,7 @@ import {
   ShoppingCart,
   Card,
   CommandSquare,
+  Book,
 } from "iconsax-react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
@@ -30,12 +31,13 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
   const router = useLocation();
   const [isActive, setIsActive] = useState(false);
   const [isExpenseActive, setIsExpenseActive] = useState(false);
+  const [isBookKeepingActive, setIsBookKeepingActive] = useState(false);
 
   let role = profileData?.user?.role;
   return (
     <div
       className={` lg:block lg:relative ${
-        isSidebarOpen ? "block z-20 fixed inset-0 transition-opacity" : "hidden"
+        isSidebarOpen ? "block z-[999999999] fixed inset-0 transition-opacity" : "hidden"
       }`}
     >
       <div
@@ -412,6 +414,81 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                 </Link>
               </ul>
             )} */}
+                
+            <button
+              onClick={() => setIsBookKeepingActive(!isBookKeepingActive)}
+              className={`py-[10px] pl-[16px] flex items-center  justify-between w-full text-[14px]    leading-[20px] md:leading-[24px] 
+                ${
+                  window.location.pathname === "/bookkeeping" ||
+                  window.location.pathname === "/bookkeeping/migrate-transaction" ||
+
+                  window.location.pathname === "/bookkeeping/configuration"
+                    ? "text-[#26ae5f] font-medium rounded-md"
+                    : "text-[#667185] font-normal "
+                }`}
+            >
+              <div className="flex items-center">
+                {" "}
+                <Book
+                  className="mr-[12px]"
+                  size={20}
+
+                  variant={
+                       window.location.pathname === "/bookkeeping" ||
+                       window.location.pathname === "/bookkeeping/migrate-transaction" ||
+                  window.location.pathname === "/bookkeeping/configuration"
+                      ? "Bold"
+                      : "Linear"
+                  }
+                />
+                Book Keeping
+              </div>
+
+              {isBookKeepingActive  ? (
+                <ArrowUp2 size="14" variant="Linear" color="#667185" />
+              ) : (
+                <ArrowDown2 size="14" variant="Linear" color="#667185" />
+              )}
+            </button>
+
+            {isBookKeepingActive&& (
+                <ul className="ml-[26px] pl-[12px] py-[8px]   border-l border-[#98A2B3]/50 mb-1">
+                <Link
+                  to="/bookkeeping"
+                  className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]  ${
+                    
+                    window.location.pathname === "/bookkeeping"
+                      ? "bg-[#F7F9FC] font-medium "
+                      : " font-normal"
+                  }`}
+                >
+                  <li className="">Book Keeping</li>
+                </Link>
+
+                <Link
+                  to="/bookkeeping/migrate-transaction"
+                  className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]  ${
+                    
+                    window.location.pathname === "/bookkeeping/migrate-transaction"
+                      ? "bg-[#F7F9FC] font-medium "
+                      : " font-normal"
+                  }`}
+                >
+                  <li className="">Migrate Transaction</li>
+                </Link>
+
+                <Link
+                  to="/bookkeeping/configuration"
+                    className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]  ${
+                    window.location.pathname === "/bookkeeping/configuration"
+                      ? "bg-[#F7F9FC] font-medium  "
+                      : " font-normal"
+                  }`}
+                >
+                  <li className="">Configuration</li>
+                </Link>
+              </ul>
+            )} 
 
               <Link
                 to="/invoice"
@@ -437,6 +514,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                 />
                 Issue Invoice
               </Link>
+              
 
               {/* <Link
                 to="/card"

@@ -58,6 +58,36 @@ export const CREATEBENEFICIARY = getApiUrl("/beneficiaries");
 export const GETBENEFICIARY = getApiUrl("/beneficiaries");
 export const BULKTRANSFER = getApiUrl("/transfer/bulk-transfer");
 
+
+// Book Keeping tAGS
+export const BOOKKEEPINGTAG = getApiUrl("/bookkeeping/tags");
+export const UPDATEBOOKKEEPINGTAG = getApiUrl("/bookkeeping/tags/");
+
+
+//Book Keeping Category
+export const BOOKKEEPINGCATEGORY = getApiUrl("/bookkeeping/categories");
+export const UPDATEBOOKKEEPINGCATEGORY = getApiUrl("/bookkeeping/categories/");
+
+//Book Keeping Expense
+export const BOOKKEEPING = getApiUrl("/bookkeeping");
+export const UPDATEBOOKKEEPING = getApiUrl("/bookkeeping/");
+export const CREATEBOOKKEEPING = getApiUrl("/bookkeeping");
+export const MIGRATETRANSACTIONTOBOOKKERRPING = getApiUrl("/bookkeeping/migrate-transactions");
+export const BOOKKEEPPINGBULKUPLOAD = getApiUrl("/bookkeeping/bulk-upload");
+export const BALANCESHEET = getApiUrl("/bookkeeping/balance-sheet");
+
+
+
+
+
+
+
+
+
+
+
+
+
 //Vantapp API Dev
 export const VANTAPP_API_BASE_URL = "https://dev.vantapp.com/api";
 

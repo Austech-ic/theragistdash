@@ -40,7 +40,16 @@ import {
  FUNDCARDS,
  CREATEBENEFICIARY,
  GETBENEFICIARY,
- BULKTRANSFER
+ BULKTRANSFER,
+ BOOKKEEPINGTAG,
+ UPDATEBOOKKEEPINGTAG,
+ BOOKKEEPINGCATEGORY,
+ UPDATEBOOKKEEPINGCATEGORY,
+ BOOKKEEPING,
+ BOOKKEEPPINGBULKUPLOAD,
+ MIGRATETRANSACTIONTOBOOKKERRPING,
+ BALANCESHEET,
+ UPDATEBOOKKEEPING
 } from "../utils/config";
 import { apiDelete, apiGet, apiGetCSV, apiPost, apiPut } from "../utils/utils";
 
@@ -277,6 +286,73 @@ export function getBeneficiary(data) {
 export function bulkTransfer(data) {
   return apiPost(BULKTRANSFER, data);
 }
+
+
+
+// ----------Book Keeping-----------
+// Tag
+export function getTags(data = null) {
+  return apiGet(BOOKKEEPINGTAG, data);
+}
+export function createTags(data = null) {
+  return apiPost(BOOKKEEPINGTAG, data);
+}
+export function updateTag(id, data) {
+  return apiPut(UPDATEBOOKKEEPINGTAG + id, data);
+}
+export function deleteTag(id, data) {
+  return apiDelete(UPDATEBOOKKEEPINGTAG + id, data);
+}
+
+
+// Category
+export function getCategories(data = null) {
+  return apiGet(BOOKKEEPINGCATEGORY, data);
+}
+export function createCategories(data = null) {
+  return apiPost(BOOKKEEPINGCATEGORY, data);
+}
+export function updateCategory(id, data) {
+  return apiPut(UPDATEBOOKKEEPINGCATEGORY + id, data);
+}
+export function deleteCategory(id, data) {
+  return apiDelete(UPDATEBOOKKEEPINGCATEGORY + id, data);
+}
+
+
+//Book Keeping 
+export function getBookKeeping(data = null) {
+  return apiGet(BOOKKEEPING, data);
+}
+export function createBookKeeping(data = null) {
+  return apiPost(BOOKKEEPING, data);
+}
+export function updateBookKeeping(id, data) {
+  return apiPut(UPDATEBOOKKEEPING + id, data);
+}
+
+// migrate  transactions to book keeping
+export function migrateTransactions(data = null) {
+  return apiPost(MIGRATETRANSACTIONTOBOOKKERRPING, data);
+}
+
+// csv import
+export function importBookKeepingCSV(data = null) {
+  return apiPost(BOOKKEEPPINGBULKUPLOAD, data, {
+    "Content-Type": "multipart/form-data",
+    Accept: "application/json",
+  });}
+
+  // balance sheet
+  export function getBalanceSheet(data = null) {
+    return apiGet(BALANCESHEET, data);
+  }
+
+
+ 
+
+
+
 
 
 

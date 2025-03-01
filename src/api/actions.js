@@ -47,3 +47,16 @@ export async function updateCustomer(id, data) {
   return response;
 }
 
+
+
+
+  export async function getTag() {
+    try {
+      const response = await api.getTags();
+
+      return response;
+    } catch (error) {
+      return error;
+    }
+  }
+

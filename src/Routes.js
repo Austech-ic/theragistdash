@@ -41,6 +41,9 @@ import NairaCard from "./screens/ExpenseCard/NairaCard";
 import Beneficiaries from "./screens/wallet/beneficiaries/Beneficiaries";
 import BulkPayment from "./screens/wallet/bulkPayment.js/BulkPayment";
 import VantAssistant from "./screens/VantAssistant";
+import Config from "./screens/BookKeeping/Config";
+import BookKeeping from "./screens/BookKeeping/BookKeeping";
+import MigrateTransaction from "./screens/BookKeeping/MigrateTransaction";
 const DashboardRoutes = () => {
   return (
     <Routes>
@@ -67,6 +70,14 @@ const DashboardRoutes = () => {
         <Route path="/beneficiaries" exact={true} element={<Beneficiaries />} />
         <Route path="/bulk-payment" exact={true} element={<BulkPayment />} />
         <Route path="/vant-assistant" exact={true} element={<VantAssistant />} />
+
+        {/* Book Keeping */}
+        <Route path="/bookkeeping" exact={true} element={<BookKeeping />} />
+        <Route path="/bookkeeping/configuration" exact={true} element={<Config />} />
+        <Route path="/bookkeeping/migrate-transaction" exact={true} element={<MigrateTransaction />} />
+
+
+
         <Route path="/wallet" exact={true} element={<Wallet />}>
           <Route
             path="/wallet/overview"

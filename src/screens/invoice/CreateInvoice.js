@@ -296,7 +296,6 @@ const CreateInvoice = () => {
 
       setIsLoading(false);
       const decryptRes = JSON.parse(decryptaValue(response?.data));
-      console.log("invoice response ---->>>", decryptRes);
       navigate("/saved-invoice", {
         state: { invoiceData: decryptRes?.data, profile: profile },
       });

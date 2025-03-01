@@ -107,10 +107,12 @@ function Layout() {
               profileData={profileData}
             />
 
-            <div className="flex flex-col flex-1 w-full overflow-x-hidden">
-              <Topbar setIsSidebar={toggleSidebar} />
-              {profileData?.default_partner?.is_verified === 0 && <Warning />}
+            <div className="flex relative flex-col flex-1 w-full overflow-x-hidden">
+              <div><Topbar setIsSidebar={toggleSidebar} /></div>
+              
               <Main>
+              {profileData?.default_partner?.is_verified === 0 && <Warning />}
+
                 <Suspense fallback={<ThemedSuspense />}>
                   <Outlet />
                 </Suspense>
@@ -120,15 +122,7 @@ function Layout() {
 
             </div>
           </div>
-          {/* <CopilotPopup
-            instructions={
-              "You are assisting the user as best as you can. Answer in the best way possible given the data you have."
-            }
-            labels={{
-              title: "Vant Assistant",
-              initial: "Need any help?",
-            }}
-          /> */}
+         
         </CopilotContext>
       </UserProvider>
     </CopilotKitWrapper>

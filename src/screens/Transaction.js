@@ -64,12 +64,7 @@ const Transactions = () => {
   const receiptRef = useRef();
   const [isViewModal, setIsViewModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-  const [isOpenImportModal, setIsOpenImportModal] = useState(false);
-  const [isCreateModal, setIsCreateModal] = useState(false);
-  const [isCreate, setIsCreate] = useState(false);
-  const [isDeleteModal, setIsDeleteModal] = useState(false);
-  const [isEditOpen, setIsEditOpen] = useState(false);
+
   const [page, setPage] = useState(1);
   const [startdate, setStartdate] = useState("");
   const [enddate, setEndDate] = useState("");
@@ -272,8 +267,7 @@ const Transactions = () => {
     saveAs(blob, "Transaction_Statement.pdf");
   };
 
-  console.log("Profile", profile);
-  console.log("data", results?.data?.data);
+
 
   return (
     <div className="md:p-[20px] p-[10px] bg-[#F2F2F2] min-h-screen ">
