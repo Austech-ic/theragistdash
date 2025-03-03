@@ -44,6 +44,7 @@ import VantAssistant from "./screens/VantAssistant";
 import Config from "./screens/BookKeeping/Config";
 import BookKeeping from "./screens/BookKeeping/BookKeeping";
 import MigrateTransaction from "./screens/BookKeeping/MigrateTransaction";
+import BookKeepingReport from "./screens/BookKeeping/Report";
 const DashboardRoutes = () => {
   return (
     <Routes>
@@ -75,6 +76,7 @@ const DashboardRoutes = () => {
         <Route path="/bookkeeping" exact={true} element={<BookKeeping />} />
         <Route path="/bookkeeping/configuration" exact={true} element={<Config />} />
         <Route path="/bookkeeping/migrate-transaction" exact={true} element={<MigrateTransaction />} />
+        <Route path="/bookkeeping/report" exact={true} element={<BookKeepingReport />} />
 
 
 

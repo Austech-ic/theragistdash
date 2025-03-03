@@ -782,7 +782,7 @@ const BookKeeping = () => {
                   {isLoading ? (
                     <ClipLoader color={"white"} size={20} />
                   ) : (
-                    <> Create Expense</>
+                    <> Create Record</>
                   )}
                 </button>
               </div>
