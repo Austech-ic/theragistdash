@@ -23,7 +23,7 @@ import CopilotContext from "../components/copilot-context";
 // import { registerServiceWorker } from "../serviceWorkerRegistration";
 import { LoginCurve } from "iconsax-react";
 import Modal from "../components/Modal";
-// import InstallPWA from "../components/InstallPWA";
+import InstallPWA from "../components/InstallPWA";
 
 function Layout() {
   // const { isSidebarOpen, closeSidebar } = useContext(SidebarContext);
@@ -108,21 +108,21 @@ function Layout() {
             />
 
             <div className="flex relative flex-col flex-1 w-full overflow-x-hidden">
-              <div><Topbar setIsSidebar={toggleSidebar} /></div>
-              
+              <div className="fixed md:relative top-0 left-0 right-0 z-[99999] md:z-0 bg-[#ffffff] border-[#D0D5DD]">
+                <Topbar setIsSidebar={toggleSidebar} />
+              </div>
+
               <Main>
-              {profileData?.default_partner?.is_verified === 0 && <Warning />}
+                {profileData?.default_partner?.is_verified === 0 && <Warning />}
 
                 <Suspense fallback={<ThemedSuspense />}>
                   <Outlet />
                 </Suspense>
               </Main>
 
-                    {/* <InstallPWA /> */}
-
+              <InstallPWA />
             </div>
           </div>
-         
         </CopilotContext>
       </UserProvider>
     </CopilotKitWrapper>

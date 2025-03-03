@@ -603,7 +603,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                 />
                 Customers
               </Link>
-              <Link
+              {/* <Link
                 to="/vant-assistant"
                 onClick={onClose}
                 className={` py-[10px] pl-[16px] flex items-center text-[14px]     leading-[20px] md:leading-[24px] ${
@@ -622,7 +622,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                   }
                 />
                 Vant Assistant
-              </Link>
+              </Link> */}
 
               {/* <Link
               to="/users"

@@ -173,7 +173,7 @@ const Topbar = ({ setIsSidebar }) => {
     <div className="flex w-full items-center justify-between px-6 gap-[16px] py-2 border-l-[0.2px] border-[#D0D5DD]">
       <div className="flex items-center">
         <button
-          class="h-8 w-8 sm:h-10 sm:w-10 bg-[#FAFAFA] hover:bg-[#bebcbc] flex justify-center items-center rounded-md lg:hidden mr-2"
+          class="h-8 w-8 sm:h-10 sm:w-10 bg-[#FAFAFA] hover:bg-[#efeeee] flex justify-center items-center rounded-md lg:hidden mr-2"
           onClick={setIsSidebar}
         >
           <HambergerMenu size={18} color="#31363EFF" />

@@ -323,7 +323,7 @@ const BookKeeping = () => {
                   color="#000000"
                   className="text-[16px] md:text-[18px] text-[#000000] font-medium leading-[18px] md:"
                 >
-                  Import Expenses
+                  Import Record
                 </ModalHeader>
                 <ModalCloseButton size={"sm"} />
                 <Divider color="#98A2B3" />
@@ -350,7 +350,7 @@ const BookKeeping = () => {
                     <div className="flex gap-[8px] items-center">
                       {" "}
                       <p className="text-[14px] underline text-[#667185]   ">
-                        Download Sample Applicant CSV File
+                        Download Sample Record CSV File
                       </p>
                       <DocumentDownload
                         color="#4CAF50"
@@ -362,7 +362,9 @@ const BookKeeping = () => {
                 </ModalBody>
                 <Divider />
                 <ModalFooter gap={"16px"}>
-                  <button className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[8px] text-[14px] font-medium text-black">
+                  <button
+                  onClick={closeImportModal}
+                  className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[8px] text-[14px] font-medium text-black">
                     Cancel
                   </button>
                   <button onClick={importCsv} className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[8px] text-[14px] font-medium text-white">
