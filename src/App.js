@@ -29,8 +29,8 @@ function App() {
     <div className="">
       <SnackbarProvider
         anchorOrigin={{
-          vertical: "top",
-          horizontal: "right",
+          vertical: "bottom",
+          horizontal: "left",
         }}
       />
       <QueryClientProvider client={queryClient}>
