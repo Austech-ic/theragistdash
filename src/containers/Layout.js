@@ -23,7 +23,7 @@ import CopilotContext from "../components/copilot-context";
 // import { registerServiceWorker } from "../serviceWorkerRegistration";
 import { LoginCurve } from "iconsax-react";
 import Modal from "../components/Modal";
-import InstallPWA from "../components/InstallPWA";
+// import InstallPWA from "../components/InstallPWA";
 
 function Layout() {
   // const { isSidebarOpen, closeSidebar } = useContext(SidebarContext);
@@ -120,7 +120,7 @@ function Layout() {
                 </Suspense>
               </Main>
 
-              <InstallPWA />
+              {/* <InstallPWA /> */}
             </div>
           </div>
         </CopilotContext>
