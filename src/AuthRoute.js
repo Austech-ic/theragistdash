@@ -1,4 +1,4 @@
-import React from "react";
+import React, { lazy } from "react";
 import Login from "./authScreen/Login";
 import SignUp from "./authScreen/SignUp";
 import ValidateOtp from "./authScreen/OTP";
@@ -23,7 +23,6 @@ const AuthRoute = () => {
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/verifyemail" element={<CreateNewPass />} />
       <Route path="/passwordchangesuccess" element={<ChangePassSuccess />} />
-      <Route path="" element={<Page404 />} />
 
     </Routes>
   );

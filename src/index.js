@@ -1,14 +1,15 @@
-import React, { Suspense } from "react";
+import React, { lazy, Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import App from "./App";
+const App = lazy(() => import("./App"));
+
+// import App from "./App";
 import ThemedSuspense from "./components/ThemedSuspense";
 import { ChakraProvider } from "@chakra-ui/react";
 import { extendTheme } from "@chakra-ui/react";
-import 'react-tooltip/dist/react-tooltip.css'
+import "react-tooltip/dist/react-tooltip.css";
 import { CopilotKitWrapper } from "./utils/CopilotKitWrapper";
-import * as serviceWorkerRegistration from './serviceWorkerRegistration';
-
+import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 
 const overrides = extendTheme({
   fonts: {
@@ -20,11 +21,11 @@ const overrides = extendTheme({
   styles: {
     global: () => ({
       body: {
-        fontFamily: 'body',
+        fontFamily: "body",
       },
       ".robot": {
-        fontFamily: 'custom'
-      }
+        fontFamily: "custom",
+      },
     }),
   },
 });
@@ -37,13 +38,10 @@ root.render(
   // <React.StrictMode>
   <Suspense fallback={<ThemedSuspense />}>
     <ChakraProvider theme={AppTheme}>
-        <App />
+      <App />
     </ChakraProvider>
   </Suspense>
   //</React.StrictMode> */}
 );
 
-
 serviceWorkerRegistration.register();
-
-
