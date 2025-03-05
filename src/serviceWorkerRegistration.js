@@ -28,6 +28,37 @@ export function register(config) {
   }
 }
 
+// function registerValidSW(swUrl, config) {
+//   navigator.serviceWorker
+//     .register(swUrl)
+//     .then((registration) => {
+//       registration.onupdatefound = () => {
+//         const installingWorker = registration.installing;
+//         if (installingWorker == null) {
+//           return;
+//         }
+//         installingWorker.onstatechange = () => {
+//           if (installingWorker.state === 'installed') {
+//             if (navigator.serviceWorker.controller) {
+//               console.log('New content is available; please refresh.');
+//               if (config && config.onUpdate) {
+//                 config.onUpdate(registration);
+//               }
+//             } else {
+//               console.log('Content is cached for offline use.');
+//               if (config && config.onSuccess) {
+//                 config.onSuccess(registration);
+//               }
+//             }
+//           }
+//         };
+//       };
+//     })
+//     .catch((error) => {
+//       console.error('Error during service worker registration:', error);
+//     });
+// }
+
 function registerValidSW(swUrl, config) {
   navigator.serviceWorker
     .register(swUrl)
@@ -40,15 +71,9 @@ function registerValidSW(swUrl, config) {
         installingWorker.onstatechange = () => {
           if (installingWorker.state === 'installed') {
             if (navigator.serviceWorker.controller) {
-              console.log('New content is available; please refresh.');
-              if (config && config.onUpdate) {
-                config.onUpdate(registration);
-              }
+              showUpdateBanner();  // Notify users of an update
             } else {
               console.log('Content is cached for offline use.');
-              if (config && config.onSuccess) {
-                config.onSuccess(registration);
-              }
             }
           }
         };
@@ -58,6 +83,19 @@ function registerValidSW(swUrl, config) {
       console.error('Error during service worker registration:', error);
     });
 }
+
+function showUpdateBanner() {
+  const banner = document.createElement("div");
+  banner.innerHTML = "A new version is available. <button onclick='window.location.reload()'>Refresh</button>";
+  banner.style.position = "fixed";
+  banner.style.bottom = "0";
+  banner.style.width = "100%";
+  banner.style.backgroundColor = "yellow";
+  banner.style.textAlign = "center";
+  banner.style.padding = "10px";
+  document.body.appendChild(banner);
+}
+
 
 function checkValidServiceWorker(swUrl, config) {
   // Check if the service worker can be found. If it can't reload the page.
