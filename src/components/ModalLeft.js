@@ -4,7 +4,7 @@ const ModalLeft = ({ isOpen, onClose, children }) => {
         display: isOpen ? 'block' : 'none',
     };
     return (
-        <div style={modalStyle}  class="relative z-10" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
+        <div style={modalStyle}  class="relative z-[99999]" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
   {/* <!--
     Background backdrop, show/hide based on slide-over state.
 

@@ -145,9 +145,9 @@ const Category = () => {
           </div>
           <button
             onClick={toggleCreateModal}
-            className="h-[25px] w-[25px]   md:h-[30px] md:w-[30px] flex justify-center items-center bg-[#F0F2F5] hover:bg-opacity-75 rounded-md"
-          >
-            <Add variant="Linear" color="#26ae5f" size="16" />
+            className="px-2 py-1 text-[13px] text-gray-500 flex justify-center items-center bg-[#F0F2F5] hover:bg-opacity-75 rounded-md"
+            >
+        Add Category    <Add variant="Linear" color="#26ae5f" size="16" />
           </button>
         </div>
         <div class="overflow-x-auto rounded-lg">

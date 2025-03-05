@@ -142,6 +142,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                   window.location.pathname === "/usd-wallet" ||
                   window.location.pathname === "/beneficiaries" ||
                   window.location.pathname === "/bulk-payment" ||
+                  window.location.pathname === "/connect-account" ||
                   window.location.pathname === "/wallet/debit"
                     ? "text-[#26ae5f] font-medium rounded-md"
                     : "text-[#667185] font-normal "
@@ -158,6 +159,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                       window.location.pathname === "/usd-wallet" ||
                       window.location.pathname === "/beneficiaries" ||
                       window.location.pathname === "/bulk-payment" ||
+                      window.location.pathname === "/connect-account" ||
                       window.location.pathname === "/wallet/debit"
                         ? "Bold"
                         : "Linear"
@@ -224,6 +226,16 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                   >
                     <li className="">Beneficiaries</li>
                   </Link>
+                  <Link
+                    to="/connect-account"
+                    className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]  ${
+                      window.location.pathname === "/connect-account"
+                        ? "bg-[#F7F9FC] font-medium  "
+                        : " font-normal"
+                    }`}
+                  >
+                    <li className="">Connect Account</li>
+                  </Link>
                 </ul>
               )}
 
@@ -249,7 +261,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
               </Link>
 
               {/* //expense Card */}
-              {/* <button
+              <button
                 onClick={() => setIsExpenseActive(!isExpenseActive)}
                 className={`py-[10px] pl-[16px] flex items-center  justify-between w-full text-[14px]    leading-[20px] md:leading-[24px] 
                 ${
@@ -272,12 +284,12 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                     }
                   />
                   Expense Card
-                  <div className="absolute -right-3 ">
+                  {/* <div className="absolute -right-3 ">
                     <div className="flex h-[8px] w-[8px] relative">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-300 opacity-75"></span>
                       <span className="relative inline-flex rounded-full h-[8px] w-[8px] bg-orange-400"></span>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
 
                 {isExpenseActive ? (
@@ -311,7 +323,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                     <li className="">Dollar Card</li>
                   </Link>
                 </ul>
-              )}  */}
+              )} 
               <Link
                 to="/user-wallets"
                 onClick={onClose}

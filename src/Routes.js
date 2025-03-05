@@ -45,6 +45,7 @@ import Config from "./screens/BookKeeping/Config";
 import BookKeeping from "./screens/BookKeeping/BookKeeping";
 import MigrateTransaction from "./screens/BookKeeping/MigrateTransaction";
 import BookKeepingReport from "./screens/BookKeeping/Report";
+import ConnectAccount from "./screens/wallet/connectAccount/ConnectAccount";
 const DashboardRoutes = () => {
   return (
     <Routes>
@@ -71,6 +72,7 @@ const DashboardRoutes = () => {
         <Route path="/beneficiaries" exact={true} element={<Beneficiaries />} />
         <Route path="/bulk-payment" exact={true} element={<BulkPayment />} />
         <Route path="/vant-assistant" exact={true} element={<VantAssistant />} />
+        <Route path="/connect-account" exact={true} element={<ConnectAccount />} />
 
         {/* Book Keeping */}
         <Route path="/bookkeeping" exact={true} element={<BookKeeping />} />

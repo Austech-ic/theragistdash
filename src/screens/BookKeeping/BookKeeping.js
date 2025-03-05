@@ -67,7 +67,7 @@ const BookKeeping = () => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [resultId, setResultId] = useState(null);
-  const [inputField, setInputField]= useState(null);
+  const [inputField, setInputField] = useState(null);
   const [formValue, setFormValue] = useState({
     type: "",
     amount: "",
@@ -90,8 +90,8 @@ const BookKeeping = () => {
       type: item?.type,
       amount: item?.amount,
       description: item?.description,
-      category_id: item?.category_id,
-      tags: item?.tags,
+      category_id: item?.category?.id,
+      tags: item?.tags?.id,
       currency: item?.currency,
       recorded_at: item?.recorded_at,
     });
@@ -155,7 +155,7 @@ const BookKeeping = () => {
         amount: formValue?.amount,
         description: formValue?.description,
         category_id: formValue?.category_id,
-        tags: [formValue?.tags],
+        tags: formValue?.tags?.length > 0 ? [formValue?.tags] : null,
         currency: formValue?.currency,
       });
       const decryptRes = JSON.parse(decryptaValue(response?.data));
@@ -179,7 +179,7 @@ const BookKeeping = () => {
         amount: formValue?.amount,
         description: formValue?.description,
         category_id: formValue?.category_id,
-        tags: [formValue?.tags],
+        tags: formValue?.tags?.length > 0 ? [formValue?.tags] : null,
         currency: formValue?.currency,
         // recorded_at: "2025-02-25T10:00:00Z",
       });
@@ -256,18 +256,18 @@ const BookKeeping = () => {
     const selectedFile = inputField.target.files[0];
 
     const formData = new FormData();
-      formData.append("csv_file", selectedFile);
-      
-      try {
-        const response = await api.importBookKeepingCSV(formData);
-        enqueueSnackbar("CSV uploaded successfully", { variant: "success" });
-        result.refetch();
-      } catch (error) {
-        console.error(error);
-        enqueueSnackbar(error.error, { variant: "error" });
-        setIsLoading(false);
-      }
-  }
+    formData.append("csv_file", selectedFile);
+
+    try {
+      const response = await api.importBookKeepingCSV(formData);
+      enqueueSnackbar("CSV uploaded successfully", { variant: "success" });
+      result.refetch();
+    } catch (error) {
+      console.error(error);
+      enqueueSnackbar(error.error, { variant: "error" });
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="p-[20px] bg-[#F2F2F2] min-h-screen ">
@@ -346,7 +346,10 @@ const BookKeeping = () => {
                     onChange={(e) => setInputField(e)}
                   />
                   {/* //Link to download CSV file  */}
-                  <a href="./bookkeeping_sample.csv" download="bookkeeping_sample.csv">
+                  <a
+                    href="./bookkeeping_sample.csv"
+                    download="bookkeeping_sample.csv"
+                  >
                     <div className="flex gap-[8px] items-center">
                       {" "}
                       <p className="text-[14px] underline text-[#667185]   ">
@@ -363,11 +366,15 @@ const BookKeeping = () => {
                 <Divider />
                 <ModalFooter gap={"16px"}>
                   <button
-                  onClick={closeImportModal}
-                  className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[8px] text-[14px] font-medium text-black">
+                    onClick={closeImportModal}
+                    className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[8px] text-[14px] font-medium text-black"
+                  >
                     Cancel
                   </button>
-                  <button onClick={importCsv} className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[8px] text-[14px] font-medium text-white">
+                  <button
+                    onClick={importCsv}
+                    className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[8px] text-[14px] font-medium text-white"
+                  >
                     {isLoading ? (
                       <ClipLoader color={"white"} size={20} />
                     ) : (
@@ -420,7 +427,6 @@ const BookKeeping = () => {
                       </div>
                     </th>
 
-                   
                     <th
                       scope="col"
                       className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px] md:text-[16px] text-[#98A2B3]  font-medium  md:leading-[24px] tracking-[0.2%]"
@@ -446,8 +452,8 @@ const BookKeeping = () => {
                     // decryptaValue(results?.data?.data) === 0 &&
                     <EmptyWallet
                       cols={8}
-                      action={"Expense"}
-                      subheading={"Your Expenses will appear here."}
+                      action={"Record"}
+                      subheading={"Your book keeping records will appear here."}
                     />
                   )}
                   {/*  {TaskSummaryData &&
@@ -467,16 +473,14 @@ const BookKeeping = () => {
                             prefix={result?.currency}
                             decimalScale={2}
                             fixedDecimalScale={true}
-                           
                           />
                         </td>
                         <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
-                         {result?.category?.name}
+                          {result?.category?.name}
                         </td>
                         <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
                           {truncateSentence(result?.description, 25)}
                         </td>
-                       
 
                         <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
                           {moment(result?.recorded_at).format(
@@ -654,7 +658,7 @@ const BookKeeping = () => {
           </div>
 
           <div className="p-[12px] md:p-[20px] xl:p-[24px]">
-            <div className=" mb-[15px]">
+            <div className=" mb-[11px]">
               <label className="text-[14px] text-[#667185]    mb-[8px] ">
                 Type
               </label>
@@ -673,7 +677,7 @@ const BookKeeping = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-[18px] mb-[15px]">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-[18px] mb-[11px]">
               <div className="">
                 <label className="text-[14px] text-[#667185]    mb-[8px] ">
                   Category{" "}
@@ -719,7 +723,7 @@ const BookKeeping = () => {
               </div>
             </div>
 
-            <div className="mb-[15px]">
+            <div className="mb-[11px]">
               <label className="text-[14px] text-[#667185]    mb-[8px] ">
                 Amount
               </label>
@@ -734,7 +738,7 @@ const BookKeeping = () => {
               </div>
             </div>
 
-            <div className=" mb-[15px]">
+            <div className=" mb-[11px]">
               <label className="text-[14px] text-[#667185]    mb-[8px] ">
                 Currency
               </label>
@@ -753,7 +757,7 @@ const BookKeeping = () => {
                 </select>
               </div>
             </div>
-            <div className=" mb-[15px]">
+            <div className=" mb-[11px]">
               <label className="text-[14px] text-[#667185]    mb-[8px] ">
                 Description
               </label>
@@ -815,122 +819,124 @@ const BookKeeping = () => {
           <ModalCloseButton size={"sm"} />
           <Divider color="#98A2B3" />
           <ModalBody
-            pt={{ base: "20px", md: "24px" }}
+            pt={{ base: "16px", md: "24px" }}
             px={{ base: "16px", md: "24px" }}
             pb={{ base: "30px" }}
             className="pt-[20px] md:pt-[24px] px-[16px] md:px-[24px] pb-[30px] "
           >
-            <div className=" mb-[15px]">
-              <label className="text-[14px] text-[#667185]    mb-[8px] ">
-                Type
-              </label>
-              <div className="">
-                <select
-                  name="type"
-                  required={true}
-                  value={formValue.type}
-                  onChange={(e) => handleInputChange(e)}
-                  className="w-full h-[38px] pl-[8px] py-[8px] text-[14px] text-[#344054]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                >
-                  <option value="">-- Select Type --</option>
-                  <option value={"income"}>Income</option>
-                  <option value={"expense"}>Expense</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-[18px] mb-[15px]">
-              <div className="">
+            <div className="h-[380px] md:h-[500px] overflow-auto">
+              <div className=" mb-[11px]">
                 <label className="text-[14px] text-[#667185]    mb-[8px] ">
-                  Category{" "}
+                  Type
                 </label>
                 <div className="">
                   <select
-                    name="category_id"
+                    name="type"
                     required={true}
-                    value={formValue.category_id}
+                    value={formValue.type}
                     onChange={(e) => handleInputChange(e)}
-                    className="w-full h-[38px] pl-[8px] py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    className="w-full h-[38px] pl-[8px] py-[8px] text-[14px] text-[#344054]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                   >
-                    <option value="">-- Select Category --</option>
-                    {catigories.map((category) => (
-                      <option key={category.id} value={category.id}>
-                        {category.name}
-                      </option>
-                    ))}
+                    <option value="">-- Select Type --</option>
+                    <option value={"income"}>Income</option>
+                    <option value={"expense"}>Expense</option>
                   </select>
                 </div>
               </div>
 
-              <div className="">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-[18px] mb-[11px]">
+                <div className="">
+                  <label className="text-[14px] text-[#667185]    mb-[8px] ">
+                    Category{" "}
+                  </label>
+                  <div className="">
+                    <select
+                      name="category_id"
+                      required={true}
+                      value={formValue.category_id}
+                      onChange={(e) => handleInputChange(e)}
+                      className="w-full h-[38px] pl-[8px] py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    >
+                      <option value="">-- Select Category --</option>
+                      {catigories.map((category) => (
+                        <option key={category.id} value={category.id}>
+                          {category.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                <div className="">
+                  <label className="text-[14px] text-[#667185]    mb-[8px] ">
+                    Tag
+                  </label>
+                  <div className="">
+                    <select
+                      name="tags"
+                      required={true}
+                      value={formValue.tags}
+                      onChange={(e) => handleInputChange(e)}
+                      className="w-full h-[38px] pl-[8px] py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                    >
+                      <option value="">-- Select Tag --</option>
+                      {tags.map((tag) => (
+                        <option key={tag.id} value={tag.id}>
+                          {tag.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mb-[11px]">
                 <label className="text-[14px] text-[#667185]    mb-[8px] ">
-                  Tag
+                  Amount
+                </label>
+                <div className="">
+                  <InputField
+                    placeholder=""
+                    name="amount"
+                    required={true}
+                    value={formValue.amount}
+                    onChange={(e) => handleInputChange(e)}
+                  />
+                </div>
+              </div>
+
+              <div className=" mb-[11px]">
+                <label className="text-[14px] text-[#667185]    mb-[8px] ">
+                  Currency
                 </label>
                 <div className="">
                   <select
-                    name="tags"
+                    name="currency"
                     required={true}
-                    value={formValue.tags}
+                    value={formValue.currency}
                     onChange={(e) => handleInputChange(e)}
                     className="w-full h-[38px] pl-[8px] py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                   >
-                    <option value="">-- Select Tag --</option>
-                    {tags.map((tag) => (
-                      <option key={tag.id} value={tag.id}>
-                        {tag.name}
-                      </option>
-                    ))}
+                    <option value="">-- Select Currency --</option>
+                    <option value={"NGN"}>NGN</option>
+                    <option value={"USD"}>USD</option>
+                    <option value={"GBP"}>GBP</option>
                   </select>
                 </div>
               </div>
-            </div>
-
-            <div className="mb-[15px]">
-              <label className="text-[14px] text-[#667185]    mb-[8px] ">
-                Amount
-              </label>
               <div className="">
-                <InputField
-                  placeholder=""
-                  name="amount"
-                  required={true}
-                  value={formValue.amount}
-                  onChange={(e) => handleInputChange(e)}
-                />
-              </div>
-            </div>
-
-            <div className=" mb-[15px]">
-              <label className="text-[14px] text-[#667185]    mb-[8px] ">
-                Currency
-              </label>
-              <div className="">
-                <select
-                  name="currency"
-                  required={true}
-                  value={formValue.currency}
-                  onChange={(e) => handleInputChange(e)}
-                  className="w-full h-[38px] pl-[8px] py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                >
-                  <option value="">-- Select Currency --</option>
-                  <option value={"NGN"}>NGN</option>
-                  <option value={"USD"}>USD</option>
-                  <option value={"GBP"}>GBP</option>
-                </select>
-              </div>
-            </div>
-            <div className="">
-              <label className="text-[14px] text-[#667185]    mb-[8px] ">
-                Description
-              </label>
-              <div className="">
-                <textarea
-                  name="description"
-                  required={true}
-                  value={formValue.description}
-                  onChange={(e) => handleInputChange(e)}
-                  className="w-full h-[90px] pl-[8px] py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-                />
+                <label className="text-[14px] text-[#667185]   ">
+                  Description
+                </label>
+                <div className="">
+                  <textarea
+                    name="description"
+                    required={true}
+                    value={formValue.description}
+                    onChange={(e) => handleInputChange(e)}
+                    className="w-full h-[50px] pl-[8px] py-[8px] text-[14px] text-[#344054]   placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  />
+                </div>
               </div>
             </div>
           </ModalBody>
