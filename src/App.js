@@ -1,18 +1,8 @@
 import "./App.css";
-import {
-  Routes,
-  Route,
-  BrowserRouter as Router,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import { SnackbarProvider } from "notistack";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import Login from "./authScreen/Login";
-import SignUp from "./authScreen/SignUp";
-import ForgotPassword from "./authScreen/ForgotPassword";
-import CheckMail from "./authScreen/CheckMail";
-import CreateNewPass from "./authScreen/CreateNewPass";
-import ChangePassSuccess from "./authScreen/ChangepassSuccess";
+
 import DashboardRoutes from "./Routes";
 import AuthRoute from "./AuthRoute";
 
@@ -38,7 +28,6 @@ function App() {
           <AuthRoute />
 
           <DashboardRoutes />
-           
         </Router>
       </QueryClientProvider>
     </div>
