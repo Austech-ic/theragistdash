@@ -16,7 +16,7 @@ const ModalLeft = ({ isOpen, onClose, children }) => {
       To: "opacity-0"
   --> */}
 
-  <div class="fixed inset-0 overflow-hidden">
+  <div class="fixed top-[80px] inset-0 overflow-hidden">
 
     <div  class="absolute inset-0 overflow-hidden">
     <div onClick={onClose}  class="fixed inset-0 bg-gray-500 bg-opacity-65 transition-opacity"></div>
