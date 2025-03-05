@@ -3,7 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"
+    />
 
     <meta name="theme-color" content="#000000" />
     <meta
@@ -13,10 +16,16 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <meta name="apple-mobile-web-app-title" content="Your App Name" />
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-   
+
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <!--
       manifest.json provides metadata used when your web app is installed on a
@@ -46,6 +55,23 @@
     </script> -->
     <!--End of Tawk.to Script-->
 
+
+    <script>
+      fetch('/version.txt', { cache: "no-store" })
+        .then(response => response.text())
+        .then(newVersion => {
+          const storedVersion = localStorage.getItem('app_version');
+    
+          if (storedVersion && storedVersion !== newVersion.trim()) {
+            localStorage.setItem('app_version', newVersion.trim());
+            location.reload(true); // Forces a hard refresh
+          } else {
+            localStorage.setItem('app_version', newVersion.trim());
+          }
+        })
+        .catch(err => console.error('Version check failed:', err));
+    </script>
+
     <script type="text/javascript">
       (function (c, l, a, r, i, t, y) {
         c[a] =
@@ -60,8 +86,6 @@
         y.parentNode.insertBefore(t, y);
       })(window, document, "clarity", "script", "pc95hcfg0c");
     </script>
- 
- 
 
     <title>Vant For Business</title>
   </head>
