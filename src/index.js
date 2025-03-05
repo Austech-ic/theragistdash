@@ -9,7 +9,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { extendTheme } from "@chakra-ui/react";
 import "react-tooltip/dist/react-tooltip.css";
 import { CopilotKitWrapper } from "./utils/CopilotKitWrapper";
-import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
+// import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 
 const overrides = extendTheme({
   fonts: {
@@ -44,4 +44,4 @@ root.render(
   //</React.StrictMode> */}
 );
 
-serviceWorkerRegistration.register();
+// serviceWorkerRegistration.register();

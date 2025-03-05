@@ -23,7 +23,7 @@ import CopilotContext from "../components/copilot-context";
 // import { registerServiceWorker } from "../serviceWorkerRegistration";
 import { LoginCurve } from "iconsax-react";
 import Modal from "../components/Modal";
-import InstallPWA from "../components/InstallPWA";
+// import InstallPWA from "../components/InstallPWA";
 
 function Layout() {
   // const { isSidebarOpen, closeSidebar } = useContext(SidebarContext);
@@ -31,39 +31,7 @@ function Layout() {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   // const [isInstalled, setIsInstalled] = useState(false);
 
-  // useEffect(() => {
-  //   registerServiceWorker();
 
-  //   // Check if the app is installed (works for Chrome & Android)
-  //   if (window.matchMedia("(display-mode: standalone)").matches) {
-  //     setIsInstalled(true);
-  //   }
-
-  //   // Listen for beforeinstallprompt
-  //   window.addEventListener("beforeinstallprompt", (event) => {
-  //     event.preventDefault();
-  //     setDeferredPrompt(event);
-  //   });
-
-  //   // Listen for appinstalled event
-  //   window.addEventListener("appinstalled", () => {
-  //     setIsInstalled(true);
-  //     setDeferredPrompt(null);
-  //   });
-  // }, []);
-
-  // const handleInstallClick = () => {
-  //   if (deferredPrompt) {
-  //     deferredPrompt.prompt();
-  //     deferredPrompt.userChoice.then((choiceResult) => {
-  //       if (choiceResult.outcome === "accepted") {
-  //         console.log("User installed the app");
-  //         setIsInstalled(true);
-  //       }
-  //       setDeferredPrompt(null);
-  //     });
-  //   }
-  // };
 
   const ProfileQuery = useQuery(["profile"], () => getProfile(), {
     keepPreviousData: true,
@@ -120,7 +88,7 @@ function Layout() {
                 </Suspense>
               </Main>
 
-              <InstallPWA />
+              {/* <InstallPWA /> */}
             </div>
           </div>
         </CopilotContext>
