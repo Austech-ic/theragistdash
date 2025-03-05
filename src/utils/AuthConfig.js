@@ -5,6 +5,7 @@ export const API_BASE_URL = 'https://dev.vantapp.com/api/partner-business/auth';
 //export const API_BASE_URL = 'https://api.vantapp.com/api/partner-business/auth';
 export const getApiUrl = (endpoint) => API_BASE_URL + endpoint
 
+
 export const LOGIN = getApiUrl('/login')
 export const SIGNUP = getApiUrl('/signup')
 export const FORGOTPASSWORD = getApiUrl('/password/forget')
