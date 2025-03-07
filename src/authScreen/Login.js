@@ -13,6 +13,7 @@ import {
   encryptaValue,
   SendOtp,
 } from "../utils/helperFunctions";
+import FloatingPaths from "../components/Floating";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -25,16 +26,14 @@ const Login = () => {
   const toggle = () => {
     setOpen(!open);
   };
-  useEffect(()=> {
+  useEffect(() => {
     const user = localStorage.getItem("authData");
     if (user) {
       navigate("/overview");
     }
-  }, [])
+  }, []);
 
-  
-console.log("checking")
-
+  console.log("checking");
 
   async function login(e) {
     e.preventDefault();
@@ -66,23 +65,27 @@ console.log("checking")
     }
   }
 
-  const SendOtp = async(email) => {
-  
+  const SendOtp = async (email) => {
     try {
       const response = await api.resendOtp({
         email: email,
       });
       const decryptRes = JSON.parse(decryptaValue(response?.data));
-    
+
       enqueueSnackbar(decryptRes.message, { variant: "success" });
-      navigate("/validate-otp",{state:{email: email} });
-  
+      navigate("/validate-otp", { state: { email: email } });
     } catch (error) {
       enqueueSnackbar(error.message, { variant: "error" });
     }
-  }
+  };
   return (
-    <div className="bg-[#F2F2F2] h-screen w-full flex justify-center items-center ">
+    <div className="relative bg-[#F2F2F2] h-screen w-full flex justify-center items-center ">
+      <div className="absolute inset-0">
+        <FloatingPaths position={1} />
+        <FloatingPaths position={-1} />
+
+        
+      </div>
       <m.div
         initial={{ x: -30, opacity: 0.4 }}
         animate={{
@@ -93,13 +96,13 @@ console.log("checking")
         transition={{
           duration: 0.9,
         }}
-        className="bg-[#ffff] rounded-[16px] w-[90%] sm:w-[440px] md:w-[500px]  max-w-[588px] pt-[16px] md:pt-[32px]  pb-[24px] px-[16px] sm:px-[30px] md:px-[50px]"
+        className="bg-[#ffff] rounded-[16px] z-10  w-[90%] sm:w-[440px] md:w-[500px]  max-w-[588px] pt-[16px] md:pt-[32px]  pb-[24px] px-[16px] sm:px-[30px] md:px-[40px]"
       >
         {" "}
         <img
           src="/assets/VantLogo.png"
           alt="logo"
-          className=" h-[40px] md:h-[50px] xl:h-[60px] mx-auto mb-[20px]"
+          className=" h-[40px] md:h-[50px]  mx-auto "
         />
         {/* <h2 className="text-[20px] md:text-[24px] xl:text-[28px] text-center font-bold leading-[35px] text-black mb-[8px]">
           Hi, Welcome Back!
@@ -107,11 +110,8 @@ console.log("checking")
         <p className="text-[14px] md:text-[14px] xl:text-[16px] text-center font-normal leading-[24px] text-[#667185] ">
           Sign in to your account to continue
         </p>
-        <form
-          onSubmit={login}
-          className="mt-[20px] md:mt-[30px] "
-        >
-          <div className="mb-[24px]">
+        <form onSubmit={login} className="mt-[10px] md:mt-[20px] ">
+          <div className="mb-[16px]">
             <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
               Email
             </label>
@@ -139,7 +139,7 @@ console.log("checking")
               />
             </div>
           </div>
-          <div className="mb-[16px]">
+          <div className="mb-[10px]">
             <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
               Password
             </label>
@@ -185,13 +185,13 @@ console.log("checking")
 
           <button
             type="submit"
-            className="w-full py-[14px] mt-[18px] text-center text-white bg-[#26ae5f] rounded-[8px] flex items-center justify-center mb-[20px] md:mb-[24px]"
+            className="w-full py-[14px] mt-[18px] text-center text-white bg-[#26ae5f] rounded-[8px] flex items-center justify-center gap-1 mb-[12px] md:mb-[16px]"
           >
             <p className="text-sm font-medium leading-[20px]">Sign in</p>
             {isLoading && <ClipLoader color={"white"} size={20} />}
           </button>
 
-          <div className="text-[14px] leading-[20px] flex justify-center items-center mb-[30px] md:mb-[40px]">
+          <div className="text-[14px] leading-[20px] flex justify-center gap-1 items-center mb-[30px] md:mb-[40px]">
             <p>Don’t have an account? </p>
             <Link to="/signup">
               {" "}
@@ -199,9 +199,9 @@ console.log("checking")
             </Link>
           </div>
 
-          <p className="text-center text-[14px] font-medium leading-[20px] text-[#98a2b3]">
+          {/* <p className="text-center text-[14px] font-medium leading-[20px] text-[#98a2b3]">
             Copyright 2024 VANT. All Rights Reserved
-          </p>
+          </p> */}
         </form>
       </m.div>
     </div>
