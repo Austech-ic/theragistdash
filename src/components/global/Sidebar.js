@@ -71,17 +71,17 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
           </svg>
         </button>
       </div>
-      <div class="max-w-[260px] min-h-screen bg-[#FFFFFF] w-[220px] md:w-[230px]  p-[16px] md:p-[20px] sticky top-0 overflow-y-auto ">
+      <div class="max-w-[260px] min-h-screen bg-[#FFFFFF] w-[220px] md:w-[230px]  p-[16px] md:p-[18px] sticky top-0 overflow-y-auto ">
         <div className="relative">
           <div className="relative h-screen overflow-y-auto no-scrollbar flex flex-col justify-between ">
             <div>
               <img
-                class=" h-[40px] w-[70px]   "
+                class=" h-[36px] w-[70px]   "
                 src="/assets/VantLogo.png"
                 alt="logo"
               />
 
-              <div className="border border-[#98A2B3]/50 my-4 " />
+              <div className="border border-[#98A2B3]/50 mb-4 mt-2 " />
 
               {profileData?.default_partner?.is_verified !== 1 && (
                 <Link

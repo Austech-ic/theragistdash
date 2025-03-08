@@ -66,6 +66,7 @@ import debounce from "lodash/debounce";
 import Success from "../../components/Success";
 import { Link } from "react-router-dom";
 import { useCopilotReadable } from "@copilotkit/react-core";
+import NairaWalletCard from "./component/nairaWalletCard";
 
 ChartJS.register(
   CategoryScale,
@@ -574,6 +575,21 @@ const WalletOverdiv = () => {
       />
 
       <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-[16px] md:gap-[20px] mt-5 ">
+      {/* <NairaWalletCard
+          selectedCard={selectedCard}
+          Card={Card}
+          hideBalance={hideBalance}
+          toggleWallet={toggleWallet}
+          hideMyBalance={hideMyBalance}
+          isSwitchWallet={isSwitchWallet}
+          setSelectedCard={setSelectedCard}
+          formatDateToText={formatDateToText}
+          handleCopy={handleCopy}
+          copiedRef={copiedRef}
+          profileData={profileData}
+          className="flex flex-col h-full"
+        /> */}
+   
         <li>
           <div
             className={`rounded-[12px] px-[16px] pt-4 pb-6 `}
@@ -635,7 +651,6 @@ const WalletOverdiv = () => {
 
             <div className="flex-between mt-6">
               <div>
-                {/* {userQuery.isLoading || hideBalance ? ( */}
                 {hideBalance ? (
                   <p className="text-[#fff]  font-semibold  text-[16px] leading-[19px]  tracking-[0.2px]   ">
                     {"₦"} *****
@@ -707,7 +722,6 @@ const WalletOverdiv = () => {
                       ) : (
                         <Copy size={20} variant="Bold" color="#fff" />
                       )}
-                      {/* <Copy size={20} variant="Bold" color="#fff" /> */}
                     </p>
                   </button>
                 </div>

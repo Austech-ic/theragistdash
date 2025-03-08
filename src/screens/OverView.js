@@ -1,15 +1,24 @@
 import {
   ArrowDown,
   ArrowUp,
+  Book,
+  CardSend,
   Folder2,
   Ghost,
+  GridEdit,
+  Layer,
   MenuBoard,
   MobileProgramming,
+  Note,
+  Profile2User,
+  ProgrammingArrows,
+  Setting,
+  ShoppingCart,
   Task,
   User,
   WalletMoney,
 } from "iconsax-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -22,15 +31,18 @@ import {
   ArcElement,
   BarElement,
 } from "chart.js";
-import { Doughnut, Line, Bar } from "react-chartjs-2";
-import faker from "faker";
+import { Bar } from "react-chartjs-2";
+
 import api from "../api";
 import { useQuery } from "@tanstack/react-query";
 import { NumericFormat } from "react-number-format";
 import EmptyTable from "../components/EmptyTable";
 import TableLoading from "../components/TableLoading";
 import moment from "moment";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import NairaWalletCard from "./wallet/component/nairaWalletCard";
+import { formatDateToText } from "../utils/helperFunctions";
+import LoadingSkeleton from "./BookKeeping/component/ReportLoading";
 
 // import { TaskAnalytics } from "../components/Data";
 // import {
@@ -56,10 +68,71 @@ ChartJS.register(
 );
 
 const OverView = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const result = [{ status: "Success" }];
+const navigation = useNavigate();
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState("d");
+  const [hideBalance, setHideBalance] = useState(false);
+  const [copiedRef, setCopiedRef] = useState(null);
+
+  const [isSwitchWallet, setIsSwitchWallet] = useState(false);
+  const hideMyBalance = () => {
+    setHideBalance(!hideBalance);
+  };
+  async function getProfile(page) {
+    const response = await api.getProfile({ params: { page } });
+    return response;
+  }
+
+  const ProfileQuery = useQuery(["profile"], () => getProfile(), {
+    keepPreviousData: true,
+    refetchOnWindowFocus: "always",
+  });
+  const profileData = ProfileQuery?.data || [];
+
+  const toggleWallet = () => {
+    setIsSwitchWallet(!isSwitchWallet);
+  };
+  // const initialSelect = {
+  //   name: "NGN Wallet",
+  //   Image: "/assets/ng.png",
+  //   abb: "NGN",
+  //   symbol: "₦",
+  //   color: "#26AE5F",
+  //   balance: profileData?.default_partner?.wallet_balance,
+  // };
+
+  const [selectedCard, setSelectedCard] = useState(null);
+  useEffect(() => {
+    if (profileData?.default_partner?.wallet_balance !== undefined) {
+      setSelectedCard({
+        name: "NGN Wallet",
+        Image: "/assets/ng.png",
+        abb: "NGN",
+        symbol: "₦",
+        color: "#26AE5F",
+        balance: profileData.default_partner.wallet_balance,
+      });
+    }
+  }, [profileData]);
+  const Card = [
+    {
+      name: "NGN Wallet",
+      Image: "/assets/ng.png",
+      abb: "NGN",
+      symbol: "₦",
+      color: "#26AE5F",
+      balance: profileData?.default_partner?.wallet_balance,
+    },
+    {
+      name: "USD Wallet",
+      abb: "USD",
+      Image: "/assets/USbig.png",
+
+      symbol: "$",
+      color: "#3B6896",
+      balance: profileData?.default_partner?.dollar_wallet_balance,
+    },
+  ];
 
   async function getTransaction(page) {
     const response = await api.getTransaction({
@@ -182,10 +255,113 @@ const OverView = () => {
 
   const summaryData = SummaryQuery?.data?.data || [];
 
+  // Function to copy text to the clipboard
+  const handleCopy = async (transactionRef) => {
+    try {
+      await navigator.clipboard.writeText(transactionRef);
+      setCopiedRef(transactionRef); // Set copied ref to show feedback
+      setTimeout(() => setCopiedRef(null), 2000); // Clear feedback after 2 seconds
+    } catch (err) {
+      //console.error("Failed to copy:", err);
+    }
+  };
+
+    const quickAction = [
+      {
+        icon: <CardSend size={20} color="#3B6896" />,
+        label: "Transfer",
+        action: () => {
+          navigation("/wallet/overview");
+        },
+     
+      },
+      {
+        icon: <ProgrammingArrows size={20} color="#3B6896" />,
+        label: "Swap USD",
+        action: () => {
+          navigation("/usd-wallet");
+        },
+      },
+      {
+        icon: <Layer size={20} color="#3B6896" />,
+        label: "Bulk Payout",
+        action: () => {
+          navigation("/bulk-payment");
+        },
+      },
+      {
+        icon: <Book size={20} color="#3B6896" />,
+        label: "Book Keeping",
+        action: () => {
+          navigation("/bookkeeping");
+        },
+      },
+     
+   
+      {
+        icon: <Note size={20} color="#3B6896" />,
+        label: "Payment Link",
+        action: () => {
+          navigation("/paymentlink");
+        },
+      },
+      {
+        icon: <GridEdit size={20} color="#3B6896" />,
+        label: "Create Invoice",
+        action: () => {
+          navigation("/invoice");
+        },
+      },
+      {
+        icon: <ShoppingCart size={20} color="#3B6896" />,
+        label: "Add Product",
+        action: () => {
+          navigation("/store");
+        },
+      },
+      {
+        icon: <Profile2User size={20} color="#3B6896" />,
+        label: "Add Customers",
+        action: () => {
+          navigation("/customers");
+        },
+      },
+
+      {
+        icon: <Setting size={20} color="#3B6896" />,
+        label: "Settings",
+        action: () => {
+          navigation("/setting/personal-info");
+        },
+      },
+    ];
+
   return (
     <div className="p-[10px] md:p-[20px] bg-[#F2F2F2]  ">
       <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5">
-        <li className="border-[0.2px] border-[#98a2b3] shadow rounded-[8px] h-[140px]  md:h-[176px]   w-full   mx-auto bg-[#ffff] flex flex-col justify-between ">
+       <li>
+
+
+        {ProfileQuery.isLoading ? ( <LoadingSkeleton />) : ( <NairaWalletCard
+          selectedCard={selectedCard}
+          Card={Card}
+          hideBalance={hideBalance}
+          toggleWallet={toggleWallet}
+          hideMyBalance={hideMyBalance}
+          isSwitchWallet={isSwitchWallet}
+          setSelectedCard={setSelectedCard}
+          formatDateToText={formatDateToText}
+          handleCopy={handleCopy}
+          copiedRef={copiedRef}
+          profileData={profileData}
+          reduceHeight={true}
+          className="flex flex-col h-full"
+        />)}
+       
+
+        
+        </li>
+        {/* <li className="border-[0.2px] border-[#98a2b3] shadow rounded-[8px] h-[140px]  md:h-[176px]   w-full   mx-auto bg-[#ffff] flex flex-col justify-between ">
           <div className="px-[20px] py-[24px]  flex-between">
             <p className="text-[#000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px]  ">
               Wallet Balance
@@ -203,11 +379,10 @@ const OverView = () => {
                 prefix={"₦"}
                 decimalScale={2}
                 fixedDecimalScale={true}
-              
               />
             </p>
           </div>
-        </li>
+        </li> */}
         <li className="border-[0.2px] border-[#98a2b3] shadow  rounded-[8px] h-[140px] md:h-[176px]  w-full mx-auto   bg-[#ffff] flex flex-col justify-between ">
           <div className="px-[20px] py-[24px]  flex-between">
             {" "}
@@ -228,7 +403,6 @@ const OverView = () => {
                 prefix={"₦"}
                 decimalScale={2}
                 fixedDecimalScale={true}
-               
               />
             </p>
           </div>
@@ -266,37 +440,60 @@ const OverView = () => {
               {summaryData?.total_users}
             </p>
             <Link to="/setting/my-team">
-            <p className="text-[#667185] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
-              View Team
-            </p>
+              <p className="text-[#667185] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
+                View Team
+              </p>
             </Link>
           </div>
         </li>
       </ul>
-      <div className="bg-white rounded-lg border-[0.2px] border-[#98a2b3] mt-[20px] h-[280px] md:h-[459px] w-full  mt">
+      <div className="grid grid-cols-1 sm:grid-cols-2  gap-5 mt-[20px]">
+      <div className="rounded-lg overflow-hidden border-[0.8px] border-[#E4E7EC] bg-[#fefefeec] shadow p-2 md:p-3 ">
+          <p className="text-[#000]   font-semibold text-[14px] leading-[14px] text-center  tracking-[0.2px] ">
+            Quick Action
+          </p>
+          <div className=" mt-7 grid grid-cols-3 gap-2 gap-y-3">
+            {quickAction?.map((card) => (
+              <div
+                className="cursor-pointer px-1 py-2 hover:bg-gray-100 rounded-lg shadow"
+                onClick={card.action}
+              >
+                <div className="flex flex-col items-center gap-2  ">
+                  {card.icon}
+                  <p className="text-[12px] whitespace-nowrap">{card.label}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div> 
+      <div className="bg-white rounded-lg border-[0.2px] border-[#98a2b3]  h-[280px] md:h-[359px] w-full  mt">
         <div className="p-[10px] md:p-[14px] flex-between bg-white rounded-tr-lg rounded-tl-lg  border-b-[0.8px]  border-[#D0D5DD]">
           <p className="text-[18px] whitespace-nowrap leading-[27px] text-[#000]  ">
             Transaction Chart
           </p>
 
           <select
-              type="text"
-              placeholder=""
-              className="w-[120px] md:w-[240px]  bg-[#F9FAFB]  px-2 py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-           
-              value={filter}
-              onChange={(e) => setFilter(e.target.value)}
-           >
-              <option value="">Select Frequency</option>
-              <option value="d">Daily</option>
-              <option value="m">Monthly</option>
-              <option value="y">Yearly</option>
-            </select>
+            type="text"
+            placeholder=""
+            className="w-[120px] md:w-[240px]  bg-[#F9FAFB]  px-2 py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+          >
+            <option value="">Select Frequency</option>
+            <option value="d">Daily</option>
+            <option value="m">Monthly</option>
+            <option value="y">Yearly</option>
+          </select>
         </div>
-        <div className="px-[16px] mt-5 h-[260px] md:h-[350px] flex justify-center ">
+        <div className="px-[16px] mt-5 h-[260px] md:h-[250px] flex justify-center ">
           <Bar options={options} data={data} />
         </div>
       </div>
+
+             
+      </div>
+
+     
       <div className="bg-white rounded-lg border-[0.2px] border-[#98a2b3] mt-[20px]  w-full  mt">
         <div className="p-[10px] md:p-[14px] flex-between bg-white rounded-tr-lg rounded-tl-lg  border-b-[0.8px]  border-[#D0D5DD]">
           <p className="text-[18px]  leading-[27px] text-[#000]  ">
@@ -373,7 +570,6 @@ const OverView = () => {
                     {TransactionQuery?.data &&
                       transData?.map((result) => (
                         <tr key="_" className="mb-2 hover:bg-light-gray">
-                         
                           <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
                             {result?.reference}
                           </td>
@@ -411,13 +607,13 @@ const OverView = () => {
                             <button
                               className={`rounded-[20px] md:rounded-[40px] w-[80px] w- py-[2px] md:py-[4px] mx-auto ${
                                 result.status === "failed"
-                                ? "bg-[rgb(255,245,230)] text-red-500"
-                                : result.status === "pending"
-                                ? "bg-[rgb(255,245,230)] text-orange-400"
+                                  ? "bg-[rgb(255,245,230)] text-red-500"
+                                  : result.status === "pending"
+                                  ? "bg-[rgb(255,245,230)] text-orange-400"
                                   : result.status === "reversed"
-                                ? "bg-yellow-100 text-yellow-500"
-                                : "bg-[#EDF7EE] text-[#4CAF50]"
-                            }  text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px]`}
+                                  ? "bg-yellow-100 text-yellow-500"
+                                  : "bg-[#EDF7EE] text-[#4CAF50]"
+                              }  text-[10px] md:text-[12px]  font-semibold leading-[16px] md:leading-[18px]`}
                             >
                               <p>{result.status}</p>
                             </button>{" "}
