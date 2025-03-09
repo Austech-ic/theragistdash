@@ -653,7 +653,7 @@ const WalletOverdiv = () => {
               <div>
                 {hideBalance ? (
                   <p className="text-[#fff]  font-semibold  text-[16px] leading-[19px]  tracking-[0.2px]   ">
-                    {"₦"} *****
+                   {selectedCard?.symbol} *****
                   </p>
                 ) : (
                   <NumericFormat

@@ -86,7 +86,7 @@ const NairaWalletCard = ({
       <div className={`flex-between ${reduceHeight ? " mt-4" : " mt-6"}`}>
         {hideBalance ? (
            <p className="text-[#fff]  font-semibold  text-[16px] leading-[19px]  tracking-[0.2px]   ">
-            ₦ *****</p>
+           {selectedCard?.symbol} *****</p>
         ) : (
           <NumericFormat
             value={selectedCard?.balance}

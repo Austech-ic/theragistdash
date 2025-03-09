@@ -954,7 +954,7 @@ const Transactions = () => {
                   </td>
                 </tr>
               )}
-              {transacDetails?.channel && (
+              {/* {transacDetails?.channel && (
                 <tr>
                   <th className="pb-5 text-[14px] text-[#667185] leading-[20px] font-medium text-left ">
                     Channel:
@@ -965,9 +965,9 @@ const Transactions = () => {
                     </p>
                   </td>
                 </tr>
-              )}
+              )} */}
 
-              {transacDetails?.beneficiary && (
+              {/* {transacDetails?.beneficiary && (
                 <tr>
                   <th className="pb-5 text-[14px] text-[#667185] leading-[20px] font-medium text-left ">
                     Beneficiary:
@@ -978,7 +978,7 @@ const Transactions = () => {
                     </p>
                   </td>
                 </tr>
-              )}
+              )} */}
 
               {transacDetails?.remark && (
                 <tr>
@@ -993,7 +993,7 @@ const Transactions = () => {
                 </tr>
               )}
 
-              {transacDetails?.meta && (
+              {/* {transacDetails?.meta && (
                 <tr>
                   <th className="pb-5 text-[14px] text-[#667185] leading-[20px] font-medium text-left ">
                     Meta:
@@ -1016,7 +1016,7 @@ const Transactions = () => {
                     </p>
                   </td>
                 </tr>
-              )}
+              )} */}
 
               <tr>
                 <th className="pb-5 text-[14px] text-[#667185] leading-[20px] font-medium text-left ">
