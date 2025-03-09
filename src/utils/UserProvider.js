@@ -109,6 +109,7 @@ export const UserProvider = ({ children }) => {
         exchangeRate,
       }}
     >
+      
       {children}
     </UserContext.Provider>
   );

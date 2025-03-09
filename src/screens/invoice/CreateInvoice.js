@@ -309,6 +309,17 @@ const CreateInvoice = () => {
 
   const today = new Date().toISOString().split("T")[0];
 
+  async function getProfile(page) {
+    const response = await api.getProfile({ params: { page } });
+    return response;
+  }
+
+  const ProfileQuery = useQuery(["profile"], () => getProfile(), {
+    keepPreviousData: true,
+    refetchOnWindowFocus: "always",
+  });
+  const profileData = ProfileQuery?.data || [];
+
   return (
     <div className="p-4 md:px-[20px] md:pb-[20px] md:pt-[12px] bg-[#F2F2F2] min-h-screen ">
       <div className="flex items-center mb-3">
@@ -393,17 +404,18 @@ const CreateInvoice = () => {
                   From
                 </h2>
                 <p className="text-[#667185]  text-[14px]  md:text-[16px]   font-medium  ">
-                  {profile?.name}
+                {profileData?.default_partner?.name}
                 </p>
                 <p className="text-[#667185]  text-[12px]  md:text-[14px]   font-normal  ">
-                  {profile?.address}
+                {profileData?.default_partner?.address}
                 </p>
                 <p className="text-[#667185] text-[12px]  md:text-[14px] font-normal  ">
-                  {profile?.email}
+                {profileData?.default_partner?.email}
                 </p>
                 {profile?.phone && (
                   <p className="text-[#667185] text-[12px]  md:text-[14px] font-normal  ">
-                    <strong>Tel: </strong> {profile?.phone}
+                    <strong>Tel: </strong>                 {profileData?.default_partner?.phone}
+
                   </p>
                 )}
               </li>

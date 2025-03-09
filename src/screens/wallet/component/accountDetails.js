@@ -13,7 +13,7 @@ const AccountDetails = ({
     return (
       <div className={`bg-[#1B2026] relative rounded-[12px] px-[16px]   -mt-[16px] ${reduceHeight ? "pb-[20px] pt-[18px]" : "pb-[34px] pt-[24px]"}`}>
         <p className="text-[#fff] font-medium text-[12px] leading-[14px] tracking-[0.2px] mb-[8px]">
-          {account?.bank}
+          {account?.bank} Bank
         </p>
         <div className="flex justify-between items-center">
           <p className="text-[#fff] font-semibold text-[14px] leading-[17px] tracking-[0.2px]">

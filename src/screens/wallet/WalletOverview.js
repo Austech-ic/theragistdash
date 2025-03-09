@@ -690,7 +690,7 @@ const WalletOverdiv = () => {
             selectedCard?.abb === "NGN" && (
               <div className=" bg-[#1B2026] relative   rounded-[12px]  px-[16px] pb-[34px] pt-[24px] -mt-[16px]    ">
                 <p className="text-[#fff]  font-medium  text-[12px] leading-[14px]  tracking-[0.2px]  mb-[8px]  ">
-                  {profileData?.default_partner?.account_numbers[0]?.bank}
+                  {profileData?.default_partner?.account_numbers[0]?.bank} Bank
                 </p>
                 <div
                   style={{

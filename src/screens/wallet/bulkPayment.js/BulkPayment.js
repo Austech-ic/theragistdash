@@ -51,7 +51,7 @@ import Success from "../../../components/Success";
 import EmptyList from "../../../components/EmptyList";
 
 const BulkPayment = () => {
-  const { profile } = useContext(UserContext);
+  // const { profile } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
   const [searchProdQuery, setSearchProdQuery] = useState("");
 
@@ -396,6 +396,8 @@ const BulkPayment = () => {
     }
   };
 
+
+
   return (
     <div className="p-4 md:px-[20px] md:pb-[20px] md:pt-[12px] bg-[#F2F2F2] min-h-screen ">
       <div className="flex flex-col md:flex-row gap-3 ">
@@ -453,7 +455,7 @@ const BulkPayment = () => {
                 <h2 className="text-[#000]  text-[14px]  md:text-[16px]  font-medium mb-[2px]  ">
                   From:{" "}
                   <span className="text-[#667185]  text-[14px]  md:text-[16px]   font-medium  ">
-                    {profile?.name}
+                    {profileData?.default_partner?.name}
                   </span>
                 </h2>
               </li>
