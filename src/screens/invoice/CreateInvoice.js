@@ -694,7 +694,7 @@ const CreateInvoice = () => {
             </ul>
           </div>
         </div>
-        <div className="w-full md:h-[100vh]  overflow-auto md:w-[40%] xl:w-[35%] flex flex-col gap-5">
+        <div className="w-full md:h-[100vh]  overflow-auto md:w-[40%] xl:w-[35%] flex flex-col gap-5 pb-9">
           <div className=" w-full bg-white p-3  rounded-lg border-[0.2px] border-[#98a2b3] ">
             <h2 className="text-[#000] text-[18px] md:text-[22px] font-semibold mb-[2px] text-center  ">
               Review
@@ -1264,7 +1264,7 @@ const CreateInvoice = () => {
 
           <div className="border  border-[#98a2b3] my-3" />
 
-          <div className="flex-between mb-5 ">
+          <div className="flex-between  mb-8 ">
             <button className="px-4 py-2  text-[14px] rounded-lg border-[0.2px]  border-[#98a2b3] text-md bg-slate-100">
               Cancel
             </button>
