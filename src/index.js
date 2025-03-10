@@ -11,6 +11,31 @@ import "react-tooltip/dist/react-tooltip.css";
 import { CopilotKitWrapper } from "./utils/CopilotKitWrapper";
 // import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 
+
+window.addEventListener("load", async () => {
+  try {
+    // Clear Cache Storage (for previously cached PWA files)
+    if ("caches" in window) {
+      const cacheNames = await caches.keys();
+      await Promise.all(cacheNames.map((cacheName) => caches.delete(cacheName)));
+    }
+
+    // Unregister Service Workers
+    if ("serviceWorker" in navigator) {
+      const registrations = await navigator.serviceWorker.getRegistrations();
+      await Promise.all(registrations.map((registration) => registration.unregister()));
+    }
+
+    // Force a hard refresh (only runs once)
+    if (!sessionStorage.getItem("cache-cleared")) {
+      sessionStorage.setItem("cache-cleared", "true");
+      window.location.reload(true); // Hard refresh
+    }
+  } catch (error) {
+    console.error("Error clearing cache:", error);
+  }
+});
+
 const overrides = extendTheme({
   fonts: {
     body: '"Jost", sans-serif', // For headings

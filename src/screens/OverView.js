@@ -31,7 +31,7 @@ import {
   ArcElement,
   BarElement,
 } from "chart.js";
-import { Bar } from "react-chartjs-2";
+import { Bar, Line } from "react-chartjs-2";
 
 import api from "../api";
 import { useQuery } from "@tanstack/react-query";
@@ -43,17 +43,6 @@ import { Link, useNavigate } from "react-router-dom";
 import NairaWalletCard from "./wallet/component/nairaWalletCard";
 import { formatDateToText } from "../utils/helperFunctions";
 import LoadingSkeleton from "./BookKeeping/component/ReportLoading";
-
-// import { TaskAnalytics } from "../components/Data";
-// import {
-//   ProjectStatus,
-//   TaskCard,
-// } from "../components/project/ProjectAnalytics";
-// import {
-//   AccountBalance,
-//   LatestIncome,
-// } from "../components/finance/FinanceAnalytics";
-// import { CreatedDeal, ModifiedDeal } from "../components/crm/CrmAnalyttics";
 
 ChartJS.register(
   CategoryScale,
@@ -68,7 +57,7 @@ ChartJS.register(
 );
 
 const OverView = () => {
-const navigation = useNavigate();
+  const navigation = useNavigate();
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState("d");
   const [hideBalance, setHideBalance] = useState(false);
@@ -182,18 +171,45 @@ const navigation = useNavigate();
 
   const chartsData = ChartQuery?.data?.data || [];
 
+  // const options = {
+  //   responsive: true,
+  //   maintainAspectRatio: true,
+  //   width: "100%",
+  //   plugins: {
+  //     // legend: {
+  //     //   position: 'top',
+  //     // },
+  //     // title: {
+  //     //   display: true,
+  //     //   text: 'Chart.js Line Chart',
+  //     // },
+  //   },
+  // };
+
   const options = {
     responsive: true,
     maintainAspectRatio: true,
-    width: "100%",
+
     plugins: {
-      // legend: {
-      //   position: 'top',
-      // },
       // title: {
       //   display: true,
-      //   text: 'Chart.js Line Chart',
+      //   text: "Order Status",
       // },
+      legend: {
+        display: true,
+      },
+    },
+    scales: {
+      x: {
+        beginAtZero: true,
+        grid: {
+          display: false, // Removes grid lines on X-axis
+        },
+      },
+      y: {
+        beginAtZero: true,
+       
+      },
     },
   };
 
@@ -209,30 +225,6 @@ const navigation = useNavigate();
         label: "Debit",
         data: chartsData?.map((item) => item.total_debit),
         backgroundColor: "rgba(243, 121, 51, 1)",
-      },
-    ],
-  };
-
-  const pieData = {
-    labels: ["On Hold", "In Progress", "Finished"],
-    datasets: [
-      {
-        label: "Number of Task",
-        data: [5, 8, 12],
-        backgroundColor: [
-          "rgba(255, 173, 51, 1)",
-          "rgba(243, 121, 51, 1)",
-          "rgba(112, 191, 115, 1)",
-        ],
-        borderColor: [
-          "rgba(255, 173, 51, 1)",
-          "rgba(243, 121, 51, 1)",
-          "rgba(112, 191, 115, 1)",
-        ],
-        borderWidth: 1,
-        borderJoinStyle: "round",
-        spacing: 3,
-        borderRadius: 8,
       },
     ],
   };
@@ -266,127 +258,103 @@ const navigation = useNavigate();
     }
   };
 
-    const quickAction = [
-      {
-        icon: <CardSend size={20} color="#3B6896" />,
-        label: "Transfer",
-        action: () => {
-          navigation("/wallet/overview");
-        },
-     
+  const quickAction = [
+    {
+      icon: <CardSend size={20} color="#3B6896" />,
+      label: "Transfer",
+      action: () => {
+        navigation("/wallet/overview");
       },
-      {
-        icon: <ProgrammingArrows size={20} color="#3B6896" />,
-        label: "Swap USD",
-        action: () => {
-          navigation("/usd-wallet");
-        },
+    },
+    {
+      icon: <ProgrammingArrows size={20} color="#3B6896" />,
+      label: "Swap USD",
+      action: () => {
+        navigation("/usd-wallet");
       },
-      {
-        icon: <Layer size={20} color="#3B6896" />,
-        label: "Bulk Payout",
-        action: () => {
-          navigation("/bulk-payment");
-        },
+    },
+    {
+      icon: <Layer size={20} color="#3B6896" />,
+      label: "Bulk Payout",
+      action: () => {
+        navigation("/bulk-payment");
       },
-      {
-        icon: <Book size={20} color="#3B6896" />,
-        label: "Book Keeping",
-        action: () => {
-          navigation("/bookkeeping");
-        },
+    },
+    {
+      icon: <Book size={20} color="#3B6896" />,
+      label: "Book Keeping",
+      action: () => {
+        navigation("/bookkeeping");
       },
-     
-   
-      {
-        icon: <Note size={20} color="#3B6896" />,
-        label: "Payment Link",
-        action: () => {
-          navigation("/paymentlink");
-        },
-      },
-      {
-        icon: <GridEdit size={20} color="#3B6896" />,
-        label: "Create Invoice",
-        action: () => {
-          navigation("/invoice");
-        },
-      },
-      {
-        icon: <ShoppingCart size={20} color="#3B6896" />,
-        label: "Add Product",
-        action: () => {
-          navigation("/store");
-        },
-      },
-      {
-        icon: <Profile2User size={20} color="#3B6896" />,
-        label: "Add Customers",
-        action: () => {
-          navigation("/customers");
-        },
-      },
+    },
 
-      {
-        icon: <Setting size={20} color="#3B6896" />,
-        label: "Settings",
-        action: () => {
-          navigation("/setting/personal-info");
-        },
+    {
+      icon: <Note size={20} color="#3B6896" />,
+      label: "Payment Link",
+      action: () => {
+        navigation("/paymentlink");
       },
-    ];
+    },
+    {
+      icon: <GridEdit size={20} color="#3B6896" />,
+      label: "Create Invoice",
+      action: () => {
+        navigation("/invoice");
+      },
+    },
+    {
+      icon: <ShoppingCart size={20} color="#3B6896" />,
+      label: "Add Product",
+      action: () => {
+        navigation("/store");
+      },
+    },
+    {
+      icon: <Profile2User size={20} color="#3B6896" />,
+      label: "Add Customers",
+      action: () => {
+        navigation("/customers");
+      },
+    },
+
+    {
+      icon: <Setting size={20} color="#3B6896" />,
+      label: "Settings",
+      action: () => {
+        navigation("/setting/personal-info");
+      },
+    },
+  ];
 
   return (
     <div className="p-[10px] md:p-[20px] bg-[#F2F2F2]  ">
       <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5">
-       <li>
-
-
-        {ProfileQuery.isLoading ? ( <LoadingSkeleton />) : ( <NairaWalletCard
-          selectedCard={selectedCard}
-          Card={Card}
-          hideBalance={hideBalance}
-          toggleWallet={toggleWallet}
-          hideMyBalance={hideMyBalance}
-          isSwitchWallet={isSwitchWallet}
-          setSelectedCard={setSelectedCard}
-          formatDateToText={formatDateToText}
-          handleCopy={handleCopy}
-          copiedRef={copiedRef}
-          profileData={profileData}
-          reduceHeight={true}
-          className="flex flex-col h-full"
-        />)}
-       
-
-        
+        <li>
+          {ProfileQuery.isLoading ? (
+            <LoadingSkeleton />
+          ) : (
+            <NairaWalletCard
+              selectedCard={selectedCard}
+              Card={Card}
+              hideBalance={hideBalance}
+              toggleWallet={toggleWallet}
+              hideMyBalance={hideMyBalance}
+              isSwitchWallet={isSwitchWallet}
+              setSelectedCard={setSelectedCard}
+              formatDateToText={formatDateToText}
+              handleCopy={handleCopy}
+              copiedRef={copiedRef}
+              profileData={profileData}
+              reduceHeight={true}
+              className="flex flex-col h-full"
+            />
+          )}
         </li>
-        {/* <li className="border-[0.2px] border-[#98a2b3] shadow rounded-[8px] h-[140px]  md:h-[176px]   w-full   mx-auto bg-[#ffff] flex flex-col justify-between ">
-          <div className="px-[20px] py-[24px]  flex-between">
-            <p className="text-[#000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px]  ">
-              Wallet Balance
-            </p>
-            <buttion className="h-[32px] w-[32px] flex justify-center items-center bg-[#F0F2F5] rounded-md">
-              <WalletMoney variant="Linear" color="#667185" size="16" />
-            </buttion>
-          </div>
-          <div className="px-[20px] py-[13px] border-t-[0.2] border-[#98A2B3] bg-[#F9FAFB] flex-between rounded-br-lg rounded-bl-lg ">
-            <p className="text-[#000] text-[14px] md:text-[14px] xl:text-[20px] font-bold leading-[24px]  ">
-              <NumericFormat
-                value={summaryData?.wallet_balance}
-                displayType={"text"}
-                thousandSeparator={true}
-                prefix={"₦"}
-                decimalScale={2}
-                fixedDecimalScale={true}
-              />
-            </p>
-          </div>
-        </li> */}
+
         <li className="border-[0.2px] border-[#98a2b3] shadow  rounded-[8px] h-[140px] md:h-[176px]  w-full mx-auto   bg-[#ffff] flex flex-col justify-between ">
           <div className="px-[20px] py-[24px]  flex-between">
             {" "}
-            <p className="text-[#000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px]  ">
+            <p className="text-[#000] font-semibold text-[14px] leading-[14px]  ">
               Todays Collection
             </p>
             <buttion className="h-[32px] w-[32px] flex justify-center items-center bg-[#F0F2F5] rounded-md">
@@ -407,27 +375,11 @@ const navigation = useNavigate();
             </p>
           </div>
         </li>
-        {/* <li className="border-[0.2px] border-[#98a2b3] rounded-[8px] h-[140px] md:h-[176px]  w-full mx-auto   bg-[#ffff] flex flex-col justify-between ">
-          <div className="px-[20px] py-[24px]  flex-between">
-            {" "}
-            <p className="text-[#000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px]  ">
-              Dispute
-            </p>
-            <buttion className="h-[32px] w-[32px] flex justify-center items-center bg-[#F0F2F5] rounded-md">
-              <Task variant="Linear" color="#667185" size="16" />
-            </buttion>
-          </div>
-          <div className="px-[20px] py-[13px] border-t-[0.2] border-[#98A2B3] bg-[#F9FAFB] flex-between rounded-br-lg rounded-bl-lg ">
-            {" "}
-            <p className="text-[#000] text-[14px] md:text-[14px] xl:text-[20px] font-bold leading-[24px]  ">
-              ₦ 250,000.00
-            </p>
-          </div>
-        </li> */}
+
         <li className="border-[0.2px] border-[#98a2b3] shadow rounded-[8px] h-[140px] md:h-[176px]  w-full   mx-auto bg-[#ffff] flex flex-col justify-between ">
           <div className="px-[20px] py-[24px]  flex-between">
             {" "}
-            <p className="text-[#000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px]  ">
+            <p className="text-[#000] font-semibold text-[14px] leading-[14px]  ">
               Total Team Members
             </p>
             <buttion className="h-[32px] w-[32px] flex justify-center items-center bg-[#F0F2F5] rounded-md">
@@ -440,7 +392,7 @@ const navigation = useNavigate();
               {summaryData?.total_users}
             </p>
             <Link to="/setting/my-team">
-              <p className="text-[#667185] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
+              <p className="text-[#667185] text-[14px] md:text-[14px]  font-normal leading-[24px] ">
                 View Team
               </p>
             </Link>
@@ -448,7 +400,7 @@ const navigation = useNavigate();
         </li>
       </ul>
       <div className="grid grid-cols-1 sm:grid-cols-2  gap-5 mt-[20px]">
-      <div className="rounded-lg overflow-hidden border-[0.8px] border-[#E4E7EC] bg-[#fefefeec] shadow p-2 md:p-3 ">
+        <div className="rounded-lg overflow-hidden border-[0.8px] border-[#E4E7EC] bg-[#fefefeec] shadow p-2 md:p-3 ">
           <p className="text-[#000]   font-semibold text-[14px] leading-[14px] text-center  tracking-[0.2px] ">
             Quick Action
           </p>
@@ -465,35 +417,32 @@ const navigation = useNavigate();
               </div>
             ))}
           </div>
-        </div> 
-      <div className="bg-white rounded-lg border-[0.2px] border-[#98a2b3]  h-[280px] md:h-[359px] w-full  mt">
-        <div className="p-[10px] md:p-[14px] flex-between bg-white rounded-tr-lg rounded-tl-lg  border-b-[0.8px]  border-[#D0D5DD]">
-          <p className="text-[18px] whitespace-nowrap leading-[27px] text-[#000]  ">
-            Transaction Chart
-          </p>
-
-          <select
-            type="text"
-            placeholder=""
-            className="w-[120px] md:w-[240px]  bg-[#F9FAFB]  px-2 py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-          >
-            <option value="">Select Frequency</option>
-            <option value="d">Daily</option>
-            <option value="m">Monthly</option>
-            <option value="y">Yearly</option>
-          </select>
         </div>
-        <div className="px-[16px] mt-5 h-[260px] md:h-[250px] flex justify-center ">
-          <Bar options={options} data={data} />
+        <div className="bg-white rounded-lg border-[0.2px] border-[#98a2b3]  h-[280px] md:h-[359px] w-full  mt">
+          <div className="p-[10px] md:p-[14px] flex-between bg-white rounded-tr-lg rounded-tl-lg  border-b-[0.8px]  border-[#D0D5DD]">
+            <p className="font-semibold text-[14px] leading-[14px] whitespace-nowrap  text-[#000]  ">
+              Transaction Chart
+            </p>
+
+            <select
+              type="text"
+              placeholder=""
+              className="w-[120px] md:w-[240px]  bg-[#F9FAFB]  px-2 py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+            >
+              <option value="">Select Frequency</option>
+              <option value="d">Daily</option>
+              <option value="m">Monthly</option>
+              <option value="y">Yearly</option>
+            </select>
+          </div>
+          <div className="px-[16px] mt-5 h-[260px] md:h-[250px] flex justify-center ">
+            <Bar options={options} data={data} />
+          </div>
         </div>
       </div>
 
-             
-      </div>
-
-     
       <div className="bg-white rounded-lg border-[0.2px] border-[#98a2b3] mt-[20px]  w-full  mt">
         <div className="p-[10px] md:p-[14px] flex-between bg-white rounded-tr-lg rounded-tl-lg  border-b-[0.8px]  border-[#D0D5DD]">
           <p className="text-[18px]  leading-[27px] text-[#000]  ">
