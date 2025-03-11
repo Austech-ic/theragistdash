@@ -46,6 +46,11 @@ import BookKeeping from "./screens/BookKeeping/BookKeeping";
 import MigrateTransaction from "./screens/BookKeeping/MigrateTransaction";
 import BookKeepingReport from "./screens/BookKeeping/Report";
 import ConnectAccount from "./screens/wallet/connectAccount/ConnectAccount";
+import Tax from "./screens/compliance/Tax";
+import Incorporation from "./screens/compliance/Incorporation";
+import Services from "./screens/compliance/Services";
+
+
 const DashboardRoutes = () => {
   return (
     <Routes>
@@ -71,16 +76,43 @@ const DashboardRoutes = () => {
         <Route path="/usd-wallet" exact={true} element={<UsdWallet />} />
         <Route path="/beneficiaries" exact={true} element={<Beneficiaries />} />
         <Route path="/bulk-payment" exact={true} element={<BulkPayment />} />
-        <Route path="/vant-assistant" exact={true} element={<VantAssistant />} />
-        <Route path="/connect-account" exact={true} element={<ConnectAccount />} />
+        <Route
+          path="/vant-assistant"
+          exact={true}
+          element={<VantAssistant />}
+        />
+        <Route
+          path="/connect-account"
+          exact={true}
+          element={<ConnectAccount />}
+        />
 
         {/* Book Keeping */}
         <Route path="/bookkeeping" exact={true} element={<BookKeeping />} />
-        <Route path="/bookkeeping/configuration" exact={true} element={<Config />} />
-        <Route path="/bookkeeping/migrate-transaction" exact={true} element={<MigrateTransaction />} />
-        <Route path="/bookkeeping/report" exact={true} element={<BookKeepingReport />} />
+        <Route
+          path="/bookkeeping/configuration"
+          exact={true}
+          element={<Config />}
+        />
+        <Route
+          path="/bookkeeping/migrate-transaction"
+          exact={true}
+          element={<MigrateTransaction />}
+        />
+        <Route
+          path="/bookkeeping/report"
+          exact={true}
+          element={<BookKeepingReport />}
+        />
 
-
+        {/* Compliance */}
+        <Route path="/tax" exact={true} element={<Tax />} />
+        <Route path="/incorporation" exact={true} element={<Incorporation />} />
+        <Route
+          path="/compliance/services"
+          exact={true}
+          element={<Services />}
+        />
 
         <Route path="/wallet" exact={true} element={<Wallet />}>
           <Route

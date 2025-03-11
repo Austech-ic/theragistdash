@@ -657,7 +657,7 @@ const PaymentLink = () => {
                   {PayLinkData &&
                     PayLinkData?.map((result) => (
                       <tr key="_" className="mb-2 hover:bg-light-gray">
-                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-left  ">
+                        <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-center  ">
                           {result?.name}
                         </td>
                         <td className="whitespace-nowrap text-center py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium  ">
@@ -1004,7 +1004,7 @@ const PaymentLink = () => {
           </div>
 
           <div className="p-[12px] md:p-[20px] xl:p-[24px]">
-            <div className="mb-[24px]">
+            <div className="mb-[18px]">
               <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px]">
                 Link Name
               </label>
@@ -1021,7 +1021,7 @@ const PaymentLink = () => {
               </div>
             </div>
 
-            <div className="mb-[24px]">
+            <div className="mb-[18px]">
               <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px]">
                 Description
               </label>
@@ -1051,7 +1051,7 @@ const PaymentLink = () => {
               </div>
             </div> */}
 
-            <div className="mb-[24px]">
+            <div className="mb-[18px]">
               <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
                 Amount
               </label>
@@ -1071,7 +1071,7 @@ const PaymentLink = () => {
               </div>
             </div>
 
-            <div className=" flex items-center gap-2  mb-[24px]">
+            <div className=" flex items-center gap-2  mb-[18px]">
               <input
                 type="checkbox"
                 placeholder=""
@@ -1084,7 +1084,7 @@ const PaymentLink = () => {
                 I want to collect a fix amount on my page.
               </label>
             </div>
-            <div className="mb-[24px]">
+            <div className="mb-[18px]">
               <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px]">
                 Expiry Date
               </label>
@@ -1102,7 +1102,7 @@ const PaymentLink = () => {
             </div>
             <Tooltip id="my-tooltip" />
 
-            <div className="mb-[24px]">
+            <div className="mb-[18px]">
               <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px] flex items-center gap-1">
                 Slug{" "}
                 <a
@@ -1157,10 +1157,10 @@ const PaymentLink = () => {
       {/* Create Modal */}
       <ModalLeft isOpen={createLink} onClose={closeCreateLink}>
         <div>
-          <div className="border-b border-b-[#E4E7EC] p-[16px] md:p-[20px]  flex justify-between items-center ">
+          <div className="border-b border-b-[#E4E7EC] p-[16px]  flex justify-between items-center ">
             <div className="flex items-center gap-[16px]">
               <Maximize4 variant="Linear" color="#667185" size="16" />{" "}
-              <div className="h-[32px] w-[1px] bg-[#D0D5DD]" />
+              <div className="h-[28px] w-[1px] bg-[#D0D5DD]" />
               <div className="flex items-center">
                 <p className="text-[#667185] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
                   Create PaymentLink
@@ -1175,7 +1175,7 @@ const PaymentLink = () => {
           </div>
 
           <div className="p-[12px] md:p-[20px] xl:p-[24px]">
-            <div className="mb-[24px]">
+            <div className="mb-[18px]">
               <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px]">
                 Link Name
               </label>
@@ -1183,7 +1183,7 @@ const PaymentLink = () => {
                 <input
                   type="text"
                   placeholder=""
-                  className="w-full h-[40px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  className="w-full h-[38px] pl-[8px] py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                   required
                   name="name"
                   value={formValue.name}
@@ -1192,7 +1192,7 @@ const PaymentLink = () => {
               </div>
             </div>
 
-            <div className="mb-[24px]">
+            <div className="mb-[18px]">
               <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px]">
                 Description
               </label>
@@ -1200,7 +1200,7 @@ const PaymentLink = () => {
                 <input
                   type="text"
                   placeholder=""
-                  className="w-full h-[40px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  className="w-full h-[38px] pl-[8px] py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                   required
                   name="description"
                   value={formValue.description}
@@ -1222,18 +1222,18 @@ const PaymentLink = () => {
               </div>
             </div> */}
 
-            <div className="mb-[24px]">
+            <div className="mb-[18px]">
               <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
                 Amount
               </label>
               <div className=" relative   flex items-center">
-                <span className="text-[14px] text-[#667185] leading-[20px] absolute left-[16px] pr-2  border-[#D0D5DD] border-r-[0.2px]">
+                <span className="text-[14px] text-[#667185]  absolute left-[16px] pr-2  border-[#D0D5DD] border-r-[0.2px]">
                   NGN
                 </span>
                 <input
                   type="text"
                   placeholder=""
-                  className="w-full h-[40px] pl-[62px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  className="w-full h-[38px] pl-[8px] py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                   required
                   name="amount"
                   value={formValue.amount}
@@ -1242,7 +1242,7 @@ const PaymentLink = () => {
               </div>
             </div>
 
-            <div className=" flex items-center gap-2  mb-[24px]">
+            <div className=" flex items-center gap-2  mb-[18px]">
               <input
                 type="checkbox"
                 placeholder=""
@@ -1255,7 +1255,7 @@ const PaymentLink = () => {
                 I want to collect a fix amount on my page.
               </label>
             </div>
-            <div className="mb-[24px]">
+            <div className="mb-[18px]">
               <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px]">
                 Expiry Date
               </label>
@@ -1263,7 +1263,7 @@ const PaymentLink = () => {
                 <input
                   type="date"
                   placeholder="Enter Title"
-                  className="w-full h-[40px] pl-[24px] pr-[8px] py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                  className="w-full h-[38px] pl-[8px] py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                   required
                   name="expiry"
                   value={formValue.expiry}
@@ -1271,7 +1271,7 @@ const PaymentLink = () => {
                 />
               </div>
             </div>
-            <div className="mb-[24px]">
+            <div className="mb-[18px]">
             <Tooltip id="my-tooltip" />
 
             <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px] flex items-center gap-1">

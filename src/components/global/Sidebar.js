@@ -23,6 +23,7 @@ import {
   Card,
   CommandSquare,
   Book,
+  Bookmark2,
 } from "iconsax-react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
@@ -32,6 +33,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
   const [isActive, setIsActive] = useState(false);
   const [isExpenseActive, setIsExpenseActive] = useState(false);
   const [isBookKeepingActive, setIsBookKeepingActive] = useState(false);
+  const [isComplianceActive, setIsComplianceActive] = useState(false);
 
   let role = profileData?.user?.role;
   return (
@@ -73,7 +75,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
       </div>
       <div class="max-w-[260px] min-h-screen bg-[#FFFFFF] w-[220px] md:w-[230px]  p-[16px] md:p-[18px] sticky top-0 overflow-y-auto ">
         <div className="relative">
-          <div className="relative h-screen overflow-y-auto no-scrollbar flex flex-col justify-between ">
+          <div className="relative h-screen flex flex-col justify-between ">
             <div>
               <img
                 class=" h-[36px] w-[70px]   "
@@ -82,6 +84,8 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
               />
 
               <div className="border border-[#98A2B3]/50 mb-4 mt-2 " />
+              <div className=" overflow-y-auto no-scrollbar flex-1">
+
 
               {profileData?.default_partner?.is_verified !== 1 && (
                 <Link
@@ -323,7 +327,8 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                     <li className="">Dollar Card</li>
                   </Link>
                 </ul>
-              )} 
+              )}
+
               <Link
                 to="/user-wallets"
                 onClick={onClose}
@@ -540,43 +545,77 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                 Issue Invoice
               </Link>
 
-              {/* <Link
-                to="/card"
-                onClick={onClose}
-                className={` py-[10px] pl-[16px] flex items-center text-[14px]     leading-[20px] md:leading-[24px] ${
-                  window.location.pathname === "/createinvoice"
-                    ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
-                    : "text-[#667185] font-normal"
+              {/* //Compliance */}
+              <button
+                onClick={() => setIsComplianceActive(!isComplianceActive)}
+                className={`py-[10px] pl-[16px] flex items-center  justify-between w-full text-[14px]    leading-[20px] md:leading-[24px] 
+                ${
+                  window.location.pathname === "/tax" ||
+                  window.location.pathname === "/incorporation" ||
+                  window.location.pathname === "/compliance/services"
+                    ? "text-[#26ae5f] font-medium rounded-md"
+                    : "text-[#667185] font-normal "
                 }`}
               >
-                <Card
-                  className="mr-[12px]"
-                  size={20}
-                  variant={
-                    window.location.pathname === "/card" ? "Bold" : "Linear"
-                  }
-                />
-                Expense Card
-              </Link> */}
+                <div className="flex items-center relative ">
+                  {" "}
+                  <Bookmark2
+                    className="mr-[12px]"
+                    size={20}
+                    variant={
+                      window.location.pathname === "/tax" ||
+                      window.location.pathname === "/incorporation" ||
+                      window.location.pathname === "/compliance/services"
+                        ? "Bold"
+                        : "Linear"
+                    }
+                  />
+                  Compliance
+                </div>
 
-              {/* <Link
-              to="/verification"
-              className={` py-[10px] pl-[16px] flex items-center text-[14px]     leading-[20px] md:leading-[24px] ${
-                window.location.pathname === "/verification"
-                  ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
-                  : "text-[#667185] font-normal"
-              }`}
-            >
-              <Verify
-                className="mr-[12px]"
-                variant={
-                  window.location.pathname === "/verification"
-                    ? "Bold"
-                    : "Linear"
-                }
-              />
-              Verifications
-            </Link> */}
+                {isComplianceActive ? (
+                  <ArrowUp2 size="12" variant="Linear" color="#667185" />
+                ) : (
+                  <ArrowDown2 size="12" variant="Linear" color="#667185" />
+                )}
+              </button>
+
+              {isComplianceActive && (
+                <ul className="ml-[26px] pl-[12px] py-[8px]   border-l border-[#98A2B3]/50 mb-1">
+                  <Link
+                    to="/tax"
+                    className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]  ${
+                      window.location.pathname === "/tax"
+                        ? "bg-[#F7F9FC] font-medium "
+                        : " font-normal"
+                    }`}
+                  >
+                    <li className="">Tax</li>
+                  </Link>
+
+                  <Link
+                    to="/incorporation"
+                    className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]  ${
+                      window.location.pathname === "/incorporation"
+                        ? "bg-[#F7F9FC] font-medium  "
+                        : " font-normal"
+                    }`}
+                  >
+                    <li className="">Incorporation</li>
+                  </Link>
+                  <Link
+                    to="/compliance/services"
+                    className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]  ${
+                      window.location.pathname === "/compliance/services"
+                        ? "bg-[#F7F9FC] font-medium  "
+                        : " font-normal"
+                    }`}
+                  >
+                    <li className="">Services</li>
+                  </Link>
+                </ul>
+              )}
+
               <Link
                 to="/store"
                 onClick={onClose}
@@ -682,6 +721,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
               </Link>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>

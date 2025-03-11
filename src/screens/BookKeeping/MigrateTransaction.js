@@ -162,9 +162,7 @@ const MigrateTransaction = () => {
 
   const closeMigrate =()=> {
     setIsMigrate(false);
-    // setSelectedIds([]);
-    // setIsSelectAll(false);
-    // setCheckedState(Array(transactionData?.length).fill(false));
+   
   }
   return (
     <div className="md:p-[20px] p-[10px] bg-[#F2F2F2] min-h-screen ">
