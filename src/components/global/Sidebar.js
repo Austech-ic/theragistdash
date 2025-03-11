@@ -24,6 +24,8 @@ import {
   CommandSquare,
   Book,
   Bookmark2,
+  ChartSuccess,
+  Personalcard,
 } from "iconsax-react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
@@ -34,6 +36,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
   const [isExpenseActive, setIsExpenseActive] = useState(false);
   const [isBookKeepingActive, setIsBookKeepingActive] = useState(false);
   const [isComplianceActive, setIsComplianceActive] = useState(false);
+  const [payment, setPayment] = useState(false)
 
   let role = profileData?.user?.role;
   return (
@@ -264,6 +267,89 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                 Transactions
               </Link>
 
+              <button
+                onClick={() => setPayment(!payment)}
+                className={`py-[10px] pl-[16px] flex items-center  justify-between w-full text-[14px]    leading-[20px] md:leading-[24px] 
+                ${
+                  window.location.pathname === "/paymentlink"||
+                  window.location.pathname === "/invoice" ||
+                  window.location.pathname === "/saved-invoice" ||
+                  window.location.pathname === "/createinvoice"||
+
+                  window.location.pathname === "/bill-payment"
+                    ? "text-[#26ae5f] font-medium rounded-md"
+                    : "text-[#667185] font-normal "
+                }`}
+              >
+                <div className="flex items-center relative ">
+                  {" "}
+                  <ChartSuccess
+                    className="mr-[12px]"
+                    size={20}
+                    variant={
+                      window.location.pathname === "/paymentlink"||
+                      window.location.pathname === "/invoice" ||
+                      window.location.pathname === "/saved-invoice" ||
+                      window.location.pathname === "/createinvoice"||
+
+                      window.location.pathname === "/bill-payment"
+                        ? "Bold"
+                        : "Linear"
+                    }
+                  />
+Payment and Bills                  {/* <div className="absolute -right-3 ">
+                    <div className="flex h-[8px] w-[8px] relative">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-300 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-[8px] w-[8px] bg-orange-400"></span>
+                    </div>
+                  </div> */}
+                </div>
+
+                {payment ? (
+                  <ArrowUp2 size="12" variant="Linear" color="#667185" />
+                ) : (
+                  <ArrowDown2 size="12" variant="Linear" color="#667185" />
+                )}
+              </button>
+
+              {payment && (
+                <ul className="ml-[26px] pl-[12px] py-[8px] ease-in-out transition-opacity duration-500   border-l border-[#98A2B3]/50 mb-1">
+                  <Link
+                    to="/paymentlink"
+                    className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]  ${
+                      window.location.pathname === "/paymentlink"
+                      ? "bg-[#F7F9FC] font-medium "
+                        : " font-normal"
+                    }`}
+                  >
+                    <li className="">Payment Links</li>
+                  </Link>
+
+                  <Link
+                    to="/invoice"
+                    className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]  ${
+                      window.location.pathname === "/invoice" ||
+                  window.location.pathname === "/saved-invoice" ||
+                  window.location.pathname === "/createinvoice"
+                        ? "bg-[#F7F9FC] font-medium  "
+                        : " font-normal"
+                    }`}
+                  >
+                    <li className="">Issue Invoice</li>
+                  </Link>
+                  <Link
+                    to="/bill-payment"
+                    className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]  ${
+                      window.location.pathname === "/bill-payment"
+                        ? "bg-[#F7F9FC] font-medium  "
+                        : " font-normal"
+                    }`}
+                  >
+                    <li className="">Bill Payment</li>
+                  </Link>
+                </ul>
+              )}
+
               {/* //expense Card */}
               <button
                 onClick={() => setIsExpenseActive(!isExpenseActive)}
@@ -329,110 +415,11 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                 </ul>
               )}
 
-              <Link
-                to="/user-wallets"
-                onClick={onClose}
-                className={` py-[10px] pl-[16px] flex items-center text-[14px]      leading-[20px] md:leading-[24px] ${
-                  window.location.pathname === "/user-wallets"
-                    ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
-                    : "text-[#667185] font-normal"
-                }`}
-              >
-                <Wallet1
-                  className="mr-[12px]"
-                  size={20}
-                  variant={
-                    window.location.pathname === "/user-wallets"
-                      ? "Bold"
-                      : "Linear"
-                  }
-                />
-                User Wallets{" "}
-              </Link>
+            
               {/* } */}
 
-              <Link
-                to="/paymentlink"
-                onClick={onClose}
-                className={` py-[10px] pl-[16px] flex items-center text-[14px]     leading-[20px] md:leading-[24px] ${
-                  window.location.pathname === "/paymentlink"
-                    ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
-                    : "text-[#667185] font-normal"
-                }`}
-              >
-                <Note
-                  className="mr-[12px]"
-                  size={20}
-                  variant={
-                    window.location.pathname === "/paymentlink"
-                      ? "Bold"
-                      : "Linear"
-                  }
-                />
-                Payment Link
-              </Link>
-
-              {/* 
-            <button
-              onClick={() => setIsActive("invoice")}
-              className={` ${
-                isActive === "invoice" ? "" : " "
-              } py-[10px] pl-[16px] flex items-center  justify-between w-full text-[14px]    leading-[20px] md:leading-[24px] 
-                ${
-                  window.location.pathname === "/invoice" ||
-                  window.location.pathname === "/createinvoice"
-                    ? "text-[#26ae5f] font-medium rounded-md"
-                    : "text-[#667185] font-normal "
-                }`}
-            >
-              <div className="flex items-center">
-                {" "}
-                <Folder2
-                  className="mr-[12px]"
-                  variant={
-                    window.location.pathname === "/invoice" ||
-                    window.location.pathname === "/customers" ||
-                    window.location.pathname === "/createinvoice"
-                      ? "Bold"
-                      : "Linear"
-                  }
-                />
-                Invoice
-              </div>
-
-              {isActive === "invoice" ? (
-                <ArrowUp2 size="14" variant="Linear" color="#667185" />
-              ) : (
-                <ArrowDown2 size="14" variant="Linear" color="#667185" />
-              )}
-            </button>
-
-            {isActive === "invoice" && (
-              <ul className="ml-[26px] pl-[12px] py-[14px]   border-l border-[#98A2B3]/50">
-                <Link
-                  to="/invoice"
-                  className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]    leading-[18px] md:leading-[24px]  mb-[14px] ${
-                    window.location.pathname === "/invoice" ||
-                    window.location.pathname === "/createinvoice"
-                      ? "bg-[#F7F9FC] font-medium "
-                      : " font-normal"
-                  }`}
-                >
-                  <li className="">Issue Invoice</li>
-                </Link>
-
-                <Link
-                  to="/customers"
-                  className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]  leading-[18px] md:leading-[24px]  ${
-                    window.location.pathname === "/customers"
-                      ? "bg-[#F7F9FC] font-medium  "
-                      : " font-normal"
-                  }`}
-                >
-                  <li className="">Customers</li>
-                </Link>
-              </ul>
-            )} */}
+            
+             
 
               <button
                 onClick={() => setIsBookKeepingActive(!isBookKeepingActive)}
@@ -520,7 +507,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                 </ul>
               )}
 
-              <Link
+              {/* <Link
                 to="/invoice"
                 onClick={onClose}
                 className={` py-[10px] pl-[16px] flex items-center text-[14px]     leading-[20px] md:leading-[24px] ${
@@ -543,7 +530,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                   }
                 />
                 Issue Invoice
-              </Link>
+              </Link> */}
 
               {/* //Compliance */}
               <button
@@ -616,6 +603,26 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                 </ul>
               )}
 
+<Link
+                to="/payroll"
+                onClick={onClose}
+                className={` py-[10px] pl-[16px] flex items-center text-[14px]      leading-[20px] md:leading-[24px] ${
+                  window.location.pathname === "/payroll"
+                    ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
+                    : "text-[#667185] font-normal"
+                }`}
+              >
+                <Personalcard
+                  className="mr-[12px]"
+                  size={20}
+                  variant={
+                    window.location.pathname === "/payroll"
+                      ? "Bold"
+                      : "Linear"
+                  }
+                />
+Payroll              </Link>
+
               <Link
                 to="/store"
                 onClick={onClose}
@@ -633,6 +640,26 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                   }
                 />
                 Store
+              </Link>
+              <Link
+                to="/user-wallets"
+                onClick={onClose}
+                className={` py-[10px] pl-[16px] flex items-center text-[14px]      leading-[20px] md:leading-[24px] ${
+                  window.location.pathname === "/user-wallets"
+                    ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
+                    : "text-[#667185] font-normal"
+                }`}
+              >
+                <Wallet1
+                  className="mr-[12px]"
+                  size={20}
+                  variant={
+                    window.location.pathname === "/user-wallets"
+                      ? "Bold"
+                      : "Linear"
+                  }
+                />
+                User Wallets{" "}
               </Link>
               <Link
                 to="/customers"

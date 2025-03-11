@@ -49,6 +49,8 @@ import ConnectAccount from "./screens/wallet/connectAccount/ConnectAccount";
 import Tax from "./screens/compliance/Tax";
 import Incorporation from "./screens/compliance/Incorporation";
 import Services from "./screens/compliance/Services";
+import Bills from "./screens/BillPayment/Bills";
+import Payroll from "./screens/Payroll/Payroll";
 
 
 const DashboardRoutes = () => {
@@ -85,6 +87,16 @@ const DashboardRoutes = () => {
           path="/connect-account"
           exact={true}
           element={<ConnectAccount />}
+        />
+         <Route
+          path="/bill-payment"
+          exact={true}
+          element={<Bills />}
+        />
+          <Route
+          path="/payroll"
+          exact={true}
+          element={<Payroll />}
         />
 
         {/* Book Keeping */}
