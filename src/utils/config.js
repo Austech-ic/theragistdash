@@ -1,8 +1,8 @@
-//production server
-//export const API_BASE_URL = 'https://dev.vantapp.com/api/partner-business';
+//dev server
+export const API_BASE_URL = 'https://dev.vantapp.com/api/partner-business';
 
 //live server
-export const API_BASE_URL = "https://api.vantapp.com/api/partner-business";
+//export const API_BASE_URL = "https://api.vantapp.com/api/partner-business";
 
 
 export const getApiUrl = (endpoint) => API_BASE_URL + endpoint;
@@ -52,7 +52,7 @@ export const WITHDRAWUSD = getApiUrl("/withdraw-dollar");
 export const CREATECARDHOLDER = getApiUrl("/virtual-card/create-card-holder");
 export const CREATECARD = getApiUrl("/virtual-card/create");
 export const GETCARDHOLDERDETAILS = getApiUrl("/virtual-card/get-card-holder-details");
-export const GETCARDDETAILS = getApiUrl("/virtual-card/get-full-card-details");
+export const GETCARDDETAILS = getApiUrl("/virtual-card/get-card-details");
 export const GETCARDS = getApiUrl("/virtual-card/get-cards");
 export const FUNDCARDS = getApiUrl("/virtual-card/fund");
 export const CREATEBENEFICIARY = getApiUrl("/beneficiaries");

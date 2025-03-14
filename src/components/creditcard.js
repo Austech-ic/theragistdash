@@ -37,11 +37,11 @@ const CreditCard = ({cardDetails }) => {
           <div className="flex justify-between items-center">
             <div>
               <div className="text-xs opacity-75 mb-1">Card Holder</div>
-              <div className="tracking-wider">{cardDetails?.card_name ? cardDetails?.card_name : "XXXXXXX XXXXXX"}</div>
+              <div className="tracking-wider">{cardDetails?.name ? cardDetails?.name : "XXXXXXX XXXXXX"}</div>
             </div>
             <div>
               <div className="text-xs opacity-75 mb-1">Expires</div>
-              <div className="tracking-wider">{formatExpiry() !== null ? formatExpiry() : "XX/XX" }</div>
+              <div className="tracking-wider">{cardDetails?.expiry !== null ? cardDetails?.expiry: "XX/XX" }</div>
             </div>
           </div>
           
