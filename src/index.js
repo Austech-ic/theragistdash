@@ -36,6 +36,12 @@ window.addEventListener("load", async () => {
   }
 });
 
+function handleChunkError() {
+  window.location.reload();
+}
+
+
+
 const overrides = extendTheme({
   fonts: {
     body: '"Jost", sans-serif', // For headings
@@ -70,3 +76,8 @@ root.render(
 );
 
 // serviceWorkerRegistration.register();
+window.addEventListener("error", (e) => {
+  if (e.message.includes("Loading chunk")) {
+    handleChunkError();
+  }
+});

@@ -464,8 +464,9 @@ const DollarCard = () => {
                   type="text"
                   placeholder="20"
                   value={amount}
-                  name=""
+                  name="amount"
                   onChange={(e) => setAmount(e.target?.value)}
+                  autoComplete={false}
                 />
                 {amount >
                   profileData?.default_partner?.dollar_wallet_balance && (
