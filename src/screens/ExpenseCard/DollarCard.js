@@ -79,6 +79,18 @@ const DollarCard = () => {
   const [fundingCard, setFundingCard] = useState(null);
   const [isPrevFundCard, setPrevFundCard] = useState(false);
 
+
+  async function getProfile(page) {
+    const response = await api.getProfile({ params: { page } });
+    return response;
+  }
+
+  const ProfileQuery = useQuery(["profile"], () => getProfile(), {
+    keepPreviousData: true,
+    refetchOnWindowFocus: "always",
+  });
+  const profileData = ProfileQuery?.data || [];
+
   const togglePrevFundCard = () => {
     setPrevFundCard(!isPrevFundCard);
   };
@@ -86,7 +98,10 @@ const DollarCard = () => {
     setPrevFundCard(false);
   }
 
-  const { profile } = useUserContext();
+  // const { profile } = useUserContext();
+
+
+  
   function toggleViewAmount() {
     setViewAmount(!viewAmount);
   }
@@ -132,10 +147,10 @@ const DollarCard = () => {
     ];
     const filledFields = fieldsToCheck.reduce((count, field) => {
       if (
-        profile &&
-        profile[field] !== null &&
-        profile[field] !== undefined &&
-        profile[field] !== ""
+        profileData &&
+        profileData[field] !== null &&
+        profileData[field] !== undefined &&
+        profileData[field] !== ""
       ) {
         count++;
       }
@@ -146,7 +161,7 @@ const DollarCard = () => {
   };
 
   const IsBusinessVerivied =
-    profile && profile?.is_verified === 1 ? true : false;
+  profileData && profileData?.is_verified === 1 ? true : false;
 
   const failedVerification =
     IsBusinessVerivied === false && calculateProgress() !== 100 ? true : false;
@@ -155,7 +170,7 @@ const DollarCard = () => {
     setIsLoading(true);
 
     try {
-      if (!profile?.card_holder_id) {
+      if (!profileData?.card_holder_id) {
         const response = await api.createCardHolder();
         console.log(
           "response of account verification==>>>>>",
@@ -285,20 +300,11 @@ const DollarCard = () => {
     }
   };
 
-  async function getProfile(page) {
-    const response = await api.getProfile({ params: { page } });
-    return response;
-  }
 
-  const ProfileQuery = useQuery(["profile"], () => getProfile(), {
-    keepPreviousData: true,
-    refetchOnWindowFocus: "always",
-  });
-  const profileData = ProfileQuery?.data || [];
 
   return (
     <div className="min-h-screen bg-gray-200  p-4 md:p-6 ">
-      <div className="flex flex-col md:flex-row flex-wrap items-center  gap-4">
+      <div className="flex flex-col md:flex-row flex-wrap items-center  gap-4 mt-5">
         {cardData &&
           cardData?.map((card, index) => (
             <div className="w-full md:w-96">
