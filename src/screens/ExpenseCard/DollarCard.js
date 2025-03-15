@@ -147,10 +147,10 @@ const DollarCard = () => {
     ];
     const filledFields = fieldsToCheck.reduce((count, field) => {
       if (
-        profileData &&
-        profileData[field] !== null &&
-        profileData[field] !== undefined &&
-        profileData[field] !== ""
+        profileData?.default_partner &&
+        profileData?.default_partner[field] !== null &&
+        profileData?.default_partner[field] !== undefined &&
+        profileData?.default_partner[field] !== ""
       ) {
         count++;
       }
@@ -161,7 +161,7 @@ const DollarCard = () => {
   };
 
   const IsBusinessVerivied =
-  profileData && profileData?.is_verified === 1 ? true : false;
+  profileData?.default_partner && profileData?.default_partner?.is_verified === 1 ? true : false;
 
   const failedVerification =
     IsBusinessVerivied === false && calculateProgress() !== 100 ? true : false;
