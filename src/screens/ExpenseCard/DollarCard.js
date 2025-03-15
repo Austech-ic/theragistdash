@@ -170,21 +170,21 @@ const DollarCard = () => {
     setIsLoading(true);
 
     try {
-      if (!profileData?.card_holder_id) {
-        const response = await api.createCardHolder();
-        console.log(
-          "response of account verification==>>>>>",
-          decryptaValue(response?.data)
-        );
-        const decryptRes = JSON.parse(decryptaValue(response?.data));
-        setVerifySuccess(false);
-        setVerifyFailed(false);
+      // if (!profileData?.card_holder_id) {
+      //   const response = await api.createCardHolder();
+      //   console.log(
+      //     "response of account verification==>>>>>",
+      //     decryptaValue(response?.data)
+      //   );
+      //   const decryptRes = JSON.parse(decryptaValue(response?.data));
+      //   setVerifySuccess(false);
+      //   setVerifyFailed(false);
+      //   setIsLoading(false);
+      //   setCreateCardPhase(2);
+      // } else {
         setIsLoading(false);
         setCreateCardPhase(2);
-      } else {
-        setIsLoading(false);
-        setCreateCardPhase(2);
-      }
+      // }
     } catch (e) {
       console.log("error in creating card holder", e);
     }
@@ -293,6 +293,7 @@ const DollarCard = () => {
       const decr = JSON.parse(decryptaValue(response?.data));
       enqueueSnackbar(decr?.message, { variant: "success" });
       setIsLoading(false);
+      getCardDetails(fundingCard[0])
       setIsFundCard(false);
     } catch (error) {
       enqueueSnackbar(error?.message, { variant: "error" });
@@ -704,7 +705,7 @@ const DollarCard = () => {
                 >
                   Cancel
                 </button>
-                {!failedVerification && (
+                 {verifySuccess && (
                   <button
                     disabled={!isConsent}
                     onClick={handleCreateCard}
@@ -715,7 +716,7 @@ const DollarCard = () => {
                     {isLoading ? (
                       <ClipLoader color={"white"} size={20} />
                     ) : (
-                      <> Send </>
+                      <> Create Card </>
                     )}
                   </button>
                 )}
