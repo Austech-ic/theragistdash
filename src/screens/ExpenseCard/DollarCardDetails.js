@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CreditCard from "../../components/creditcard";
 import {
   CardReceive,
@@ -37,7 +37,8 @@ import RecentDollarTransaction from "./RecentDollarTransaction";
 
 const DollarCardDetails = () => {
   const location = useLocation();
-  const cardDetails = location?.state;
+  const card = location?.state;
+  const [cardDetails, setCardDetails] = useState(null);
   const [copiedRef, setCopiedRef] = useState(null);
   const [pin, setPin] = useState("");
   const [fundingCard, setFundingCard] = useState(null);
@@ -46,6 +47,29 @@ const DollarCardDetails = () => {
   const [amount, setAmount] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [otp, setOtp] = useState("");
+
+  useEffect(()=> {
+
+    async function getCardDetails(id) {
+        setIsLoading(true);
+        // if (!id) {
+        //   setIsLoading(false);
+        //   return;
+        // }
+        try {
+          const response = await api.getCardDetails({
+            params: { card_id: card?.cardDetails.id },
+          });
+          setCardDetails(response?.data);
+          setIsLoading(false);
+        } catch (e) {
+          console.log("error in fetching card details", e);
+          setIsLoading(false);
+        }
+      }
+
+        getCardDetails()
+  },[])
 
   const togglePrevFundCard = () => {
     setPrevFundCard(!isPrevFundCard);
@@ -78,7 +102,7 @@ const DollarCardDetails = () => {
   // get card transactions
   async function getCardTransactions(page) {
     const response = await api.getCardTransactions({
-      params: { card_id: cardDetails?.cardDetails.id },
+      params: { card_id: cardDetails?.id },
     });
     return response;
   }
@@ -101,9 +125,9 @@ const DollarCardDetails = () => {
       label: "Fund Card",
       action: () => {
         toggleFundCard(
-          cardDetails?.cardDetails.id,
-          cardDetails?.cardDetails?.name,
-          cardDetails?.cardDetails?.last_4
+          cardDetails?.id,
+          cardDetails?.name,
+          cardDetails?.last_4
         );
       },
     },
@@ -134,6 +158,24 @@ const DollarCardDetails = () => {
       //console.error("Failed to copy:", err);
     }
   };
+  async function getCardDetails(id) {
+    setIsLoading(true);
+    if (!id) {
+      setIsLoading(false);
+      return;
+    }
+    try {
+      const response = await api.getCardDetails({
+        params: { card_id: id },
+      });
+      setCardDetails(response?.data);
+      setIsLoading(false);
+    } catch (e) {
+      console.log("error in fetching card details", e);
+      setIsLoading(false);
+    }
+  }
+
 
   const fundCard = async () => {
     if (!fundingCard) {
@@ -180,14 +222,20 @@ const DollarCardDetails = () => {
       const decr = JSON.parse(decryptaValue(response?.data));
       enqueueSnackbar(decr?.message, { variant: "success" });
       setIsLoading(false);
-      // getCardDetails(fundingCard[0])
+     getCardDetails(fundingCard[0])
       setIsFundCard(false);
+      setPrevFundCard(false)
+      clearForm()
     } catch (error) {
       enqueueSnackbar(error?.message, { variant: "error" });
       setIsLoading(false);
     }
   };
 
+function clearForm(){
+    setPin("")
+    setAmount("")
+}
   return (
     <div className="min-h-screen bg-gray-200  p-4 md:p-6 ">
       <div className="flex items-center mb-3">
@@ -206,7 +254,7 @@ const DollarCardDetails = () => {
           <p className="text-sm text-center text-gray-600 animate-pulse mb-3 transition-transform duration-500 ease-in-out">
             Hover on card to flip
           </p>
-          <CreditCard cardDetails={cardDetails?.cardDetails} />
+          <CreditCard cardDetails={cardDetails} />
         </div>
 
         <div className=" w-full md:w-96 ">
@@ -214,24 +262,24 @@ const DollarCardDetails = () => {
             <p className="text-sm text-gray-600 mb-1">
               Card Name:
               <span className="pl-2 font-semibold robot tracking-wider">
-                {cardDetails?.cardDetails?.name}
+                {cardDetails?.name}
               </span>{" "}
             </p>
             <div className="flex justify-between items-center mb-1">
               <p className="text-sm text-gray-600">
                 Card Number:{" "}
                 <span className="pl-2 font-semibold robot tracking-wider">
-                  {cardDetails?.cardDetails?.card_number}
+                  {cardDetails?.card_number}
                 </span>{" "}
               </p>
 
               <button
                 onClick={() =>
-                  handleCopy(cardDetails?.cardDetails?.card_number)
+                  handleCopy(cardDetails?.card_number)
                 }
               >
                 <p className="text-gray-500 font-semibold font-i_medium text-[10px] leading-[9.68px]  ">
-                  {copiedRef === cardDetails?.cardDetails?.card_number ? (
+                  {copiedRef === cardDetails?.card_number ? (
                     "Copied!"
                   ) : (
                     <Copy size={18} variant="Bold" color="gray" />
@@ -242,19 +290,19 @@ const DollarCardDetails = () => {
             <p className="text-sm text-gray-600 mb-1">
               Expiry Date:{" "}
               <span className="pl-2 font-semibold robot tracking-wider">
-                {cardDetails?.cardDetails?.expiry}
+                {cardDetails?.expiry}
               </span>{" "}
             </p>
             <p className="text-sm text-gray-600 mb-1">
               CVV:{" "}
               <span className="pl-2 font-semibold robot tracking-wider">
-                {cardDetails?.cardDetails?.cvv}
+                {cardDetails?.cvv}
               </span>{" "}
             </p>
             <p className="text-sm text-gray-600 mb-1 flex items-center">
               Balance:{" "}
               <NumericFormat
-                value={cardDetails?.cardDetails?.balance / 100}
+                value={cardDetails?.balance / 100}
                 displayType={"text"}
                 thousandSeparator={true}
                 prefix={"$"}

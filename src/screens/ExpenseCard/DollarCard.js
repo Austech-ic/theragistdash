@@ -297,14 +297,18 @@ const DollarCard = () => {
       setIsLoading(false);
       getCardDetails(fundingCard[0])
       setIsFundCard(false);
-      
+      setPrevFundCard(false)
+      clearForm()
     } catch (error) {
       enqueueSnackbar(error?.message, { variant: "error" });
       setIsLoading(false);
     }
   };
 
-
+function clearForm(){
+    setPin("")
+    setAmount("")
+}
 
   return (
     <div className="min-h-screen bg-gray-200  p-4 md:p-6 ">
