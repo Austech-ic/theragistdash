@@ -55,6 +55,7 @@ export const GETCARDHOLDERDETAILS = getApiUrl("/virtual-card/get-card-holder-det
 export const GETCARDDETAILS = getApiUrl("/virtual-card/get-card-details");
 export const GETCARDS = getApiUrl("/virtual-card/get-cards");
 export const FUNDCARDS = getApiUrl("/virtual-card/fund");
+export const CARDSTRANSACTION = getApiUrl("/virtual-card/get-card-transactions");
 export const CREATEBENEFICIARY = getApiUrl("/beneficiaries");
 export const GETBENEFICIARY = getApiUrl("/beneficiaries");
 export const BULKTRANSFER = getApiUrl("/transfer/bulk-transfer");

@@ -110,8 +110,7 @@ const SelectCard = ({
             />
             <p className="text-sm text-white  ">
               Important: Please note that the card creation fee will be deducted
-              from your USD wallet balance. You are to select between Visa and
-              Mastercard for the card type.
+              from your USD wallet balance.
             </p>
           </div>
 

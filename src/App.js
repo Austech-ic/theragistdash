@@ -22,6 +22,8 @@ function App() {
           vertical: "bottom",
           horizontal: "left",
         }}
+        style={{ zIndex: 9999999999 }} // Increase z-index here
+
       />
       <QueryClientProvider client={queryClient}>
         <Router>

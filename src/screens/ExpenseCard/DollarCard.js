@@ -46,6 +46,7 @@ import {
   CardAdd,
   Eye,
   InfoCircle,
+  More,
   TickCircle,
 } from "iconsax-react";
 import { motion as m } from "framer-motion";
@@ -53,7 +54,7 @@ import SelectCard from "../../components/card/dollarcard/SelectCard";
 import { useUserContext } from "../../utils/UserProvider";
 import { decryptaValue } from "../../utils/helperFunctions";
 import api from "../../api";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { enqueueSnackbar } from "notistack";
 import { useQuery } from "@tanstack/react-query";
 import { EyeClosed, EyeOff } from "lucide-react";
@@ -62,6 +63,7 @@ import PredivModal from "../../components/wallet/PreviewModal";
 
 
 const DollarCard = () => {
+  const navigate = useNavigate();
   const [createCardPhase, setCreateCardPhase] = useState(0);
   const [isCreateCard, setIsCreateCard] = useState(false);
   const [isFundCard, setIsFundCard] = useState(false);
@@ -295,6 +297,7 @@ const DollarCard = () => {
       setIsLoading(false);
       getCardDetails(fundingCard[0])
       setIsFundCard(false);
+      
     } catch (error) {
       enqueueSnackbar(error?.message, { variant: "error" });
       setIsLoading(false);
@@ -358,12 +361,12 @@ const DollarCard = () => {
                         )}
                       </button>
                     </div>
-
+                    <div className="flex items-center gap-2">
                     <button
                       onClick={() =>
                         toggleFundCard(cardDetails?.id, cardDetails?.name, cardDetails?.last_4)
                       }
-                      className="flex items-center text-[#3B6896] hover:text-gray-500 transition-transform delay-100 flex-col"
+                      className="flex hover:bg-gray-100 p-1 rounded-lg items-center text-[#3B6896] hover:text-gray-500 transition-transform delay-100 flex-col"
                     >
                       <CardAdd size={18} />
 
@@ -371,6 +374,23 @@ const DollarCard = () => {
                         <span className="text-xs ">Fund Card</span>
                       </p>
                     </button>
+
+                    <button
+                      onClick={() =>
+                        navigate("/usd-card-details", {state :{cardDetails}})
+                      }
+                      className="flex hover:bg-gray-100 p-1 rounded-lg items-center text-[#3B6896] hover:text-gray-500 transition-transform delay-100 flex-col"
+                    >
+                      <More  size={18} />
+
+                      <p className="text-sm  flex flex-col">
+                        <span className="text-xs ">See More</span>
+                      </p>
+                    </button>
+
+                    </div>
+
+                   
                   </div>
                 )}
               </div>

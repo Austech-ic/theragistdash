@@ -51,6 +51,7 @@ import Incorporation from "./screens/compliance/Incorporation";
 import Services from "./screens/compliance/Services";
 import Bills from "./screens/BillPayment/Bills";
 import Payroll from "./screens/Payroll/Payroll";
+import DollarCardDetails from "./screens/ExpenseCard/DollarCardDetails";
 
 
 const DashboardRoutes = () => {
@@ -67,6 +68,7 @@ const DashboardRoutes = () => {
         <Route path="/transaction" exact={true} element={<Transactions />} />
 
         <Route path="/usd-card" exact={true} element={<DollarCard />} />
+        <Route path="/usd-card-details" exact={true} element={<DollarCardDetails />} />
         <Route path="/naira-card" exact={true} element={<NairaCard />} />
         <Route path="/store" exact={true} element={<Store />} />
         <Route path="/users" exact={true} element={<Users />} />

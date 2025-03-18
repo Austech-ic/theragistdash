@@ -49,7 +49,8 @@ import {
  BOOKKEEPPINGBULKUPLOAD,
  MIGRATETRANSACTIONTOBOOKKERRPING,
  BALANCESHEET,
- UPDATEBOOKKEEPING
+ UPDATEBOOKKEEPING,
+ CARDSTRANSACTION
 } from "../utils/config";
 import { apiDelete, apiGet, apiGetCSV, apiPost, apiPut } from "../utils/utils";
 
@@ -265,6 +266,10 @@ export function getCards(data) {
 export function getCardHolderDetails(data) {
   return apiGet(GETCARDHOLDERDETAILS, data);
 }
+
+export function getCardTransactions(data) {
+  return apiGet(CARDSTRANSACTION, data);
+}
 export function createCard(data) {
   return apiPost(CREATECARD, data);
 }
@@ -274,6 +279,8 @@ export function createCardHolder(data) {
 export function fundCard(data) {
   return apiPost(FUNDCARDS, data);
 }
+
+
 
 
 

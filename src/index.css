@@ -110,3 +110,8 @@ input {
 .install-button:hover {
   background: #0056b3;
 }
+
+
+.MuiSnackbar-root {
+  z-index: 99999999999999999999999999 !important;
+}
