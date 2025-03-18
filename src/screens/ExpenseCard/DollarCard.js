@@ -95,7 +95,8 @@ const DollarCard = () => {
 
   const togglePrevFundCard = () => {
     setPrevFundCard(!isPrevFundCard);
-  };
+    setIsFundCard(false);
+    };
   function closePrevFundCard() {
     setPrevFundCard(false);
   }
