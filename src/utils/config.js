@@ -1,5 +1,7 @@
 //dev server
-export const API_BASE_URL = 'https://dev.vantapp.com/api/partner-business';
+// export const API_BASE_URL = 'https://dev.vantapp.com/api/partner-business';
+//dev staging
+export const API_BASE_URL = 'https://vant.ddnsgeek.com/api/partner-business';
 
 //live server
 //export const API_BASE_URL = "https://api.vantapp.com/api/partner-business";
