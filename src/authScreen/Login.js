@@ -26,43 +26,44 @@ const Login = () => {
   const toggle = () => {
     setOpen(!open);
   };
-  useEffect(() => {
-    const user = localStorage.getItem("authData");
-    if (user) {
-      navigate("/overview");
-    }
-  }, []);
+  // useEffect(() => {
+  //   const user = localStorage.getItem("authData");
+  //   if (user) {
+  //     navigate("/overview");
+  //   }
+  // }, []);
 
-  console.log("checking");
 
   async function login(e) {
     e.preventDefault();
+    navigate("/dashboard");
 
-    setIsLoading(true);
 
-    try {
-      const payload = { email: email, password: password };
+    // setIsLoading(true);
 
-      const response = await api.signIn({ data: encryptaValue(payload) });
+    // try {
+    //   const payload = { email: email, password: password };
 
-      const decryptRes = JSON.parse(decryptaValue(response?.data));
+    //   const response = await api.signIn({ data: encryptaValue(payload) });
 
-      setUserData(response?.data);
-      enqueueSnackbar(decryptRes.message, { variant: "success" });
+    //   const decryptRes = JSON.parse(decryptaValue(response?.data));
 
-      setUserData(response?.data);
+    //   setUserData(response?.data);
+    //   enqueueSnackbar(decryptRes.message, { variant: "success" });
 
-      if (decryptRes?.user?.email_verified) {
-        setIsLoading(false);
-        navigate("/overview");
-      } else {
-        SendOtp(email);
-        setIsLoading(false);
-      }
-    } catch (error) {
-      enqueueSnackbar(error.message, { variant: "error" });
-      setIsLoading(false);
-    }
+    //   setUserData(response?.data);
+
+    //   if (decryptRes?.user?.email_verified) {
+    //     setIsLoading(false);
+    //     navigate("/overview");
+    //   } else {
+    //     SendOtp(email);
+    //     setIsLoading(false);
+    //   }
+    // } catch (error) {
+    //   enqueueSnackbar(error.message, { variant: "error" });
+    //   setIsLoading(false);
+    // }
   }
 
   const SendOtp = async (email) => {
@@ -127,7 +128,7 @@ const Login = () => {
               <input
                 type="email"
                 placeholder="Enter username"
-                className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#9C9C9C] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#9C9C9C] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#00B0C7] focus:border-[#00B0C7] "
                 required
                 autoComplete="on"
                 name="email"
@@ -156,7 +157,7 @@ const Login = () => {
               <input
                 type={open === false ? "password" : "text"}
                 placeholder="Enter password"
-                className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#9C9C9C] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#9C9C9C] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#00B0C7] focus:border-[#00B0C7] "
                 required
                 autoComplete="on"
                 name="password"
@@ -169,8 +170,12 @@ const Login = () => {
               />
             </div>
           </div>
+          <div className="flex gap-1 mb-8 items-center">
+            <input type="checkbox" className=""/>
+            <p className="font-light">Remember me</p>
+          </div>
 
-          <Link to="/forgot-password">
+          {/* <Link to="/forgot-password">
             {" "}
             <button
               type="button"
@@ -178,13 +183,13 @@ const Login = () => {
             >
               Forgot password?
             </button>
-          </Link>
+          </Link> */}
 
           <button
             type="submit"
             className="w-full py-[14px] mt-[18px] text-center text-white bg-[#00B0C7] rounded-[8px] flex items-center justify-center gap-1 mb-[12px] md:mb-[16px]"
           >
-            <p className="text-sm font-medium leading-[20px]">Sign in</p>
+            <p className="text-sm font-medium leading-[20px]">Login</p>
             {isLoading && <ClipLoader color={"white"} size={20} />}
           </button>
 

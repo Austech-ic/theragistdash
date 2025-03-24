@@ -13,7 +13,7 @@ function ThemedSuspense() {
           className="animate-spin text-gray-500 dark:text-gray-300" 
           size={24} 
         />
-        <span className='text-[#26ae5f] animate-pulse'>Loading...</span>
+        <span className='text-[#00B0C7] animate-pulse'>Loading...</span>
       </div>
     </div>
   );
