@@ -26,19 +26,85 @@ import {
   Bookmark2,
   ChartSuccess,
   Personalcard,
+  Element4,
+  Profile2User,
+  MessageFavorite,
+  Courthouse,
+  User,
+  Microphone,
+  DocumentText,
+  People,
+  Notification,
 } from "iconsax-react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import { Computer } from "lucide-react";
 
 const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
   const router = useLocation();
-  const [isActive, setIsActive] = useState(false);
-  const [isExpenseActive, setIsExpenseActive] = useState(false);
-  const [isBookKeepingActive, setIsBookKeepingActive] = useState(false);
-  const [isComplianceActive, setIsComplianceActive] = useState(false);
-  const [payment, setPayment] = useState(false)
 
-  let role = profileData?.user?.role;
+  const Menu1 = [
+    {
+      name: "Dashboard",
+      path: "dashboard",
+      icon: Element4,
+    },
+    {
+      name: "Counselor Management",
+      path: "counselor-management",
+      icon: Profile2User,
+    },
+    {
+      name: "Messages",
+      path: "messages",
+      icon: MessageFavorite,
+    },
+    {
+      name: "Booking Tracker",
+      path: "booking-tracker",
+      icon: Card,
+    },
+    {
+      name: "Company Management",
+      path: "company-management",
+      icon: Courthouse,
+    },
+    {
+      name: "User",
+      path: "user",
+      icon: User,
+    },
+  ];
+  const Men2 = [
+    {
+      name: "Space Management",
+      path: "space-management",
+      icon: Microphone,
+    },
+    {
+      name: "User Assessment",
+      path: "user-assessment",
+      icon: DocumentText,
+    },
+    {
+      name: "Group Management",
+      path: "group-management",
+      icon: People,
+    },
+  ];
+  const Menu3 = [
+    {
+      name: "Send Notification",
+      path: "send-notification",
+      icon: Notification,
+    },
+    {
+      name: "System Update",
+      path: "system-update",
+      icon: Computer,
+    },
+  ];
+
   return (
     <div
       className={` lg:block lg:relative ${
@@ -76,679 +142,38 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
           </svg>
         </button>
       </div>
-      <div class="max-w-[260px] min-h-screen bg-[#FFFFFF] w-[220px] md:w-[230px]  p-[16px] md:p-[18px] sticky top-0 overflow-y-auto ">
+      <div class="max-w-[260px] min-h-screen bg-[#007D8D] w-[220px] md:w-[240px] pr-[6px]  py-[16px] md:py-[24px] sticky top-0 overflow-y-auto ">
         <div className="relative">
           <div className="relative h-screen flex flex-col justify-between ">
             <div>
               <img
-                class=" h-[36px] w-[70px]   "
-                src="/assets/VantLogo.png"
-                alt="logo"
+                class=" h-[36px] md:h-[42px] xl:h-[51px] mx-auto    "
+                src="/assets/theragistLogo.svg"
+                alt="Theragist logo"
               />
 
-              <div className="border border-[#98A2B3]/50 mb-4 mt-2 " />
-              <div className=" overflow-y-auto no-scrollbar flex-1">
-
-
-              {profileData?.default_partner?.is_verified !== 1 && (
-                <Link
-                  to="/getstarted"
-                  onClick={onClose}
-                  className={`relative py-[10px] pl-[16px] flex items-center text-[14px]     leading-[20px] md:leading-[24px] ${
-                    window.location.pathname === "/getstarted"
-                      ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
-                      : "text-[#667185] font-normal"
-                  }`}
-                >
-                  <div className="absolute top-2 right-14">
-                    <div className="flex h-[9px] w-[9px] relative">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-[9px] w-[9px] bg-red-500"></span>
-                    </div>
-                  </div>
-                  <ClipboardExport
-                    className="mr-[12px]"
-                    size={20}
-                    variant={
-                      window.location.pathname === "/getstarted"
-                        ? "Bold"
-                        : "Linear"
-                    }
-                  />
-                  Get Started
-                </Link>
-              )}
-
-              <Link
-                to="/overview"
-                onClick={onClose}
-                className={` py-[10px] pl-[16px] flex items-center text-[14px]     leading-[20px] md:leading-[24px] ${
-                  window.location.pathname === "/overview"
-                    ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
-                    : "text-[#667185] font-normal"
-                }`}
-              >
-                <Home
-                  className="mr-[12px]"
-                  size={20}
-                  variant={
-                    window.location.pathname === "/overview" ? "Bold" : "Linear"
-                  }
-                />
-                Overview
-              </Link>
-
-              <button
-                onClick={() => setIsActive(!isActive)}
-                className={` ${
-                  isActive === "wallet" ? "" : " "
-                } py-[10px] pl-[16px] flex items-center  justify-between w-full text-[14px]    leading-[20px] md:leading-[24px] 
-                ${
-                  window.location.pathname === "/wallet/overview" ||
-                  window.location.pathname === "/wallet/topup" ||
-                  window.location.pathname === "/usd-wallet" ||
-                  window.location.pathname === "/beneficiaries" ||
-                  window.location.pathname === "/bulk-payment" ||
-                  window.location.pathname === "/connect-account" ||
-                  window.location.pathname === "/wallet/debit"
-                    ? "text-[#26ae5f] font-medium rounded-md"
-                    : "text-[#667185] font-normal "
-                }`}
-              >
-                <div className="flex items-center relative ">
-                  {" "}
-                  <WalletMoney
-                    className="mr-[12px]"
-                    size={20}
-                    variant={
-                      window.location.pathname === "/wallet/overview" ||
-                      window.location.pathname === "/wallet/topup" ||
-                      window.location.pathname === "/usd-wallet" ||
-                      window.location.pathname === "/beneficiaries" ||
-                      window.location.pathname === "/bulk-payment" ||
-                      window.location.pathname === "/connect-account" ||
-                      window.location.pathname === "/wallet/debit"
-                        ? "Bold"
-                        : "Linear"
-                    }
-                  />
-                  Wallet
-                  <div className="absolute -right-3 ">
-                    <div className="flex h-[8px] w-[8px] relative">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-300 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-[8px] w-[8px] bg-orange-400"></span>
-                    </div>
-                  </div>
-                </div>
-
-                {isActive ? (
-                  <ArrowUp2 size="12" variant="Linear" color="#667185" />
-                ) : (
-                  <ArrowDown2 size="12" variant="Linear" color="#667185" />
-                )}
-              </button>
-
-              {isActive && (
-                <ul className="ml-[26px] pl-[12px] py-[8px]   border-l border-[#98A2B3]/50 mb-1">
+              <div className=" mt-[32px] md:mt-[40px] xl:mt-[47px] overflow-y-auto no-scrollbar flex-1">
+                {Menu1.map((menu) => (
                   <Link
-                    to="/wallet/overview"
-                    className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]  ${
-                      window.location.pathname === "/wallet/overview" ||
-                      window.location.pathname === "/wallet/topup" ||
-                      window.location.pathname === "/wallet/debit"
-                        ? "bg-[#F7F9FC] font-medium "
-                        : " font-normal"
+                    to={`/${menu?.path}`}
+                    onClick={onClose}
+                    className={` py-[10px] pl-[16px] md:py-[16px] md:pl-[20px] flex items-center text-[14px]     leading-[20px] md:leading-[24px] ${
+                      window.location.pathname === `/${menu?.path}`
+                        ? "text-[#ffffff] font-medium rounded-tr-lg rounded-br-lg bg-[#00B0C7]"
+                        : "text-[#ffffff] font-normal"
                     }`}
                   >
-                    <li className="">Naira Wallet</li>
+                    <menu.icon
+                      className="mr-[16px]"
+                      size={20}
+                      variant={"Bold"}
+                    />
+                    {menu?.name}
                   </Link>
-
-                  <Link
-                    to="/usd-wallet"
-                    className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]  ${
-                      window.location.pathname === "/usd-wallet"
-                        ? "bg-[#F7F9FC] font-medium  "
-                        : " font-normal"
-                    }`}
-                  >
-                    <li className="">Dollar Wallet</li>
-                  </Link>
-                  <Link
-                    to="/bulk-payment"
-                    className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]  ${
-                      window.location.pathname === "/bulk-payment"
-                        ? "bg-[#F7F9FC] font-medium  "
-                        : " font-normal"
-                    }`}
-                  >
-                    <li className="">Bulk Payment</li>
-                  </Link>
-                  <Link
-                    to="/beneficiaries"
-                    className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]  ${
-                      window.location.pathname === "/beneficiaries"
-                        ? "bg-[#F7F9FC] font-medium  "
-                        : " font-normal"
-                    }`}
-                  >
-                    <li className="">Beneficiaries</li>
-                  </Link>
-                  <Link
-                    to="/connect-account"
-                    className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]  ${
-                      window.location.pathname === "/connect-account"
-                        ? "bg-[#F7F9FC] font-medium  "
-                        : " font-normal"
-                    }`}
-                  >
-                    <li className="">Connect Account</li>
-                  </Link>
-                </ul>
-              )}
-
-              <Link
-                to="/transaction"
-                onClick={onClose}
-                className={` py-[10px] pl-[16px] flex items-center text-[14px]      leading-[20px] md:leading-[24px] ${
-                  window.location.pathname === "/transaction"
-                    ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
-                    : "text-[#667185] font-normal"
-                }`}
-              >
-                <EmptyWalletChange
-                  className="mr-[12px]"
-                  size={20}
-                  variant={
-                    window.location.pathname === "/transaction"
-                      ? "Bold"
-                      : "Linear"
-                  }
-                />
-                Transactions
-              </Link>
-
-              <button
-                onClick={() => setPayment(!payment)}
-                className={`py-[10px] pl-[16px] flex items-center  justify-between w-full text-[14px]    leading-[20px] md:leading-[24px] 
-                ${
-                  window.location.pathname === "/paymentlink"||
-                  window.location.pathname === "/invoice" ||
-                  window.location.pathname === "/saved-invoice" ||
-                  window.location.pathname === "/createinvoice"||
-
-                  window.location.pathname === "/bill-payment"
-                    ? "text-[#26ae5f] font-medium rounded-md"
-                    : "text-[#667185] font-normal "
-                }`}
-              >
-                <div className="flex items-center relative ">
-                  {" "}
-                  <ChartSuccess
-                    className="mr-[12px]"
-                    size={20}
-                    variant={
-                      window.location.pathname === "/paymentlink"||
-                      window.location.pathname === "/invoice" ||
-                      window.location.pathname === "/saved-invoice" ||
-                      window.location.pathname === "/createinvoice"||
-
-                      window.location.pathname === "/bill-payment"
-                        ? "Bold"
-                        : "Linear"
-                    }
-                  />
-Payment and Bills                  {/* <div className="absolute -right-3 ">
-                    <div className="flex h-[8px] w-[8px] relative">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-300 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-[8px] w-[8px] bg-orange-400"></span>
-                    </div>
-                  </div> */}
-                </div>
-
-                {payment ? (
-                  <ArrowUp2 size="12" variant="Linear" color="#667185" />
-                ) : (
-                  <ArrowDown2 size="12" variant="Linear" color="#667185" />
-                )}
-              </button>
-
-              {payment && (
-                <ul className="ml-[26px] pl-[12px] py-[8px] ease-in-out transition-opacity duration-500   border-l border-[#98A2B3]/50 mb-1">
-                  <Link
-                    to="/paymentlink"
-                    className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]  ${
-                      window.location.pathname === "/paymentlink"
-                      ? "bg-[#F7F9FC] font-medium "
-                        : " font-normal"
-                    }`}
-                  >
-                    <li className="">Payment Links</li>
-                  </Link>
-
-                  <Link
-                    to="/invoice"
-                    className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]  ${
-                      window.location.pathname === "/invoice" ||
-                  window.location.pathname === "/saved-invoice" ||
-                  window.location.pathname === "/createinvoice"
-                        ? "bg-[#F7F9FC] font-medium  "
-                        : " font-normal"
-                    }`}
-                  >
-                    <li className="">Issue Invoice</li>
-                  </Link>
-                  <Link
-                    to="/bill-payment"
-                    className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]  ${
-                      window.location.pathname === "/bill-payment"
-                        ? "bg-[#F7F9FC] font-medium  "
-                        : " font-normal"
-                    }`}
-                  >
-                    <li className="">Bill Payment</li>
-                  </Link>
-                </ul>
-              )}
-
-              {/* //expense Card */}
-              <button
-                onClick={() => setIsExpenseActive(!isExpenseActive)}
-                className={`py-[10px] pl-[16px] flex items-center  justify-between w-full text-[14px]    leading-[20px] md:leading-[24px] 
-                ${
-                  window.location.pathname === "/usd-card" ||
-                  window.location.pathname === "/naira-card"
-                    ? "text-[#26ae5f] font-medium rounded-md"
-                    : "text-[#667185] font-normal "
-                }`}
-              >
-                <div className="flex items-center relative ">
-                  {" "}
-                  <Card
-                    className="mr-[12px]"
-                    size={20}
-                    variant={
-                      window.location.pathname === "/usd-card" ||
-                      window.location.pathname === "/naira-card"
-                        ? "Bold"
-                        : "Linear"
-                    }
-                  />
-                  Expense Card
-                  {/* <div className="absolute -right-3 ">
-                    <div className="flex h-[8px] w-[8px] relative">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-300 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-[8px] w-[8px] bg-orange-400"></span>
-                    </div>
-                  </div> */}
-                </div>
-
-                {isExpenseActive ? (
-                  <ArrowUp2 size="12" variant="Linear" color="#667185" />
-                ) : (
-                  <ArrowDown2 size="12" variant="Linear" color="#667185" />
-                )}
-              </button>
-
-              {isExpenseActive && (
-                <ul className="ml-[26px] pl-[12px] py-[8px]   border-l border-[#98A2B3]/50 mb-1">
-                  <Link
-                    to="/naira-card"
-                    className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]  ${
-                      window.location.pathname === "/naira-card"
-                        ? "bg-[#F7F9FC] font-medium "
-                        : " font-normal"
-                    }`}
-                  >
-                    <li className="">Naira Card</li>
-                  </Link>
-
-                  <Link
-                    to="/usd-card"
-                    className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]  ${
-                      window.location.pathname === "/usd-card"
-                        ? "bg-[#F7F9FC] font-medium  "
-                        : " font-normal"
-                    }`}
-                  >
-                    <li className="">Dollar Card</li>
-                  </Link>
-                </ul>
-              )}
-
-            
-              {/* } */}
-
-            
-             
-
-              <button
-                onClick={() => setIsBookKeepingActive(!isBookKeepingActive)}
-                className={`py-[10px] pl-[16px] flex items-center  justify-between w-full text-[14px]    leading-[20px] md:leading-[24px] 
-                ${
-                  window.location.pathname === "/bookkeeping" ||
-                  window.location.pathname ===
-                    "/bookkeeping/migrate-transaction" ||
-                  window.location.pathname === "/bookkeeping/report" ||
-                  window.location.pathname === "/bookkeeping/configuration"
-                    ? "text-[#26ae5f] font-medium rounded-md"
-                    : "text-[#667185] font-normal "
-                }`}
-              >
-                <div className="flex items-center">
-                  {" "}
-                  <Book
-                    className="mr-[12px]"
-                    size={20}
-                    variant={
-                      window.location.pathname === "/bookkeeping" ||
-                      window.location.pathname ===
-                        "/bookkeeping/migrate-transaction" ||
-                      window.location.pathname === "/bookkeeping/report" ||
-                      window.location.pathname === "/bookkeeping/configuration"
-                        ? "Bold"
-                        : "Linear"
-                    }
-                  />
-                  Book Keeping
-                </div>
-
-                {isBookKeepingActive ? (
-                  <ArrowUp2 size="14" variant="Linear" color="#667185" />
-                ) : (
-                  <ArrowDown2 size="14" variant="Linear" color="#667185" />
-                )}
-              </button>
-
-              {isBookKeepingActive && (
-                <ul className="ml-[26px] pl-[12px] py-[8px]   border-l border-[#98A2B3]/50 mb-1">
-                  <Link
-                    to="/bookkeeping"
-                    className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]  ${
-                      window.location.pathname === "/bookkeeping"
-                        ? "bg-[#F7F9FC] font-medium "
-                        : " font-normal"
-                    }`}
-                  >
-                    <li className="">Book Keeping</li>
-                  </Link>
-
-                  <Link
-                    to="/bookkeeping/migrate-transaction"
-                    className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]  ${
-                      window.location.pathname ===
-                      "/bookkeeping/migrate-transaction"
-                        ? "bg-[#F7F9FC] font-medium "
-                        : " font-normal"
-                    }`}
-                  >
-                    <li className="">Migrate Transaction</li>
-                  </Link>
-
-                  <Link
-                    to="/bookkeeping/report"
-                    className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]  ${
-                      window.location.pathname === "/bookkeeping/report"
-                        ? "bg-[#F7F9FC] font-medium  "
-                        : " font-normal"
-                    }`}
-                  >
-                    <li className="">Report</li>
-                  </Link>
-                  <Link
-                    to="/bookkeeping/configuration"
-                    className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]  ${
-                      window.location.pathname === "/bookkeeping/configuration"
-                        ? "bg-[#F7F9FC] font-medium  "
-                        : " font-normal"
-                    }`}
-                  >
-                    <li className="">Configuration</li>
-                  </Link>
-                </ul>
-              )}
-
-              {/* <Link
-                to="/invoice"
-                onClick={onClose}
-                className={` py-[10px] pl-[16px] flex items-center text-[14px]     leading-[20px] md:leading-[24px] ${
-                  window.location.pathname === "/invoice" ||
-                  window.location.pathname === "/saveinvoice" ||
-                  window.location.pathname === "/createinvoice"
-                    ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
-                    : "text-[#667185] font-normal"
-                }`}
-              >
-                <Folder2
-                  className="mr-[12px]"
-                  size={20}
-                  variant={
-                    window.location.pathname === "/invoice" ||
-                    window.location.pathname === "/saveinvoice" ||
-                    window.location.pathname === "/createinvoice"
-                      ? "Bold"
-                      : "Linear"
-                  }
-                />
-                Issue Invoice
-              </Link> */}
-
-              {/* //Compliance */}
-              <button
-                onClick={() => setIsComplianceActive(!isComplianceActive)}
-                className={`py-[10px] pl-[16px] flex items-center  justify-between w-full text-[14px]    leading-[20px] md:leading-[24px] 
-                ${
-                  window.location.pathname === "/tax" ||
-                  window.location.pathname === "/incorporation" ||
-                  window.location.pathname === "/compliance/services"
-                    ? "text-[#26ae5f] font-medium rounded-md"
-                    : "text-[#667185] font-normal "
-                }`}
-              >
-                <div className="flex items-center relative ">
-                  {" "}
-                  <Bookmark2
-                    className="mr-[12px]"
-                    size={20}
-                    variant={
-                      window.location.pathname === "/tax" ||
-                      window.location.pathname === "/incorporation" ||
-                      window.location.pathname === "/compliance/services"
-                        ? "Bold"
-                        : "Linear"
-                    }
-                  />
-                  Compliance
-                </div>
-
-                {isComplianceActive ? (
-                  <ArrowUp2 size="12" variant="Linear" color="#667185" />
-                ) : (
-                  <ArrowDown2 size="12" variant="Linear" color="#667185" />
-                )}
-              </button>
-
-              {isComplianceActive && (
-                <ul className="ml-[26px] pl-[12px] py-[8px]   border-l border-[#98A2B3]/50 mb-1">
-                  <Link
-                    to="/tax"
-                    className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]  ${
-                      window.location.pathname === "/tax"
-                        ? "bg-[#F7F9FC] font-medium "
-                        : " font-normal"
-                    }`}
-                  >
-                    <li className="">Tax</li>
-                  </Link>
-
-                  <Link
-                    to="/incorporation"
-                    className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]  ${
-                      window.location.pathname === "/incorporation"
-                        ? "bg-[#F7F9FC] font-medium  "
-                        : " font-normal"
-                    }`}
-                  >
-                    <li className="">Incorporation</li>
-                  </Link>
-                  <Link
-                    to="/compliance/services"
-                    className={` py-[6px] pl-[12px] flex items-center text-[12px]  text-[#667185] rounded-md  hover:bg-[#F7F9FC]  ${
-                      window.location.pathname === "/compliance/services"
-                        ? "bg-[#F7F9FC] font-medium  "
-                        : " font-normal"
-                    }`}
-                  >
-                    <li className="">Services</li>
-                  </Link>
-                </ul>
-              )}
-
-<Link
-                to="/payroll"
-                onClick={onClose}
-                className={` py-[10px] pl-[16px] flex items-center text-[14px]      leading-[20px] md:leading-[24px] ${
-                  window.location.pathname === "/payroll"
-                    ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
-                    : "text-[#667185] font-normal"
-                }`}
-              >
-                <Personalcard
-                  className="mr-[12px]"
-                  size={20}
-                  variant={
-                    window.location.pathname === "/payroll"
-                      ? "Bold"
-                      : "Linear"
-                  }
-                />
-Payroll              </Link>
-
-              <Link
-                to="/store"
-                onClick={onClose}
-                className={` py-[10px] pl-[16px] flex items-center text-[14px]    leading-[20px] md:leading-[24px] ${
-                  window.location.pathname === "/store"
-                    ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
-                    : "text-[#667185] font-normal"
-                }`}
-              >
-                <ShoppingCart
-                  className="mr-[12px]"
-                  size={20}
-                  variant={
-                    window.location.pathname === "/store" ? "Bold" : "Linear"
-                  }
-                />
-                Store
-              </Link>
-              <Link
-                to="/user-wallets"
-                onClick={onClose}
-                className={` py-[10px] pl-[16px] flex items-center text-[14px]      leading-[20px] md:leading-[24px] ${
-                  window.location.pathname === "/user-wallets"
-                    ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
-                    : "text-[#667185] font-normal"
-                }`}
-              >
-                <Wallet1
-                  className="mr-[12px]"
-                  size={20}
-                  variant={
-                    window.location.pathname === "/user-wallets"
-                      ? "Bold"
-                      : "Linear"
-                  }
-                />
-                User Wallets{" "}
-              </Link>
-              <Link
-                to="/customers"
-                onClick={onClose}
-                className={` py-[10px] pl-[16px] flex items-center text-[14px]     leading-[20px] md:leading-[24px] ${
-                  window.location.pathname === "/customers"
-                    ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
-                    : "text-[#667185] font-normal"
-                }`}
-              >
-                <Profile
-                  className="mr-[12px]"
-                  size={20}
-                  variant={
-                    window.location.pathname === "/customers"
-                      ? "Bold"
-                      : "Linear"
-                  }
-                />
-                Customers
-              </Link>
-              {/* <Link
-                to="/vant-assistant"
-                onClick={onClose}
-                className={` py-[10px] pl-[16px] flex items-center text-[14px]     leading-[20px] md:leading-[24px] ${
-                  window.location.pathname === "/vant-assistant"
-                    ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
-                    : "text-[#667185] font-normal"
-                }`}
-              >
-                <CommandSquare
-                  className="mr-[12px]"
-                  size={20}
-                  variant={
-                    window.location.pathname === "/vant-assistant"
-                      ? "Bold"
-                      : "Linear"
-                  }
-                />
-                Vant Assistant
-              </Link> */}
-
-              {/* <Link
-              to="/users"
-              className={` py-[10px] pl-[16px] flex items-center text-[14px]     leading-[20px] md:leading-[24px] ${
-                window.location.pathname === "/users"
-                  ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
-                  : "text-[#667185] font-normal"
-              }`}
-            >
-              <Profile
-                className="mr-[12px]"
-                variant={
-                  window.location.pathname === "/users" ? "Bold" : "Linear"
-                }
-              />
-              Users
-            </Link> */}
-            </div>
-
-            <div className="border-t pb-3 pt-2">
-              <Link
-                to="/setting/personal-info"
-                onClick={onClose}
-                className={` py-[10px] pl-[16px] flex items-center text-[14px]     leading-[20px] md:leading-[24px] ${
-                  window.location.pathname === "/setting/personal-info" ||
-                  window.location.pathname === "/setting/webhook" ||
-                  window.location.pathname === "/setting/api-key" ||
-                  window.location.pathname === "//setting/personal-info"
-                    ? "text-[#26ae5f] font-medium rounded-md bg-slate-200"
-                    : "text-[#667185] font-normal"
-                }`}
-              >
-                <Setting2
-                  className="mr-[12px]"
-                  variant={
-                    window.location.pathname === "/setting/personal-info" ||
-                    window.location.pathname === "/setting/webhook" ||
-                    window.location.pathname === "/setting/api-key" ||
-                    window.location.pathname === "/setting/personal-info"
-                      ? "Bold"
-                      : "Linear"
-                  }
-                />
-                Setting
-              </Link>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
         </div>
       </div>
     </div>

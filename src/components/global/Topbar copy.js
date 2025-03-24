@@ -178,28 +178,32 @@ const Topbar = ({ setIsSidebar }) => {
         >
           <HambergerMenu size={18} color="#31363EFF" />
         </button>
-
-        <div className="flex items-center gap-1">
-
-        <HambergerMenu size={24} color="#00B0C7" />
-
-
-
-        <h4 className="text-[20px] text-[#00B0C7] font-normal ">
+        <div className="md:flex items-center gap-[16px] hidden">
+          <div className="flex items-center">
+            <p className="text-[#667185] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
+              {formatDate(new Date())}
+            </p>
+          </div>
+          <div className="h-[32px] w-[1px] bg-[#D0D5DD]" />
+          <p className="text-[#667185] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
+            {formatTime(new Date())}
+          </p>
+        </div>
+        <h4 className="text-[20px] text-[#1a202c] font-bold hidden ">
           {location.pathname === "/dashboard"
             ? "Dashboard"
-            : location.pathname === "/counselor-management"
-            ? "Counselor Registration"
-            : location.pathname === "/categories"
-            ? "Categories"
-            : location.pathname === "/booking-tracker"
-            ? "Booking Tracker"
-            : location.pathname === "/company-management"
-            ? "Company Management"
-            : location.pathname === "/user"
-            ? "User"
-            : location.pathname === "/messages"
-            ? "Messages"
+            : location.pathname === "/transaction"
+            ? "Transactions"
+            : location.pathname === "/settlement"
+            ? "Settlements"
+            : location.pathname === "/merchant"
+            ? "Team"
+            : location.pathname === "/apikey"
+            ? "API Credentials"
+            : location.pathname === "/businessProfile"
+            ? "Business Profile"
+            : location.pathname === "/settlementAccount"
+            ? "Settlement Account"
             : location.pathname === "/name"
             ? "Name"
             : location.pathname === "/userAdmin"
@@ -216,21 +220,26 @@ const Topbar = ({ setIsSidebar }) => {
             ? "Security"
             : ""}
         </h4>{" "}
-        </div>
-       
-       
       </div>
 
       <div className="flex flex-row items-center gap-3">
-       
+        <Link
+          to="https://vantpapi.readme.io/reference/getting-started-with-your-api"
+          target="_blank"
+          rel="noreferrer"
+          className="px-3 py-[4px] md:px-4 md:py-[6px] text-[12px] h-[24px] shadow bg-slate-100 rounded-lg border text-gray-500 relative leading-[12px]"
+        >
+          API Doc{" "}
+          <div className="h-[5px] w-[5px] rounded-full bg-green-500 absolute top-1 right-1" />
+        </Link>
 
-        <Menu>
+        {/* <Menu>
           <MenuButton bg={"none"}>
-            <button className=" p-2 rounded-full relative hover:opacity-80 border border-[#E1E1E1] ">
-              <div className="h-3 w-3 rounded-full flex justify-center items-center bg-red-500 absolute right-1 top-1 text-white text-[8px] font-semibold">
+            <button className="bg-gray-100 p-2 rounded-full relative hover:opacity-80 ">
+              <div className="h-3 w-3 rounded-full flex justify-center items-center bg-red-500 absolute right-0 -top-1 text-white text-[8px] font-semibold">
                 0
               </div>
-              <Notification size={16} color="#00B0C7" />
+              <Notification size={14} color="gray" />
             </button>
           </MenuButton>
           <MenuList
@@ -241,19 +250,19 @@ const Topbar = ({ setIsSidebar }) => {
 
             Notification
           </MenuList>
-        </Menu>
+        </Menu> */}
 
-        <div className="flex  gap-[12px] border-[1px] border-[#E1E1E1] px-3 py-1  items-center rounded-[8px]">
+        <div className="flex  gap-[12px] border-[0.2px] border-[#98a2b3] px-3 py-1  items-center rounded-[8px]">
           <div className="">
             <Menu>
               <MenuButton bg={"none"}>
                 <div className="flex items-center gap-3">
-                  <p className="text-[#00B0C7] whitespace-nowrap font-medium text-[14px] md:text-[14px] xl:text-[16px]  leading-[24px] ">
-                    Hi Admin
+                  <p className="text-[#475367] whitespace-nowrap font-medium text-[14px] md:text-[14px] xl:text-[16px]  leading-[24px] ">
+                    {profileData?.default_partner?.name}
                   </p>
 
                   <button className="h-[20px] w-[20px] md:h-[24px] md:w-[24px] rounded-[8px] hover:bg-[#F7F9FC] flex justify-center items-center">
-                    <ArrowDown2 size={14} color="#00B0C7" />
+                    <ArrowDown2 size={16} color="#667185" />
                   </button>
                 </div>
               </MenuButton>
@@ -262,7 +271,111 @@ const Topbar = ({ setIsSidebar }) => {
                 w="210px"
                 className="border-[2px] p-[10px] md:p-[16px] shadow-xl"
               >
-              
+                <div className="flex-item gap-[16px]">
+                  <div className="h-[28px] w-[28px] md:h-[32px] md:w-[32px] rounded-[4px] bg-[#F0F2F5] flex justify-center items-center">
+                    {" "}
+                    <p className="text-[#475367] text-[12px] md:text-[12px] xl:text-[12px] font-bold leading-[24px] ">
+                      {firstAndLastLetter(profileData?.default_partner?.name)}
+                    </p>
+                  </div>
+                  <p className="text-[#000000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
+                    {profileData?.default_partner?.name}
+                  </p>
+                </div>
+                <div className="flex-item justify-between mb-[14px] mt-[12px]">
+                  <Link
+                    // onClick={() => setIsSettingsModal(true)}
+                    to="/setting/personal-info"
+                    className="py-[5px] px-[12px] w-full border-[0.2px] bg-[#26ae5f] rounded-md border-[#26ae5f] shadow flex-item gap-2"
+                  >
+                    <Setting2 size={13} color="#fff" />{" "}
+                    <p className="text-[#fff] text-[10px]  md:text-[12px] font-normal leading-[16px] ">
+                      Settings
+                    </p>
+                  </Link>
+                </div>
+                {ProfileQuery?.data &&
+                  ProfileQuery?.data?.partners?.filter(
+                    (result) =>
+                      //console.log(ProfileQuery?.data?.default_partner?.id)
+
+                      ![result?.id].includes(
+                        ProfileQuery?.data?.default_partner?.id
+                      )
+                  ).length > 0 && (
+                    <div>
+                      <p className="text-[#000] text-[12px]  xl:text-[12px] font-normal leading-[18px] mb-3 ">
+                        Switch Business
+                      </p>
+                    </div>
+                  )}
+
+                {ProfileQuery?.data &&
+                  ProfileQuery?.data?.partners
+                    ?.filter(
+                      (result) =>
+                        ![result?.id].includes(
+                          ProfileQuery?.data?.default_partner?.id
+                        )
+                    )
+                    .map((partner) => (
+                      <button
+                        className="flex justify-between items-center w-full hover:bg-slate-50 rounded-lg mb-2"
+                        key={partner.id}
+                        onClick={() => handleSwitchModal(partner)}
+                      >
+                        <div className="flex-item gap-2">
+                          <div className="h-[28px] w-[28px] md:h-[32px] md:w-[32px] rounded-[4px] bg-[#F0F2F5] flex justify-center items-center">
+                            {" "}
+                            <p className="text-[#475367] text-[12px] md:text-[12px] xl:text-[12px] font-bold leading-[24px] ">
+                              {firstAndLastLetter(partner?.name)}
+                            </p>
+                          </div>
+                          <p className="text-[#000000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
+                            {partner?.name}
+                          </p>
+                        </div>
+                      </button>
+                    ))}
+
+                <div className="py-[16px] border-t-[0.2px]  border-[#98A2B3] mt-[20px] ">
+                  {/* <button
+                    onClick={() => setIsCreate(true)}
+                    className="flex-item gap-2 "
+                  >
+                    {" "}
+                    <Add size={20} color="#98A2B3" />{" "}
+                    <p className="text-[#98A2B3] text-[12px]  xl:text-[14px] font-normal leading-[18px] ">
+                      Create new business
+                    </p>
+                  </button>
+                  <button
+                    onClick={() => setIsProfile(true)}
+                    className="flex-item gap-2 mt-[20px]"
+                  >
+                    {" "}
+                    <UserEdit size={20} color="#98A2B3" />{" "}
+                    <p className="text-[#98A2B3] text-[12px]  xl:text-[14px] font-normal leading-[18px] ">
+                      Profile
+                    </p>
+                  </button> */}
+                  <button
+                    onClick={() => {
+                      // navigate("/login");
+
+                      api.logout();
+                      navigate("/login");
+                      // setIsOpen(false);
+                    }}
+                    className="flex-item gap-2 "
+                  >
+                    {" "}
+                    <Logout size={20} color="#26ae5f" />{" "}
+                    <p className="text-[#26ae5f] text-[12px]  xl:text-[14px] font-normal leading-[18px] ">
+                      Log out
+                    </p>
+                  </button>
+                </div>
               </MenuList>
             </Menu>
           </div>

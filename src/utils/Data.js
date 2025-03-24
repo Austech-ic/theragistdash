@@ -1,3 +1,41 @@
+export const color = [
+  {
+      id: 1,
+      color: "#ECBB5F"
+  },
+  {
+      id:2,
+      color: "#57315A"
+  },
+  {
+      id: 3,
+      color: "#ECACAD"
+  },
+  {
+      id: 4,
+      color: "#FF8989"
+  },
+  {
+      id: 5,
+      color: "#8265AA"
+  },
+  {
+      id: 6,
+      color: "#8E98A8"
+  },
+  {
+      id: 7,
+      color: "#4B525B"
+  },
+  {
+      id: 8,
+      color: "#98AFFA"
+  }
+]
+
+
+
+
 export const countries = [
   "Afghanistan",
   "Albania",

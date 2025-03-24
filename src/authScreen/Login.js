@@ -79,13 +79,12 @@ const Login = () => {
     }
   };
   return (
-    <div className="relative bg-[#F2F2F2] h-screen w-full flex justify-center items-center ">
-      <div className="absolute inset-0">
-        <FloatingPaths position={1} />
-        <FloatingPaths position={-1} />
-
-        
-      </div>
+    <div
+      className="relative h-screen w-full flex justify-center items-center bg-cover bg-center"
+      style={{
+        backgroundImage: "url('/DashBoard.svg')",
+      }}
+    >
       <m.div
         initial={{ x: -30, opacity: 0.4 }}
         animate={{
@@ -96,27 +95,29 @@ const Login = () => {
         transition={{
           duration: 0.9,
         }}
-        className="bg-[#ffff] rounded-[16px] z-10  w-[90%] sm:w-[440px] md:w-[500px]  max-w-[588px] pt-[16px] md:pt-[32px]  pb-[24px] px-[16px] sm:px-[30px] md:px-[40px]"
+        className="bg-[#ffff] md:ml-[220px] lg:ml-[290px] xl:ml-[480px] rounded-[16px] z-10  w-[90%] sm:w-[440px] md:w-[500px]  max-w-[588px] pt-[16px] md:pt-[32px]  pb-[24px] px-[16px] sm:px-[30px] md:px-[40px]"
       >
         {" "}
         <img
-          src="/assets/VantLogo.png"
+          src="/assets/theragistLogo.svg"
           alt="logo"
-          className=" h-[40px] md:h-[50px]  mx-auto "
+          className=" h-[40px] md:h-[50px]  mx-auto mb-[36px] md:mb-[50px]"
         />
         {/* <h2 className="text-[20px] md:text-[24px] xl:text-[28px] text-center font-bold leading-[35px] text-black mb-[8px]">
           Hi, Welcome Back!
         </h2> */}
-        <p className="text-[14px] md:text-[14px] xl:text-[16px] text-center font-normal leading-[24px] text-[#667185] ">
-          Sign in to your account to continue
+        <p className="text-[16px] md:text-[20pxpx] xl:text-[24px]  font-normal leading-[24px] text-[#1C1C1C] ">
+          Sign in
+        </p>
+        <p className="text-[14px] md:text-[14px] xl:text-[16px]  font-light  text-[#1C1C1C] ">
+          Welcome Onboard! let get started
         </p>
         <form onSubmit={login} className="mt-[10px] md:mt-[20px] ">
           <div className="mb-[16px]">
-            <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
-              Email
+            <label className="text-[14px] md:text-[14px] xl:text-[16px] font-light  text-[#1C1C1C] mb-[8px]">
+              Username
             </label>
             <div className=" relative    flex items-center">
-              <Sms size="16" color="#98A2B3" className="absolute left-[16px]" />
               <CloseCircle
                 size="16"
                 color="#98A2B3"
@@ -125,8 +126,8 @@ const Login = () => {
 
               <input
                 type="email"
-                placeholder="Enter your email"
-                className="w-full h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                placeholder="Enter username"
+                className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#9C9C9C] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                 required
                 autoComplete="on"
                 name="email"
@@ -140,15 +141,11 @@ const Login = () => {
             </div>
           </div>
           <div className="mb-[10px]">
-            <label className="text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] text-[#000000] mb-[8px]">
+            <label className="text-[14px] md:text-[14px] xl:text-[16px] font-light leading-[24px] text-[#1C1C1C] mb-[8px]">
               Password
             </label>
             <div className=" relative    flex items-center">
-              <GoLock
-                size="16"
-                color="#98A2B3"
-                className="absolute left-[16px]"
-              />
+            
               <div className="absolute right-[16px]">
                 {open === false ? (
                   <Eye size="16" color="#98A2B3" onClick={toggle} />
@@ -158,8 +155,8 @@ const Login = () => {
               </div>
               <input
                 type={open === false ? "password" : "text"}
-                placeholder="Enter your password"
-                className="w-full h-[48px] pl-[44px] py-[12px] text-[14px] text-[#344054] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
+                placeholder="Enter password"
+                className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#9C9C9C] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                 required
                 autoComplete="on"
                 name="password"
@@ -177,7 +174,7 @@ const Login = () => {
             {" "}
             <button
               type="button"
-              className="text-[14px] text-[#26ae5f] font-medium leading-[20px] tracking-[0.2px] mb-[20px]"
+              className="text-[14px] text-[#00B0C7] font-medium leading-[20px] tracking-[0.2px] mb-[20px]"
             >
               Forgot password?
             </button>
@@ -185,23 +182,15 @@ const Login = () => {
 
           <button
             type="submit"
-            className="w-full py-[14px] mt-[18px] text-center text-white bg-[#26ae5f] rounded-[8px] flex items-center justify-center gap-1 mb-[12px] md:mb-[16px]"
+            className="w-full py-[14px] mt-[18px] text-center text-white bg-[#00B0C7] rounded-[8px] flex items-center justify-center gap-1 mb-[12px] md:mb-[16px]"
           >
             <p className="text-sm font-medium leading-[20px]">Sign in</p>
             {isLoading && <ClipLoader color={"white"} size={20} />}
           </button>
 
-          <div className="text-[14px] leading-[20px] flex justify-center gap-1 items-center mb-[30px] md:mb-[40px]">
-            <p>Don’t have an account? </p>
-            <Link to="/signup">
-              {" "}
-              <button className="font-medium text-[#26ae5f]">Sign up</button>
-            </Link>
-          </div>
+      
 
-          {/* <p className="text-center text-[14px] font-medium leading-[20px] text-[#98a2b3]">
-            Copyright 2024 VANT. All Rights Reserved
-          </p> */}
+      
         </form>
       </m.div>
     </div>

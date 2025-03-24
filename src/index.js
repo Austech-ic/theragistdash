@@ -8,8 +8,6 @@ import ThemedSuspense from "./components/ThemedSuspense";
 import { ChakraProvider } from "@chakra-ui/react";
 import { extendTheme } from "@chakra-ui/react";
 import "react-tooltip/dist/react-tooltip.css";
-import { CopilotKitWrapper } from "./utils/CopilotKitWrapper";
-// import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 
 
 window.addEventListener("load", async () => {
@@ -44,7 +42,7 @@ function handleChunkError() {
 
 const overrides = extendTheme({
   fonts: {
-    body: '"Jost", sans-serif', // For headings
+    body: '"Poppins", sans-serif', // For headings
     // custom: '"Space Mono", monospace',
     custom: '"Share Tech Mono", monospace',
     // For body text

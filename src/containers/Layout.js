@@ -1,37 +1,17 @@
-import React, { useContext, useState, Suspense, useEffect, lazy } from "react";
-import {
-  Routes,
-  Route,
-  BrowserRouter as Router,
-  Navigate,
-  useLocation,
-  Outlet,
-} from "react-router-dom";
+import React, { useState, Suspense, useEffect, lazy } from "react";
+import { BrowserRouter as Router, Navigate, Outlet } from "react-router-dom";
 
 import Main from "../containers/Main";
 import ThemedSuspense from "../components/ThemedSuspense";
-// import { SidebarContext } from "../context/SidebarContext";
 import Topbar from "../components/global/Topbar";
 import Sidebar from "../components/global/Sidebar";
 import api from "../api";
 import { useQuery } from "@tanstack/react-query";
-import Warning from "../components/Warning";
-import { CopilotKitWrapper } from "../utils/CopilotKitWrapper";
-import { CopilotPopup } from "@copilotkit/react-ui";
-import { UserProvider } from "../utils/UserProvider";
-import CopilotContext from "../components/copilot-context";
-// import { registerServiceWorker } from "../serviceWorkerRegistration";
-import { LoginCurve } from "iconsax-react";
-import Modal from "../components/Modal";
-// import InstallPWA from "../components/InstallPWA";
 
 function Layout() {
   // const { isSidebarOpen, closeSidebar } = useContext(SidebarContext);
   const [isSidebar, setIsSidebar] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
-  // const [isInstalled, setIsInstalled] = useState(false);
-
-
 
   const ProfileQuery = useQuery(["profile"], () => getProfile(), {
     keepPreviousData: true,
@@ -39,13 +19,11 @@ function Layout() {
   });
   const profileData = ProfileQuery?.data || [];
 
-  let userData = localStorage.getItem("authData");
-  //console.log(userData)
-  if (!userData) {
-    return <Navigate to="/login" />;
-  } else {
-    //console.log("Valid token");
-  }
+  // let userData = localStorage.getItem("authData");
+  // if (!userData) {
+  //   return <Navigate to="/login" />;
+  // } else {
+  // }
 
   const toggleSidebar = () => {
     setIsSidebar(!isSidebar);
@@ -54,46 +32,35 @@ function Layout() {
   const handleSideBarClose = () => {
     setIsSidebar(false);
   };
-  async function getProfile(page) {
-    const response = await api.getProfile({ params: { page } });
-    return response;
-  }
+  // async function getProfile(page) {
+  //   const response = await api.getProfile({ params: { page } });
+  //   return response;
+  // }
 
   const closeModal = () => {
     setDeferredPrompt(null);
   };
 
   return (
-    <CopilotKitWrapper>
-      <UserProvider>
-        {/* Place new routes over this */}
-        <CopilotContext>
-          <div id="" className="app bg-[#ffffff] flex  ">
-            <Sidebar
-              isSidebarOpen={isSidebar}
-              onClose={handleSideBarClose}
-              profileData={profileData}
-            />
+    <div id="" className="app bg-[#ffffff] flex  ">
+      <Sidebar
+        isSidebarOpen={isSidebar}
+        onClose={handleSideBarClose}
+        profileData={profileData}
+      />
 
-            <div className="flex relative flex-col flex-1 w-full overflow-x-hidden">
-              <div className="fixed md:relative top-0 left-0 right-0 z-[99999] md:z-0 bg-[#ffffff] border-[#D0D5DD]">
-                <Topbar setIsSidebar={toggleSidebar} />
-              </div>
+      <div className="flex relative flex-col flex-1 w-full overflow-x-hidden">
+        <div className="fixed md:relative top-0 left-0 right-0 z-[99999] md:z-0 bg-[#ffffff] border-[#D0D5DD]">
+          <Topbar setIsSidebar={toggleSidebar} />
+        </div>
 
-              <Main>
-                {profileData?.default_partner?.is_verified === 0 && <Warning />}
-
-                <Suspense fallback={<ThemedSuspense />}>
-                  <Outlet />
-                </Suspense>
-              </Main>
-
-              {/* <InstallPWA /> */}
-            </div>
-          </div>
-        </CopilotContext>
-      </UserProvider>
-    </CopilotKitWrapper>
+        <Main>
+          <Suspense fallback={<ThemedSuspense />}>
+            <Outlet />
+          </Suspense>
+        </Main>
+      </div>
+    </div>
   );
 }
 

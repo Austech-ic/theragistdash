@@ -3,8 +3,7 @@ import {
   ArrowUp,
   Book,
   CardSend,
-  Folder2,
-  Ghost,
+
   GridEdit,
   Layer,
   MenuBoard,
@@ -32,7 +31,6 @@ import {
   BarElement,
 } from "chart.js";
 import { Bar, Line } from "react-chartjs-2";
-
 import api from "../api";
 import { useQuery } from "@tanstack/react-query";
 import { NumericFormat } from "react-number-format";
@@ -40,9 +38,7 @@ import EmptyTable from "../components/EmptyTable";
 import TableLoading from "../components/TableLoading";
 import moment from "moment";
 import { Link, useNavigate } from "react-router-dom";
-import NairaWalletCard from "./wallet/component/nairaWalletCard";
 import { formatDateToText } from "../utils/helperFunctions";
-import LoadingSkeleton from "./BookKeeping/component/ReportLoading";
 
 ChartJS.register(
   CategoryScale,
@@ -60,13 +56,10 @@ const OverView = () => {
   const navigation = useNavigate();
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState("d");
-  const [hideBalance, setHideBalance] = useState(false);
   const [copiedRef, setCopiedRef] = useState(null);
 
   const [isSwitchWallet, setIsSwitchWallet] = useState(false);
-  const hideMyBalance = () => {
-    setHideBalance(!hideBalance);
-  };
+
   async function getProfile(page) {
     const response = await api.getProfile({ params: { page } });
     return response;
@@ -329,28 +322,7 @@ const OverView = () => {
   return (
     <div className="p-[10px] md:p-[20px] bg-[#F2F2F2]  ">
       <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5">
-        <li>
-          {ProfileQuery.isLoading ? (
-            <LoadingSkeleton />
-          ) : (
-            <NairaWalletCard
-              selectedCard={selectedCard}
-              Card={Card}
-              hideBalance={hideBalance}
-              toggleWallet={toggleWallet}
-              hideMyBalance={hideMyBalance}
-              isSwitchWallet={isSwitchWallet}
-              setSelectedCard={setSelectedCard}
-              formatDateToText={formatDateToText}
-              handleCopy={handleCopy}
-              copiedRef={copiedRef}
-              profileData={profileData}
-              reduceHeight={true}
-              className="flex flex-col h-full"
-            />
-          )}
-        </li>
-
+       
         <li className="border-[0.2px] border-[#98a2b3] shadow  rounded-[8px] h-[140px] md:h-[176px]  w-full mx-auto   bg-[#ffff] flex flex-col justify-between ">
           <div className="px-[20px] py-[24px]  flex-between">
             {" "}

@@ -15,7 +15,7 @@ export async function getHeaders() {
     // let decryptuserData = decryptaValue(userData);
 
 
-   const  decryptUserData = DecryptUserData();
+   const  decryptUserData = "";
     function cutTokenBeforeSymbol(token) {
       const symbol = "|";
       const symbolIndex = token.indexOf(symbol);
@@ -29,7 +29,7 @@ export async function getHeaders() {
       return token;
     }
 
-    const token = "Bearer " + cutTokenBeforeSymbol(decryptUserData.token);
+    const token = "Bearer " + cutTokenBeforeSymbol(decryptUserData?.token);
     // //console.log(userData.data.accessToken, "header");
     // //console.log("token====>>>",token)
     return {
