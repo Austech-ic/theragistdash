@@ -179,51 +179,43 @@ const Topbar = ({ setIsSidebar }) => {
           <HambergerMenu size={18} color="#31363EFF" />
         </button>
 
-        <div className="flex items-center gap-1">
-
-        <HambergerMenu size={24} color="#00B0C7" />
-
-
-
-        <h4 className="text-[20px] text-[#00B0C7] font-normal ">
-          {location.pathname === "/dashboard"
-            ? "Dashboard"
-            : location.pathname === "/counselor-management"
-            ? "Counselor Registration"
-            : location.pathname === "/categories"
-            ? "Categories"
-            : location.pathname === "/booking-tracker"
-            ? "Booking Tracker"
-            : location.pathname === "/company-management"
-            ? "Company Management"
-            : location.pathname === "/user"
-            ? "User"
-            : location.pathname === "/messages"
-            ? "Messages"
-            : location.pathname === "/name"
-            ? "Name"
-            : location.pathname === "/userAdmin"
-            ? "User Admin"
-            : location.pathname === "/isActive"
-            ? "IsActive"
-            : location.pathname === "/accountDetails"
-            ? "Account Details"
-            : location.pathname === "/paymentlink"
-            ? "Payment Link"
-            : location.pathname === "/currency"
-            ? "Currency"
-            : location.pathname === "/security"
-            ? "Security"
-            : ""}
-        </h4>{" "}
+        <div className="md:flex items-center gap-1 hidden ">
+          <HambergerMenu size={24} color="#00B0C7" />
+          <h4 className="text-[20px] text-[#00B0C7] font-normal ">
+            {location.pathname === "/dashboard"
+              ? "Dashboard"
+              : location.pathname === "/counselor-management"
+              ? "Counselor Registration"
+              : location.pathname === "/categories"
+              ? "Categories"
+              : location.pathname === "/booking-tracker"
+              ? "Booking Tracker"
+              : location.pathname === "/company-management"
+              ? "Company Management"
+              : location.pathname === "/user"
+              ? "User"
+              : location.pathname === "/messages"
+              ? "Messages"
+              : location.pathname === "/name"
+              ? "Name"
+              : location.pathname === "/userAdmin"
+              ? "User Admin"
+              : location.pathname === "/isActive"
+              ? "IsActive"
+              : location.pathname === "/accountDetails"
+              ? "Account Details"
+              : location.pathname === "/paymentlink"
+              ? "Payment Link"
+              : location.pathname === "/currency"
+              ? "Currency"
+              : location.pathname === "/security"
+              ? "Security"
+              : ""}
+          </h4>{" "}
         </div>
-       
-       
       </div>
 
       <div className="flex flex-row items-center gap-3">
-       
-
         <Menu>
           <MenuButton bg={"none"}>
             <button className=" p-2 rounded-full relative hover:opacity-80 border border-[#E1E1E1] ">
@@ -238,7 +230,6 @@ const Topbar = ({ setIsSidebar }) => {
             w="210px"
             className="border-[2px] p-[10px] md:p-[16px] shadow"
           >
-
             Notification
           </MenuList>
         </Menu>
@@ -261,9 +252,7 @@ const Topbar = ({ setIsSidebar }) => {
                 maxW="289px"
                 w="210px"
                 className="border-[2px] p-[10px] md:p-[16px] shadow-xl"
-              >
-              
-              </MenuList>
+              ></MenuList>
             </Menu>
           </div>
         </div>
@@ -656,8 +645,7 @@ const Topbar = ({ setIsSidebar }) => {
             </div>
             <div className="mt-[20px] md:mt-[26px] lg:mt-[32px] mb-[14px] h-[32px] w-[32px] md:h-[48px] md:w-[48px] lg:h-[80px] lg:w-[80px] rounded-[8px] bg-[#F9FAFB] flex justify-center items-center">
               {" "}
-              <p className="text-[#475367] text-[18px] md:text-[24px] xl:text-[24px] font-bold ">
-              </p>
+              <p className="text-[#475367] text-[18px] md:text-[24px] xl:text-[24px] font-bold "></p>
             </div>
 
             <div className=" rounded-[8px] bg-[#F9FAFB] max-w-[247px] flex gap-1 py-[10px] md:py-[12px] px-[20px] items-center mb-[28px] md:mb-[40px]">

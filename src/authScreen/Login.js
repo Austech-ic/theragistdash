@@ -129,7 +129,7 @@ const Login = () => {
                 type="email"
                 placeholder="Enter username"
                 className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#9C9C9C] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#00B0C7] focus:border-[#00B0C7] "
-                required
+                // required
                 autoComplete="on"
                 name="email"
                 id="email"
@@ -158,7 +158,7 @@ const Login = () => {
                 type={open === false ? "password" : "text"}
                 placeholder="Enter password"
                 className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#9C9C9C] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#00B0C7] focus:border-[#00B0C7] "
-                required
+                // required
                 autoComplete="on"
                 name="password"
                 id="password"
