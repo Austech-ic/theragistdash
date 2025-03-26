@@ -38,10 +38,11 @@ import {
 } from "iconsax-react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import { Computer } from "lucide-react";
+import { Computer, Settings } from "lucide-react";
 
 const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
   const router = useLocation();
+  const [isSettingActive, setIsSettingActive] = useState(false);
 
   const Menu1 = [
     {
@@ -75,7 +76,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
       icon: User,
     },
   ];
-  const Men2 = [
+  const Menu2 = [
     {
       name: "Space Management",
       path: "space-management",
@@ -117,44 +118,145 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
         onClick={onClose}
         className="fixed inset-0 bg-[#29292980]  transition-opacity lg:relative"
       ></div>
-      <div class="absolute top-0 right-0 -ml-8 flex pt-4 pr-2 sm:-ml-10 sm:pr-4">
+      <div className="absolute top-0 right-0 -ml-8 flex pt-4 pr-2 sm:-ml-10 sm:pr-4">
         <button
           onClick={onClose}
           type="button"
-          class="rounded-md text-gray-700 hover:text-[white] focus:outline-none focus:ring-2 focus:ring-[white]"
+          className="rounded-md text-gray-700 hover:text-[white] focus:outline-none focus:ring-2 focus:ring-[white]"
         >
-          <span class="sr-only">Close panel</span>
+          <span className="sr-only">Close panel</span>
 
           <svg
-            class="h-6 w-6"
+            className="h-6 w-6"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
-            stroke-width="1.5"
+            strokeWidth="1.5"
             stroke="currentColor"
             aria-hidden="true"
           >
             <path
               stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinejoin="round"
               d="M6 18L18 6M6 6l12 12"
             />
           </svg>
         </button>
       </div>
-      <div class="max-w-[260px] min-h-screen bg-[#007D8D] w-[220px] md:w-[240px] pr-[6px]  py-[16px] md:py-[24px] sticky top-0 overflow-y-auto ">
+      <div className="max-w-[260px] min-h-screen bg-[#007D8D] w-[220px] md:w-[240px] pr-[6px]  py-[16px] md:py-[24px] sticky top-0 overflow-y-auto ">
         <div className="relative">
-          <div className="relative h-screen flex flex-col justify-between ">
+          <div className="relative h-screen  flex flex-col justify-between ">
             <div>
               <img
-                class=" h-[36px] md:h-[42px] xl:h-[51px] mx-auto    "
+                className=" h-[36px] md:h-[42px] xl:h-[51px] mx-auto    "
                 src="/assets/theragistLogo.svg"
                 alt="Theragist logo"
               />
 
-              <div className=" mt-[32px] md:mt-[40px] xl:mt-[47px] overflow-y-auto no-scrollbar flex-1">
-                {Menu1.map((menu) => (
+              <div className=" mt-[32px] md:mt-[40px] xl:mt-[47px]  overflow-auto h-full no-scrollbar flex-1">
+                {Menu1.map((menu, index) => (
                   <Link
+                  key={index}
+                    to={`/${menu?.path}`}
+                    onClick={onClose}
+                    className={` py-[10px] pl-[16px] md:py-[16px] md:pl-[20px] flex items-center text-[14px]     leading-[20px] md:leading-[24px] ${
+                      window.location.pathname === `/${menu?.path}`
+                        ? "text-[#ffffff] font-medium rounded-tr-lg rounded-br-lg bg-[#00B0C7]"
+                        : "text-[#ffffff] font-normal"
+                    }`}
+                  >
+                    <menu.icon
+                      className="mr-[16px]"
+                      size={20}
+                      variant={"Bold"}
+                    />
+                    {menu?.name}
+                  </Link>
+                ))}
+
+                {Menu2.map((menu, index) => (
+                  <Link
+                  key={index}
+
+                    to={`/${menu?.path}`}
+                    onClick={onClose}
+                    className={` py-[10px] pl-[16px] md:py-[16px] md:pl-[20px] flex items-center text-[14px]     leading-[20px] md:leading-[24px] ${
+                      window.location.pathname === `/${menu?.path}`
+                        ? "text-[#ffffff] font-medium rounded-tr-lg rounded-br-lg bg-[#00B0C7]"
+                        : "text-[#ffffff] font-normal"
+                    }`}
+                  >
+                    <menu.icon
+                      className="mr-[16px]"
+                      size={20}
+                      variant={"Bold"}
+                    />
+                    {menu?.name}
+                  </Link>
+                ))}
+
+                <button
+                  onClick={() => setIsSettingActive(!isSettingActive)}
+                  className={`py-[10px] pl-[16px] md:py-[16px] pr-2 md:pl-[20px] flex justify-between w-full items-center text-[14px]     leading-[20px] md:leading-[24px] ${
+                    window.location.pathname === `/privacy-policy` ||
+                    window.location.pathname === `/community-guidline` ||
+                    window.location.pathname === `/about-us`
+                      ? "text-[#ffffff] font-medium rounded-tr-lg rounded-br-lg bg-[#00B0C7]"
+                      : "text-[#ffffff] font-normal"
+                  }`}
+                >
+                  <div className="flex items-center ">
+                    {" "}
+                    <Settings className="mr-[12px]" size={20} />
+                    Settings
+                  </div>
+
+                  {isSettingActive ? (
+                    <ArrowUp2 size="14" variant="Linear" color="#fff" />
+                  ) : (
+                    <ArrowDown2 size="14" variant="Linear" color="#fff" />
+                  )}
+                </button>
+
+                {isSettingActive && (
+                  <ul className="ml-[26px] pl-[12px] py-[8px] mb-1">
+                    <Link
+                      to="/about-us"
+                      className={` py-[6px] pl-[12px] flex items-center text-[12px] md:text-sm   rounded-md  hover:bg-[#F7F9FC] hover:text-[#667185]  ${
+                        window.location.pathname === "/about-us"
+                          ? "bg-[#F7F9FC] text-[#2e2e2e] font-medium "
+                          : " font-normal text-[#fff] "
+                      }`}
+                    >
+                      <li className="">About Us</li>
+                    </Link>
+                    <Link
+                      to="/privacy-policy"
+                      className={` py-[6px] pl-[12px] flex items-center text-[12px] md:text-sm   rounded-md  hover:bg-[#F7F9FC] hover:text-[#667185]  ${
+                        window.location.pathname === "/privacy-policy"
+                          ? "bg-[#F7F9FC] text-[#2e2e2e] font-medium "
+                          : " font-normal text-[#fff]"
+                      }`}
+                    >
+                      <li className="">Privacy Policy </li>
+                    </Link>
+                    <Link
+                      to="/community-guidline"
+                      className={` py-[6px] pl-[12px] flex items-center text-[12px] md:text-sm  rounded-md  hover:bg-[#F7F9FC] hover:text-[#667185]  ${
+                        window.location.pathname === "/community-guidline"
+                          ? "bg-[#F7F9FC] text-[#2e2e2e] font-medium "
+                          : " font-normal text-[#fff]"
+                      }`}
+                    >
+                      <li className="">Community Guidline </li>
+                    </Link>
+                  </ul>
+                )}
+
+                {Menu3.map((menu, index) => (
+                  <Link
+                  key={index}
+
                     to={`/${menu?.path}`}
                     onClick={onClose}
                     className={` py-[10px] pl-[16px] md:py-[16px] md:pl-[20px] flex items-center text-[14px]     leading-[20px] md:leading-[24px] ${

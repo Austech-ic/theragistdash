@@ -26,59 +26,32 @@ const Login = () => {
   const toggle = () => {
     setOpen(!open);
   };
-  // useEffect(() => {
-  //   const user = localStorage.getItem("authData");
-  //   if (user) {
-  //     navigate("/overview");
-  //   }
-  // }, []);
+  useEffect(() => {
+         clearUserData()
 
+    // const user = localStorage.getItem("authData");
+    // if (user) {
+    //   navigate("/dashboard");
+    // }
+  }, []);
 
   async function login(e) {
     e.preventDefault();
-    navigate("/dashboard");
 
+    setIsLoading(true);
 
-    // setIsLoading(true);
-
-    // try {
-    //   const payload = { email: email, password: password };
-
-    //   const response = await api.signIn({ data: encryptaValue(payload) });
-
-    //   const decryptRes = JSON.parse(decryptaValue(response?.data));
-
-    //   setUserData(response?.data);
-    //   enqueueSnackbar(decryptRes.message, { variant: "success" });
-
-    //   setUserData(response?.data);
-
-    //   if (decryptRes?.user?.email_verified) {
-    //     setIsLoading(false);
-    //     navigate("/overview");
-    //   } else {
-    //     SendOtp(email);
-    //     setIsLoading(false);
-    //   }
-    // } catch (error) {
-    //   enqueueSnackbar(error.message, { variant: "error" });
-    //   setIsLoading(false);
-    // }
-  }
-
-  const SendOtp = async (email) => {
     try {
-      const response = await api.resendOtp({
-        email: email,
-      });
-      const decryptRes = JSON.parse(decryptaValue(response?.data));
+      const response = await api.signIn({ email: email, password: password });
 
-      enqueueSnackbar(decryptRes.message, { variant: "success" });
-      navigate("/validate-otp", { state: { email: email } });
+      setUserData(response);
+      enqueueSnackbar(response.message, { variant: "success" });
+      navigate("/dashboard");
     } catch (error) {
       enqueueSnackbar(error.message, { variant: "error" });
+      setIsLoading(false);
     }
-  };
+  }
+
   return (
     <div
       className="relative h-screen w-full flex justify-center items-center bg-cover bg-center"
@@ -146,7 +119,6 @@ const Login = () => {
               Password
             </label>
             <div className=" relative    flex items-center">
-            
               <div className="absolute right-[16px]">
                 {open === false ? (
                   <Eye size="16" color="#98A2B3" onClick={toggle} />
@@ -171,19 +143,11 @@ const Login = () => {
             </div>
           </div>
           <div className="flex gap-1 mb-8 items-center">
-            <input type="checkbox" className=""/>
+            <input type="checkbox" className="" />
             <p className="font-light">Remember me</p>
           </div>
 
-          {/* <Link to="/forgot-password">
-            {" "}
-            <button
-              type="button"
-              className="text-[14px] text-[#00B0C7] font-medium leading-[20px] tracking-[0.2px] mb-[20px]"
-            >
-              Forgot password?
-            </button>
-          </Link> */}
+        
 
           <button
             type="submit"
@@ -192,10 +156,6 @@ const Login = () => {
             <p className="text-sm font-medium leading-[20px]">Login</p>
             {isLoading && <ClipLoader color={"white"} size={20} />}
           </button>
-
-      
-
-      
         </form>
       </m.div>
     </div>

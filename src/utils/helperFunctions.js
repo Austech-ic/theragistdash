@@ -6,6 +6,37 @@ import Moment from "moment";
 import { useNavigate } from "react-router-dom";
 
 
+export function formatDate(dateString) {
+  // Create a Date object from the input string
+  const date = new Date(dateString);
+  
+  // Array of month abbreviations
+  const months = [
+      'Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'Jun.', 
+      'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.'
+  ];
+  
+  // Extract day, month, and year
+  const day = date.getDate();
+  const month = months[date.getMonth()];
+  const year = date.getFullYear();
+  
+  // Return formatted string
+  return `${day}. ${month} ${year}`;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // decryption
 export const decryptaValue = (value) => {
@@ -91,12 +122,7 @@ export function formatTime(date) {
   return formattedTime;
 }
 
-export function formatDate(datetimeStr) {
-  const date = Moment(datetimeStr);
-  const formattedDate = date.format("MMM DD, YYYY");
 
-  return formattedDate;
-}
 
 export const getExchangeRate = (currency, rates) => {
   for (const item of rates) {

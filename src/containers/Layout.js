@@ -19,11 +19,11 @@ function Layout() {
   });
   const profileData = ProfileQuery?.data || [];
 
-  // let userData = localStorage.getItem("authData");
-  // if (!userData) {
-  //   return <Navigate to="/login" />;
-  // } else {
-  // }
+  let userData = localStorage.getItem("authData");
+  if (!userData) {
+    return <Navigate to="/login" />;
+  } else {
+  }
 
   const toggleSidebar = () => {
     setIsSidebar(!isSidebar);

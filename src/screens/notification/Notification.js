@@ -18,92 +18,21 @@ import { ClipLoader } from "react-spinners";
 import InputField from "../../components/InputField";
 import { ArrowSquareLeft, Eye, Trash } from "iconsax-react";
 import { UploadCloud } from "lucide-react";
-import api from "../../api";
-import { useQuery } from "@tanstack/react-query";
-import { formatDate } from "../../utils/helperFunctions";
 
-const Councellor = () => {
+const Notification = () => {
   const [listType, setListType] = useState("All");
   const [isCreate, setIsCreate] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
-  const [isCancel, setIsCancel] = useState(false);
-  const [isSuspend, setIsSuspend] = useState(false);
+ 
   const [isLoading, setIsLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    gender: "",
-    address: "",
-    specialization: null,
-    
-  })
-
   const [phase, setPhase] = useState(1);
-
-  async function getActiveCounsellor(page) {
-    const response = await api.getActiveCounsellor({});
-    return response;
-  }
-
-  const results = useQuery(
-    ["getActiveCounsellor"],
-    () => getActiveCounsellor(),
-    {
-      keepPreviousData: true,
-      refetchOnWindowFocus: "always",
-    }
-  );
-
-  const activeData = results?.data?.data || [];
-
-  async function getSuspendedCounsellor(page) {
-    const response = await api.getSuspendedCounsellor({});
-    return response;
-  }
-
-  const suspendedResults = useQuery(
-    ["getSuspendedCounsellor"],
-    () => getSuspendedCounsellor(),
-    {
-      keepPreviousData: true,
-      refetchOnWindowFocus: "always",
-    }
-  );
-
-  const suspendedData = suspendedResults?.data?.data || [];
-
-  async function getDeletedCounsellor(page) {
-    const response = await api.getDeletedCounsellor({});
-    return response;
-  }
-
-  const deletedResults = useQuery(
-    ["getDeletedCounsellor"],
-    () => getDeletedCounsellor(),
-    {
-      keepPreviousData: true,
-      refetchOnWindowFocus: "always",
-    }
-  );
-
-  const deletedData = deletedResults?.data?.data || [];
-
-  const currentData =
-    listType === "All"
-      ? activeData
-      : listType === "Suspended"
-      ? suspendedData
-      : listType === "Deleted"
-      ? deletedData
-      : "";
 
   const openCreateModal = () => {
     setIsCreate(true);
   };
   const closeCreate = () => {
     setIsCreate(false);
-    setPhase(1);
+    setPhase(1)
   };
   const openDelete = () => {
     setIsDelete(true);
@@ -111,18 +40,7 @@ const Councellor = () => {
   const closeDelete = () => {
     setIsDelete(false);
   };
-  const openCancel = () => {
-    setIsCancel(true);
-  };
-  const closeCancel = () => {
-    setIsCancel(false);
-  };
-  const openSuspend = () => {
-    setIsSuspend(true);
-  };
-  const closeSuspend = () => {
-    setIsSuspend(false);
-  };
+
 
   const [preview, setPreview] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -145,10 +63,10 @@ const Councellor = () => {
   return (
     <div className="p-[18px] md:p-[28px] xl:p-[32px] 2xl:p-[38px]">
       <div className="flex justify-end mb-[20px] md:mb-[25px] xl:mb-[30px]">
-        <AddButton action={() => openCreateModal()} name="Add Counselor" />
+        <AddButton action={() => openCreateModal()} name="Add Notification" />
       </div>
       <div className="flex items-center justify-between ">
-        <SearchInput placeholder={"Search Counselor"} />
+        <SearchInput placeholder={"Search Notification"} />
 
         <div className="flex items-center gap-1">
           <p className="whitespace-nowrap ">Filter By</p>{" "}
@@ -160,68 +78,7 @@ const Councellor = () => {
         </div>
       </div>
 
-      <div className="mt-5 md:mt-6">
-        <ul className="flex gap-3 md:gap-4 lg-gap-5">
-          <li
-            onClick={() => setListType("All")}
-            className={`pb-2 cursor-pointer flex items-center gap-[6px]  ${
-              listType === "All"
-                ? "text-[#00B0C7] border-b-[2px] border-[#00B0C7]"
-                : "text-[#6F6F6F]"
-            }`}
-          >
-            <p>All Counselor</p>{" "}
-            <div
-              className={`h-[24px] w-[24px] flex items-center justify-center  text-xs  rounded-full ${
-                listType === "All"
-                  ? "text-[#00B0C7] bg-[#E6F7F9]"
-                  : "text-[#6F6F6F] bg-[#eaeaea]"
-              }`}
-            >
-              <p>{activeData?.length}</p>
-            </div>
-          </li>
-          <li
-            onClick={() => setListType("Suspended")}
-            className={`pb-2 cursor-pointer flex items-center gap-[6px]  ${
-              listType === "Suspended"
-                ? "text-[#00B0C7] border-b-[2px] border-[#00B0C7]"
-                : "text-[#6F6F6F]"
-            }`}
-          >
-            <p>Suspended Counselor</p>{" "}
-            <div
-              className={`h-[24px] w-[24px] flex items-center justify-center text-xs  rounded-full ${
-                listType === "Suspended"
-                  ? "text-[#00B0C7] bg-[#E6F7F9]"
-                  : "text-[#6F6F6F] bg-[#eaeaea]"
-              }`}
-            >
-              <p>{suspendedData?.length}</p>
-            </div>
-          </li>
-          <li
-            onClick={() => setListType("Deleted")}
-            className={`pb-2  cursor-pointer flex items-center gap-[6px]  ${
-              listType === "Deleted"
-                ? "text-[#00B0C7] border-b-[2px] border-[#00B0C7]"
-                : "text-[#6F6F6F]"
-            }`}
-          >
-            <p>Deleted Counselor</p>{" "}
-            <div
-              className={` text-xs h-[24px] w-[24px]  flex items-center justify-center rounded-full ${
-                listType === "Deleted"
-                  ? "text-[#00B0C7] bg-[#E6F7F9]"
-                  : "text-[#6F6F6F] bg-[#eaeaea] "
-              }`}
-            >
-              <p>{deletedData?.length}</p>
-            </div>
-          </li>
-        </ul>
-      </div>
-
+      
       <div className="overflow-x-auto">
         <div class=" mt-5">
           <div class="inline-block  min-w-full  ">
@@ -291,75 +148,58 @@ const Councellor = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {currentData && currentData?.length < 1 && (
- <EmtyTable
- name="Add Counselor"
- label={"No Company Registered yet"}
- cols={6}
- action={openCreateModal}
-/>
-                  )}
-                 
-                  {currentData?.map((item) => (
-                    <tr className="border-b-[0.8px] border-[#E4E7EC]">
-                      <td className="px-5 py-[16px] text-[14px] whitespace-nowrap ">
-                        <p className="font-medium whitespace-nowrap">
-                          {item?.username}
-                        </p>
-                        {/* <p className="text-[#9C9C9C] ">ID: 2346570067</p> */}
-                      </td>
-                      <td className="px-5 py-[16px] whitespace-nowrap text-[14px]  text-[#9C9C9C]">
-                        {formatDate(item?.date_joined)}
-                      </td>
-                      <td className="px-5 py-[16px] text-[14px]  text-[#9C9C9C]">
-                        {item?.client_category.map((item) => item?.name)}
-                      </td>
-                      <td className="px-5 py-[16px] whitespace-nowrap text-[14px]  text-[#9C9C9C]">
-                        {item?.email}
-                      </td>
-                      <td className="px-5 py-[16px] text-[14px]  text-[#9C9C9C]">
-                        {item?.total_sessions}
-                      </td>
-                      <td className="px-5 py-[16px] text-[14px]  text-[#212121]">
-                        <div className="flex gap-1 bg-[#91C561] bg-opacity-15 px-[12px] py-[4px] text-[#008D36] items-center rounded-xl">
-                          <svg
-                            width="14"
-                            height="10"
-                            viewBox="0 0 14 10"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M13 1L4.75 9L1 5.36364"
-                              stroke="#008D36"
-                              stroke-width="2"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                          </svg>
-                          <p>{item?.status}</p>
-                        </div>{" "}
-                      </td>
-                      <td className="px-5 py-[16px] text-[14px] md:text-[16px] text-[#212121]">
-                        <div className="flex items-center gap-1">
-                          <Eye
-                            onClick={openSuspend}
-                            size="20"
-                            variant="Bold"
-                            color="#F7A30A"
-                            className="cursor-pointer"
+                  <EmtyTable
+                    name="Add Notification"
+                    label={"No Company Registered yet"}
+                    cols={6}
+                    action={openCreateModal}
+                  />
+
+                  <tr className="border-b-[0.8px] border-[#E4E7EC]">
+                    <td className="px-5 py-[16px] text-[14px] whitespace-nowrap ">
+                      <p className="font-medium whitespace-nowrap">
+                        Dr. Racheal Bamidele
+                      </p>
+                      <p className="text-[#9C9C9C] ">ID: 2346570067</p>
+                    </td>
+                    <td className="px-5 py-[16px] whitespace-nowrap text-[14px]  text-[#9C9C9C]">
+                      31. Dec. 2022
+                    </td>
+                    <td className="px-5 py-[16px] text-[14px]  text-[#9C9C9C]">
+                      Anxiety
+                    </td>
+                    <td className="px-5 py-[16px] whitespace-nowrap text-[14px]  text-[#9C9C9C]">
+                      rachealbambam@gmail.com{" "}
+                    </td>
+                    <td className="px-5 py-[16px] text-[14px]  text-[#9C9C9C]">
+                      76
+                    </td>
+                    <td className="px-5 py-[16px] text-[14px]  text-[#212121]">
+                      <div className="flex gap-1 bg-[#91C561] bg-opacity-15 px-[12px] py-[4px] text-[#008D36] items-center rounded-xl">
+                        <svg
+                          width="14"
+                          height="10"
+                          viewBox="0 0 14 10"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M13 1L4.75 9L1 5.36364"
+                            stroke="#008D36"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
                           />
-                          <Trash
-                            onClick={openDelete}
-                            size="20"
-                            variant="Bold"
-                            color="red"
-                            className="cursor-pointer"
-                          />
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                        </svg>
+                        <p>Active</p>
+                      </div>{" "}
+                    </td>
+                    <td className="px-5 py-[16px] text-[14px] md:text-[16px] text-[#212121]">
+                      <div className="flex items-center gap-1">
+                        <Trash onClick={openDelete} size="20" variant="Bold" color="red" className="cursor-pointer"  />
+                      </div>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -367,51 +207,7 @@ const Councellor = () => {
         </div>
       </div>
 
-      {/* Suspend Councellor Modal */}
-      <Modal
-        isCentered
-        isOpen={isSuspend}
-        onClose={closeSuspend}
-        size={{ base: "xs", sm: "md" }}
-        style={{ borderRadius: 12 }}
-        motionPreset="slideInBottom"
-        className="rounded-[12px]"
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalCloseButton size={"sm"} />
-          <ModalBody
-            py={{ base: "20px", md: "24px" }}
-            px={{ base: "16px", md: "24px" }}
-          >
-            <p className=" text-[16px] md:text-lg text-center mt-4  text-[#000] leading-[24px] font-medium  ">
-              You about to Suspend this Councilor{" "}
-            </p>
-
-            <p className="text-[14px]  text-[#667185] leading-[20px] font-light text-center mt-2  ">
-              Are you sure you want to suspend this councilor? This action will
-              restrict their access to the platform till it is undone.
-            </p>
-          </ModalBody>
-          <div className="flex items-center justify-evenly pb-2 md:py-3">
-            <button
-              onClick={() => {
-                closeSuspend();
-              }}
-              className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={closeCancel}
-              className=" w-[99px] text-center bg-[#F7A30A] rounded-[8px] py-[12px] text-[14px] font-medium text-white"
-            >
-              Suspend
-            </button>
-          </div>
-        </ModalContent>
-      </Modal>
-      {/* Delete Counselor Modal */}
+      {/* Delete Notification Modal */}
       <Modal
         isCentered
         isOpen={isDelete}
@@ -429,12 +225,10 @@ const Councellor = () => {
             px={{ base: "16px", md: "24px" }}
           >
             <p className=" text-[16px] md:text-lg text-center mt-4  text-[#000] leading-[24px] font-medium  ">
-              You about to Delete this Councilor{" "}
-            </p>
+            You about to Delete this Notification            </p>
 
             <p className="text-[14px]  text-[#667185] leading-[20px] font-light text-center mt-2  ">
-              Are you sure you want to delete this councilor? This action will
-              Permanently delete the councilor’s profile on the platform.
+            Are you sure you want to delete this Notification? This action will Permanently delete the Notification’s profile on the platform.
             </p>
           </ModalBody>
           <div className="flex items-center justify-evenly pb-2 md:py-3">
@@ -456,56 +250,11 @@ const Councellor = () => {
         </ModalContent>
       </Modal>
 
-      {/* Cancel Registration Modal */}
-      <Modal
-        isCentered
-        isOpen={isCancel}
-        onClose={closeCancel}
-        size={{ base: "xs", sm: "md" }}
-        style={{ borderRadius: 12 }}
-        motionPreset="slideInBottom"
-        className="rounded-[12px]"
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalCloseButton size={"sm"} />
-          <ModalBody
-            py={{ base: "20px", md: "24px" }}
-            px={{ base: "16px", md: "24px" }}
-          >
-            <p className=" text-[16px] md:text-lg text-center mt-4  text-[#000] leading-[24px] font-medium  ">
-              You about to Cancel the registration{" "}
-            </p>
-
-            <p className="text-[14px]  text-[#667185] leading-[20px] font-light text-center mt-2  ">
-              You have not finished the registration process, Are you sure you
-              want to cancel.
-            </p>
-          </ModalBody>
-          <div className="flex items-center justify-evenly pb-2 md:py-3">
-            <button
-              onClick={() => {
-                closeCreate();
-                closeCancel();
-              }}
-              className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={closeCancel}
-              className=" w-[99px] text-center bg-[#B50000] rounded-[8px] py-[12px] text-[14px] font-medium text-white"
-            >
-              Back
-            </button>
-          </div>
-        </ModalContent>
-      </Modal>
-
+     
       <Modal
         isCentered
         isOpen={isCreate}
-        onClose={openCancel}
+        onClose={closeCreate}
         size={{ base: "xs", sm: "md", lg: "xl" }}
         style={{ borderRadius: 12 }}
         motionPreset="slideInBottom"
@@ -525,7 +274,7 @@ const Councellor = () => {
                   <ArrowSquareLeft size={14} className="hover:text-primary" />
                 </button>
               )}
-              Register New Councilor{" "}
+              Register New Notification{" "}
             </div>
           </ModalHeader>
           <ModalCloseButton size={"sm"} />
@@ -538,7 +287,7 @@ const Councellor = () => {
           >
             <div className="flex gap-[20px] md:gap-[30px]">
               <p className="text-xs md:text-sm">
-                Manually Register a Councilor by filing the below form and
+                Manually Register a Notification by filing the below form and
                 uploading there documents
               </p>
               <p className="text-primary font-medium whitespace-nowrap text-xs md:textsm ">
@@ -549,7 +298,7 @@ const Councellor = () => {
               <>
                 <div className="mb-[8px] mt-4 md:mt-5">
                   <label className="text-[14px] md:text-base text-[#1C1C1C] font-medium   mb-[8px] md:mb-[16px]">
-                    Councilor Name<sup className="text-[#A97400]">*</sup>
+                    Notification Name<sup className="text-[#A97400]">*</sup>
                   </label>
                   <div className="">
                     <InputField
@@ -719,4 +468,4 @@ const Councellor = () => {
   );
 };
 
-export default Councellor;
+export default Notification;

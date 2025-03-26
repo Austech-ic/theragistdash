@@ -176,11 +176,11 @@ const Topbar = ({ setIsSidebar }) => {
           class="h-8 w-8 sm:h-10 sm:w-10 bg-[#FAFAFA] hover:bg-[#efeeee] flex justify-center items-center rounded-md lg:hidden mr-2"
           onClick={setIsSidebar}
         >
-          <HambergerMenu size={18} color="#31363EFF" />
+          <HambergerMenu size={18} color="#00B0C7"/>
         </button>
 
         <div className="md:flex items-center gap-1 hidden ">
-          <HambergerMenu size={24} color="#00B0C7" />
+          <HambergerMenu size={24} color="#00B0C7"  className="hidden lg:block"/>
           <h4 className="text-[20px] text-[#00B0C7] font-normal ">
             {location.pathname === "/dashboard"
               ? "Dashboard"
@@ -196,18 +196,18 @@ const Topbar = ({ setIsSidebar }) => {
               ? "User"
               : location.pathname === "/messages"
               ? "Messages"
-              : location.pathname === "/name"
-              ? "Name"
-              : location.pathname === "/userAdmin"
-              ? "User Admin"
-              : location.pathname === "/isActive"
-              ? "IsActive"
-              : location.pathname === "/accountDetails"
-              ? "Account Details"
-              : location.pathname === "/paymentlink"
-              ? "Payment Link"
-              : location.pathname === "/currency"
-              ? "Currency"
+              : location.pathname === "/privacy-policy"
+              ? "Privacy Policy"
+              : location.pathname === "/community-guidline"
+              ? "Community Guidline"
+              : location.pathname === "/about-us"
+              ? "About Us"
+              : location.pathname === "/group-management"
+              ? "Group Management"
+              : location.pathname === "/user-assessment"
+              ? "User Assessment"
+              : location.pathname === "/space-management"
+              ? "Space Management"
               : location.pathname === "/security"
               ? "Security"
               : ""}

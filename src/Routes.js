@@ -7,10 +7,6 @@ import {
 } from "react-router-dom";
 import Layout from "./containers/Layout";
 import Home from "./screens/Home";
-// import OverView from "./screens/OverView";
-// import Transactions from "./screens/Transaction";
-// import Users from "./screens/Users";
-// import Store from "./screens/Store";
 import Dashboard from "./screens/dashboard/Dashboard";
 import Councellor from "./screens/councellor/Councellor";
 import BookingTracker from "./screens/booking-tracker/BookingTracker";
@@ -18,6 +14,14 @@ import Category from "./screens/booking-tracker/Category";
 import Comapny from "./screens/company/Comapny";
 import User from "./screens/users/user";
 import Message from "./screens/message/message";
+import Space from "./screens/space/Space";
+import UserAssessment from "./screens/user-assesment/userAsssessment";
+import Group from "./screens/group/group";
+import AboutUs from "./screens/settings/AboutUs";
+import CommunityGuidline from "./screens/settings/CommunityGuidline";
+import PrivacyPolicy from "./screens/settings/PrivacyPolicy";
+import Notification from "./screens/notification/Notification";
+import SystemUpdate from "./screens/system-update/SystemUpdate";
 
 const DashboardRoutes = () => {
   return (
@@ -31,11 +35,14 @@ const DashboardRoutes = () => {
         <Route path="/company-management" exact={true} element={<Comapny />} />
         <Route path="/user" exact={true} element={<User />} />
         <Route path="/messages" exact={true} element={<Message />} />
-
-        {/* <Route path="/transaction" exact={true} element={<Transactions />} />
-
-        <Route path="/store" exact={true} element={<Store />} />
-        <Route path="/users" exact={true} element={<Users />} /> */}
+        <Route path="/space-management" exact={true} element={<Space />} />
+        <Route path="/user-assessment" exact={true} element={<UserAssessment />} />
+        <Route path="/group-management" exact={true} element={<Group />} />
+        <Route path="/about-us" exact={true} element={<AboutUs />} />
+        <Route path="/community-guidline" exact={true} element={<CommunityGuidline />} />
+        <Route path="/privacy-policy" exact={true} element={<PrivacyPolicy />} />
+        <Route path="/send-notification" exact={true} element={<Notification />} />
+        <Route path="/system-update" exact={true} element={<SystemUpdate />} />
       </Route>
     </Routes>
   );

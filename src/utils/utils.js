@@ -1,42 +1,15 @@
 import axios from "axios";
-import {
-  decryptaValue,
-  DecryptUserData,
-  decryptValue,
-  encryptaValue,
-  encryptValue,
-} from "./helperFunctions";
 
 export async function getHeaders() {
-  let userData = localStorage.getItem("authData");
-  // //console.log(userData, "headerxx======>>>>>>");
-
-  if (userData) {
-    // let decryptuserData = decryptaValue(userData);
-
-
-   const  decryptUserData = "";
-    function cutTokenBeforeSymbol(token) {
-      const symbol = "|";
-      const symbolIndex = token.indexOf(symbol);
-
-      if (symbolIndex !== -1) {
-        // Cut out the values before and including the symbol
-        return token.slice(symbolIndex + 1);
-      }
-
-      // If the symbol is not found, return the original token
-      return token;
-    }
-
-    const token = "Bearer " + cutTokenBeforeSymbol(decryptUserData?.token);
-    // //console.log(userData.data.accessToken, "header");
-    // //console.log("token====>>>",token)
+  let authData = localStorage.getItem("authData");
+  // console.log(authData.data.accessToken, "header");
+  if (authData) {
+    authData = JSON.parse(authData);
+    const token = "Bearer " + authData.token;
     return {
       authorization: token,
       Accept: "application/json",
       "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
     };
   }
   return {};
@@ -56,7 +29,7 @@ export async function apiReq(
       ...headers,
     };
 
-    if (method === "get" || method === "delete") {
+    if (method === "get" ) {
       data = {
         ...requestOptions,
         ...data,
@@ -74,10 +47,11 @@ export async function apiReq(
         return res(data);
       })
       .catch((error) => {
-        // //console.log(error);
-        // //console.log(error && error.response, "the error respne");
+        console.log(error);
+        console.log(error && error.response, "the error respne");
         if (error && error.response && error.response.status === 401) {
-          clearUserData();
+          clearauthData();
+
         }
         if (error && error.response && error.response.data) {
           if (!error.response.data.message) {
@@ -96,7 +70,6 @@ export async function apiReq(
 }
 
 export function apiPost(endPoint, data, headers = {}) {
-  // const encdata= encryptaValue(JSON.stringify(data))
   return apiReq(endPoint, data, "post", headers);
 }
 
@@ -108,12 +81,7 @@ export function apiGet(endPoint, data, headers = {}, requestOptions) {
   return apiReq(endPoint, data, "get", headers, requestOptions);
 }
 
-export function apiGetCSV(
-  endPoint,
-  data,
-  headers = {},
-  requestOptions = { responseType: "blob" }
-) {
+export function apiGetCSV(endPoint, data, headers = {}, requestOptions = { responseType: 'blob' }) {
   return apiReq(endPoint, data, "get", headers, requestOptions);
 }
 
@@ -144,7 +112,6 @@ export function clearAsyncStorate(key) {
 
 export function setUserData(data) {
   data = JSON.stringify(data);
-
   return localStorage.setItem("authData", data);
 }
 
@@ -153,13 +120,14 @@ export function setUserTempData(data) {
   return localStorage.setItem("userTempData", data);
 }
 
-export async function getUserData() {
+export async function getauthData() {
   return new Promise((resolve, reject) => {
     localStorage.getItem("authData").then((data) => {
       resolve(data);
     });
   });
 }
+
 export async function clearUserData() {
   return localStorage.removeItem("authData");
 }
