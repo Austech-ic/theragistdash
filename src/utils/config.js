@@ -33,12 +33,12 @@ export const GETTRACKING = getApiUrl("/booking/tracking/");
 export const GETATrackING = getApiUrl("/booking-tracking/"); //id
 
 //category
-export const GETCATEGORIES = getApiUrl("/category/");
+export const GETCATEGORIES = "https://octopus-app-spiq3.ondigitalocean.app/client/api/v1/counselling/category/"
 export const GETACATEGORY = getApiUrl("/category/"); //id
 export const UPDATECATEGORY = getApiUrl("/category/"); //id
 
 //company
-export const GETCOMPANIES = getApiUrl("/company/");
+export const GETCOMPANIES = getApiUrl("/company_management/");
 export const GETACOMPANY = getApiUrl("/company/"); //id
 export const UPDATECOMPANY = getApiUrl("/company/"); //id
 export const COMPANYUSERADD = getApiUrl("/company/user/add"); 
@@ -52,3 +52,24 @@ export const GETACTIVECOUNSELLOR = getApiUrl("/counsellor_management/active/");
 //
 export const TRANSACTION = getApiUrl("/dashboard/");
 export const CUSTOMERS = getApiUrl("/dashboard/");
+
+
+//
+export const UPDATEDELETE = getApiUrl("/delete/");//id
+export const UPDATESUSPEND = getApiUrl("/suspend/");//id
+
+
+
+//user
+export const GETUSERS = getApiUrl("/user/management/");
+
+//user assessment
+export const GETUSERASSESSMENT = getApiUrl("/user/assessment/");
+export const GETAUSERASSESSMENTHISTORYRESPONSE = getApiUrl("/user-assessment/"); //id
+
+//post
+export const POST = "https://octopus-app-spiq3.ondigitalocean.app/client/api/v1/social/post/"
+
+
+
+

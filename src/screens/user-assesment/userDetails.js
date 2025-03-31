@@ -1,7 +1,10 @@
-import { ArrowSquareLeft } from "iconsax-react";
+import { ArrowSquareLeft, Eye } from "iconsax-react";
 import React from "react";
+import EmtyTable from "../../components/common/EmtyTable";
+import Details from "../../components/common/Details";
+import { Link } from "react-router-dom";
 
-const UserDetails = () => {
+const UserAsssessmentDetails = () => {
   return (
     <div className="p-[18px] md:p-[28px] xl:p-[32px] 2xl:p-[38px]">
       <div>
@@ -12,33 +15,16 @@ const UserDetails = () => {
           </p>
         </div>
 
-        <div className="border border-[#E1E1E1] rounded-[4px] ">
+        <div className="border border-[#E1E1E1] rounded-[6px] p-2 sm:p-4 md:p-5 lg:p-7 xl:p-9">
           <p>User Details</p>
           <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
-            <div>
-              <p classsName="text-sm mb-1 text-[#2e2e2e]">
-                Name <sup className="">*</sup>
-              </p>
-              <div className="border border-[#E1E1E1] w-full rounded-[4px] px-2 py-1 text-[#6F6F6F] text-sm">
-                Kemzy
-              </div>
-            </div>
-            <div>
-              <p classsName="text-sm mb-1 text-[#2e2e2e]">
-                Email <sup className="">*</sup>
-              </p>
-              <div className="border border-[#E1E1E1] w-full rounded-[4px] px-2 py-1 text-[#6F6F6F] text-sm">
-                Kemzy@gmail.com
-              </div>
-            </div>
-            <div>
-              <p classsName="text-sm mb-1 text-[#2e2e2e]">
-                Category <sup className="">*</sup>
-              </p>
-              <div className="border border-[#E1E1E1] w-full rounded-[4px] px-2 py-1 text-[#6F6F6F] text-sm">
-                Kemzy
-              </div>
-            </div>
+            <Details title={"Name"} details="Kemzy" />
+            <Details title={"Name"} details="Kemzy" />
+            <Details title={"Name"} details="Kemzy" />
+            <Details title={"Name"} details="Kemzy" />
+            <Details title={"Name"} details="Kemzy" />
+            <Details title={"Name"} details="Kemzy" />
+            <Details title={"Name"} details="Kemzy" />
           </div>
         </div>
 
@@ -71,22 +57,43 @@ const UserDetails = () => {
                             Assessment Date{" "}
                           </div>
                         </th>
+                        <th
+                          scope="col"
+                          className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px]  text-[#282828]  font-medium  tracking-[0.2%]"
+                        >
+                          <div className="flex px-5 whitespace-nowrap   gap-[6px] md:gap-[12px] items-center">
+                            Action
+                          </div>
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
                       <EmtyTable
-                        name="Add User"
                         label={"No User Assessment History"}
-                        cols={6}
+                        cols={3}
+                        noButton={true}
                       />
 
                       <tr className="border-b-[0.8px] border-[#E4E7EC]">
-                        <td className="px-5 py-[16px] text-[14px] text-center  text-[#2e2e2e]">
-                          1
+                        <td className="px-5 py-[16px] text-[14px]   text-[#2e2e2e]">
+                          Assessment K10
                         </td>
 
                         <td className="px-5 py-[16px] whitespace-nowrap text-[14px]  text-[#9C9C9C]">
                           31. Dec. 2022
+                        </td>
+
+                        <td className="px-5 py-[16px] text-[14px] md:text-[16px] text-[#212121]">
+                          <div className="flex items-center gap-1">
+                            <Link to="/user-assessment/assessment-response">
+                              <Eye
+                                size="20"
+                                variant="Bold"
+                                color="#F7A30A"
+                                className="cursor-pointer"
+                              />
+                            </Link>
+                          </div>
                         </td>
                       </tr>
                     </tbody>
@@ -101,4 +108,4 @@ const UserDetails = () => {
   );
 };
 
-export default UserDetails;
+export default UserAsssessmentDetails;

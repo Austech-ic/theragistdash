@@ -16,20 +16,29 @@ import {
 import InputField from "../../components/InputField";
 import { Edit, Edit2, Eye, Trash } from "iconsax-react";
 import EmtyTable from "../../components/common/EmtyTable";
+import api from "../../api";
+import { useQuery } from "@tanstack/react-query";
+import { enqueueSnackbar } from "notistack";
 
 const Group = () => {
   const [isCreate, setIsCreate] = useState(false);
   const [listType, setListType] = useState("All");
   const [isDelete, setIsDelete] = useState(false);
   const [isSuspend, setIsSuspend] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [search, setSearch] = useState("");
+  const [resultId, setResultId] = useState("")
 
   const openSuspend = () => {
+
     setIsSuspend(true);
   };
   const closeSuspend = () => {
     setIsSuspend(false);
   };
-  const openDelete = () => {
+  const openDelete = (id) => {
+    setResultId(id);
+
     setIsDelete(true);
   };
   const closeDelete = () => {
@@ -43,6 +52,40 @@ const Group = () => {
     setIsCreate(false);
   };
 
+  async function getGroups(page) {
+    const response = await api.getGroups({
+      // params: {
+      //   search: search,
+      // },
+    });
+    return response;
+  }
+
+  const results = useQuery(["getGroups"], () => getGroups(), {
+    keepPreviousData: true,
+    refetchOnWindowFocus: "always",
+  });
+
+  const groupData = results?.data?.data || [];
+
+   const deleteUser = async () => {
+      setIsLoading(true);
+  
+      try {
+        const response = await api.deleteUser(resultId);
+        enqueueSnackbar(response?.message, { variant: "success" });
+        results.refetch();
+        setIsLoading(false);
+        closeDelete(false);
+        setResultId("");
+      } catch (error) {
+        enqueueSnackbar(error.message, { variant: "error" });
+  
+        setIsLoading(false);
+      }
+    };
+  
+
   return (
     <div className="p-[18px] md:p-[28px] xl:p-[32px] 2xl:p-[38px]">
       {/* <div className="flex justify-end mb-[20px] md:mb-[25px] xl:mb-[30px]">
@@ -50,15 +93,6 @@ const Group = () => {
       </div> */}
       <div className="flex items-center justify-between ">
         <SearchInput placeholder={"Search Group"} />
-
-        <div className="flex items-center gap-1">
-          <p className="whitespace-nowrap ">Filter By</p>{" "}
-          <select className="w-full  pl-[6px] py-[10px] text-[14px] text-[#2e2e2e] leading-[20px] bg-[#fff] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#E1E1E1] border-[1px] rounded-[6px] focus:outline-none focus:ring-[#00B0C7] focus:border-[#00B0C7] ">
-            <option value="">Attended Sessions</option>
-            <option value="">Categories</option>
-            <option value="">Status</option>
-          </select>{" "}
-        </div>
       </div>
 
       <div className="mt-5 md:mt-6">
@@ -130,12 +164,13 @@ const Group = () => {
               <table className="min-w-full mb-6 border-[0.8px] border-r-[0.8px]  border-l-[0.8px] border-[#E4E7EC] rounded-lg">
                 <thead className="bg-[#E6F7F9] ">
                   <tr className="">
-                  <th
+                    <th
                       scope="col"
                       className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px]  text-[#282828]  font-medium  tracking-[0.2%]"
                     >
                       <div className="flex px-5 whitespace-nowrap   gap-[6px] md:gap-[12px] items-center">
-SN                      </div>
+                        SN{" "}
+                      </div>
                     </th>
                     <th
                       scope="col"
@@ -159,17 +194,18 @@ SN                      </div>
                       className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px]  text-[#282828]  font-medium  tracking-[0.2%]"
                     >
                       <div className="flex whitespace-nowrap  gap-[6px] md:gap-[12px] items-center my-0">
-                      Group members                      </div>
+                        Group members{" "}
+                      </div>
                     </th>
                     <th
                       scope="col"
                       className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px]  text-[#282828]  font-medium  tracking-[0.2%]"
                     >
                       <div className="flex whitespace-nowrap   gap-[6px] md:gap-[12px] items-center my-0">
-                      Group Creator                      </div>
+                        Group Creator{" "}
+                      </div>
                     </th>
-                   
-                   
+
                     <th
                       scope="col"
                       className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px]  text-[#282828]  font-medium  tracking-[0.2%]"
@@ -190,71 +226,77 @@ SN                      </div>
                   </tr>
                 </thead>
                 <tbody>
-                  <EmtyTable
-                    name="Add Group"
-                    label={"No Group Registered yet"}
-                    cols={6}
-                  />
+                  {groupData && groupData?.length < 1 && (
+                    <EmtyTable
+                      label={"No Group Registered yet"}
+                      cols={6}
+                      action={openCreateModal}
+                      noButton= {true}
+                    />
+                  )}
 
-                  <tr className="border-b-[0.8px] border-[#E4E7EC]">
-                  <td className="px-5 py-[16px] text-[14px] text-center  text-[#2e2e2e]">
-                      1
-                    </td>
-                    <td className="px-5 py-[16px] text-[14px] whitespace-nowrap ">
-                      <p className="font-medium whitespace-nowrap">
-                      Overcoming Anxiety                      </p>
-                      <p className="text-[#9C9C9C] ">ID: 2346570067</p>
-                    </td>
-                    <td className="px-5 py-[16px] whitespace-nowrap text-[14px]  text-[#9C9C9C]">
-                      31. Dec. 2022
-                    </td>
-                    <td className="px-5 py-[16px] text-[14px]  text-[#9C9C9C]">
-                    12
-                    </td>
-                    <td className="px-5 py-[16px] text-[14px]  text-[#9C9C9C]">
-                    Ramzy                    </td>
-                  
+                  {groupData?.map((item, index) => (
+                    <tr className="border-b-[0.8px] border-[#E4E7EC]">
+                      <td className="px-5 py-[16px] text-[14px] text-center  text-[#2e2e2e]">
+                        1
+                      </td>
+                      <td className="px-5 py-[16px] text-[14px] whitespace-nowrap ">
+                        <p className="font-medium whitespace-nowrap">
+                          Overcoming Anxiety{" "}
+                        </p>
+                        <p className="text-[#9C9C9C] ">ID: 2346570067</p>
+                      </td>
+                      <td className="px-5 py-[16px] whitespace-nowrap text-[14px]  text-[#9C9C9C]">
+                        31. Dec. 2022
+                      </td>
+                      <td className="px-5 py-[16px] text-[14px]  text-[#9C9C9C]">
+                        12
+                      </td>
+                      <td className="px-5 py-[16px] text-[14px]  text-[#9C9C9C]">
+                        Ramzy{" "}
+                      </td>
 
-                    <td className="px-5 py-[16px] text-[14px]  text-[#212121]">
-                      <div className="flex gap-1 bg-[#91C561] bg-opacity-15 px-[12px] py-[4px] text-[#008D36] items-center rounded-xl">
-                        <svg
-                          width="14"
-                          height="10"
-                          viewBox="0 0 14 10"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M13 1L4.75 9L1 5.36364"
-                            stroke="#008D36"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
+                      <td className="px-5 py-[16px] text-[14px]  text-[#212121]">
+                        <div className="flex gap-1 bg-[#91C561] bg-opacity-15 px-[12px] py-[4px] text-[#008D36] items-center rounded-xl">
+                          <svg
+                            width="14"
+                            height="10"
+                            viewBox="0 0 14 10"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M13 1L4.75 9L1 5.36364"
+                              stroke="#008D36"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                          <p>Active</p>
+                        </div>{" "}
+                      </td>
+                      <td className="px-5 py-[16px] text-[14px] md:text-[16px] text-[#212121]">
+                        <div className="flex items-center gap-1">
+                          <Eye
+                            onClick={openSuspend}
+                            size="20"
+                            variant="Bold"
+                            color="#F7A30A"
+                            className="cursor-pointer"
                           />
-                        </svg>
-                        <p>Active</p>
-                      </div>{" "}
-                    </td>
-                    <td className="px-5 py-[16px] text-[14px] md:text-[16px] text-[#212121]">
-                      <div className="flex items-center gap-1">
-                        <Eye
-                          onClick={openSuspend}
-                          size="20"
-                          variant="Bold"
-                          color="#F7A30A"
-                          className="cursor-pointer"
-                        />
-                       
-                        <Trash
-                          onClick={openDelete}
-                          size="20"
-                          variant="Bold"
-                          color="red"
-                          className="cursor-pointer"
-                        />
-                      </div>
-                    </td>
-                  </tr>
+
+                          <Trash
+                            onClick={openDelete}
+                            size="20"
+                            variant="Bold"
+                            color="red"
+                            className="cursor-pointer"
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>

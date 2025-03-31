@@ -38,7 +38,7 @@ import {
 } from "iconsax-react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import { Computer, Settings } from "lucide-react";
+import { Compass, Computer, Settings } from "lucide-react";
 
 const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
   const router = useLocation();
@@ -55,11 +55,11 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
       path: "counselor-management",
       icon: Profile2User,
     },
-    {
-      name: "Messages",
-      path: "messages",
-      icon: MessageFavorite,
-    },
+    // {
+    //   name: "Messages",
+    //   path: "messages",
+    //   icon: MessageFavorite,
+    // },
     {
       name: "Booking Tracker",
       path: "booking-tracker",
@@ -77,11 +77,11 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
     },
   ];
   const Menu2 = [
-    {
-      name: "Space Management",
-      path: "space-management",
-      icon: Microphone,
-    },
+    // {
+    //   name: "Space Management",
+    //   path: "space-management",
+    //   icon: Microphone,
+    // },
     {
       name: "User Assessment",
       path: "user-assessment",
@@ -156,28 +156,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
               <div className=" mt-[32px] md:mt-[40px] xl:mt-[47px]  overflow-auto h-full no-scrollbar flex-1">
                 {Menu1.map((menu, index) => (
                   <Link
-                  key={index}
-                    to={`/${menu?.path}`}
-                    onClick={onClose}
-                    className={` py-[10px] pl-[16px] md:py-[16px] md:pl-[20px] flex items-center text-[14px]     leading-[20px] md:leading-[24px] ${
-                      window.location.pathname === `/${menu?.path}`
-                        ? "text-[#ffffff] font-medium rounded-tr-lg rounded-br-lg bg-[#00B0C7]"
-                        : "text-[#ffffff] font-normal"
-                    }`}
-                  >
-                    <menu.icon
-                      className="mr-[16px]"
-                      size={20}
-                      variant={"Bold"}
-                    />
-                    {menu?.name}
-                  </Link>
-                ))}
-
-                {Menu2.map((menu, index) => (
-                  <Link
-                  key={index}
-
+                    key={index}
                     to={`/${menu?.path}`}
                     onClick={onClose}
                     className={` py-[10px] pl-[16px] md:py-[16px] md:pl-[20px] flex items-center text-[14px]     leading-[20px] md:leading-[24px] ${
@@ -196,6 +175,74 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                 ))}
 
                 <button
+                  onClick={() => setIsSettingActive(!isSettingActive)}
+                  className={`py-[10px] pl-[16px] md:py-[16px] pr-2 md:pl-[20px] flex justify-between w-full items-center text-[14px]     leading-[20px] md:leading-[24px] ${
+                    window.location.pathname === `/privacy-policy` ||
+                    window.location.pathname === `/feed-management/post` ||
+                    window.location.pathname === `/about-us`
+                      ? "text-[#ffffff] font-medium rounded-tr-lg rounded-br-lg bg-[#00B0C7]"
+                      : "text-[#ffffff] font-normal"
+                  }`}
+                >
+                  <div className="flex items-center ">
+                    {" "}
+                    <Compass className="mr-[12px]" size={20} />
+                    Feed Management
+                  </div>
+
+                  {isSettingActive ? (
+                    <ArrowUp2 size="14" variant="Linear" color="#fff" />
+                  ) : (
+                    <ArrowDown2 size="14" variant="Linear" color="#fff" />
+                  )}
+                </button>
+
+                {isSettingActive && (
+                  <ul className="ml-[26px] pl-[12px] py-[8px] mb-1">
+                    <Link
+                      to="/feed-management/post"
+                      className={` py-[6px] pl-[12px] flex items-center text-[12px] md:text-sm   rounded-md  hover:bg-[#F7F9FC] hover:text-[#667185]  ${
+                        window.location.pathname === "/feed-management/post"
+                          ? "bg-[#F7F9FC] text-[#2e2e2e] font-medium "
+                          : " font-normal text-[#fff] "
+                      }`}
+                    >
+                      <li className="">Feed Post</li>
+                    </Link>
+                    <Link
+                      to="/privacy-policy"
+                      className={` py-[6px] pl-[12px] flex items-center text-[12px] md:text-sm   rounded-md  hover:bg-[#F7F9FC] hover:text-[#667185]  ${
+                        window.location.pathname === "/privacy-policy"
+                          ? "bg-[#F7F9FC] text-[#2e2e2e] font-medium "
+                          : " font-normal text-[#fff]"
+                      }`}
+                    >
+                      <li className="">Article Post </li>
+                    </Link>
+                  </ul>
+                )}
+
+                {Menu2.map((menu, index) => (
+                  <Link
+                    key={index}
+                    to={`/${menu?.path}`}
+                    onClick={onClose}
+                    className={` py-[10px] pl-[16px] md:py-[16px] md:pl-[20px] flex items-center text-[14px]     leading-[20px] md:leading-[24px] ${
+                      window.location.pathname === `/${menu?.path}`
+                        ? "text-[#ffffff] font-medium rounded-tr-lg rounded-br-lg bg-[#00B0C7]"
+                        : "text-[#ffffff] font-normal"
+                    }`}
+                  >
+                    <menu.icon
+                      className="mr-[16px]"
+                      size={20}
+                      variant={"Bold"}
+                    />
+                    {menu?.name}
+                  </Link>
+                ))}
+
+                {/* <button
                   onClick={() => setIsSettingActive(!isSettingActive)}
                   className={`py-[10px] pl-[16px] md:py-[16px] pr-2 md:pl-[20px] flex justify-between w-full items-center text-[14px]     leading-[20px] md:leading-[24px] ${
                     window.location.pathname === `/privacy-policy` ||
@@ -251,28 +298,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                       <li className="">Community Guidline </li>
                     </Link>
                   </ul>
-                )}
-
-                {Menu3.map((menu, index) => (
-                  <Link
-                  key={index}
-
-                    to={`/${menu?.path}`}
-                    onClick={onClose}
-                    className={` py-[10px] pl-[16px] md:py-[16px] md:pl-[20px] flex items-center text-[14px]     leading-[20px] md:leading-[24px] ${
-                      window.location.pathname === `/${menu?.path}`
-                        ? "text-[#ffffff] font-medium rounded-tr-lg rounded-br-lg bg-[#00B0C7]"
-                        : "text-[#ffffff] font-normal"
-                    }`}
-                  >
-                    <menu.icon
-                      className="mr-[16px]"
-                      size={20}
-                      variant={"Bold"}
-                    />
-                    {menu?.name}
-                  </Link>
-                ))}
+                )} */}
               </div>
             </div>
           </div>

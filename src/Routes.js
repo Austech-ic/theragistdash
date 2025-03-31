@@ -22,6 +22,10 @@ import CommunityGuidline from "./screens/settings/CommunityGuidline";
 import PrivacyPolicy from "./screens/settings/PrivacyPolicy";
 import Notification from "./screens/notification/Notification";
 import SystemUpdate from "./screens/system-update/SystemUpdate";
+import UserDetails from "./screens/users/userDetails";
+import UserAsssessmentDetails from "./screens/user-assesment/userDetails";
+import AsssessmentResponse from "./screens/user-assesment/asssessmentResponse";
+import Post from "./screens/feed-management/post";
 
 const DashboardRoutes = () => {
   return (
@@ -43,6 +47,10 @@ const DashboardRoutes = () => {
         <Route path="/privacy-policy" exact={true} element={<PrivacyPolicy />} />
         <Route path="/send-notification" exact={true} element={<Notification />} />
         <Route path="/system-update" exact={true} element={<SystemUpdate />} />
+        <Route path="/user/user-details" exact={true} element={<UserDetails />} />
+        <Route path="/user-assessment/assessment-details" exact={true} element={<UserAsssessmentDetails />} />
+        <Route path="/user-assessment/assessment-response" exact={true} element={<AsssessmentResponse />} />
+        <Route path="/feed-management/post" exact={true} element={<Post />} />
       </Route>
     </Routes>
   );

@@ -20,6 +20,8 @@ import { ArrowSquareLeft, Eye, Trash } from "iconsax-react";
 import { UploadCloud } from "lucide-react";
 import Categories from "../../components/categories";
 import { color } from "../../utils/Data";
+import api from "../../api";
+import { useQuery } from "@tanstack/react-query";
 
 const BookingTracker = () => {
   const [listType, setListType] = useState("All");
@@ -54,6 +56,24 @@ const BookingTracker = () => {
   const closeSuspend = () => {
     setIsSuspend(false);
   };
+
+
+    async function getBookTrack(page) {
+      const response = await api.getBookTrack({
+        // params: {
+        //   status: listType,
+        //   name: search,
+        // },
+      });
+      return response;
+    }
+  
+    const results = useQuery(["getBookTrack"], () => getBookTrack(), {
+      keepPreviousData: true,
+      refetchOnWindowFocus: "always",
+    });
+  
+    const trackData = results?.data?.data || [];
 
 
 

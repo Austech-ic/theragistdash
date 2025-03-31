@@ -50,7 +50,7 @@ export async function apiReq(
         console.log(error);
         console.log(error && error.response, "the error respne");
         if (error && error.response && error.response.status === 401) {
-          clearauthData();
+          // clearauthData();
 
         }
         if (error && error.response && error.response.data) {

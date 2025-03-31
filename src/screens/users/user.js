@@ -16,20 +16,33 @@ import {
 import InputField from "../../components/InputField";
 import { Edit, Edit2, Eye, Trash } from "iconsax-react";
 import EmtyTable from "../../components/common/EmtyTable";
+import { enqueueSnackbar } from "notistack";
+import api from "../../api";
+import { useQuery } from "@tanstack/react-query";
+import { formatDate } from "../../utils/helperFunctions";
+import { Link } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
 
 const User = () => {
   const [isCreate, setIsCreate] = useState(false);
   const [listType, setListType] = useState("All");
   const [isDelete, setIsDelete] = useState(false);
   const [isSuspend, setIsSuspend] = useState(false);
+  const [search, setSearch] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [resultId, setResultId] = useState("");
 
-  const openSuspend = () => {
+  const openSuspend = (id) => {
+    setResultId(id);
+
     setIsSuspend(true);
   };
   const closeSuspend = () => {
     setIsSuspend(false);
   };
-  const openDelete = () => {
+  const openDelete = (id) => {
+    setResultId(id);
+
     setIsDelete(true);
   };
   const closeDelete = () => {
@@ -43,22 +56,65 @@ const User = () => {
     setIsCreate(false);
   };
 
+  async function getUsers(page) {
+    const response = await api.getUsers({
+      params: {
+        search: search,
+      },
+    });
+    return response;
+  }
+
+  const results = useQuery(["xxxx", search], () => getUsers(), {
+    keepPreviousData: true,
+    refetchOnWindowFocus: "always",
+  });
+
+  const companyData = results?.data?.data || [];
+
+  const deleteUser = async () => {
+    setIsLoading(true);
+
+    try {
+      const response = await api.deleteUser(resultId);
+      enqueueSnackbar(response?.message, { variant: "success" });
+      results.refetch();
+      setIsLoading(false);
+      closeDelete(false);
+      setResultId("");
+    } catch (error) {
+      enqueueSnackbar(error.message, { variant: "error" });
+
+      setIsLoading(false);
+    }
+  };
+
+  const suspendUser = async () => {
+    setIsLoading(true);
+
+    try {
+      const response = await api.suspendUser(resultId);
+      enqueueSnackbar(response?.message, { variant: "success" });
+      results.refetch();
+      setIsLoading(false);
+      closeSuspend();
+      setResultId("");
+    } catch (error) {
+      enqueueSnackbar(error.message, { variant: "error" });
+
+      setIsLoading(false);
+    }
+  };
   return (
     <div className="p-[18px] md:p-[28px] xl:p-[32px] 2xl:p-[38px]">
       {/* <div className="flex justify-end mb-[20px] md:mb-[25px] xl:mb-[30px]">
         <AddButton action={() => openCreateModal()} name="Add User" />
       </div> */}
       <div className="flex items-center justify-between ">
-        <SearchInput placeholder={"Search User"} />
-
-        <div className="flex items-center gap-1">
-          <p className="whitespace-nowrap ">Filter By</p>{" "}
-          <select className="w-full  pl-[6px] py-[10px] text-[14px] text-[#2e2e2e] leading-[20px] bg-[#fff] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#E1E1E1] border-[1px] rounded-[6px] focus:outline-none focus:ring-[#00B0C7] focus:border-[#00B0C7] ">
-            <option value="">Attended Sessions</option>
-            <option value="">Categories</option>
-            <option value="">Status</option>
-          </select>{" "}
-        </div>
+        <SearchInput
+          placeholder={"Search User"}
+          onChange={(e) => setSearch(e.target?.value)}
+        />
       </div>
 
       <div className="mt-5 md:mt-6">
@@ -72,7 +128,7 @@ const User = () => {
             }`}
           >
             <p>All Users</p>{" "}
-            <div
+            {/* <div
               className={`h-[24px] w-[24px] flex items-center justify-center  text-xs  rounded-full ${
                 listType === "All"
                   ? "text-[#00B0C7] bg-[#E6F7F9]"
@@ -80,9 +136,9 @@ const User = () => {
               }`}
             >
               <p>112</p>
-            </div>
+            </div> */}
           </li>
-          <li
+          {/* <li
             onClick={() => setListType("Suspended")}
             className={`pb-2 cursor-pointer flex items-center gap-[6px]  ${
               listType === "Suspended"
@@ -119,7 +175,7 @@ const User = () => {
             >
               <p>2</p>
             </div>
-          </li>
+          </li> */}
         </ul>
       </div>
 
@@ -130,12 +186,13 @@ const User = () => {
               <table className="min-w-full mb-6 border-[0.8px] border-r-[0.8px]  border-l-[0.8px] border-[#E4E7EC] rounded-lg">
                 <thead className="bg-[#E6F7F9] ">
                   <tr className="">
-                  <th
+                    <th
                       scope="col"
                       className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px]  text-[#282828]  font-medium  tracking-[0.2%]"
                     >
                       <div className="flex px-5 whitespace-nowrap   gap-[6px] md:gap-[12px] items-center">
-SN                      </div>
+                        SN{" "}
+                      </div>
                     </th>
                     <th
                       scope="col"
@@ -159,7 +216,7 @@ SN                      </div>
                       className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px]  text-[#282828]  font-medium  tracking-[0.2%]"
                     >
                       <div className="flex whitespace-nowrap  gap-[6px] md:gap-[12px] items-center my-0">
-                      Attended session
+                        Attended session
                       </div>
                     </th>
                     <th
@@ -170,7 +227,7 @@ SN                      </div>
                         Email
                       </div>
                     </th>
-                   
+
                     <th
                       scope="col"
                       className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px]  text-[#282828]  font-medium  tracking-[0.2%]"
@@ -191,80 +248,83 @@ SN                      </div>
                   </tr>
                 </thead>
                 <tbody>
-                  <EmtyTable
-                    name="Add User"
-                    label={"No User Registered yet"}
-                    cols={6}
-                    action={openCreateModal}
-                  />
+                  {companyData && companyData?.length < 1 && (
+                    <EmtyTable
+                      name="Add User"
+                      label={"No User Registered yet"}
+                      cols={6}
+                      action={openCreateModal}
+                    />
+                  )}
 
-                  <tr className="border-b-[0.8px] border-[#E4E7EC]">
-                  <td className="px-5 py-[16px] text-[14px] text-center  text-[#2e2e2e]">
-                      1
-                    </td>
-                    <td className="px-5 py-[16px] text-[14px] whitespace-nowrap ">
-                      <p className="font-medium whitespace-nowrap">
-                        SOS User
-                      </p>
-                      <p className="text-[#9C9C9C] ">ID: 2346570067</p>
-                    </td>
-                    <td className="px-5 py-[16px] whitespace-nowrap text-[14px]  text-[#9C9C9C]">
-                      31. Dec. 2022
-                    </td>
-                    <td className="px-5 py-[16px] text-[14px]  text-[#9C9C9C]">
-                      48
-                    </td>
-                    <td className="px-5 py-[16px] text-[14px]  text-[#9C9C9C]">
-                      rachealbambam@gmail.com
-                    </td>
-                  
+                  {companyData?.map((item, index) => (
+                    <tr className="border-b-[0.8px] border-[#E4E7EC]">
+                      <td className="px-5 py-[16px] text-[14px] text-center  text-[#2e2e2e]">
+                        {index + 1}
+                      </td>
+                      <td className="px-5 py-[16px] text-[14px] whitespace-nowrap ">
+                        <p className="font-medium whitespace-nowrap">
+                          {item?.username}
+                        </p>
+                      </td>
+                      <td className="px-5 py-[16px] whitespace-nowrap text-[14px]  text-[#9C9C9C]">
+                        {formatDate(item?.date_joined)}
+                      </td>
+                      <td className="px-5 py-[16px] text-[14px]  text-[#9C9C9C]">
+                        {item?.session_used}
+                      </td>
+                      <td className="px-5 py-[16px] text-[14px]  text-[#9C9C9C]">
+                        {item?.email}
+                      </td>
 
-                    <td className="px-5 py-[16px] text-[14px]  text-[#212121]">
-                      <div className="flex gap-1 bg-[#91C561] bg-opacity-15 px-[12px] py-[4px] text-[#008D36] items-center rounded-xl">
-                        <svg
-                          width="14"
-                          height="10"
-                          viewBox="0 0 14 10"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M13 1L4.75 9L1 5.36364"
-                            stroke="#008D36"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
+                      <td className="px-5 py-[16px] text-[14px]  text-[#212121]">
+                        <div className="flex gap-1 bg-[#91C561] bg-opacity-15 px-[12px] py-[4px] text-[#008D36] items-center rounded-xl">
+                          <svg
+                            width="14"
+                            height="10"
+                            viewBox="0 0 14 10"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M13 1L4.75 9L1 5.36364"
+                              stroke="#008D36"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                          <p>{item?.status}</p>
+                        </div>{" "}
+                      </td>
+                      <td className="px-5 py-[16px] text-[14px] md:text-[16px] text-[#212121]">
+                        <div className="flex items-center gap-1">
+                          <Link to="/user/user-details" state={item}>
+                            <Eye
+                              size="20"
+                              variant="Bold"
+                              color="#F7A30A"
+                              className="cursor-pointer"
+                            />
+                          </Link>
+                          <Edit
+                            onClick={() => openSuspend(item?.id)}
+                            size="20"
+                            variant=""
+                            color="blue"
+                            className="cursor-pointer"
                           />
-                        </svg>
-                        <p>Active</p>
-                      </div>{" "}
-                    </td>
-                    <td className="px-5 py-[16px] text-[14px] md:text-[16px] text-[#212121]">
-                      <div className="flex items-center gap-1">
-                        <Eye
-                          onClick={openSuspend}
-                          size="20"
-                          variant="Bold"
-                          color="#F7A30A"
-                          className="cursor-pointer"
-                        />
-                         <Edit
-                          onClick={openSuspend}
-                          size="20"
-                          variant=""
-                          color="blue"
-                          className="cursor-pointer"
-                        />
-                        <Trash
-                          onClick={openDelete}
-                          size="20"
-                          variant="Bold"
-                          color="red"
-                          className="cursor-pointer"
-                        />
-                      </div>
-                    </td>
-                  </tr>
+                          <Trash
+                            onClick={() => openDelete(item?.id)}
+                            size="20"
+                            variant="Bold"
+                            color="red"
+                            className="cursor-pointer"
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
@@ -379,30 +439,11 @@ SN                      </div>
               </div>
             </>
           </ModalBody>
-          {/* <div className="flex justify-center py-3 ">
         
-            <button
-              onClick={() => {
-                if (phase === 1) {
-                  setPhase(2);
-                } else {
-                }
-              }}
-              className="border-[0.2px]  border-[#98A2B3] w-[99px] primary-bg flex banks-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
-            >
-              {phase === 1 ? (
-                "Next"
-              ) : isLoading ? (
-                <ClipLoader color={"white"} size={20} />
-              ) : (
-                <> Register </>
-              )}
-            </button>
-          </div> */}
         </ModalContent>
       </Modal>
 
-      {/* Suspend Councellor Modal */}
+      {/* Suspend User Modal */}
       <Modal
         isCentered
         isOpen={isSuspend}
@@ -438,15 +479,19 @@ SN                      </div>
               Cancel
             </button>
             <button
-              //   onClick={}
+              onClick={suspendUser}
               className=" w-[99px] text-center bg-[#F7A30A] rounded-[8px] py-[12px] text-[14px] font-medium text-white"
             >
-              Suspend
+              {isLoading ? (
+                <ClipLoader color={"white"} size={20} />
+              ) : (
+                <> Suspend </>
+              )}
             </button>
           </div>
         </ModalContent>
       </Modal>
-      {/* Delete Counselor Modal */}
+      {/* Delete User Modal */}
       <Modal
         isCentered
         isOpen={isDelete}
@@ -482,10 +527,14 @@ SN                      </div>
               Cancel
             </button>
             <button
-              // onClick={closeCancel}
+              onClick={deleteUser}
               className=" w-[99px] text-center bg-[#B50000] rounded-[8px] py-[12px] text-[14px] font-medium text-white"
             >
-              Delete
+              {isLoading ? (
+                <ClipLoader color={"white"} size={20} />
+              ) : (
+                <> Delete </>
+              )}
             </button>
           </div>
         </ModalContent>

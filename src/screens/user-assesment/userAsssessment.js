@@ -2,23 +2,38 @@ import React, { useState } from "react";
 import SearchInput from "../../components/common/SearchInput";
 
 import EmtyTable from "../../components/common/EmtyTable";
+import api from "../../api";
+import { useQuery } from "@tanstack/react-query";
+import { Eye } from "iconsax-react";
+import { Link } from "react-router-dom";
 
 const UserAssessment = () => {
   const [isCreate, setIsCreate] = useState(false);
+  const [search, setSearch] = useState("");
+
+  async function getUserAssessment(page) {
+    const response = await api.getUserAssessment({
+      params: {
+        search: search,
+      },
+    });
+    return response;
+  }
+
+  const results = useQuery(["getUserAssessment"], () => getUserAssessment(), {
+    keepPreviousData: true,
+    refetchOnWindowFocus: "always",
+  });
+
+  const assessmentData = results?.data?.data || [];
 
   return (
     <div className="p-[18px] md:p-[28px] xl:p-[32px] 2xl:p-[38px]">
       <div className="flex items-center justify-between ">
-        <SearchInput placeholder={"Search User"} />
-
-        <div className="flex items-center gap-1">
-          <p className="whitespace-nowrap ">Filter By</p>{" "}
-          <select className="w-full  pl-[6px] py-[10px] text-[14px] text-[#2e2e2e] leading-[20px] bg-[#fff] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#E1E1E1] border-[1px] rounded-[6px] focus:outline-none focus:ring-[#00B0C7] focus:border-[#00B0C7] ">
-            <option value="">Attended Sessions</option>
-            <option value="">Categories</option>
-            <option value="">Status</option>
-          </select>{" "}
-        </div>
+        <SearchInput
+          placeholder={"Search User"}
+          onChange={(e) => setSearch(e.target?.value)}
+        />
       </div>
 
       <div className="overflow-x-auto">
@@ -69,31 +84,58 @@ const UserAssessment = () => {
                         Email
                       </div>
                     </th>
+                    <th
+                      scope="col"
+                      className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px]  text-[#282828]  font-medium  tracking-[0.2%]"
+                    >
+                      <div className="flex  gap-[6px] md:gap-[12px] items-center my-0">
+                        Action
+                      </div>
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
-                  <EmtyTable
-                    name="Add User"
-                    label={"No User Assessment yet"}
-                    cols={6}
-                  />
+                  {assessmentData && assessmentData?.length < 1 && (
+                    <EmtyTable
+                      label={"No User Assessment yet"}
+                      cols={6}
+                      noButton={true}
+                    />
+                  )}
 
-                  <tr className="border-b-[0.8px] border-[#E4E7EC]">
-                    <td className="px-5 py-[16px] text-[14px] text-center  text-[#2e2e2e]">
-                      1
-                    </td>
-                    <td className="px-5 py-[16px] text-[14px] whitespace-nowrap ">
-                      <p className="font-medium whitespace-nowrap">SOS User</p>
-                      <p className="text-[#9C9C9C] ">ID: 2346570067</p>
-                    </td>
-                    <td className="px-5 py-[16px] whitespace-nowrap text-[14px]  text-[#9C9C9C]">
-                      31. Dec. 2022
-                    </td>
+                  {/* {assessmentData?.map((item, index) => ( */}
+                  {[1]?.map((item, index) => (
+                    <tr className="border-b-[0.8px] border-[#E4E7EC]">
+                      <td className="px-5 py-[16px] text-[14px] text-center  text-[#2e2e2e]">
+                        1
+                      </td>
+                      <td className="px-5 py-[16px] text-[14px] whitespace-nowrap ">
+                        <p className="font-medium whitespace-nowrap">
+                          SOS User
+                        </p>
+                      </td>
+                      <td className="px-5 py-[16px] whitespace-nowrap text-[14px]  text-[#9C9C9C]"></td>
+                      <td className="px-5 py-[16px] whitespace-nowrap text-[14px]  text-[#9C9C9C]">
+                        31. Dec. 2022
+                      </td>
 
-                    <td className="px-5 py-[16px] text-[14px]  text-[#9C9C9C]">
-                      rachealbambam@gmail.com
-                    </td>
-                  </tr>
+                      <td className="px-5 py-[16px] text-[14px]  text-[#9C9C9C]">
+                        rachealbambam@gmail.com
+                      </td>
+                      <td className="px-5 py-[16px] text-[14px] md:text-[16px] text-[#212121]">
+                        <div className="flex items-center gap-1">
+                          <Link to="/user-assessment/assessment-details">
+                            <Eye
+                              size="20"
+                              variant="Bold"
+                              color="#F7A30A"
+                              className="cursor-pointer"
+                            />
+                          </Link>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
