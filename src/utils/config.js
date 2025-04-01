@@ -47,6 +47,7 @@ export const COMPANYUSERADD = getApiUrl("/company/user/add");
 export const GETDELETEDCOUNSELLOR = getApiUrl("/counsellor_management/deleted");
 export const GETSUSPENDEDCOUNSELLOR = getApiUrl("/counsellor_management/suspended");
 export const GETACTIVECOUNSELLOR = getApiUrl("/counsellor_management/active/");
+export const CREATECOUNSELLOR = getApiUrl("/counsellor_management/");
 
 
 //
@@ -69,7 +70,13 @@ export const GETAUSERASSESSMENTHISTORYRESPONSE = getApiUrl("/user-assessment/");
 
 //post
 export const POST = "https://octopus-app-spiq3.ondigitalocean.app/client/api/v1/social/post/"
+export const GETPOST = getApiUrl("/feed/management/posts/");
+export const GETPOSTCOUNT = getApiUrl("/feed/management/posts/counts/");
 
 
+//article
+export const ARTICLE = "https://octopus-app-spiq3.ondigitalocean.app/client/api/v1/social/article/"
+export const GETARTICLE = getApiUrl("/feed/management/articles/");
+export const GETARTICLECOUNT = getApiUrl("/feed/management/article/count/");
 
 

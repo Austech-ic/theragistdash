@@ -172,7 +172,7 @@ const Dashboard = () => {
                 Categories
               </h2>
               <Link
-                to="/"
+                to="/categories"
                 className="text-[14px] ms:text-[16px] lg:[18px]  text-light text-[#282828]"
               >
                 See all
@@ -180,7 +180,7 @@ const Dashboard = () => {
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[17px]">
-              {dashboardData?.categories?.map((item) => (
+              {dashboardData?.slice(0,4).categories?.map((item) => (
                 <CatCard
                   name={item?.name}
                   color={"#" + item?.color}

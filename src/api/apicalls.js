@@ -17,6 +17,13 @@ import {
   GETUSERASSESSMENT,
   GETAUSERASSESSMENTHISTORYRESPONSE,
   UPDATECATEGORY,
+  POST,
+  GETPOST,
+  GETPOSTCOUNT,
+  GETARTICLE,
+  ARTICLE,
+  GETARTICLECOUNT,
+  CREATECOUNSELLOR,
 } from "../utils/config";
 import { apiDelete, apiGet, apiGetCSV, apiPost, apiPut } from "../utils/utils";
 
@@ -48,6 +55,9 @@ export function getSuspendedCounsellor(data) {
 export function getActiveCounsellor(data) {
   return apiGet(GETACTIVECOUNSELLOR, data);
 }
+export function createCounsellor(data) {
+  return apiPost(CREATECOUNSELLOR, data,  { 'Content-Type': 'multipart/form-data' });
+}
 
 //company
 export function getCompany(data) {
@@ -55,7 +65,7 @@ export function getCompany(data) {
 }
 
 export function createCompany(data) {
-  return apiGet(GETCOMPANIES, data);
+  return apiPost(GETCOMPANIES, data, { 'Content-Type': 'multipart/form-data' });
 }
 
 export function deleteComapany(data) {
@@ -130,4 +140,45 @@ export function createCategory(data) {
 
 export function deleteCategory(data) {
   return apiDelete(UPDATECATEGORY + data + "/");
+}
+
+
+//post
+export function createPost(data) {
+  return apiPost(POST, data, { 'Content-Type': 'multipart/form-data' });
+}
+
+export function getPost(data) {
+  return apiGet(GETPOST, data);
+}
+export function getPostCount(data) {
+  return apiGet(GETPOSTCOUNT, data);
+}
+
+export function updatePost(id,data) {
+  return apiPut(POST + id, data);
+}
+
+export function deletePost(id) {
+  return apiDelete(POST + id);
+}
+
+//article
+
+export function createArticle(data) {
+  return apiPost(ARTICLE, data, { 'Content-Type': 'multipart/form-data' });
+}
+export function getArticle(data) {
+  return apiGet(GETARTICLE, data);
+}
+export function getArticleCount(data) {
+  return apiGet(GETARTICLECOUNT, data);
+}
+
+export function updateArticle(id,data) {
+  return apiPut(ARTICLE + id, data);
+}
+
+export function deleteArticle(id,data) {
+  return apiDelete(ARTICLE + id, data);
 }

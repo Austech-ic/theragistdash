@@ -30,6 +30,15 @@ const Comapny = () => {
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [resultId, setResultId] = useState("");
+  const  [formValue, setFormValue] = useState({
+    namd: "",
+    company_mail: "",
+    allocated_session: 0,
+    company_address: "",
+    csv_file: "",
+
+  })
+ 
 
   const openSuspend = (id) => {
     setResultId(id);
@@ -105,6 +114,33 @@ const Comapny = () => {
       setIsLoading(false);
     }
   };
+
+   const createCompany = async () => {
+      setIsLoading(true);
+  
+      const formData = new FormData();
+
+
+      formData.append("name", formValue?.name);
+      formData.append("company_mail", formValue?.company_mail);
+      formData.append("allocated_session", formValue?.allocated_session);
+      formData.append("document", formValue?.document);
+      formData.append("company_address", formValue?.company_address);
+      formData.append("csv_file", formValue?.csv_file);
+
+  
+      try {
+        const response = await api.createCounsellor(formData);
+        enqueueSnackbar(" Counselor Created Successfully", { variant: "success" });
+        results.refetch();
+        setIsLoading(false);
+        // ClearForm();
+      } catch (error) {
+        enqueueSnackbar(error.details, { variant: "error" });
+  
+        setIsLoading(false);
+      }
+    };
 
   return (
     <div className="p-[18px] md:p-[28px] xl:p-[32px] 2xl:p-[38px]">

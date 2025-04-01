@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   Divider,
   Modal,
@@ -21,6 +21,7 @@ import { UploadCloud } from "lucide-react";
 import api from "../../api";
 import { useQuery } from "@tanstack/react-query";
 import { formatDate } from "../../utils/helperFunctions";
+import { enqueueSnackbar } from "notistack";
 
 const Councellor = () => {
   const [listType, setListType] = useState("All");
@@ -29,17 +30,56 @@ const Councellor = () => {
   const [isCancel, setIsCancel] = useState(false);
   const [isSuspend, setIsSuspend] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [formData, setFormData] = useState({
+  const [selectedItems, setSelectedItems] = useState([]); // Selected items
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const [formValue, setFormValue] = useState({
     name: "",
     email: "",
     phone: "",
     gender: "",
     address: "",
     specialization: null,
-    
-  })
+    password: ""
+  });
 
   const [phase, setPhase] = useState(1);
+  const [files, setFiles] = useState([]);
+  const fileInputRef = useRef(null);
+
+  const handleFileChange = (e) => {
+    if (e.target.files) {
+      // Convert FileList to Array and append to existing files
+      const newFiles = Array.from(e.target.files);
+      console.log(newFiles);
+
+      setFiles((prevFiles) => [...prevFiles, ...newFiles]);
+    }
+    // Reset the input to allow uploading the same file again if needed
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  const handleDelete = (indexToDelete) => {
+    setFiles((prevFiles) =>
+      prevFiles.filter((_, index) => index !== indexToDelete)
+    );
+  };
+
+  const handleAddMore = () => {
+    fileInputRef?.current?.click();
+  };
+
+  const getFileIcon = (fileType) => {
+    if (fileType === "application/pdf") {
+      return "📄";
+    } else if (fileType.startsWith("image/")) {
+      return "🖼️";
+    } else {
+      return "📁";
+    }
+  };
 
   async function getActiveCounsellor(page) {
     const response = await api.getActiveCounsellor({});
@@ -137,10 +177,88 @@ const Councellor = () => {
 
     const file = event.dataTransfer.files[0];
     if (file) {
-      // setLogo(file);
-      setPreview(URL.createObjectURL(file));
+      // Convert FileList to Array and append to existing files
+      const newFiles = Array.from(file);
+      console.log(newFiles);
+
+      setFiles((prevFiles) => [...prevFiles, ...newFiles]);
+    }
+    // if (file) {
+    //   // setLogo(file);
+    //   setPreview(URL.createObjectURL(file));
+    // }
+  };
+  const toggleSelectItem = (item) => {
+    if (selectedItems.includes(item)) {
+      setSelectedItems(selectedItems.filter((i) => i !== item));
+    } else {
+      setSelectedItems([...selectedItems, item]);
     }
   };
+
+  // Remove selected item
+  const removeItem = (item) => {
+    setSelectedItems(selectedItems.filter((i) => i !== item));
+  };
+
+  const handleInputChange = (e) => {
+    setFormValue({ ...formValue, [e.target.name]: e.target.value });
+  };
+
+   async function getCategories(page) {
+      const response = await api.getCategories({});
+      return response;
+    }
+  
+    const categoryResults = useQuery(["getCategories"], () => getCategories(), {
+      keepPreviousData: true,
+      refetchOnWindowFocus: "always",
+    });
+  
+    const categoriesData = categoryResults?.data?.data || [];
+  
+
+  const createCounsellor = async () => {
+    setIsLoading(true);
+
+    const formData = new FormData();
+ 
+    formData.append("username", formValue?.name);
+    formData.append("email", formValue?.email);
+    formData.append("phone_number", formValue?.phone);
+    formData.append("document", Array.from(files));
+    formData.append("specialization", Array.from(selectedItems));
+    formData.append("gender", formValue?.gender);
+    formData.append("address", formValue?.address);
+    formData.append("password", formValue?.password);
+
+    try {
+      const response = await api.createCounsellor(formData);
+      enqueueSnackbar(" Counselor Created Successfully", { variant: "success" });
+      results.refetch();
+      setIsLoading(false);
+      ClearForm();
+    } catch (error) {
+      enqueueSnackbar(error.message, { variant: "error" });
+
+      setIsLoading(false);
+    }
+  };
+  function ClearForm (){
+    setFormValue({
+      name: "",
+      email: "",
+      phone: "",
+      gender: "",
+      address: "",
+      specialization: null,
+      password: ""
+    });
+    setFiles([]);
+    setPhase(1);
+    setSelectedItems([])
+  }
+
 
   return (
     <div className="p-[18px] md:p-[28px] xl:p-[32px] 2xl:p-[38px]">
@@ -150,14 +268,14 @@ const Councellor = () => {
       <div className="flex items-center justify-between ">
         <SearchInput placeholder={"Search Counselor"} />
 
-        <div className="flex items-center gap-1">
+        {/* <div className="flex items-center gap-1">
           <p className="whitespace-nowrap ">Filter By</p>{" "}
           <select className="w-full  pl-[6px] py-[10px] text-[14px] text-[#2e2e2e] leading-[20px] bg-[#fff] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#E1E1E1] border-[1px] rounded-[6px] focus:outline-none focus:ring-[#00B0C7] focus:border-[#00B0C7] ">
             <option value="">Attended Sessions</option>
             <option value="">Categories</option>
             <option value="">Status</option>
           </select>{" "}
-        </div>
+        </div> */}
       </div>
 
       <div className="mt-5 md:mt-6">
@@ -292,14 +410,14 @@ const Councellor = () => {
                 </thead>
                 <tbody>
                   {currentData && currentData?.length < 1 && (
- <EmtyTable
- name="Add Counselor"
- label={"No Company Registered yet"}
- cols={6}
- action={openCreateModal}
-/>
+                    <EmtyTable
+                      name="Add Counselor"
+                      label={"No Company Registered yet"}
+                      cols={6}
+                      action={openCreateModal}
+                    />
                   )}
-                 
+
                   {currentData?.map((item) => (
                     <tr className="border-b-[0.8px] border-[#E4E7EC]">
                       <td className="px-5 py-[16px] text-[14px] whitespace-nowrap ">
@@ -554,9 +672,9 @@ const Councellor = () => {
                   <div className="">
                     <InputField
                       placeholder="Enter full name"
-                      // value={formValue.name}
-                      // name="name"
-                      // onChange={(e) => handleInputChange(e)}
+                      value={formValue.name}
+                      name="name"
+                      onChange={(e) => handleInputChange(e)}
                     />
                   </div>
                 </div>
@@ -568,9 +686,9 @@ const Councellor = () => {
                     <InputField
                       type="email"
                       placeholder="e.g. abc@website.com"
-                      // value={formValue.name}
-                      // name="name"
-                      // onChange={(e) => handleInputChange(e)}
+                      value={formValue.email}
+                      name="email"
+                      onChange={(e) => handleInputChange(e)}
                     />
                   </div>
                 </div>
@@ -579,17 +697,19 @@ const Councellor = () => {
                     Phone Number<sup className="text-[#A97400]">*</sup>
                   </label>
                   <div className="flex items-center gap-3 md:gap-4 lg:gap-5">
-                    <select className="w-[20%] h-[38px] pl-[8px] py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[1px] rounded-[6px] focus:outline-none focus:ring-[#00B0C7] focus:border-[#00B0C7] ">
+                    <select 
+                                    
+                    className="w-[20%] h-[38px] pl-[8px] py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[1px] rounded-[6px] focus:outline-none focus:ring-[#00B0C7] focus:border-[#00B0C7] ">
                       <option>+234</option>
-                      <option>+234</option>
-                      <option>+234</option>
+                      {/* <option>+234</option>
+                      <option>+234</option> */}
                     </select>
                     <InputField
-                      type="email"
+                      type="text"
                       placeholder="00000000000"
-                      // value={formValue.name}
-                      // name="name"
-                      // onChange={(e) => handleInputChange(e)}
+                      value={formValue.phone}
+                      name="phone"
+                      onChange={(e) => handleInputChange(e)}
                     />
                   </div>
                 </div>
@@ -599,7 +719,12 @@ const Councellor = () => {
                     Email<sup className="text-[#A97400]">*</sup>
                   </label>
                   <div className="">
-                    <select className="w-full h-[38px] pl-[8px] py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[1px] rounded-[6px] focus:outline-none focus:ring-[#00B0C7] focus:border-[#00B0C7] ">
+                    <select 
+                    
+                    value={formValue.gender}
+                    name="gender"
+                    onChange={(e) => handleInputChange(e)}
+                    className="w-full h-[38px] pl-[8px] py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[1px] rounded-[6px] focus:outline-none focus:ring-[#00B0C7] focus:border-[#00B0C7] ">
                       <option>Select gender</option>
                       <option>Male </option>
                       <option>Female</option>
@@ -610,13 +735,66 @@ const Councellor = () => {
                   <label className="text-[14px] md:text-base text-[#1C1C1C] font-medium   mb-[8px] md:mb-[16px]">
                     Specialization<sup className="text-[#A97400]">*</sup>
                   </label>
-                  <div className="">
-                    <select className="w-full h-[38px] pl-[8px] py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[1px] rounded-[6px] focus:outline-none focus:ring-[#00B0C7] focus:border-[#00B0C7] ">
-                      <option>Select gender</option>
-                      <option> </option>
-                      <option></option>
-                    </select>
-                  </div>
+                  <div className="relative w-full">
+              {/* Input Field */}
+              <div
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="border border-gray-300 p-2 rounde-lg rounded-lg cursor-pointer flex flex-wrap gap-1"
+              >
+                {selectedItems.map((item, index) => (
+                  <span
+                    key={index}
+                    className="bg-[#00B0C7]  text-white px-2 py-1 rounded flex items-center gap-1 text-[14px]"
+                  >
+                    {categoriesData &&
+                      categoriesData?.map(
+                        (result, index) =>
+                          item === result?.name && (
+                            <span key={index}>{result?.name}</span>
+                          )
+                      )}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        removeItem(item);
+                      }}
+                      className="text-xs ml-1 text-white hover:text-red-500"
+                    >
+                      ×
+                    </button>
+                  </span>
+                ))}
+                <input
+                  type="text"
+                  className="flex-grow border-none focus:ring-0 focus:outline-none"
+                  placeholder={
+                    selectedItems.length === 0 ? "Select items..." : ""
+                  }
+                  readOnly
+                />
+              </div>
+
+              {/* Dropdown List */}
+              {dropdownOpen && (
+                <div className="absolute mt-1 w-full bg-white border border-gray-300 rounded shadow-md max-h-60 overflow-y-auto z-10">
+                  {categoriesData &&
+                    categoriesData?.map((item, index) => (
+                      <div
+                        key={index}
+                        onClick={() => toggleSelectItem(item?.name)}
+                        className={`p-2 cursor-pointer hover:bg-[#00B0C7c9] text-sm  hover:text-white ${
+                          selectedItems.includes(item?.name)
+                            ? "bg-gray-300  text-black"
+                            : ""
+                        }`}
+                      >
+                        {item?.name}
+                      </div>
+                    ))}
+                </div>
+              )}
+            </div>
+          
                 </div>
                 <div className="mb-[8px] ">
                   <label className="text-[14px] md:text-base text-[#1C1C1C] font-medium   mb-[8px] md:mb-[16px]">
@@ -626,9 +804,23 @@ const Councellor = () => {
                     <InputField
                       type="text"
                       placeholder="Enter address"
-                      // value={formValue.name}
-                      // name="name"
-                      // onChange={(e) => handleInputChange(e)}
+                      value={formValue.address}
+                      name="address"
+                      onChange={(e) => handleInputChange(e)}
+                    />
+                  </div>
+                </div>
+                <div className="mb-[8px] ">
+                  <label className="text-[14px] md:text-base text-[#1C1C1C] font-medium   mb-[8px] md:mb-[16px]">
+                    Password<sup className="text-[#A97400]">*</sup>
+                  </label>
+                  <div className="">
+                    <InputField
+                      type="text"
+                      placeholder="*****"
+                      value={formValue.password}
+                      name="password"
+                      onChange={(e) => handleInputChange(e)}
                     />
                   </div>
                 </div>
@@ -662,44 +854,83 @@ const Councellor = () => {
                     <input
                       type="file"
                       accept=".jpeg, .png, .jpg"
-                      onChange={(e) => {
-                        const file = e.target.files[0];
-                        if (file) {
-                          setImage(file);
-                          setPreview(URL.createObjectURL(file));
-                        }
-                      }}
+                      onChange={handleFileChange}
                       className="hidden"
                       id="fileInput"
+                      ref={fileInputRef}
                     />
+                   
 
                     <UploadCloud
                       size={28}
                       className="mx-auto text-center mb-2"
                     />
-
-                    <p className="text-gray-500 text-[14px]">
-                      Drag & Drop an image here
-                    </p>
-
                     <label
+                       onClick={handleAddMore}
                       htmlFor="fileInput"
                       className="mt-1 text-[#00b0c7] cursor-pointer hover:underline text-[14px]"
                     >
-                      Or select an image
+
+                      {files.length > 0
+                        ? "Add More Files"
+                        : "Browse to choose a file"}
                     </label>
+                    <p className="text-gray-500 text-[14px]">
+                      Upload maximum of 3 images{" "}
+                    </p>
+
+                    {files.length > 0 && (
+                      <div className="mt-4">
+                        <h3 className="font-semibold text-sm mb-2">
+                          Uploaded Files ({files.length})
+                        </h3>
+                        <ul className="bg-gray-50 rounded border border-gray-200 divide-y">
+                          {files.map((file, index) => (
+                            <li
+                              key={index}
+                              className="p-3 flex items-center justify-between"
+                            >
+                              <div className="flex items-center space-x-2">
+                                <span className="text-lg">
+                                  {getFileIcon(file.type)}
+                                </span>
+                                <div className="overflow-hidden">
+                                  <p
+                                    className="truncate max-w-xs text-sm"
+                                    title={file.name}
+                                  >
+                                    {file.name}
+                                  </p>
+                                  <p className="text-xs text-gray-500">
+                                    {(file.size / 1024).toFixed(1)} KB
+                                  </p>
+                                </div>
+                              </div>
+                              <button
+                                onClick={() => handleDelete(index)}
+                                className="p-1 text-red-500 hover:text-red-700 rounded-full hover:bg-red-100"
+                              >
+                                ✕
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                   </div>
                 </div>
               </>
             )}
           </ModalBody>
           <div className="flex justify-center py-3 ">
-            {}
+          
             <button
               onClick={() => {
                 if (phase === 1) {
                   setPhase(2);
                 } else {
+
+                  createCounsellor()
                 }
               }}
               className="border-[0.2px]  border-[#98A2B3] w-[99px] primary-bg flex banks-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"

@@ -2,7 +2,7 @@ import React from "react";
 import CatCard from "../screens/dashboard/components/CatCard";
 import { Link } from "react-router-dom";
 
-const Categories = () => {
+const Categories = ({data}) => {
   return (
     <div className="mt-6">
       <div className="flex justify-between items-center mb-4">
@@ -18,11 +18,17 @@ const Categories = () => {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[17px]">
-        <CatCard name="Addiction" color="#ECBB5F" total={1200} />
-        <CatCard name="Anxiety" color={"#57315A"} total={1200} />
-        <CatCard name="Depression" color="#ECACAD" total={1200} />
-        <CatCard name="Addiction" color="#FF8989" total={1200} />
-      </div>
+          {data &&
+            data.slice(0,3)?.map((item) => (
+              <CatCard
+                name={item?.name}
+                color={"#" + item?.color}
+                total={item?.price}
+                showOptions={false}
+                
+              />
+            ))}
+        </div>
     </div>
   );
 };

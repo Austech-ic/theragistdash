@@ -177,7 +177,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                 <button
                   onClick={() => setIsSettingActive(!isSettingActive)}
                   className={`py-[10px] pl-[16px] md:py-[16px] pr-2 md:pl-[20px] flex justify-between w-full items-center text-[14px]     leading-[20px] md:leading-[24px] ${
-                    window.location.pathname === `/privacy-policy` ||
+                    window.location.pathname === `/feed-management/article` ||
                     window.location.pathname === `/feed-management/post` ||
                     window.location.pathname === `/about-us`
                       ? "text-[#ffffff] font-medium rounded-tr-lg rounded-br-lg bg-[#00B0C7]"
@@ -210,9 +210,9 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                       <li className="">Feed Post</li>
                     </Link>
                     <Link
-                      to="/privacy-policy"
+                      to="/feed-management/article"
                       className={` py-[6px] pl-[12px] flex items-center text-[12px] md:text-sm   rounded-md  hover:bg-[#F7F9FC] hover:text-[#667185]  ${
-                        window.location.pathname === "/privacy-policy"
+                        window.location.pathname === "/feed-management/article"
                           ? "bg-[#F7F9FC] text-[#2e2e2e] font-medium "
                           : " font-normal text-[#fff]"
                       }`}

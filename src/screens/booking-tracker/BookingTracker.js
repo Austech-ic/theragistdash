@@ -22,6 +22,7 @@ import Categories from "../../components/categories";
 import { color } from "../../utils/Data";
 import api from "../../api";
 import { useQuery } from "@tanstack/react-query";
+import { enqueueSnackbar } from "notistack";
 
 const BookingTracker = () => {
   const [listType, setListType] = useState("All");
@@ -31,7 +32,11 @@ const BookingTracker = () => {
   const [isSuspend, setIsSuspend] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [phase, setPhase] = useState(1);
-
+  const [formValue, setFormValue] = useState({
+    name: "",
+    amount: "",
+    color: "",
+  });
   const openCreateModal = () => {
     setIsCreate(true);
   };
@@ -57,42 +62,79 @@ const BookingTracker = () => {
     setIsSuspend(false);
   };
 
-
-    async function getBookTrack(page) {
-      const response = await api.getBookTrack({
-        // params: {
-        //   status: listType,
-        //   name: search,
-        // },
-      });
-      return response;
-    }
-  
-    const results = useQuery(["getBookTrack"], () => getBookTrack(), {
-      keepPreviousData: true,
-      refetchOnWindowFocus: "always",
+  async function getBookTrack(page) {
+    const response = await api.getBookTrack({
+      // params: {
+      //   status: listType,
+      //   name: search,
+      // },
     });
-  
-    const trackData = results?.data?.data || [];
+    return response;
+  }
 
+  const results = useQuery(["getBookTrack"], () => getBookTrack(), {
+    keepPreviousData: true,
+    refetchOnWindowFocus: "always",
+  });
 
+  const trackData = results?.data?.data || [];
+
+  async function getCategories(page) {
+    const response = await api.getCategories({});
+    return response;
+  }
+
+  const categoryResults = useQuery(["getCategories"], () => getCategories(), {
+    keepPreviousData: true,
+    refetchOnWindowFocus: "always",
+  });
+
+  const categoriesData = categoryResults?.data?.data || [];
+
+  const createACatgory = async () => {
+    setIsLoading(true);
+    try {
+      const response = await api.createCategory({
+        name: formValue?.name,
+        price: formValue?.amount,
+        color: formValue?.color,
+      });
+      enqueueSnackbar("Category Created Successfully", { variant: "success" });
+      categoryResults.refetch();
+      setIsLoading(false);
+      setIsCreate(false);
+      ClearForm();
+    } catch (error) {
+      enqueueSnackbar(error.message, { variant: "error" });
+
+      setIsLoading(false);
+    }
+  };
+  function ClearForm() {
+    setFormValue({
+      name: "",
+      amount: "",
+      color: "",
+    });
+    setId("");
+  }
+  const handleInputChange = (e) => {
+    setFormValue({ ...formValue, [e.target.name]: e.target.value });
+  };
 
   return (
     <div className="p-[18px] md:p-[28px] xl:p-[32px] 2xl:p-[38px]">
       <div className="flex justify-end mb-[20px] md:mb-[25px] xl:mb-[30px]">
-        <AddButton action={() => openCreateModal()} name="Create Category" noIcon={true} />
+        <AddButton
+          action={() => openCreateModal()}
+          name="Create Category"
+          noIcon={true}
+        />
       </div>
       <div className="flex items-center justify-between ">
         <SearchInput placeholder={"Search Counselor"} />
 
-        <div className="flex items-center gap-1">
-          <p className="whitespace-nowrap ">Filter By</p>{" "}
-          <select className="w-full  pl-[6px] py-[10px] text-[14px] text-[#2e2e2e] leading-[20px] bg-[#fff] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#E1E1E1] border-[1px] rounded-[6px] focus:outline-none focus:ring-[#00B0C7] focus:border-[#00B0C7] ">
-            <option value="">Date</option>
-            <option value="">Categories</option>
-            <option value="">Status</option>
-          </select>{" "}
-        </div>
+     
       </div>
 
       <div className="mt-5 md:mt-6">
@@ -113,7 +155,7 @@ const BookingTracker = () => {
                   : "text-[#6F6F6F] bg-[#eaeaea]"
               }`}
             >
-              <p>112</p>
+              <p>0</p>
             </div>
           </li>
           <li
@@ -132,7 +174,7 @@ const BookingTracker = () => {
                   : "text-[#6F6F6F] bg-[#eaeaea]"
               }`}
             >
-              <p>80</p>
+              <p>0</p>
             </div>
           </li>
           <li
@@ -151,12 +193,12 @@ const BookingTracker = () => {
                   : "text-[#6F6F6F] bg-[#eaeaea] "
               }`}
             >
-              <p>2</p>
+              <p>0</p>
             </div>
           </li>
         </ul>
       </div>
-      <Categories />
+      <Categories data={categoriesData} />
 
       <div className="overflow-x-auto">
         <div class=" mt-5">
@@ -170,21 +212,24 @@ const BookingTracker = () => {
                       className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px]  text-[#282828]  font-medium  tracking-[0.2%]"
                     >
                       <div className="flex px-5 whitespace-nowrap   gap-[6px] md:gap-[12px] items-center">
-                      User ID                      </div>
+                        User ID{" "}
+                      </div>
                     </th>
                     <th
                       scope="col"
                       className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px]  text-[#282828]  font-medium  tracking-[0.2%]"
                     >
                       <div className="flex px-5 whitespace-nowrap   gap-[6px] md:gap-[12px] items-center">
-                      Date/Time                      </div>
+                        Date/Time{" "}
+                      </div>
                     </th>
                     <th
                       scope="col"
                       className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px]  text-[#282828]  font-medium  tracking-[0.2%]"
                     >
                       <div className="flex px-5 whitespace-nowrap   gap-[6px] md:gap-[12px] items-center">
-                      Amount                      </div>
+                        Amount{" "}
+                      </div>
                     </th>
 
                     <th
@@ -192,9 +237,9 @@ const BookingTracker = () => {
                       className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px]  text-[#282828]  font-medium  tracking-[0.2%]"
                     >
                       <div className="flex  gap-[6px] md:gap-[12px] items-center my-0">
-                      Category                      </div>
+                        Category{" "}
+                      </div>
                     </th>
-                 
 
                     <th
                       scope="col"
@@ -204,54 +249,56 @@ const BookingTracker = () => {
                         Status
                       </div>
                     </th>
-
-                   
                   </tr>
                 </thead>
                 <tbody>
-                  <EmtyTable
-                    name="Add Counselor"
-                    label={"No Booking yet"}
-                    cols={5}
-                    action={openCreateModal}
-                    noButton={true}
-                  />
+                  {trackData && trackData?.length < 1 && (
+                    <EmtyTable
+                      name="Add Counselor"
+                      label={"No Booking yet"}
+                      cols={5}
+                      action={openCreateModal}
+                      noButton={true}
+                    />
+                  )}
 
-                  <tr className="border-b-[0.8px] border-[#E4E7EC]">
-                    <td className="px-5 py-[16px] text-[14px] whitespace-nowrap ">
-                    2346570067
-                    </td>
-                    <td className="px-5 py-[16px] whitespace-nowrap text-[14px]  text-[#9C9C9C]">
-                    31. Dec. 2022 / 02:04:00 pm
-                    </td>
-                    <td className="px-5 py-[16px] text-[14px]  text-[#9C9C9C]">
-                    1200
-                    </td>
-                    <td className="px-5 py-[16px] whitespace-nowrap text-[14px]  text-[#9C9C9C]">
-                    Anxiety                    </td>
-                  
-                    <td className="px-5 py-[16px] text-[14px]  text-[#212121]">
-                      <button className="flex w-auto  justify-center gap-1 bg-[#91C561] bg-opacity-15 px-[12px] py-[4px] text-[#008D36] items-center rounded-xl">
-                        <svg
-                          width="14"
-                          height="10"
-                          viewBox="0 0 14 10"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M13 1L4.75 9L1 5.36364"
-                            stroke="#008D36"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                        </svg>
-                        <p>Successfull</p>
-                      </button>{" "}
-                    </td>
-                  
-                  </tr>
+                  {trackData?.map((item) => (
+                    <tr className="border-b-[0.8px] border-[#E4E7EC]">
+                      <td className="px-5 py-[16px] text-[14px] whitespace-nowrap ">
+                        2346570067
+                      </td>
+                      <td className="px-5 py-[16px] whitespace-nowrap text-[14px]  text-[#9C9C9C]">
+                        31. Dec. 2022 / 02:04:00 pm
+                      </td>
+                      <td className="px-5 py-[16px] text-[14px]  text-[#9C9C9C]">
+                        1200
+                      </td>
+                      <td className="px-5 py-[16px] whitespace-nowrap text-[14px]  text-[#9C9C9C]">
+                        Anxiety{" "}
+                      </td>
+
+                      <td className="px-5 py-[16px] text-[14px]  text-[#212121]">
+                        <button className="flex w-auto  justify-center gap-1 bg-[#91C561] bg-opacity-15 px-[12px] py-[4px] text-[#008D36] items-center rounded-xl">
+                          <svg
+                            width="14"
+                            height="10"
+                            viewBox="0 0 14 10"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M13 1L4.75 9L1 5.36364"
+                              stroke="#008D36"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                          <p>Successfull</p>
+                        </button>{" "}
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
@@ -289,7 +336,6 @@ const BookingTracker = () => {
             <button
               onClick={() => {
                 closeSuspend();
-              
               }}
               className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black"
             >
@@ -322,10 +368,12 @@ const BookingTracker = () => {
             px={{ base: "16px", md: "24px" }}
           >
             <p className=" text-[16px] md:text-lg text-center mt-4  text-[#000] leading-[24px] font-medium  ">
-            You about to Delete this Councilor            </p>
+              You about to Delete this Counsellor{" "}
+            </p>
 
             <p className="text-[14px]  text-[#667185] leading-[20px] font-light text-center mt-2  ">
-            Are you sure you want to delete this councilor? This action will Permanently delete the councilor’s profile on the platform.
+              Are you sure you want to delete this councilor? This action will
+              Permanently delete the Counsellor profile on the platform.
             </p>
           </ModalBody>
           <div className="flex items-center justify-evenly pb-2 md:py-3">
@@ -410,10 +458,7 @@ const BookingTracker = () => {
             fontSize={{ base: "16px", md: "18px" }}
             fontWeight={"400"}
           >
-            <div className="items-center">
-             
-              Create Category
-            </div>
+            <div className="items-center">Create Category</div>
           </ModalHeader>
           <ModalCloseButton size={"sm"} />
           <Divider color="#98A2B3" />
@@ -423,53 +468,61 @@ const BookingTracker = () => {
             pb={{ base: "16px", md: "20px" }}
             className="pt-[20px] md:pt-[24px] px-[16px] md:px-[24px] pb-[30px] md:pb-[40px]"
           >
-           
-                <div className="mb-[8px]">
-                  <label className="text-[14px] md:text-base text-[#1C1C1C] font-medium   mb-[8px] md:mb-[16px]">
-                    Category Name<sup className="text-[#A97400]">*</sup>
-                  </label>
-                  <div className="">
-                    <InputField
-                      placeholder="Enter name"
-                      // value={formValue.name}
-                      // name="name"
-                      // onChange={(e) => handleInputChange(e)}
-                    />
-                  </div>
-                </div>
-                <div className="mb-[8px] ">
-                  <label className="text-[14px] md:text-base text-[#1C1C1C] font-medium   mb-[8px] md:mb-[16px]">
-                    Amount<sup className="text-[#A97400]">*</sup>
-                  </label>
-                  <div className="">
-                    <InputField
-                      type="email"
-                      placeholder="e.g. abc@website.com"
-                      // value={formValue.name}
-                      // name="name"
-                      // onChange={(e) => handleInputChange(e)}
-                    />
-                  </div>
-                </div>
+            <div className="mb-[8px]">
+              <label className="text-[14px] md:text-base text-[#1C1C1C] font-medium   mb-[8px] md:mb-[16px]">
+                Category Name<sup className="text-[#A97400]">*</sup>
+              </label>
+              <div className="">
+                <InputField
+                  placeholder="Enter name"
+                  value={formValue.name}
+                  name="name"
+                  onChange={(e) => handleInputChange(e)}
+                />
+              </div>
+            </div>
+            <div className="mb-[8px] ">
+              <label className="text-[14px] md:text-base text-[#1C1C1C] font-medium   mb-[8px] md:mb-[16px]">
+                Amount<sup className="text-[#A97400]">*</sup>
+              </label>
+              <div className="">
+                <InputField
+                  type="text"
+                  placeholder=""
+                  value={formValue.amount}
+                  name="amount"
+                  onChange={(e) => handleInputChange(e)}
+                />
+              </div>
+            </div>
 
-
-                <div className="mb-[8px] ">
-                  <label className="text-[14px] md:text-base text-[#1C1C1C] font-medium   mb-[8px] md:mb-[16px]">
-                    Select Color<sup className="text-[#A97400]">*</sup>
-                  </label>
-                  <div className="flex items-center gap-2">
-                    {color?.map((item) => (<div style={{backgroundColor: item?.color}} className="h-[24px] lg:h-[32px] w-[24px] lg:w-[32px] rounded-full "></div>))}
-                    </div>
-                    </div>
-               
+            <div className="mb-[8px] ">
+              <label className="text-[14px] md:text-base text-[#1C1C1C] font-medium   mb-[8px] md:mb-[16px]">
+                Select Color<sup className="text-[#A97400]">*</sup>
+              </label>
+              <div className="flex items-center gap-2">
+                {color?.map((item) => (
+                  <div
+                    onClick={() =>
+                      setFormValue({
+                        ...formValue,
+                        color: item?.color.substring(1),
+                      })
+                    }
+                    style={{ backgroundColor: item?.color }}
+                    className={` ${formValue?.color === item?.color.substring(1) ? "border-2 border-[#2e2e2e]" : "" } h-[24px] lg:h-[32px] w-[24px] cursor-pointer lg:w-[32px] rounded-full `}
+                  ></div>
+                ))}
+              </div>
+            </div>
           </ModalBody>
           <div className="flex justify-center py-3 ">
             {}
             <button
-             
+              onClick={createACatgory}
               className="border-[0.2px]  border-[#98A2B3] px-2 primary-bg flex banks-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
             >
-              { isLoading ? (
+              {isLoading ? (
                 <ClipLoader color={"white"} size={20} />
               ) : (
                 <> Create Category </>

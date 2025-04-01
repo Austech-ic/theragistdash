@@ -53,8 +53,13 @@ const Category = () => {
     setIsCreate(false);
   };
 
-  const openEdit = (id) => {
-    setId(id);
+  const openEdit = (item) => {
+    setId(item?.id);
+    setFormValue({
+      name: item?.name,
+      amount: item?.price,
+      color: item?.color,
+    })
     setIsEdit(true);
   };
   const closeEdit = () => {
@@ -81,13 +86,13 @@ const Category = () => {
     try {
       const response = await api.updateCategory(id, {
         name: formValue?.name,
-        amount: formValue?.amount,
+        price: formValue?.amount,
         color: formValue?.color,
       });
       enqueueSnackbar("Category Created Successfully", { variant: "success" });
       categoryResults.refetch();
       setIsLoading(false);
-      setIsCreate(false);
+      closeEdit();
       ClearForm();
     } catch (error) {
       //console.log(error.message);
@@ -128,7 +133,7 @@ const Category = () => {
     try {
       const response = await api.createCategory({
         name: formValue?.name,
-        amount: formValue?.amount,
+        price: formValue?.amount,
         color: formValue?.color,
       });
       enqueueSnackbar("Category Updated Successfully", { variant: "success" });
@@ -149,7 +154,6 @@ const Category = () => {
       amount: "",
       color: "",
     });
-    setId("");
   }
 
   return (
@@ -177,7 +181,7 @@ const Category = () => {
                 total={item?.price}
                 showOptions={true}
                 setDelete={() => openDelete(item?.id)}
-                setEdit={() => openEdit(item?.id)}
+                setEdit={() => openEdit(item)}
               />
             ))}
         </div>
@@ -389,7 +393,7 @@ const Category = () => {
                       })
                     }
                     style={{ backgroundColor: item?.color }}
-                    className="h-[24px] lg:h-[32px] w-[24px] lg:w-[32px] rounded-full "
+                    className={` ${formValue?.color === item?.color.substring(1) ? "border-2 border-[#2e2e2e]" : "" } h-[24px] lg:h-[32px] w-[24px] cursor-pointer lg:w-[32px] rounded-full `}
                   ></div>
                 ))}
               </div>

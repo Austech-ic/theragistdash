@@ -208,8 +208,12 @@ const Topbar = ({ setIsSidebar }) => {
               ? "User Assessment"
               : location.pathname === "/space-management"
               ? "Space Management"
-              : location.pathname === "/security"
-              ? "Security"
+              : location.pathname === "/feed-management/article"
+              ? "Articles"
+               : location.pathname === "/feed-management/post"
+              ? "Post"
+               : location.pathname === "/categories"
+              ? "Categories"
               : ""}
           </h4>{" "}
         </div>
