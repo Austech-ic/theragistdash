@@ -137,7 +137,7 @@ const Dashboard = () => {
   const avCost = "N" + " " + dashboardData?.average_cost?.toFixed(2);
   return (
     <div className="p-[18px] md:p-[28px] xl:p-[32px] 2xl:p-[38px]">
-      <div className="flex flex-row gap-6 md:gap-8">
+      <div className="flex flex-col lg:flex-row gap-6 md:gap-8">
         <div>
           <div className=" flex-1 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[17px]">
             <TotalCard
@@ -180,7 +180,7 @@ const Dashboard = () => {
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[17px]">
-              {dashboardData?.slice(0,4).categories?.map((item) => (
+              {dashboardData?.categories?.slice(0,4).map((item) => (
                 <CatCard
                   name={item?.name}
                   color={"#" + item?.color}
@@ -234,7 +234,7 @@ const Dashboard = () => {
               Patients by Division
             </p>
             <div className="border-t border-[#E1E1E1]">
-              {dashboardData?.patient_division?.map((item, index) => (
+              {dashboardData?.patient_division?.slice(0,7).map((item, index) => (
                 <div className="px-3 flex  items-center gap-2 py-2 border-b border-[#E1E1E1] ">
                   <Icon
                     icon="ri:mental-health-line"
@@ -252,6 +252,7 @@ const Dashboard = () => {
               ))}
             </div>
           </div>
+          <div className="flex flex-row gap-8 lg:flex-col">
           <div className="rounded-[12px] w-[200px] bg-[#FBFBFB] border border-[#E1E1E1] py-[10px] md:py-[15px]">
             <p className="text-center text-sm  text-[#282828] font-medium ">
               Patients by Gender
@@ -288,6 +289,8 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
+          </div>
+         
         </div>
       </div>
     </div>
