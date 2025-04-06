@@ -19,6 +19,9 @@ import EmtyTable from "../../components/common/EmtyTable";
 import api from "../../api";
 import { useQuery } from "@tanstack/react-query";
 import { enqueueSnackbar } from "notistack";
+import { formatDate } from "../../utils/helperFunctions";
+import Status from "../../components/common/Status";
+import { ClipLoader } from "react-spinners";
 
 const Group = () => {
   const [isCreate, setIsCreate] = useState(false);
@@ -67,30 +70,38 @@ const Group = () => {
   });
 
   const groupData = results?.data?.data || [];
+  const deletedGroup =
+  groupData &&
+  groupData.filter((item) => item?.status === "deleted").length;
+const suspendedGroup =
+groupData &&
+groupData.filter((item) => item?.status === "suspended").length;
+  const activeGroup =
+  groupData &&
+  groupData.filter((item) => item?.status === "active").length;
 
-   const deleteUser = async () => {
+   const deleteGroup = async () => {
       setIsLoading(true);
   
       try {
-        const response = await api.deleteUser(resultId);
+        const response = await api.deleteGroup(resultId);
         enqueueSnackbar(response?.message, { variant: "success" });
         results.refetch();
         setIsLoading(false);
         closeDelete(false);
         setResultId("");
       } catch (error) {
-        enqueueSnackbar(error.message, { variant: "error" });
-  
         setIsLoading(false);
+
+        enqueueSnackbar(error.detail, { variant: "error" });
+  
       }
     };
   
 
   return (
     <div className="p-[18px] md:p-[28px] xl:p-[32px] 2xl:p-[38px]">
-      {/* <div className="flex justify-end mb-[20px] md:mb-[25px] xl:mb-[30px]">
-        <AddButton action={() => openCreateModal()} name="Add Group" />
-      </div> */}
+     
       <div className="flex items-center justify-between ">
         <SearchInput placeholder={"Search Group"} />
       </div>
@@ -113,7 +124,7 @@ const Group = () => {
                   : "text-[#6F6F6F] bg-[#eaeaea]"
               }`}
             >
-              <p>112</p>
+              <p>{groupData?.length}</p>
             </div>
           </li>
           <li
@@ -132,7 +143,7 @@ const Group = () => {
                   : "text-[#6F6F6F] bg-[#eaeaea]"
               }`}
             >
-              <p>80</p>
+              <p>{suspendedGroup}</p>
             </div>
           </li>
           <li
@@ -151,7 +162,7 @@ const Group = () => {
                   : "text-[#6F6F6F] bg-[#eaeaea] "
               }`}
             >
-              <p>2</p>
+              <p>{deletedGroup}</p>
             </div>
           </li>
         </ul>
@@ -238,43 +249,25 @@ const Group = () => {
                   {groupData?.map((item, index) => (
                     <tr className="border-b-[0.8px] border-[#E4E7EC]">
                       <td className="px-5 py-[16px] text-[14px] text-center  text-[#2e2e2e]">
-                        1
+                        {index+1}
                       </td>
                       <td className="px-5 py-[16px] text-[14px] whitespace-nowrap ">
                         <p className="font-medium whitespace-nowrap">
-                          Overcoming Anxiety{" "}
+                          {item?.name}
                         </p>
-                        <p className="text-[#9C9C9C] ">ID: 2346570067</p>
                       </td>
-                      <td className="px-5 py-[16px] whitespace-nowrap text-[14px]  text-[#9C9C9C]">
-                        31. Dec. 2022
+                      <td className="px-5 py-[16px] text-center whitespace-nowrap text-[14px]  text-[#9C9C9C]">
+                      {formatDate(item?.created_at)}
                       </td>
-                      <td className="px-5 py-[16px] text-[14px]  text-[#9C9C9C]">
-                        12
+                      <td className="px-5 py-[16px] text-center text-[14px] items-center  text-[#9C9C9C]">
+                        {item?.members_count}
                       </td>
-                      <td className="px-5 py-[16px] text-[14px]  text-[#9C9C9C]">
-                        Ramzy{" "}
+                      <td className="px-5 py-[16px] text-center text-[14px]   text-[#9C9C9C]">
+                      {item?.author}
                       </td>
 
-                      <td className="px-5 py-[16px] text-[14px]  text-[#212121]">
-                        <div className="flex gap-1 bg-[#91C561] bg-opacity-15 px-[12px] py-[4px] text-[#008D36] items-center rounded-xl">
-                          <svg
-                            width="14"
-                            height="10"
-                            viewBox="0 0 14 10"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M13 1L4.75 9L1 5.36364"
-                              stroke="#008D36"
-                              stroke-width="2"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                          </svg>
-                          <p>Active</p>
-                        </div>{" "}
+                      <td className="px-5 py-[16px] text-center text-[14px]  text-[#212121]">
+                       <Status status={item?.status} />
                       </td>
                       <td className="px-5 py-[16px] text-[14px] md:text-[16px] text-[#212121]">
                         <div className="flex items-center gap-1">
@@ -287,7 +280,7 @@ const Group = () => {
                           />
 
                           <Trash
-                            onClick={openDelete}
+                            onClick={() => openDelete(item?.id)}
                             size="20"
                             variant="Bold"
                             color="red"
@@ -304,180 +297,7 @@ const Group = () => {
         </div>
       </div>
 
-      <Modal
-        isCentered
-        isOpen={isCreate}
-        onClose={closeCreate}
-        size={{ base: "xs", sm: "md", lg: "xl" }}
-        style={{ borderRadius: 12 }}
-        motionPreset="slideInBottom"
-        className="rounded-[12px]"
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader
-            py="4"
-            color="#000000"
-            fontSize={{ base: "16px", md: "18px" }}
-            fontWeight={"400"}
-          >
-            <div className="items-center">Create Group </div>
-          </ModalHeader>
-          <ModalCloseButton size={"sm"} />
-          <Divider color="#98A2B3" />
-          <ModalBody
-            pt={{ base: "20px", md: "24px" }}
-            px={{ base: "16px", md: "24px" }}
-            pb={{ base: "16px", md: "20px" }}
-            className="pt-[20px] md:pt-[24px] px-[16px] md:px-[24px] pb-[30px] md:pb-[40px]"
-          >
-            <>
-              <div className="mb-[8px] mt-4 md:mt-5">
-                <label className="text-[14px] md:text-base text-[#1C1C1C] font-medium   mb-[8px] md:mb-[16px]">
-                  Group Name<sup className="text-[#A97400]">*</sup>
-                </label>
-                <div className="">
-                  <InputField
-                    placeholder="Enter name"
-                    // value={formValue.name}
-                    // name="name"
-                    // onChange={(e) => handleInputChange(e)}
-                  />
-                </div>
-              </div>
-              <div className="mb-[8px] ">
-                <label className="text-[14px] md:text-base text-[#1C1C1C] font-medium   mb-[8px] md:mb-[16px]">
-                  Email<sup className="text-[#A97400]">*</sup>
-                </label>
-                <div className="">
-                  <InputField
-                    type="email"
-                    placeholder="e.g. abc@website.com"
-                    // value={formValue.name}
-                    // name="name"
-                    // onChange={(e) => handleInputChange(e)}
-                  />
-                </div>
-              </div>
-
-              <div className="mb-[8px] ">
-                <label className="text-[14px] md:text-base text-[#1C1C1C] font-medium   mb-[8px] md:mb-[16px]">
-                  Phone Number<sup className="text-[#A97400]">*</sup>
-                </label>
-                <div className="flex items-center gap-3 md:gap-4 lg:gap-5">
-                  <select className="w-[20%] h-[38px] pl-[8px] py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[1px] rounded-[6px] focus:outline-none focus:ring-[#00B0C7] focus:border-[#00B0C7] ">
-                    <option>+234</option>
-                    <option>+234</option>
-                    <option>+234</option>
-                  </select>
-                  <InputField
-                    type="email"
-                    placeholder="00000000000"
-                    // value={formValue.name}
-                    // name="name"
-                    // onChange={(e) => handleInputChange(e)}
-                  />
-                </div>
-              </div>
-
-              <div className="mb-[8px] ">
-                <label className="text-[14px] md:text-base text-[#1C1C1C] font-medium   mb-[8px] md:mb-[16px]">
-                  Number of session<sup className="text-[#A97400]">*</sup>
-                </label>
-                <div className="">
-                  <InputField
-                    type="text"
-                    placeholder="Enter number"
-                    // value={formValue.name}
-                    // name="name"
-                    // onChange={(e) => handleInputChange(e)}
-                  />
-                </div>
-              </div>
-
-              <div className="mb-[8px] ">
-                <label className="text-[14px] md:text-base text-[#1C1C1C] font-medium   mb-[8px] md:mb-[16px]">
-                  Address<sup className="text-[#A97400]">*</sup>
-                </label>
-                <div className="">
-                  <InputField
-                    type="text"
-                    placeholder="Enter Address"
-                    // value={formValue.name}
-                    // name="name"
-                    // onChange={(e) => handleInputChange(e)}
-                  />
-                </div>
-              </div>
-            </>
-          </ModalBody>
-          {/* <div className="flex justify-center py-3 ">
-        
-            <button
-              onClick={() => {
-                if (phase === 1) {
-                  setPhase(2);
-                } else {
-                }
-              }}
-              className="border-[0.2px]  border-[#98A2B3] w-[99px] primary-bg flex banks-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
-            >
-              {phase === 1 ? (
-                "Next"
-              ) : isLoading ? (
-                <ClipLoader color={"white"} size={20} />
-              ) : (
-                <> Register </>
-              )}
-            </button>
-          </div> */}
-        </ModalContent>
-      </Modal>
-
-      {/* Suspend Councellor Modal */}
-      <Modal
-        isCentered
-        isOpen={isSuspend}
-        onClose={closeSuspend}
-        size={{ base: "xs", sm: "md" }}
-        style={{ borderRadius: 12 }}
-        motionPreset="slideInBottom"
-        className="rounded-[12px]"
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalCloseButton size={"sm"} />
-          <ModalBody
-            py={{ base: "20px", md: "24px" }}
-            px={{ base: "16px", md: "24px" }}
-          >
-            <p className=" text-[16px] md:text-lg text-center mt-4  text-[#000] leading-[24px] font-medium  ">
-              You about to Suspend this Group
-            </p>
-
-            <p className="text-[14px]  text-[#667185] leading-[20px] font-light text-center mt-2  ">
-              Are you sure you want to suspend this Group? This action will
-              restrict their access to the group till it is undone.
-            </p>
-          </ModalBody>
-          <div className="flex items-center justify-evenly pb-2 md:py-3">
-            <button
-              onClick={() => {
-                closeSuspend();
-              }}
-              className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black"
-            >
-              Cancel
-            </button>
-            <button
-              //   onClick={}
-              className=" w-[99px] text-center bg-[#F7A30A] rounded-[8px] py-[12px] text-[14px] font-medium text-white"
-            >
-              Suspend
-            </button>
-          </div>
-        </ModalContent>
-      </Modal>
+     
       {/* Delete Counselor Modal */}
       <Modal
         isCentered
@@ -514,11 +334,14 @@ const Group = () => {
               Cancel
             </button>
             <button
-              // onClick={closeCancel}
+              onClick={deleteGroup}
               className=" w-[99px] text-center bg-[#B50000] rounded-[8px] py-[12px] text-[14px] font-medium text-white"
             >
-              Delete
-            </button>
+ {isLoading ? (
+                <ClipLoader color={"white"} size={20} />
+              ) : (
+                <> Delete </>
+              )}            </button>
           </div>
         </ModalContent>
       </Modal>

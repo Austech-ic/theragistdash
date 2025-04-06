@@ -24,6 +24,9 @@ import {
   ARTICLE,
   GETARTICLECOUNT,
   CREATECOUNSELLOR,
+  DELETEGROUP,
+  GETACOMPANYUSER,
+  COMPANYUSERADD,
 } from "../utils/config";
 import { apiDelete, apiGet, apiGetCSV, apiPost, apiPut } from "../utils/utils";
 
@@ -64,8 +67,15 @@ export function getCompany(data) {
   return apiGet(GETCOMPANIES, data);
 }
 
+export function getCompanyUser(data) {
+  return apiGet(GETACOMPANYUSER + data + "/users/");
+}
+
 export function createCompany(data) {
   return apiPost(GETCOMPANIES, data, { 'Content-Type': 'multipart/form-data' });
+}
+export function createCompanyUser(data) {
+  return apiPost(COMPANYUSERADD, data);
 }
 
 export function deleteComapany(data) {
@@ -76,6 +86,8 @@ export function deleteComapany(data) {
 export function suspendComapany(data) {
   return apiPut(UPDATESUSPEND + data + "/company/");
 }
+
+
 
 //booking track
 export function getBookTrack(data) {
@@ -109,6 +121,12 @@ export function getGroups(data) {
 export function getGroup(data) {
   return apiGet(GETGROUPS + data + "/");
 }
+
+export function deleteGroup(data) {
+  return apiDelete(DELETEGROUP + data + "/");
+
+}
+
 
 //user assessment
 export function getUserAssessment(data) {

@@ -5,11 +5,13 @@ import EmtyTable from "../../components/common/EmtyTable";
 import api from "../../api";
 import { useQuery } from "@tanstack/react-query";
 import { Eye } from "iconsax-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { formatDate } from "../../utils/helperFunctions";
 
 const UserAssessment = () => {
   const [isCreate, setIsCreate] = useState(false);
   const [search, setSearch] = useState("");
+  const navigate = useNavigate()
 
   async function getUserAssessment(page) {
     const response = await api.getUserAssessment({
@@ -26,6 +28,7 @@ const UserAssessment = () => {
   });
 
   const assessmentData = results?.data?.data || [];
+
 
   return (
     <div className="p-[18px] md:p-[28px] xl:p-[32px] 2xl:p-[38px]">
@@ -47,50 +50,34 @@ const UserAssessment = () => {
                       scope="col"
                       className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px]  text-[#282828]  font-medium  tracking-[0.2%]"
                     >
-                      <div className="flex px-5 whitespace-nowrap   gap-[6px] md:gap-[12px] items-center">
+                      <div className="flex px-5 whitespace-nowrap  text-center  gap-[6px] md:gap-[12px] items-center">
                         SN{" "}
                       </div>
                     </th>
                     <th
                       scope="col"
-                      className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px]  text-[#282828]  font-medium  tracking-[0.2%]"
+                      className="  border-b-[0.8px] text-center border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px]  text-[#282828]  font-medium  tracking-[0.2%]"
                     >
-                      <div className="flex px-5 whitespace-nowrap   gap-[6px] md:gap-[12px] items-center">
                         Name{" "}
-                      </div>
                     </th>
                     <th
                       scope="col"
-                      className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px]  text-[#282828]  font-medium  tracking-[0.2%]"
+                      className="  border-b-[0.8px] whitespace-nowrap text-center border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px]  text-[#282828]  font-medium  tracking-[0.2%]"
                     >
-                      <div className="flex px-5 whitespace-nowrap   gap-[6px] md:gap-[12px] items-center">
                         Assessment Date{" "}
-                      </div>
                     </th>
 
                     <th
                       scope="col"
-                      className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px]  text-[#282828]  font-medium  tracking-[0.2%]"
+                      className="  border-b-[0.8px] border-[#E4E7EC] text-center py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px]  text-[#282828]  font-medium  tracking-[0.2%]"
                     >
-                      <div className="flex whitespace-nowrap  gap-[6px] md:gap-[12px] items-center my-0">
-                        Attended session
-                      </div>
-                    </th>
-                    <th
-                      scope="col"
-                      className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px]  text-[#282828]  font-medium  tracking-[0.2%]"
-                    >
-                      <div className="flex  gap-[6px] md:gap-[12px] items-center my-0">
                         Email
-                      </div>
                     </th>
                     <th
                       scope="col"
-                      className="  border-b-[0.8px] border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px]  text-[#282828]  font-medium  tracking-[0.2%]"
+                      className="  border-b-[0.8px] text-center border-[#E4E7EC] py-[12px] px-5  gap-[6px] md:gap-[12px] text-[14px]  text-[#282828]  font-medium  tracking-[0.2%]"
                     >
-                      <div className="flex  gap-[6px] md:gap-[12px] items-center my-0">
                         Action
-                      </div>
                     </th>
                   </tr>
                 </thead>
@@ -103,28 +90,26 @@ const UserAssessment = () => {
                     />
                   )}
 
-                  {/* {assessmentData?.map((item, index) => ( */}
-                  {[1]?.map((item, index) => (
+                  {assessmentData?.map((item, index) => (
                     <tr className="border-b-[0.8px] border-[#E4E7EC]">
                       <td className="px-5 py-[16px] text-[14px] text-center  text-[#2e2e2e]">
-                        1
+                        {index + 1}
                       </td>
-                      <td className="px-5 py-[16px] text-[14px] whitespace-nowrap ">
-                        <p className="font-medium whitespace-nowrap">
-                          SOS User
+                      <td className="px-5 py-[16px] text-center text-[14px] whitespace-nowrap ">
+                        <p className="font-medium  whitespace-nowrap">
+                          {item?.user?.username}
                         </p>
                       </td>
-                      <td className="px-5 py-[16px] whitespace-nowrap text-[14px]  text-[#9C9C9C]"></td>
-                      <td className="px-5 py-[16px] whitespace-nowrap text-[14px]  text-[#9C9C9C]">
-                        31. Dec. 2022
+                      <td className="px-5 py-[16px] text-center whitespace-nowrap text-[14px]  text-[#9C9C9C]">
+                        {formatDate(item?.created_at)}
                       </td>
 
-                      <td className="px-5 py-[16px] text-[14px]  text-[#9C9C9C]">
-                        rachealbambam@gmail.com
+                      <td className="px-5 py-[16px] text-[14px]  text-center text-[#9C9C9C]">
+                        {item?.user?.email}{" "}
                       </td>
                       <td className="px-5 py-[16px] text-[14px] md:text-[16px] text-[#212121]">
-                        <div className="flex items-center gap-1">
-                          <Link to="/user-assessment/assessment-details">
+                        <div className="flex justify-center items-center gap-1">
+                          <Link to="/user-assessment/assessment-details" state={item}>
                             <Eye
                               size="20"
                               variant="Bold"

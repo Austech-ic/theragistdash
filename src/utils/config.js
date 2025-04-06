@@ -15,6 +15,7 @@ export const DASHBOARDANALYTICS = getApiUrl("/dashboard/analytics/");
 // group
 export const GETGROUPS = getApiUrl("/group/management/");
 export const GETAGROUP = getApiUrl("/group/management/"); //id
+export const DELETEGROUP = getApiUrl("/group/management/"); //id
 
 
 //podcast 
@@ -39,9 +40,9 @@ export const UPDATECATEGORY = getApiUrl("/category/"); //id
 
 //company
 export const GETCOMPANIES = getApiUrl("/company_management/");
-export const GETACOMPANY = getApiUrl("/company/"); //id
+export const GETACOMPANYUSER = getApiUrl("/company/"); //id
 export const UPDATECOMPANY = getApiUrl("/company/"); //id
-export const COMPANYUSERADD = getApiUrl("/company/user/add"); 
+export const COMPANYUSERADD = getApiUrl("/company/user/add/"); 
 
 //counsellor
 export const GETDELETEDCOUNSELLOR = getApiUrl("/counsellor_management/deleted");
@@ -66,7 +67,7 @@ export const GETUSERS = getApiUrl("/user/management/");
 
 //user assessment
 export const GETUSERASSESSMENT = getApiUrl("/user/assessment/");
-export const GETAUSERASSESSMENTHISTORYRESPONSE = getApiUrl("/user-assessment/"); //id
+export const GETAUSERASSESSMENTHISTORYRESPONSE = getApiUrl("/user/assessment/history/"); //id
 
 //post
 export const POST = "https://octopus-app-spiq3.ondigitalocean.app/client/api/v1/social/post/"
@@ -78,5 +79,7 @@ export const GETPOSTCOUNT = getApiUrl("/feed/management/posts/counts/");
 export const ARTICLE = "https://octopus-app-spiq3.ondigitalocean.app/client/api/v1/social/article/"
 export const GETARTICLE = getApiUrl("/feed/management/articles/");
 export const GETARTICLECOUNT = getApiUrl("/feed/management/article/count/");
+
+
 
 

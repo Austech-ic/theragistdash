@@ -7,9 +7,9 @@ export async function getHeaders() {
     authData = JSON.parse(authData);
     const token = "Bearer " + authData.token;
     return {
-      authorization: token,
+      Authorization: token,
       Accept: "application/json",
-      "Content-Type": "application/json",
+      // "Content-Type": "application/json",
     };
   }
   return {};
@@ -26,10 +26,16 @@ export async function apiReq(
     const getTokenHeader = await getHeaders();
     headers = {
       ...getTokenHeader,
-      ...headers,
     };
 
     if (method === "get" ) {
+      data = {
+        ...requestOptions,
+        ...data,
+        headers,
+      };
+    }
+    if (method === "delete" ) {
       data = {
         ...requestOptions,
         ...data,
@@ -48,6 +54,7 @@ export async function apiReq(
       })
       .catch((error) => {
         console.log(error);
+        console.log(headers);
         console.log(error && error.response, "the error respne");
         if (error && error.response && error.response.status === 401) {
           // clearauthData();

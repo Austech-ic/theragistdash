@@ -22,6 +22,7 @@ import api from "../../api";
 import { useQuery } from "@tanstack/react-query";
 import { formatDate } from "../../utils/helperFunctions";
 import { enqueueSnackbar } from "notistack";
+import Status from "../../components/common/Status";
 
 const Councellor = () => {
   const [listType, setListType] = useState("All");
@@ -32,6 +33,7 @@ const Councellor = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]); // Selected items
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [resultId, setResultId] = useState("");
 
   const [formValue, setFormValue] = useState({
     name: "",
@@ -40,7 +42,7 @@ const Councellor = () => {
     gender: "",
     address: "",
     specialization: null,
-    password: ""
+    password: "",
   });
 
   const [phase, setPhase] = useState(1);
@@ -50,15 +52,16 @@ const Councellor = () => {
   const handleFileChange = (e) => {
     if (e.target.files) {
       // Convert FileList to Array and append to existing files
-      const newFiles = Array.from(e.target.files);
-      console.log(newFiles);
+      const newFiles =Array.from(e.target.files)
+      // console.log(newFiles);
+      
 
       setFiles((prevFiles) => [...prevFiles, ...newFiles]);
     }
     // Reset the input to allow uploading the same file again if needed
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
+    // if (fileInputRef.current) {
+    //   fileInputRef.current.value = "";
+    // }
   };
 
   const handleDelete = (indexToDelete) => {
@@ -144,8 +147,11 @@ const Councellor = () => {
   const closeCreate = () => {
     setIsCreate(false);
     setPhase(1);
+    ClearForm()
   };
-  const openDelete = () => {
+  const openDelete = (id) => {
+    setResultId(id);
+
     setIsDelete(true);
   };
   const closeDelete = () => {
@@ -157,7 +163,10 @@ const Councellor = () => {
   const closeCancel = () => {
     setIsCancel(false);
   };
-  const openSuspend = () => {
+
+  const openSuspend = (id) => {
+    setResultId(id);
+
     setIsSuspend(true);
   };
   const closeSuspend = () => {
@@ -166,28 +175,7 @@ const Councellor = () => {
 
   const [preview, setPreview] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [uploading, setUploading] = useState(false);
-
-  const handleDragEnter = () => setIsDragging(true);
-  const handleDragLeave = () => setIsDragging(false);
-
-  const handleDrop = (event) => {
-    event.preventDefault();
-    setIsDragging(false);
-
-    const file = event.dataTransfer.files[0];
-    if (file) {
-      // Convert FileList to Array and append to existing files
-      const newFiles = Array.from(file);
-      console.log(newFiles);
-
-      setFiles((prevFiles) => [...prevFiles, ...newFiles]);
-    }
-    // if (file) {
-    //   // setLogo(file);
-    //   setPreview(URL.createObjectURL(file));
-    // }
-  };
+  
   const toggleSelectItem = (item) => {
     if (selectedItems.includes(item)) {
       setSelectedItems(selectedItems.filter((i) => i !== item));
@@ -205,28 +193,30 @@ const Councellor = () => {
     setFormValue({ ...formValue, [e.target.name]: e.target.value });
   };
 
-   async function getCategories(page) {
-      const response = await api.getCategories({});
-      return response;
-    }
-  
-    const categoryResults = useQuery(["getCategories"], () => getCategories(), {
-      keepPreviousData: true,
-      refetchOnWindowFocus: "always",
-    });
-  
-    const categoriesData = categoryResults?.data?.data || [];
-  
+  async function getCategories(page) {
+    const response = await api.getCategories({});
+    return response;
+  }
+
+  const categoryResults = useQuery(["getCategories"], () => getCategories(), {
+    keepPreviousData: true,
+    refetchOnWindowFocus: "always",
+  });
+
+  const categoriesData = categoryResults?.data?.data || [];
 
   const createCounsellor = async () => {
     setIsLoading(true);
 
     const formData = new FormData();
- 
+
     formData.append("username", formValue?.name);
     formData.append("email", formValue?.email);
     formData.append("phone_number", formValue?.phone);
-    formData.append("document", Array.from(files));
+    files.forEach((file, index) => {
+      formData.append("documents", file); 
+    });
+    // formData.append("document", files);
     formData.append("specialization", Array.from(selectedItems));
     formData.append("gender", formValue?.gender);
     formData.append("address", formValue?.address);
@@ -234,17 +224,20 @@ const Councellor = () => {
 
     try {
       const response = await api.createCounsellor(formData);
-      enqueueSnackbar(" Counselor Created Successfully", { variant: "success" });
+      enqueueSnackbar(" Counselor Created Successfully", {
+        variant: "success",
+      });
       results.refetch();
       setIsLoading(false);
       ClearForm();
+      closeCreate()
     } catch (error) {
       enqueueSnackbar(error.message, { variant: "error" });
 
       setIsLoading(false);
     }
   };
-  function ClearForm (){
+  function ClearForm() {
     setFormValue({
       name: "",
       email: "",
@@ -252,13 +245,46 @@ const Councellor = () => {
       gender: "",
       address: "",
       specialization: null,
-      password: ""
+      password: "",
     });
     setFiles([]);
     setPhase(1);
-    setSelectedItems([])
+    setSelectedItems([]);
   }
 
+  const deleteCounsellor = async () => {
+    setIsLoading(true);
+
+    try {
+      const response = await api.deleteUser(resultId);
+      enqueueSnackbar(response?.message, { variant: "success" });
+      results.refetch();
+      setIsLoading(false);
+      closeDelete(false);
+      setResultId("");
+    } catch (error) {
+      enqueueSnackbar(error.message, { variant: "error" });
+
+      setIsLoading(false);
+    }
+  };
+
+  const suspendCounsellor = async () => {
+    setIsLoading(true);
+
+    try {
+      const response = await api.suspendUser(resultId);
+      enqueueSnackbar(response?.message, { variant: "success" });
+      results.refetch();
+      setIsLoading(false);
+      closeSuspend();
+      setResultId("");
+    } catch (error) {
+      enqueueSnackbar(error.message, { variant: "error" });
+
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="p-[18px] md:p-[28px] xl:p-[32px] 2xl:p-[38px]">
@@ -267,15 +293,6 @@ const Councellor = () => {
       </div>
       <div className="flex items-center justify-between ">
         <SearchInput placeholder={"Search Counselor"} />
-
-        {/* <div className="flex items-center gap-1">
-          <p className="whitespace-nowrap ">Filter By</p>{" "}
-          <select className="w-full  pl-[6px] py-[10px] text-[14px] text-[#2e2e2e] leading-[20px] bg-[#fff] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#E1E1E1] border-[1px] rounded-[6px] focus:outline-none focus:ring-[#00B0C7] focus:border-[#00B0C7] ">
-            <option value="">Attended Sessions</option>
-            <option value="">Categories</option>
-            <option value="">Status</option>
-          </select>{" "}
-        </div> */}
       </div>
 
       <div className="mt-5 md:mt-6">
@@ -421,54 +438,37 @@ const Councellor = () => {
                   {currentData?.map((item) => (
                     <tr className="border-b-[0.8px] border-[#E4E7EC]">
                       <td className="px-5 py-[16px] text-[14px] whitespace-nowrap ">
-                        <p className="font-medium whitespace-nowrap">
+                        <p className="font-medium whitespace-nowrap text-center">
                           {item?.username}
                         </p>
                         {/* <p className="text-[#9C9C9C] ">ID: 2346570067</p> */}
                       </td>
-                      <td className="px-5 py-[16px] whitespace-nowrap text-[14px]  text-[#9C9C9C]">
+                      <td className="px-5 py-[16px] whitespace-nowrap text-[14px] text-center  text-[#9C9C9C]">
                         {formatDate(item?.date_joined)}
                       </td>
-                      <td className="px-5 py-[16px] text-[14px]  text-[#9C9C9C]">
+                      <td className="px-5 py-[16px] text-[14px] text-center  text-[#9C9C9C]">
                         {item?.client_category.map((item) => item?.name)}
                       </td>
-                      <td className="px-5 py-[16px] whitespace-nowrap text-[14px]  text-[#9C9C9C]">
+                      <td className="px-5 py-[16px] whitespace-nowrap text-[14px] text-center  text-[#9C9C9C]">
                         {item?.email}
                       </td>
-                      <td className="px-5 py-[16px] text-[14px]  text-[#9C9C9C]">
+                      <td className="px-5 py-[16px] text-[14px]  text-[#9C9C9C] text-center">
                         {item?.total_sessions}
                       </td>
-                      <td className="px-5 py-[16px] text-[14px]  text-[#212121]">
-                        <div className="flex gap-1 bg-[#91C561] bg-opacity-15 px-[12px] py-[4px] text-[#008D36] items-center rounded-xl">
-                          <svg
-                            width="14"
-                            height="10"
-                            viewBox="0 0 14 10"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M13 1L4.75 9L1 5.36364"
-                              stroke="#008D36"
-                              stroke-width="2"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                          </svg>
-                          <p>{item?.status}</p>
-                        </div>{" "}
+                      <td className="px-5 py-[16px] text-[14px]  text-[#212121] text-center">
+                        <Status status={item?.status} />
                       </td>
                       <td className="px-5 py-[16px] text-[14px] md:text-[16px] text-[#212121]">
                         <div className="flex items-center gap-1">
                           <Eye
-                            onClick={openSuspend}
+                            onClick={() => openSuspend(item?.id)}
                             size="20"
                             variant="Bold"
                             color="#F7A30A"
                             className="cursor-pointer"
                           />
                           <Trash
-                            onClick={openDelete}
+                            onClick={() => openDelete(item?.id)}
                             size="20"
                             variant="Bold"
                             color="red"
@@ -521,10 +521,14 @@ const Councellor = () => {
               Cancel
             </button>
             <button
-              onClick={closeCancel}
+              onClick={suspendCounsellor}
               className=" w-[99px] text-center bg-[#F7A30A] rounded-[8px] py-[12px] text-[14px] font-medium text-white"
             >
-              Suspend
+               { isLoading ? (
+                <ClipLoader color={"white"} size={20} />
+              ) : (
+                <> Suspend </>
+              )}
             </button>
           </div>
         </ModalContent>
@@ -565,10 +569,14 @@ const Councellor = () => {
               Cancel
             </button>
             <button
-              // onClick={closeCancel}
+               onClick={deleteCounsellor}
               className=" w-[99px] text-center bg-[#B50000] rounded-[8px] py-[12px] text-[14px] font-medium text-white"
             >
-              Delete
+              { isLoading ? (
+                <ClipLoader color={"white"} size={20} />
+              ) : (
+                <> Delete </>
+              )}
             </button>
           </div>
         </ModalContent>
@@ -697,9 +705,7 @@ const Councellor = () => {
                     Phone Number<sup className="text-[#A97400]">*</sup>
                   </label>
                   <div className="flex items-center gap-3 md:gap-4 lg:gap-5">
-                    <select 
-                                    
-                    className="w-[20%] h-[38px] pl-[8px] py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[1px] rounded-[6px] focus:outline-none focus:ring-[#00B0C7] focus:border-[#00B0C7] ">
+                    <select className="w-[20%] h-[38px] pl-[8px] py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[1px] rounded-[6px] focus:outline-none focus:ring-[#00B0C7] focus:border-[#00B0C7] ">
                       <option>+234</option>
                       {/* <option>+234</option>
                       <option>+234</option> */}
@@ -716,15 +722,15 @@ const Councellor = () => {
 
                 <div className="mb-[8px] ">
                   <label className="text-[14px] md:text-base text-[#1C1C1C] font-medium   mb-[8px] md:mb-[16px]">
-                    Email<sup className="text-[#A97400]">*</sup>
+                    Gender<sup className="text-[#A97400]">*</sup>
                   </label>
                   <div className="">
-                    <select 
-                    
-                    value={formValue.gender}
-                    name="gender"
-                    onChange={(e) => handleInputChange(e)}
-                    className="w-full h-[38px] pl-[8px] py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[1px] rounded-[6px] focus:outline-none focus:ring-[#00B0C7] focus:border-[#00B0C7] ">
+                    <select
+                      value={formValue.gender}
+                      name="gender"
+                      onChange={(e) => handleInputChange(e)}
+                      className="w-full h-[38px] pl-[8px] py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[1px] rounded-[6px] focus:outline-none focus:ring-[#00B0C7] focus:border-[#00B0C7] "
+                    >
                       <option>Select gender</option>
                       <option>Male </option>
                       <option>Female</option>
@@ -736,65 +742,64 @@ const Councellor = () => {
                     Specialization<sup className="text-[#A97400]">*</sup>
                   </label>
                   <div className="relative w-full">
-              {/* Input Field */}
-              <div
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="border border-gray-300 p-2 rounde-lg rounded-lg cursor-pointer flex flex-wrap gap-1"
-              >
-                {selectedItems.map((item, index) => (
-                  <span
-                    key={index}
-                    className="bg-[#00B0C7]  text-white px-2 py-1 rounded flex items-center gap-1 text-[14px]"
-                  >
-                    {categoriesData &&
-                      categoriesData?.map(
-                        (result, index) =>
-                          item === result?.name && (
-                            <span key={index}>{result?.name}</span>
-                          )
-                      )}
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        removeItem(item);
-                      }}
-                      className="text-xs ml-1 text-white hover:text-red-500"
+                    {/* Input Field */}
+                    <div
+                      onClick={() => setDropdownOpen(!dropdownOpen)}
+                      className="border border-gray-300 p-2 rounde-lg rounded-lg cursor-pointer flex flex-wrap gap-1"
                     >
-                      ×
-                    </button>
-                  </span>
-                ))}
-                <input
-                  type="text"
-                  className="flex-grow border-none focus:ring-0 focus:outline-none"
-                  placeholder={
-                    selectedItems.length === 0 ? "Select items..." : ""
-                  }
-                  readOnly
-                />
-              </div>
+                      {selectedItems.map((item, index) => (
+                        <span
+                          key={index}
+                          className="bg-[#00B0C7]  text-white px-2 py-1 rounded flex items-center gap-1 text-[14px]"
+                        >
+                          {categoriesData &&
+                            categoriesData?.map(
+                              (result, index) =>
+                                item === result?.name && (
+                                  <span key={index}>{result?.name}</span>
+                                )
+                            )}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              removeItem(item);
+                            }}
+                            className="text-xs ml-1 text-white hover:text-red-500"
+                          >
+                            ×
+                          </button>
+                        </span>
+                      ))}
+                      <input
+                        type="text"
+                        className="flex-grow border-none focus:ring-0 focus:outline-none"
+                        placeholder={
+                          selectedItems.length === 0 ? "Select items..." : ""
+                        }
+                        readOnly
+                      />
+                    </div>
 
-              {/* Dropdown List */}
-              {dropdownOpen && (
-                <div className="absolute mt-1 w-full bg-white border border-gray-300 rounded shadow-md max-h-60 overflow-y-auto z-10">
-                  {categoriesData &&
-                    categoriesData?.map((item, index) => (
-                      <div
-                        key={index}
-                        onClick={() => toggleSelectItem(item?.name)}
-                        className={`p-2 cursor-pointer hover:bg-[#00B0C7c9] text-sm  hover:text-white ${
-                          selectedItems.includes(item?.name)
-                            ? "bg-gray-300  text-black"
-                            : ""
-                        }`}
-                      >
-                        {item?.name}
+                    {/* Dropdown List */}
+                    {dropdownOpen && (
+                      <div className="absolute mt-1 w-full bg-white border border-gray-300 rounded shadow-md max-h-60 overflow-y-auto z-10">
+                        {categoriesData &&
+                          categoriesData?.map((item, index) => (
+                            <div
+                              key={index}
+                              onClick={() => toggleSelectItem(item?.name)}
+                              className={`p-2 cursor-pointer hover:bg-[#00B0C7c9] text-sm  hover:text-white ${
+                                selectedItems.includes(item?.name)
+                                  ? "bg-gray-300  text-black"
+                                  : ""
+                              }`}
+                            >
+                              {item?.name}
+                            </div>
+                          ))}
                       </div>
-                    ))}
-                </div>
-              )}
-            </div>
-          
+                    )}
+                  </div>
                 </div>
                 <div className="mb-[8px] ">
                   <label className="text-[14px] md:text-base text-[#1C1C1C] font-medium   mb-[8px] md:mb-[16px]">
@@ -838,10 +843,10 @@ const Councellor = () => {
                     className={`border my-4 md:my-8 border-stroke bg-[#f9f9f9] rounded-lg p-6 flex flex-col items-center justify-center ${
                       isDragging ? "border-blue-500" : "border-gray-300"
                     }`}
-                    onDragEnter={handleDragEnter}
-                    onDragLeave={handleDragLeave}
-                    onDragOver={(e) => e.preventDefault()}
-                    onDrop={handleDrop}
+                    // onDragEnter={handleDragEnter}
+                    // onDragLeave={handleDragLeave}
+                    // onDragOver={(e) => e.preventDefault()}
+                    // onDrop={handleDrop}
                   >
                     {preview && (
                       <img
@@ -853,24 +858,22 @@ const Councellor = () => {
 
                     <input
                       type="file"
-                      accept=".jpeg, .png, .jpg"
+                      // accept=".jpeg, .png, .jpg"
                       onChange={handleFileChange}
                       className="hidden"
                       id="fileInput"
                       ref={fileInputRef}
                     />
-                   
 
                     <UploadCloud
                       size={28}
                       className="mx-auto text-center mb-2"
                     />
                     <label
-                       onClick={handleAddMore}
+                      // onClick={handleAddMore}
                       htmlFor="fileInput"
                       className="mt-1 text-[#00b0c7] cursor-pointer hover:underline text-[14px]"
                     >
-
                       {files.length > 0
                         ? "Add More Files"
                         : "Browse to choose a file"}
@@ -923,14 +926,12 @@ const Councellor = () => {
             )}
           </ModalBody>
           <div className="flex justify-center py-3 ">
-          
             <button
               onClick={() => {
                 if (phase === 1) {
                   setPhase(2);
                 } else {
-
-                  createCounsellor()
+                  createCounsellor();
                 }
               }}
               className="border-[0.2px]  border-[#98A2B3] w-[99px] primary-bg flex banks-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"

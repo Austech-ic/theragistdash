@@ -23,6 +23,8 @@ import { color } from "../../utils/Data";
 import api from "../../api";
 import { useQuery } from "@tanstack/react-query";
 import { enqueueSnackbar } from "notistack";
+import { formatDate } from "../../utils/helperFunctions";
+import Status2 from "../../components/common/Status2";
 
 const BookingTracker = () => {
   const [listType, setListType] = useState("All");
@@ -132,7 +134,7 @@ const BookingTracker = () => {
         />
       </div>
       <div className="flex items-center justify-between ">
-        <SearchInput placeholder={"Search Counselor"} />
+        <SearchInput placeholder={"Search Bookings"} />
 
      
       </div>
@@ -148,7 +150,7 @@ const BookingTracker = () => {
             }`}
           >
             <p>All Bookings</p>{" "}
-            <div
+            {/* <div
               className={`h-[24px] w-[24px] flex items-center justify-center  text-xs  rounded-full ${
                 listType === "All"
                   ? "text-[#00B0C7] bg-[#E6F7F9]"
@@ -156,7 +158,7 @@ const BookingTracker = () => {
               }`}
             >
               <p>0</p>
-            </div>
+            </div> */}
           </li>
           <li
             onClick={() => setListType("Declined")}
@@ -167,7 +169,7 @@ const BookingTracker = () => {
             }`}
           >
             <p>Declined Booking</p>{" "}
-            <div
+            {/* <div
               className={`h-[24px] w-[24px] flex items-center justify-center text-xs  rounded-full ${
                 listType === "Declined"
                   ? "text-[#00B0C7] bg-[#E6F7F9]"
@@ -175,7 +177,7 @@ const BookingTracker = () => {
               }`}
             >
               <p>0</p>
-            </div>
+            </div> */}
           </li>
           <li
             onClick={() => setListType("Pending")}
@@ -186,7 +188,7 @@ const BookingTracker = () => {
             }`}
           >
             <p>Pending Booking</p>{" "}
-            <div
+            {/* <div
               className={` text-xs h-[24px] w-[24px]  flex items-center justify-center rounded-full ${
                 listType === "Pending"
                   ? "text-[#00B0C7] bg-[#E6F7F9]"
@@ -194,7 +196,7 @@ const BookingTracker = () => {
               }`}
             >
               <p>0</p>
-            </div>
+            </div> */}
           </li>
         </ul>
       </div>
@@ -265,37 +267,20 @@ const BookingTracker = () => {
                   {trackData?.map((item) => (
                     <tr className="border-b-[0.8px] border-[#E4E7EC]">
                       <td className="px-5 py-[16px] text-[14px] whitespace-nowrap ">
-                        2346570067
+                        {item?.user_id}
+                      </td>
+                      <td className="px-5 py-[16px] whitespace-nowrap text-[14px]  text-center text-[#9C9C9C]">
+                        {formatDate(item?.created_at)}
+                      </td>
+                      <td className="px-5 py-[16px] text-[14px] text-center  text-[#9C9C9C]">
+                        N{item?.category?.price}
                       </td>
                       <td className="px-5 py-[16px] whitespace-nowrap text-[14px]  text-[#9C9C9C]">
-                        31. Dec. 2022 / 02:04:00 pm
-                      </td>
-                      <td className="px-5 py-[16px] text-[14px]  text-[#9C9C9C]">
-                        1200
-                      </td>
-                      <td className="px-5 py-[16px] whitespace-nowrap text-[14px]  text-[#9C9C9C]">
-                        Anxiety{" "}
+                      {item?.category?.name}
                       </td>
 
                       <td className="px-5 py-[16px] text-[14px]  text-[#212121]">
-                        <button className="flex w-auto  justify-center gap-1 bg-[#91C561] bg-opacity-15 px-[12px] py-[4px] text-[#008D36] items-center rounded-xl">
-                          <svg
-                            width="14"
-                            height="10"
-                            viewBox="0 0 14 10"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M13 1L4.75 9L1 5.36364"
-                              stroke="#008D36"
-                              stroke-width="2"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                          </svg>
-                          <p>Successfull</p>
-                        </button>{" "}
+                       <Status2 status={item?.status} />
                       </td>
                     </tr>
                   ))}

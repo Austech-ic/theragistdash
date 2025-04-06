@@ -22,6 +22,7 @@ import { useQuery } from "@tanstack/react-query";
 import { formatDate } from "../../utils/helperFunctions";
 import { Link } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
+import Status from "../../components/common/Status";
 
 const User = () => {
   const [isCreate, setIsCreate] = useState(false);
@@ -278,7 +279,7 @@ const User = () => {
                       </td>
 
                       <td className="px-5 py-[16px] text-[14px]  text-[#212121]">
-                        <div className="flex gap-1 bg-[#91C561] bg-opacity-15 px-[12px] py-[4px] text-[#008D36] items-center rounded-xl">
+                        {/* <div className="flex gap-1 bg-[#91C561] bg-opacity-15 px-[12px] py-[4px] text-[#008D36] items-center rounded-xl">
                           <svg
                             width="14"
                             height="10"
@@ -295,7 +296,9 @@ const User = () => {
                             />
                           </svg>
                           <p>{item?.status}</p>
-                        </div>{" "}
+                        </div>{" "} */}
+
+                        <Status status={item?.status} />
                       </td>
                       <td className="px-5 py-[16px] text-[14px] md:text-[16px] text-[#212121]">
                         <div className="flex items-center gap-1">

@@ -106,27 +106,32 @@ const Category = () => {
   authData = JSON.parse(authData);
   const token = "Bearer " + authData.token;
 
+
   const deleteCategory = async () => {
     setIsLoading(true);
     const url = `https://octopus-app-spiq3.ondigitalocean.app/dashboard/api/v1/category/${id}/`;
+  
     try {
       const response = await axios.delete(url, {
-        authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQzNTg0MTczLCJpYXQiOjE3NDI5NzkzNzMsImp0aSI6IjIyNjI2MWMwN2ZmNzRhNzM5Y2JmMjNjYmE2YjQ5ZGRkIiwidXNlcl9pZCI6ImNiNzJmMzk2LTg1NWMtNGQyNy04MDgyLTUwNmM1YjM1YzI3NCJ9.OigJUco96cXgHLB-CK6GHGKZmW8xK6FUaDS14FlHgVA',
-        Accept: "application/json",
+        headers: {
+          Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ0NTUxNzY2LCJpYXQiOjE3NDM5NDY5NjYsImp0aSI6IjEyNDc1ZTIyMGIxMDQ5Nzg4Nzk4MTg0ZDFiYTUxMzlhIiwidXNlcl9pZCI6ImNiNzJmMzk2LTg1NWMtNGQyNy04MDgyLTUwNmM1YjM1YzI3NCJ9.kqhuePHCclH1bqfB46h2ote_VicQTmdTNHyqxujXKcI',
+          Accept: 'application/json',
+        },
       });
-
+  
       enqueueSnackbar("Category Deleted Successfully", { variant: "success" });
       categoryResults.refetch();
       setIsLoading(false);
-      setIsCreate(false);
+      closeDelete();
       ClearForm();
     } catch (error) {
-      //console.log(error.message);
-      enqueueSnackbar(error.detail, { variant: "error" });
-
+      enqueueSnackbar(error?.response?.data?.message || "Something went wrong", {
+        variant: "error",
+      });
       setIsLoading(false);
     }
   };
+  
 
   const createACatgory = async () => {
     setIsLoading(true);

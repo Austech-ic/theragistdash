@@ -27,6 +27,8 @@ import UserAsssessmentDetails from "./screens/user-assesment/userDetails";
 import AsssessmentResponse from "./screens/user-assesment/asssessmentResponse";
 import Post from "./screens/feed-management/post";
 import Article from "./screens/feed-management/article";
+import CreateCompany from "./screens/company/CreateCompany";
+import CompanyUsers from "./screens/company/CompanyUsers";
 
 const DashboardRoutes = () => {
   return (
@@ -53,6 +55,8 @@ const DashboardRoutes = () => {
         <Route path="/user-assessment/assessment-response" exact={true} element={<AsssessmentResponse />} />
         <Route path="/feed-management/post" exact={true} element={<Post />} />
         <Route path="/feed-management/article" exact={true} element={<Article />} />
+        <Route path="/company/create-company" exact={true} element={<CreateCompany />} />
+        <Route path="/company/users" exact={true} element={<CompanyUsers />} />
       </Route>
     </Routes>
   );

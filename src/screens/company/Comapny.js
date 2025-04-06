@@ -21,6 +21,8 @@ import api from "../../api";
 import { formatDate } from "../../utils/helperFunctions";
 import { enqueueSnackbar } from "notistack";
 import { ClipLoader } from "react-spinners";
+import { Link } from "react-router-dom";
+import Status from "../../components/common/Status";
 
 const Comapny = () => {
   const [isCreate, setIsCreate] = useState(false);
@@ -30,15 +32,13 @@ const Comapny = () => {
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [resultId, setResultId] = useState("");
-  const  [formValue, setFormValue] = useState({
+  const [formValue, setFormValue] = useState({
     namd: "",
     company_mail: "",
     allocated_session: 0,
     company_address: "",
     csv_file: "",
-
-  })
- 
+  });
 
   const openSuspend = (id) => {
     setResultId(id);
@@ -80,6 +80,15 @@ const Comapny = () => {
   });
 
   const companyData = results?.data?.data || [];
+  const deletedCompany =
+    companyData &&
+    companyData.filter((item) => item?.status === "deleted").length;
+  const suspendedCompany =
+    companyData &&
+    companyData.filter((item) => item?.status === "suspended").length;
+  const activeCompany =
+    companyData &&
+    companyData.filter((item) => item?.status === "active").length;
 
   const deleteComapany = async () => {
     setIsLoading(true);
@@ -115,37 +124,39 @@ const Comapny = () => {
     }
   };
 
-   const createCompany = async () => {
-      setIsLoading(true);
-  
-      const formData = new FormData();
+  const createCompany = async () => {
+    setIsLoading(true);
 
+    const formData = new FormData();
 
-      formData.append("name", formValue?.name);
-      formData.append("company_mail", formValue?.company_mail);
-      formData.append("allocated_session", formValue?.allocated_session);
-      formData.append("document", formValue?.document);
-      formData.append("company_address", formValue?.company_address);
-      formData.append("csv_file", formValue?.csv_file);
+    formData.append("name", formValue?.name);
+    formData.append("company_mail", formValue?.company_mail);
+    formData.append("allocated_session", formValue?.allocated_session);
+    formData.append("document", formValue?.document);
+    formData.append("company_address", formValue?.company_address);
+    formData.append("csv_file", formValue?.csv_file);
 
-  
-      try {
-        const response = await api.createCounsellor(formData);
-        enqueueSnackbar(" Counselor Created Successfully", { variant: "success" });
-        results.refetch();
-        setIsLoading(false);
-        // ClearForm();
-      } catch (error) {
-        enqueueSnackbar(error.details, { variant: "error" });
-  
-        setIsLoading(false);
-      }
-    };
+    try {
+      const response = await api.createCounsellor(formData);
+      enqueueSnackbar(" Counselor Created Successfully", {
+        variant: "success",
+      });
+      results.refetch();
+      setIsLoading(false);
+      // ClearForm();
+    } catch (error) {
+      enqueueSnackbar(error.detail, { variant: "error" });
+
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="p-[18px] md:p-[28px] xl:p-[32px] 2xl:p-[38px]">
       <div className="flex justify-end mb-[20px] md:mb-[25px] xl:mb-[30px]">
-        <AddButton action={() => openCreateModal()} name="Add Company" />
+        <Link to="/company/create-company">
+          <AddButton name="Add Company" />
+        </Link>
       </div>
       <div className="flex items-center justify-between ">
         <SearchInput
@@ -153,8 +164,6 @@ const Comapny = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-
-
       </div>
 
       <div className="mt-5 md:mt-6">
@@ -168,15 +177,15 @@ const Comapny = () => {
             }`}
           >
             <p>All Company</p>{" "}
-            <div
+            {/* <div
               className={`h-[24px] w-[24px] flex items-center justify-center  text-xs  rounded-full ${
                 listType === "All"
                   ? "text-[#00B0C7] bg-[#E6F7F9]"
                   : "text-[#6F6F6F] bg-[#eaeaea]"
               }`}
             >
-              <p>112</p>
-            </div>
+              <p>{activeCompany}</p>
+            </div> */}
           </li>
           <li
             onClick={() => setListType("suspended")}
@@ -187,15 +196,15 @@ const Comapny = () => {
             }`}
           >
             <p>Suspended Company</p>{" "}
-            <div
+            {/* <div
               className={`h-[24px] w-[24px] flex items-center justify-center text-xs  rounded-full ${
                 listType === "Suspended"
                   ? "text-[#00B0C7] bg-[#E6F7F9]"
                   : "text-[#6F6F6F] bg-[#eaeaea]"
               }`}
             >
-              <p>80</p>
-            </div>
+              <p>{suspendedCompany}</p>
+            </div> */}
           </li>
           <li
             onClick={() => setListType("deleted")}
@@ -206,23 +215,23 @@ const Comapny = () => {
             }`}
           >
             <p>Deleted Comapny</p>{" "}
-            <div
+            {/* <div
               className={` text-xs h-[24px] w-[24px]  flex items-center justify-center rounded-full ${
                 listType === "Deleted"
                   ? "text-[#00B0C7] bg-[#E6F7F9]"
                   : "text-[#6F6F6F] bg-[#eaeaea] "
               }`}
             >
-              <p>2</p>
-            </div>
+              <p>{deletedCompany}</p>
+            </div> */}
           </li>
         </ul>
       </div>
 
       <div className="overflow-x-auto">
-        <div class=" mt-5">
-          <div class="inline-block  min-w-full  ">
-            <div class="overflow-x-auto rounded-lg">
+        <div className=" mt-5">
+          <div className="inline-block  min-w-full  ">
+            <div className="overflow-x-auto rounded-lg">
               <table className="min-w-full mb-6 border-[0.8px] border-r-[0.8px]  border-l-[0.8px] border-[#E4E7EC] rounded-lg">
                 <thead className="bg-[#E6F7F9] ">
                   <tr className="">
@@ -317,34 +326,19 @@ const Comapny = () => {
                       </td>
 
                       <td className="px-5 py-[16px] text-[14px]  text-[#212121]">
-                        <div className="flex gap-1 bg-[#91C561] bg-opacity-15 px-[12px] py-[4px] text-[#008D36] items-center rounded-xl">
-                          <svg
-                            width="14"
-                            height="10"
-                            viewBox="0 0 14 10"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M13 1L4.75 9L1 5.36364"
-                              stroke="#008D36"
-                              stroke-width="2"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                          </svg>
-                          <p>{item?.status}</p>
-                        </div>{" "}
+                        <Status status={item?.status} />
                       </td>
                       <td className="px-5 py-[16px] text-[14px] md:text-[16px] text-[#212121]">
                         <div className="flex items-center gap-1">
-                          <Eye
-                            onClick={openSuspend}
-                            size="20"
-                            variant="Bold"
-                            color="#F7A30A"
-                            className="cursor-pointer"
-                          />
+                          <Link to="/company/users" state={item}>
+                            {" "}
+                            <Eye
+                              size="20"
+                              variant="Bold"
+                              color="#F7A30A"
+                              className="cursor-pointer"
+                            />
+                          </Link>
                           <Edit
                             onClick={() => openSuspend(item?.id)}
                             size="20"
@@ -477,30 +471,11 @@ const Comapny = () => {
               </div>
             </>
           </ModalBody>
-          {/* <div className="flex justify-center py-3 ">
-        
-            <button
-              onClick={() => {
-                if (phase === 1) {
-                  setPhase(2);
-                } else {
-                }
-              }}
-              className="border-[0.2px]  border-[#98A2B3] w-[99px] primary-bg flex banks-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
-            >
-              {phase === 1 ? (
-                "Next"
-              ) : isLoading ? (
-                <ClipLoader color={"white"} size={20} />
-              ) : (
-                <> Register </>
-              )}
-            </button>
-          </div> */}
+
         </ModalContent>
       </Modal>
 
-      {/* Suspend Councellor Modal */}
+      {/* Suspend Company Modal */}
       <Modal
         isCentered
         isOpen={isSuspend}
@@ -536,10 +511,10 @@ const Comapny = () => {
               Cancel
             </button>
             <button
-            onClick={suspendComapany}
+              onClick={suspendComapany}
               className=" w-[99px] text-center bg-[#F7A30A] rounded-[8px] py-[12px] text-[14px] font-medium text-white"
             >
-             {isLoading ? (
+              {isLoading ? (
                 <ClipLoader color={"white"} size={20} />
               ) : (
                 <> Suspend </>

@@ -1,9 +1,9 @@
 import React from "react";
 
-const Status = ({ status }) => {
+const Status2 = ({ status }) => {
   return (
     <>
-      {status === "active" ? (
+      {status === "successful" ? (
         <div className="flex gap-1 bg-[#91C561] bg-opacity-15 px-[12px] py-[4px] text-[#008D36] items-center rounded-xl">
           <svg
             width="14"
@@ -22,12 +22,12 @@ const Status = ({ status }) => {
           </svg>
           <p>{status}</p>
         </div>
-      ) : status === "suspended" ? (
+      ) : status === "pending" ? (
         <div className="flex gap-1 bg-[#F7A30A] bg-opacity-15 px-[12px] py-[4px] text-[#F7A30A] items-center rounded-xl">
           <img src="/orangeLoad.svg" className="h-[10px] w-[10px]" />
           <p>{status}</p>
         </div>
-      ) : status === "deleted" ? (
+      ) : status === "declined" ? (
         <div className="flex gap-1 bg-[#FF0000] bg-opacity-15 px-[12px] py-[4px] text-[#FF0000] items-center rounded-xl">
           <img src="/redDot.svg" className="h-[10px] w-[10px]" />
           <p>{status}</p>
@@ -39,4 +39,4 @@ const Status = ({ status }) => {
   );
 };
 
-export default Status;
+export default Status2;
