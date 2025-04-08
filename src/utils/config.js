@@ -80,6 +80,8 @@ export const ARTICLE = "https://octopus-app-spiq3.ondigitalocean.app/client/api/
 export const GETARTICLE = getApiUrl("/feed/management/articles/");
 export const GETARTICLECOUNT = getApiUrl("/feed/management/article/count/");
 
+//
+export const ACTIVATEUSER = getApiUrl("/activate/");
 
 
 

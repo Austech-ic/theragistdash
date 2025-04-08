@@ -34,6 +34,7 @@ const Councellor = () => {
   const [selectedItems, setSelectedItems] = useState([]); // Selected items
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [resultId, setResultId] = useState("");
+  const [name, setName] = useState("");
 
   const [formValue, setFormValue] = useState({
     name: "",
@@ -52,9 +53,8 @@ const Councellor = () => {
   const handleFileChange = (e) => {
     if (e.target.files) {
       // Convert FileList to Array and append to existing files
-      const newFiles =Array.from(e.target.files)
+      const newFiles = Array.from(e.target.files);
       // console.log(newFiles);
-      
 
       setFiles((prevFiles) => [...prevFiles, ...newFiles]);
     }
@@ -85,12 +85,14 @@ const Councellor = () => {
   };
 
   async function getActiveCounsellor(page) {
-    const response = await api.getActiveCounsellor({});
+    const response = await api.getActiveCounsellor({ params: {
+        name: name,
+      },});
     return response;
   }
 
   const results = useQuery(
-    ["getActiveCounsellor"],
+    ["getActiveCounsellor", name],
     () => getActiveCounsellor(),
     {
       keepPreviousData: true,
@@ -101,12 +103,14 @@ const Councellor = () => {
   const activeData = results?.data?.data || [];
 
   async function getSuspendedCounsellor(page) {
-    const response = await api.getSuspendedCounsellor({});
+    const response = await api.getSuspendedCounsellor({ param: {
+        name: name,
+      },});
     return response;
   }
 
   const suspendedResults = useQuery(
-    ["getSuspendedCounsellor"],
+    ["getSuspendedCounsellor", name],
     () => getSuspendedCounsellor(),
     {
       keepPreviousData: true,
@@ -117,12 +121,16 @@ const Councellor = () => {
   const suspendedData = suspendedResults?.data?.data || [];
 
   async function getDeletedCounsellor(page) {
-    const response = await api.getDeletedCounsellor({});
+    const response = await api.getDeletedCounsellor({
+      param: {
+        name: name,
+      },
+    });
     return response;
   }
 
   const deletedResults = useQuery(
-    ["getDeletedCounsellor"],
+    ["getDeletedCounsellor", name],
     () => getDeletedCounsellor(),
     {
       keepPreviousData: true,
@@ -147,7 +155,7 @@ const Councellor = () => {
   const closeCreate = () => {
     setIsCreate(false);
     setPhase(1);
-    ClearForm()
+    ClearForm();
   };
   const openDelete = (id) => {
     setResultId(id);
@@ -175,7 +183,7 @@ const Councellor = () => {
 
   const [preview, setPreview] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
-  
+
   const toggleSelectItem = (item) => {
     if (selectedItems.includes(item)) {
       setSelectedItems(selectedItems.filter((i) => i !== item));
@@ -214,7 +222,7 @@ const Councellor = () => {
     formData.append("email", formValue?.email);
     formData.append("phone_number", formValue?.phone);
     files.forEach((file, index) => {
-      formData.append("documents", file); 
+      formData.append("documents", file);
     });
     // formData.append("document", files);
     formData.append("specialization", Array.from(selectedItems));
@@ -230,7 +238,7 @@ const Councellor = () => {
       results.refetch();
       setIsLoading(false);
       ClearForm();
-      closeCreate()
+      closeCreate();
     } catch (error) {
       enqueueSnackbar(error.message, { variant: "error" });
 
@@ -292,7 +300,10 @@ const Councellor = () => {
         <AddButton action={() => openCreateModal()} name="Add Counselor" />
       </div>
       <div className="flex items-center justify-between ">
-        <SearchInput placeholder={"Search Counselor"} />
+        <SearchInput
+          placeholder={"Search Counselor"}
+          onChange={(e) => setName(e.target.value)}
+        />
       </div>
 
       <div className="mt-5 md:mt-6">
@@ -524,7 +535,7 @@ const Councellor = () => {
               onClick={suspendCounsellor}
               className=" w-[99px] text-center bg-[#F7A30A] rounded-[8px] py-[12px] text-[14px] font-medium text-white"
             >
-               { isLoading ? (
+              {isLoading ? (
                 <ClipLoader color={"white"} size={20} />
               ) : (
                 <> Suspend </>
@@ -569,10 +580,10 @@ const Councellor = () => {
               Cancel
             </button>
             <button
-               onClick={deleteCounsellor}
+              onClick={deleteCounsellor}
               className=" w-[99px] text-center bg-[#B50000] rounded-[8px] py-[12px] text-[14px] font-medium text-white"
             >
-              { isLoading ? (
+              {isLoading ? (
                 <ClipLoader color={"white"} size={20} />
               ) : (
                 <> Delete </>

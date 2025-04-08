@@ -112,12 +112,7 @@ const Category = () => {
     const url = `https://octopus-app-spiq3.ondigitalocean.app/dashboard/api/v1/category/${id}/`;
   
     try {
-      const response = await axios.delete(url, {
-        headers: {
-          Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ0NTUxNzY2LCJpYXQiOjE3NDM5NDY5NjYsImp0aSI6IjEyNDc1ZTIyMGIxMDQ5Nzg4Nzk4MTg0ZDFiYTUxMzlhIiwidXNlcl9pZCI6ImNiNzJmMzk2LTg1NWMtNGQyNy04MDgyLTUwNmM1YjM1YzI3NCJ9.kqhuePHCclH1bqfB46h2ote_VicQTmdTNHyqxujXKcI',
-          Accept: 'application/json',
-        },
-      });
+      const response = await api.deleteCategory(id);
   
       enqueueSnackbar("Category Deleted Successfully", { variant: "success" });
       categoryResults.refetch();
@@ -125,7 +120,7 @@ const Category = () => {
       closeDelete();
       ClearForm();
     } catch (error) {
-      enqueueSnackbar(error?.response?.data?.message || "Something went wrong", {
+      enqueueSnackbar(error?.detail || "Something went wrong", {
         variant: "error",
       });
       setIsLoading(false);

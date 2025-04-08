@@ -27,6 +27,7 @@ import {
   DELETEGROUP,
   GETACOMPANYUSER,
   COMPANYUSERADD,
+  ACTIVATEUSER,
 } from "../utils/config";
 import { apiDelete, apiGet, apiGetCSV, apiPost, apiPut } from "../utils/utils";
 
@@ -199,4 +200,10 @@ export function updateArticle(id,data) {
 
 export function deleteArticle(id,data) {
   return apiDelete(ARTICLE + id, data);
+}
+
+
+//activate user
+export function activateUser(data) {
+  return apiPut(ACTIVATEUSER + data + "/user/");
 }

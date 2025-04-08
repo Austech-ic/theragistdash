@@ -160,7 +160,7 @@ const BookingTracker = () => {
               <p>0</p>
             </div> */}
           </li>
-          <li
+          {/* <li
             onClick={() => setListType("Declined")}
             className={`pb-2 cursor-pointer flex items-center gap-[6px]  ${
               listType === "Declined"
@@ -169,7 +169,7 @@ const BookingTracker = () => {
             }`}
           >
             <p>Declined Booking</p>{" "}
-            {/* <div
+            <div
               className={`h-[24px] w-[24px] flex items-center justify-center text-xs  rounded-full ${
                 listType === "Declined"
                   ? "text-[#00B0C7] bg-[#E6F7F9]"
@@ -177,9 +177,9 @@ const BookingTracker = () => {
               }`}
             >
               <p>0</p>
-            </div> */}
-          </li>
-          <li
+            </div>
+          </li> */}
+          {/* <li
             onClick={() => setListType("Pending")}
             className={`pb-2  cursor-pointer flex items-center gap-[6px]  ${
               listType === "Pending"
@@ -188,7 +188,7 @@ const BookingTracker = () => {
             }`}
           >
             <p>Pending Booking</p>{" "}
-            {/* <div
+            <div
               className={` text-xs h-[24px] w-[24px]  flex items-center justify-center rounded-full ${
                 listType === "Pending"
                   ? "text-[#00B0C7] bg-[#E6F7F9]"
@@ -196,8 +196,8 @@ const BookingTracker = () => {
               }`}
             >
               <p>0</p>
-            </div> */}
-          </li>
+            </div>
+          </li> */}
         </ul>
       </div>
       <Categories data={categoriesData} />

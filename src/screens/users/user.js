@@ -14,7 +14,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import InputField from "../../components/InputField";
-import { Edit, Edit2, Eye, Trash } from "iconsax-react";
+import { Edit, Edit2, Eye, ShieldTick, Trash } from "iconsax-react";
 import EmtyTable from "../../components/common/EmtyTable";
 import { enqueueSnackbar } from "notistack";
 import api from "../../api";
@@ -31,7 +31,18 @@ const User = () => {
   const [isSuspend, setIsSuspend] = useState(false);
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isActivate, setIsActivate] = useState(false);
   const [resultId, setResultId] = useState("");
+
+
+  const openActivate = (id) => {
+    setResultId(id);
+
+    setIsActivate(true);
+  };
+  const closeActivate = () => {
+    setIsActivate(false);
+  };
 
   const openSuspend = (id) => {
     setResultId(id);
@@ -85,6 +96,23 @@ const User = () => {
       setResultId("");
     } catch (error) {
       enqueueSnackbar(error.message, { variant: "error" });
+
+      setIsLoading(false);
+    }
+  };
+
+  // activate user
+  const activateUser = async () => {
+    setIsLoading(true);
+    try {
+      const response = await api.activateUser(resultId);
+      enqueueSnackbar(response?.message, { variant: "success" });
+      results.refetch();
+      setIsLoading(false);
+      closeActivate();
+      setResultId("");
+    } catch (error) {
+      enqueueSnackbar(error.detail, { variant: "error" });
 
       setIsLoading(false);
     }
@@ -317,6 +345,13 @@ const User = () => {
                             color="blue"
                             className="cursor-pointer"
                           />
+                          <ShieldTick
+                            onClick={() => openActivate(item?.id)}
+                            size="20"
+                            variant=""
+                            color="green"
+                            className="cursor-pointer"
+                          />
                           <Trash
                             onClick={() => openDelete(item?.id)}
                             size="20"
@@ -335,114 +370,54 @@ const User = () => {
         </div>
       </div>
 
-      <Modal
+     
+
+       {/* activate User Modal */}
+       <Modal
         isCentered
-        isOpen={isCreate}
-        onClose={closeCreate}
-        size={{ base: "xs", sm: "md", lg: "xl" }}
+        isOpen={isActivate}
+        onClose={closeActivate}
+        size={{ base: "xs", sm: "md" }}
         style={{ borderRadius: 12 }}
         motionPreset="slideInBottom"
         className="rounded-[12px]"
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader
-            py="4"
-            color="#000000"
-            fontSize={{ base: "16px", md: "18px" }}
-            fontWeight={"400"}
-          >
-            <div className="items-center">Create User </div>
-          </ModalHeader>
           <ModalCloseButton size={"sm"} />
-          <Divider color="#98A2B3" />
           <ModalBody
-            pt={{ base: "20px", md: "24px" }}
+            py={{ base: "20px", md: "24px" }}
             px={{ base: "16px", md: "24px" }}
-            pb={{ base: "16px", md: "20px" }}
-            className="pt-[20px] md:pt-[24px] px-[16px] md:px-[24px] pb-[30px] md:pb-[40px]"
           >
-            <>
-              <div className="mb-[8px] mt-4 md:mt-5">
-                <label className="text-[14px] md:text-base text-[#1C1C1C] font-medium   mb-[8px] md:mb-[16px]">
-                  User Name<sup className="text-[#A97400]">*</sup>
-                </label>
-                <div className="">
-                  <InputField
-                    placeholder="Enter name"
-                    // value={formValue.name}
-                    // name="name"
-                    // onChange={(e) => handleInputChange(e)}
-                  />
-                </div>
-              </div>
-              <div className="mb-[8px] ">
-                <label className="text-[14px] md:text-base text-[#1C1C1C] font-medium   mb-[8px] md:mb-[16px]">
-                  Email<sup className="text-[#A97400]">*</sup>
-                </label>
-                <div className="">
-                  <InputField
-                    type="email"
-                    placeholder="e.g. abc@website.com"
-                    // value={formValue.name}
-                    // name="name"
-                    // onChange={(e) => handleInputChange(e)}
-                  />
-                </div>
-              </div>
+            <p className=" text-[16px] md:text-lg text-center mt-4  text-[#000] leading-[24px] font-medium  ">
+              You about to Activate this User
+            </p>
 
-              <div className="mb-[8px] ">
-                <label className="text-[14px] md:text-base text-[#1C1C1C] font-medium   mb-[8px] md:mb-[16px]">
-                  Phone Number<sup className="text-[#A97400]">*</sup>
-                </label>
-                <div className="flex items-center gap-3 md:gap-4 lg:gap-5">
-                  <select className="w-[20%] h-[38px] pl-[8px] py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[1px] rounded-[6px] focus:outline-none focus:ring-[#00B0C7] focus:border-[#00B0C7] ">
-                    <option>+234</option>
-                    <option>+234</option>
-                    <option>+234</option>
-                  </select>
-                  <InputField
-                    type="email"
-                    placeholder="00000000000"
-                    // value={formValue.name}
-                    // name="name"
-                    // onChange={(e) => handleInputChange(e)}
-                  />
-                </div>
-              </div>
-
-              <div className="mb-[8px] ">
-                <label className="text-[14px] md:text-base text-[#1C1C1C] font-medium   mb-[8px] md:mb-[16px]">
-                  Number of session<sup className="text-[#A97400]">*</sup>
-                </label>
-                <div className="">
-                  <InputField
-                    type="text"
-                    placeholder="Enter number"
-                    // value={formValue.name}
-                    // name="name"
-                    // onChange={(e) => handleInputChange(e)}
-                  />
-                </div>
-              </div>
-
-              <div className="mb-[8px] ">
-                <label className="text-[14px] md:text-base text-[#1C1C1C] font-medium   mb-[8px] md:mb-[16px]">
-                  Address<sup className="text-[#A97400]">*</sup>
-                </label>
-                <div className="">
-                  <InputField
-                    type="text"
-                    placeholder="Enter Address"
-                    // value={formValue.name}
-                    // name="name"
-                    // onChange={(e) => handleInputChange(e)}
-                  />
-                </div>
-              </div>
-            </>
+            <p className="text-[14px]  text-[#667185] leading-[20px] font-light text-center mt-2  ">
+              Are you sure you want to activate this User? This action will
+              activate their access to the platform till it is undone.
+            </p>
           </ModalBody>
-        
+          <div className="flex items-center justify-evenly pb-2 md:py-3">
+            <button
+              onClick={() => {
+                closeActivate();
+              }}
+              className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={activateUser}
+              className=" w-[99px] text-center bg-green-400 rounded-[8px] py-[12px] text-[14px] font-medium text-white"
+            >
+              {isLoading ? (
+                <ClipLoader color={"white"} size={20} />
+              ) : (
+                <> Activate </>
+              )}
+            </button>
+          </div>
         </ModalContent>
       </Modal>
 
