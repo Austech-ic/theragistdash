@@ -82,6 +82,8 @@ export const GETARTICLECOUNT = getApiUrl("/feed/management/article/count/");
 
 //
 export const ACTIVATEUSER = getApiUrl("/activate/");
+export const PROFILE = "https://octopus-app-spiq3.ondigitalocean.app/auth/api/v1/client/user/profile/"
+export const NOTIFICATION = "https://octopus-app-spiq3.ondigitalocean.app/client/api/v1/notifications/"
 
 
 

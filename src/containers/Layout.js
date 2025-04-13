@@ -13,11 +13,7 @@ function Layout() {
   const [isSidebar, setIsSidebar] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
 
-  const ProfileQuery = useQuery(["profile"], () => getProfile(), {
-    keepPreviousData: true,
-    refetchOnWindowFocus: "always",
-  });
-  const profileData = ProfileQuery?.data || [];
+
 
   let userData = localStorage.getItem("authData");
   if (!userData) {
@@ -32,10 +28,30 @@ function Layout() {
   const handleSideBarClose = () => {
     setIsSidebar(false);
   };
-  // async function getProfile(page) {
-  //   const response = await api.getProfile({ params: { page } });
-  //   return response;
-  // }
+
+
+  async function getProfile(page) {
+    const response = await api.getProfile({ params: { page } });
+    return response;
+  }
+
+  const result = useQuery(["profile"], getProfile, {
+    keepPreviousData: true,
+    refetchOnWindowFocus: "always",
+  });
+  const profileData = result?.data?.data || [];
+
+
+  async function getNotification(page) {
+    const response = await api.getNotification({ params: { page } });
+    return response;
+  }
+
+  const results = useQuery(["profile"], getNotification(), {
+    keepPreviousData: true,
+    refetchOnWindowFocus: "always",
+  });
+  const notificationData = result?.data?.data || [];
 
   const closeModal = () => {
     setDeferredPrompt(null);
@@ -46,12 +62,11 @@ function Layout() {
       <Sidebar
         isSidebarOpen={isSidebar}
         onClose={handleSideBarClose}
-        profileData={profileData}
       />
 
       <div className="flex relative flex-col flex-1 w-full overflow-x-hidden">
         <div className="fixed md:relative top-0 left-0 right-0 z-[99999] md:z-0 bg-[#ffffff] border-[#D0D5DD]">
-          <Topbar setIsSidebar={toggleSidebar} />
+          <Topbar setIsSidebar={toggleSidebar}  data={profileData}/>
         </div>
 
         <Main>

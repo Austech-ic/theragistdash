@@ -1,4 +1,3 @@
-import { PROFILE, SETDEFUALTBUSINESS } from "../utils/AuthConfig";
 import {
   CUSTOMERS,
   TRANSACTION,
@@ -28,6 +27,8 @@ import {
   GETACOMPANYUSER,
   COMPANYUSERADD,
   ACTIVATEUSER,
+  PROFILE,
+  NOTIFICATION,
 } from "../utils/config";
 import { apiDelete, apiGet, apiGetCSV, apiPost, apiPut } from "../utils/utils";
 
@@ -206,4 +207,12 @@ export function deleteArticle(id,data) {
 //activate user
 export function activateUser(data) {
   return apiPut(ACTIVATEUSER + data + "/user/");
+}
+
+export function getProfile(data) {
+  return apiGet(PROFILE, data );
+}
+
+export function getNotification(data) {
+  return apiGet(NOTIFICATION, data );
 }
