@@ -267,34 +267,7 @@ User Visit By Categories            </p>
               <Doughnut data={pieData} />
             </div>
           </div>
-          <div className="rounded-[12px] w-[200px] bg-[#FBFBFB] border border-[#E1E1E1] py-[10px] md:py-[15px]">
-            <p className="text-center text-sm  text-[#282828] font-medium ">
-              Mood Analysis
-            </p>
-            <div className="border-t border-[#E1E1E1] py-5">
-              <div className="mx-auto h-[40px] md:h-[50px] xl:h-[60px] w-[40px] md:w-[50px] flex justify-center xl:w-[60px] rounded-full bg-[#EDEDED] ">
-                <p className="text-[24px] md:text-[32px] xl:text-[42px] text-center  ">
-                  😁
-                </p>
-              </div>
-
-              <div className="px-2 mt-4">
-                {dashboardData?.mood?.map((item, index) => (
-                  <div key={index} className=" items-center gap-1 mb-1">
-                    <p className="text-[13px] text-[#2e2e2e]">
-                      {item?.emoji_name}
-                    </p>
-                    <ProgressBar
-                      completed={item?.user_count}
-                      bgColor={"#F7A30A"}
-                      height="6px"
-                      isLabelVisible={false}
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+         
           </div>
          
         </div>
