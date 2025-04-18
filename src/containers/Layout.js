@@ -56,6 +56,7 @@ function Layout() {
   const closeModal = () => {
     setDeferredPrompt(null);
   };
+  
 
   return (
     <div id="" className="app bg-[#ffffff] flex  ">
