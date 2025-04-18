@@ -13,7 +13,6 @@ import {
   encryptaValue,
   SendOtp,
 } from "../utils/helperFunctions";
-import FloatingPaths from "../components/Floating";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -54,9 +53,9 @@ const Login = () => {
 
   return (
     <div
-      className="relative h-screen w-full flex justify-center items-center bg-cover bg-center"
+      className="relative h-screen w-full flex justify-center items-center bg-[#002F7A] bg-center"
       style={{
-        backgroundImage: "url('/DashBoard.svg')",
+        // backgroundImage: "url('/DashBoard.svg')",
       }}
     >
       <m.div
@@ -73,13 +72,11 @@ const Login = () => {
       >
         {" "}
         <img
-          src="/assets/theragistLogo.svg"
+          src="/assets/MPRIMO.svg"
           alt="logo"
           className=" h-[40px] md:h-[50px]  mx-auto mb-[36px] md:mb-[50px]"
         />
-        {/* <h2 className="text-[20px] md:text-[24px] xl:text-[28px] text-center font-bold leading-[35px] text-black mb-[8px]">
-          Hi, Welcome Back!
-        </h2> */}
+     
         <p className="text-[16px] md:text-[20pxpx] xl:text-[24px]  font-normal leading-[24px] text-[#1C1C1C] ">
           Sign in
         </p>
@@ -101,7 +98,7 @@ const Login = () => {
               <input
                 type="email"
                 placeholder="Enter username"
-                className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#9C9C9C] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#00B0C7] focus:border-[#00B0C7] "
+                className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#9C9C9C] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#1254bd] focus:border-[#1254bd] "
                 // required
                 autoComplete="on"
                 name="email"
@@ -129,7 +126,7 @@ const Login = () => {
               <input
                 type={open === false ? "password" : "text"}
                 placeholder="Enter password"
-                className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#9C9C9C] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#00B0C7] focus:border-[#00B0C7] "
+                className="w-full h-[48px] pl-[16px] py-[12px] text-[14px] text-[#9C9C9C] leading-[20px] bg-[#F7F9FC] placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#1254bd] focus:border-[#1254bd] "
                 // required
                 autoComplete="on"
                 name="password"
@@ -151,7 +148,7 @@ const Login = () => {
 
           <button
             type="submit"
-            className="w-full py-[14px] mt-[18px] text-center text-white bg-[#00B0C7] rounded-[8px] flex items-center justify-center gap-1 mb-[12px] md:mb-[16px]"
+            className="w-full py-[14px] mt-[18px] text-center text-white bg-[#1254bd] rounded-[8px] flex items-center justify-center gap-1 mb-[12px] md:mb-[16px]"
           >
             <p className="text-sm font-medium leading-[20px]">Login</p>
             {isLoading && <ClipLoader color={"white"} size={20} />}

@@ -31,7 +31,7 @@ function Layout() {
 
 
   async function getProfile(page) {
-    const response = await api.getProfile({ params: { page } });
+    const response = ""
     return response;
   }
 
@@ -43,7 +43,7 @@ function Layout() {
 
 
   async function getNotification(page) {
-    const response = await api.getNotification({ params: { page } });
+    const response = "";
     return response;
   }
 

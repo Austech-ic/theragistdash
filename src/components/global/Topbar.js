@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { IoMdInformationCircleOutline } from "react-icons/io";
-import { clearUserData } from "../../utils/utils";
+import { useLocation, useNavigate } from "react-router-dom";
+
 import {
-  Add,
-  ArrangeHorizontal,
-  ArrowDown,
+
   ArrowDown2,
   DocumentDownload,
   DocumentSketch,
@@ -15,29 +12,11 @@ import {
   Logout,
   Notification,
   ProfileCircle,
-  SecuritySafe,
-  Send2,
-  Setting,
-  Setting2,
-  Trash,
-  UserCirlceAdd,
-  UserEdit,
+
 } from "iconsax-react";
 import Moment from "moment";
 import {
-  Grid,
-  Flex,
-  Button,
-  Divider,
-  Modal,
-  Thead,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Text,
+ 
   Menu,
   MenuButton,
   MenuList,
@@ -46,34 +25,18 @@ import {
 } from "@chakra-ui/react";
 import api from "../../api";
 import { ClipLoader } from "react-spinners";
-import { decryptaValue, encryptaValue } from "../../utils/helperFunctions";
 import { useQuery } from "@tanstack/react-query";
-import { enqueueSnackbar } from "notistack";
 
 const Topbar = ({ setIsSidebar }) => {
   const [logo, setLogo] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isSettingsModal, setIsSettingsModal] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [enableLogin, setEnableLogin] = useState(false);
-  const [enableImage, setEnableImage] = useState(false);
-  const [isInvite, setIsInvite] = useState(false);
-  const [isCreate, setIsCreate] = useState(false);
-  const [isProfile, setIsProfile] = useState(false);
+
   const [isSwitchModal, setIsSwitchModal] = useState(false);
   const [switchId, setSwitchId] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleSwitchModal = (partner) => {
-    setIsSwitchModal(!isSwitchModal);
-    setSwitchId(partner);
-  };
 
-  const closeSwitchModal = () => {
-    setIsSwitchModal(false);
-    setSwitchId("");
-  };
 
   const [formValue, setFormValue] = useState({
     firstName: "",
@@ -87,7 +50,7 @@ const Topbar = ({ setIsSidebar }) => {
   });
   // bg-[#26ae5f6a]
   async function getProfile(page) {
-    const response = await api.getProfile({ params: { page } });
+    const response = ""
     return response;
   }
 
@@ -107,24 +70,9 @@ const Topbar = ({ setIsSidebar }) => {
     });
   }, [ProfileQuery?.data]);
 
-  const handleIsModalClose = () => {
-    setIsModalOpen(false);
-  };
-  const handleSettingsModalClose = () => {
-    setIsSettingsModal(false);
-  };
 
-  function firstAndLastLetter(word) {
-    if (word && word?.length < 1) {
-      return "Input word is too short!";
-    }
-    const Word = word ? word : "";
 
-    const firstLetter = Word[0]; // First letter
-    const lastLetter = Word[Word.length - 1]; // Last letter
-
-    return `${firstLetter}`;
-  }
+ 
 
   return (
     <div className="flex w-full items-center justify-between px-6 gap-[16px] py-2 border-l-[0.2px] border-[#D0D5DD]">
@@ -133,20 +81,20 @@ const Topbar = ({ setIsSidebar }) => {
           class="h-8 w-8 sm:h-10 sm:w-10 bg-[#FAFAFA] hover:bg-[#efeeee] flex justify-center items-center rounded-md lg:hidden mr-2"
           onClick={setIsSidebar}
         >
-          <HambergerMenu size={18} color="#00B0C7" />
+          <HambergerMenu size={18} color="#1254bd" />
         </button>
 
         <div className="md:flex items-center gap-1 hidden ">
           <HambergerMenu
             size={24}
-            color="#00B0C7"
+            color="#1254bd"
             className="hidden lg:block"
           />
-          <h4 className="text-[20px] text-[#00B0C7] font-normal ">
+          <h4 className="text-[20px] text-[#1254bd] font-normal ">
             {location.pathname === "/dashboard"
               ? "Dashboard"
               : location.pathname === "/counselor-management"
-              ? "Counselor Registration"
+              ? "User Management"
               : location.pathname === "/categories"
               ? "Categories"
               : location.pathname === "/booking-tracker"
@@ -187,7 +135,7 @@ const Topbar = ({ setIsSidebar }) => {
               <div className="h-3 w-3 rounded-full flex justify-center items-center bg-red-500 absolute right-1 top-1 text-white text-[8px] font-semibold">
                 0
               </div>
-              <Notification size={16} color="#00B0C7" />
+              <Notification size={16} color="#1254bd" />
             </button>
           </MenuButton>
           <MenuList
@@ -215,12 +163,12 @@ const Topbar = ({ setIsSidebar }) => {
             <Menu>
               <MenuButton bg={"none"}>
                 <div className="flex items-center gap-3">
-                  <p className="text-[#00B0C7] whitespace-nowrap font-medium text-[14px] md:text-[14px] xl:text-[16px]  leading-[24px] ">
+                  <p className="text-[#1254bd] whitespace-nowrap font-medium text-[14px] md:text-[14px] xl:text-[16px]  leading-[24px] ">
                     Hi {profileData?.data?.username}
                   </p>
 
                   <button className="h-[20px] w-[20px] md:h-[24px] md:w-[24px] rounded-[8px] hover:bg-[#F7F9FC] flex justify-center items-center">
-                    <ArrowDown2 size={14} color="#00B0C7" />
+                    <ArrowDown2 size={14} color="#1254bd" />
                   </button>
                 </div>
               </MenuButton>
@@ -233,7 +181,7 @@ const Topbar = ({ setIsSidebar }) => {
                   {profileData?.data?.pic ? (
                     <img src="" alt="profile" />
                   ) : (
-                    <ProfileCircle size={24} color="#00B0C7" />
+                    <ProfileCircle size={24} color="#1254bd" />
                   )}
                   <p className="text-gray-500">{profileData?.data?.username}</p>
                 </div>
@@ -246,10 +194,6 @@ const Topbar = ({ setIsSidebar }) => {
           </div>
         </div>
       </div>
-
-     
-
-
     </div>
   );
 };

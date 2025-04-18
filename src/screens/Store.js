@@ -32,26 +32,19 @@ import {
 import React, { useState } from "react";
 import { ClipLoader } from "react-spinners";
 
-import ModalLeft from "../components/ModalLeft";
 import { Link, useNavigate } from "react-router-dom";
-import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import api from "../api";
 import { enqueueSnackbar } from "notistack";
 import { useQuery } from "@tanstack/react-query";
-import TableLoading from "../components/TableLoading";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "react-loading-skeleton/dist/skeleton.css";
-import { decryptaValue } from "../utils/helperFunctions";
-import EmptyTable from "../components/EmptyTable";
-import EmptyWallet from "../components/EmptyWallets";
+
 import moment from "moment";
 import { PackageOpen } from "lucide-react";
 import { NumericFormat } from "react-number-format";
-import InputField from "../components/InputField";
-import { DocUrl } from "../utils/config";
 
-const Store = () => {
+const Product = () => {
   const navigate = useNavigate();
   const [isViewModal, setIsViewModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -102,21 +95,13 @@ const Store = () => {
       price: id?.price,
       description: id?.description,
     });
-    setPreview(id?.image ? DocUrl + id?.image : "");
   }
 
   const toggleCreate = () => {
     setIsCreate(!isCreate);
   };
-  const closeCreateModal = () => {
-    setIsCreate(false);
-    ClearForm();
-  };
 
-  function ToggleDeleteModal(id) {
-    setIsDeleteModal(!isDeleteModal);
-    setResultId(id);
-  }
+
   function closeDeleteModal() {
     setIsDeleteModal(false);
   }
@@ -265,7 +250,7 @@ const Store = () => {
             <div className="flex items-center gap-[8px]">
               <SearchNormal1 variant="Linear" color="#667185" size="16" />
               <input
-                className="w-full lg:w-[300px] py-[6px] text-[16px] text-[#344054] leading-[20px] placeholder:text-[#98A2B3] placeholder:text-[12px] border border-transparent  focus:outline-none focus:ring-[#26ae5f] focus:border-b-[#26ae5f] "
+                className="w-full lg:w-[300px] py-[6px] text-[16px] text-[#344054] leading-[20px] placeholder:text-[#98A2B3] placeholder:text-[12px] border border-transparent  focus:outline-none focus:ring-[#1254bd] focus:border-b-[#1254bd] "
                 placeholder="Search by Product name.."
                 value={search}
                 onChange={(e) => {
@@ -279,11 +264,11 @@ const Store = () => {
               onClick={() => toggleCreate()}
               className="flex items-center gap-[8px] "
             >
-              <p className="text-[14px] text-[#26ae5f] leading-[20px]">
+              <p className="text-[14px] text-[#1254bd] leading-[20px]">
                 Create Product
               </p>
 
-              <Add variant="Linear" color="#26ae5f" size="16" />
+              <Add variant="Linear" color="#1254bd" size="16" />
             </button>
 
             <Modal
@@ -317,7 +302,7 @@ const Store = () => {
                   </p>
 
                   <input
-                    className="flex mb-[20px] h-9 w-full rounded-md  border-input bg-background  text-sm shadow-sm text-[#667185] border-[0.2px] border-[#98A2B3] transition-colors file:border-0 file:border-r-[0.2px] file:h-9 file:bg-[#F9FAFB] file:text-[#667185] file:border-[#D0D5DD] file:text-sm file:font-medium placeholder:text-muted-foreground focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f]  disabled:opacity-50"
+                    className="flex mb-[20px] h-9 w-full rounded-md  border-input bg-background  text-sm shadow-sm text-[#667185] border-[0.2px] border-[#98A2B3] transition-colors file:border-0 file:border-r-[0.2px] file:h-9 file:bg-[#F9FAFB] file:text-[#667185] file:border-[#D0D5DD] file:text-sm file:font-medium placeholder:text-muted-foreground focus:outline-none focus:ring-[#1254bd] focus:border-[#1254bd]  disabled:opacity-50"
                     id="csv"
                     name="csv"
                     type="file"
@@ -340,7 +325,7 @@ const Store = () => {
                   <button className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black">
                     Cancel
                   </button>
-                  <button className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white">
+                  <button className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#1254bd] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white">
                     {!isLoading ? (
                       <ClipLoader color={"white"} size={20} />
                     ) : (
@@ -413,19 +398,18 @@ const Store = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {results?.isLoading && <TableLoading cols={8} />}
+                  {/* {results?.isLoading && <TableLoading cols={8} />}
                   {results?.data && results?.data?.data?.length === 0 && (
-                    // decryptaValue(results?.data?.data) === 0 &&
                     <EmptyWallet
                       cols={8}
                       action={"Product"}
                       subheading={"Your Product will appear here."}
                     />
-                  )}
+                  )} */}
                   {/*  {TaskSummaryData &&
                     results?.data?.data?.map((result) => ( */}
 
-                  {results?.data &&
+                  {/* {results?.data &&
                     results?.data?.data?.map((result) => (
                       <tr key="_" className="mb-2 hover:bg-light-gray">
                         <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-center ">
@@ -476,8 +460,8 @@ const Store = () => {
                           
                         </td>
                       </tr>
-                    ))}
-                  {/* ))} */}
+                    ))} 
+                     */}
                 </tbody>
               </table>
             </div>
@@ -485,7 +469,7 @@ const Store = () => {
         </div>
       </div>
       {/* Pagination */}
-      <div className="flex items-center justify-between">
+      {/* <div className="flex items-center justify-between">
         <p className="text-[14px] leading-[16px] tracking-[0.2px] text-[#667185]">
           Showing {results?.data?.meta.from || 0} -{" "}
           {results?.data?.meta.to || 0} of {results?.data?.meta.total} results |
@@ -499,11 +483,11 @@ const Store = () => {
             className={`rounded-tl-lg rounded-bl-lg py-1 px-2 border-[0.2px] text-[14px] leading-[16px] tracking-[0.2px] border-[#98A2B3] ${
               !results?.data?.links.prev
                 ? "text-[#667185] bg-[#fefefe] "
-                : "text-white bg-[#26ae5f]"
+                : "text-white bg-[#1254bd]"
             }`}
           >
             Prev
-          </button>
+          </button> */}
 
           {/* {results?.data?.meta.links.map((link, index) => (
                 link.url ? (
@@ -519,19 +503,19 @@ const Store = () => {
                 )
               ))} */}
 
-          <button
+          {/* <button
             onClick={() => handleNext(results?.data?.links?.next)}
             disabled={!results?.data?.links.next}
             className={`rounded-tr-lg rounded-br-lg py-1 px-2 border-[0.2px] text-[14px] leading-[16px] tracking-[0.2px] border-[#98A2B3] ${
               !results?.data?.links.next
                 ? "text-[#667185] bg-[#fefefe] "
-                : "text-white bg-[#26ae5f]"
+                : "text-white bg-[#1254bd]"
             }`}
           >
             Next
           </button>
         </div>
-      </div>
+      </div> */}
 
       <Modal
                               isCentered
@@ -576,21 +560,21 @@ const Store = () => {
                                     />
                                     <path
                                       d="M28 38C33.5 38 38 33.5 38 28C38 22.5 33.5 18 28 18C22.5 18 18 22.5 18 28C18 33.5 22.5 38 28 38Z"
-                                      stroke="#26ae5f"
+                                      stroke="#1254bd"
                                       stroke-width="1.5"
                                       stroke-linecap="round"
                                       stroke-linejoin="round"
                                     />
                                     <path
                                       d="M28 24V29"
-                                      stroke="#26ae5f"
+                                      stroke="#1254bd"
                                       stroke-width="1.5"
                                       stroke-linecap="round"
                                       stroke-linejoin="round"
                                     />
                                     <path
                                       d="M27.9961 32H28.0051"
-                                      stroke="#26ae5f"
+                                      stroke="#1254bd"
                                       stroke-width="2"
                                       stroke-linecap="round"
                                       stroke-linejoin="round"
@@ -621,7 +605,7 @@ const Store = () => {
                                   </button>
                                   <button
                                     onClick={DeleteProduct}
-                                    className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
+                                    className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#1254bd] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
                                   >
                                     {isLoading ? (
                                       <ClipLoader color={"white"} size={20} />
@@ -634,7 +618,7 @@ const Store = () => {
                             </Modal>
 
       {/* Create Modal */}
-      <ModalLeft isOpen={isCreate} onClose={closeCreateModal}>
+      {/* <ModalLeft isOpen={isCreate} onClose={closeCreateModal}>
         <div>
           <div className="border-b border-b-[#E4E7EC] p-[10px] md:p-[14px]  flex justify-between items-center ">
             <div className="flex items-center gap-[16px]">
@@ -721,7 +705,7 @@ const Store = () => {
 
                 <label
                   htmlFor="fileInput"
-                  className="mt-1 text-[#26ae5f] cursor-pointer hover:underline text-[14px]"
+                  className="mt-1 text-[#1254bd] cursor-pointer hover:underline text-[14px]"
                 >
                   Or select an image
                 </label>
@@ -752,7 +736,7 @@ const Store = () => {
                 </button>
                 <button
                   onClick={CreateProduct}
-                  className="border-[0.2px]  border-[#98A2B3] w-[140px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
+                  className="border-[0.2px]  border-[#98A2B3] w-[140px] bg-[#1254bd] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
                 >
                   {isLoading ? (
                     <ClipLoader color={"white"} size={20} />
@@ -764,7 +748,7 @@ const Store = () => {
             </div>
           </div>
         </div>
-      </ModalLeft>
+      </ModalLeft> */}
 
       <Modal
         isCentered
@@ -797,12 +781,12 @@ const Store = () => {
                 Product Name
               </label>
               <div className="">
-                <InputField
+                {/* <InputField
                   placeholder="product"
                   value={formValue.name}
                   name="name"
                   onChange={(e) => handleInputChange(e)}
-                />
+                /> */}
               </div>
             </div>
             <div className="mb-[16px]">
@@ -810,12 +794,12 @@ const Store = () => {
                 Product Price
               </label>
               <div className=" ">
-                <InputField
+                {/* <InputField
                   placeholder="100"
                   value={formValue?.price}
                   name="price"
                   onChange={(e) => handleInputChange(e)}
-                />
+                /> */}
               </div>
             </div>
             <div className="max-w-md mb-[16px]">
@@ -859,7 +843,7 @@ const Store = () => {
 
                 <label
                   htmlFor="fileInput"
-                  className="mt-1 text-[#26ae5f] cursor-pointer hover:underline text-[14px]"
+                  className="mt-1 text-[#1254bd] cursor-pointer hover:underline text-[14px]"
                 >
                   Or select an image
                 </label>
@@ -870,12 +854,12 @@ const Store = () => {
                 Product Description
               </label>
               <div className=" ">
-                <InputField
+                {/* <InputField
                   placeholder=""
                   value={formValue?.description}
                   name="description"
                   onChange={(e) => handleInputChange(e)}
-                />
+                /> */}
               </div>
             </div>
           </ModalBody>
@@ -889,7 +873,7 @@ const Store = () => {
             </button>
             <button
               onClick={UpdateProduct}
-              className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex banks-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
+              className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#1254bd] flex banks-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
             >
               {isLoading ? (
                 <ClipLoader color={"white"} size={20} />
@@ -904,4 +888,4 @@ const Store = () => {
   );
 };
 
-export default Store;
+export default Product;

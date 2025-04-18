@@ -73,7 +73,7 @@ const Dashboard = () => {
       {
         label: "",
         data: analyticsData?.map((item) => item?.point),
-        backgroundColor: "#00B0C7",
+        backgroundColor: "#1254bd",
       },
     ],
   };
@@ -104,7 +104,7 @@ const Dashboard = () => {
     },
   };
   const pieData = {
-    labels: ["female", "Male"],
+    labels: ["Nigeria", "UK"],
     datasets: [
       {
         // label: '# of Votes',
@@ -112,8 +112,8 @@ const Dashboard = () => {
           dashboardData?.patient_gender?.Female,
           dashboardData?.patient_gender?.Male,
         ],
-        backgroundColor: ["#F7A30A", "#00B0C7"],
-        borderColor: ["#F7A30A", "#00B0C7"],
+        backgroundColor: ["#F7A30A", "#1254bd"],
+        borderColor: ["#F7A30A", "#1254bd"],
         borderWidth: 0.5,
       },
     ],
@@ -140,32 +140,39 @@ const Dashboard = () => {
       <div className="flex flex-col lg:flex-row gap-6 md:gap-8">
         <div>
           <div className=" flex-1 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[17px]">
-            <TotalCard
-              icon={Icon}
-              iconName={"healthicons:inpatient"}
-              total={dashboardData?.total_patients}
-              totalLabel={"Total Patients"}
-            />
+            
             <TotalCard
               icon={Profile2User}
               iconName={""}
               total={dashboardData?.total_patients}
-              totalLabel={"Total Counselor"}
+              totalLabel={"Total Users"}
+            />
+             <TotalCard
+              icon={Profile2User}
+              iconName={""}
+              total={dashboardData?.total_patients}
+              totalLabel={"Total Vendors"}
+            />
+             <TotalCard
+              icon={WalletMinus}
+              iconName={""}
+              total={avCost}
+              totalLabel={"Total Transactions"}
             />
             <TotalCard
               icon={WalletMinus}
               iconName={""}
               total={avCost}
-              totalLabel={"Avg. Treat. Cost"}
+              totalLabel={"Total Income"}
             />
             <TotalCard
               icon={BrifecaseTimer}
               iconName={""}
               total={dashboardData?.daily_session}
-              totalLabel={"Daily Session"}
+              totalLabel={"Total Product"}
             />
           </div>
-          {/* Categories */}
+          {/* Categories
           <div className="mt-6">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-[16px] ms:text-[18px] lg:[20px] xl:text-[22px] text-medium text-[#282828]">
@@ -188,7 +195,7 @@ const Dashboard = () => {
                 />
               ))}
             </div>
-          </div>
+          </div> */}
           <div className="bg-white mt-6 rounded-lg border-[1px] border-[#E1E1E1]  h-[280px] sm:h-[379px] w-full  mt">
             <div className="p-[10px] md:p-[14px] flex-between bg-white rounded-tr-lg rounded-tl-lg    ">
               <p className="font-semibold text-[14px] leading-[14px] whitespace-nowrap  text-[#000]  ">
@@ -198,7 +205,7 @@ const Dashboard = () => {
               <select
                 type="text"
                 placeholder=""
-                className="w-[80px]   bg-[#F9FAFB] border-[#E1E1E1]  px-2 py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#00B0C7] focus:border-[#00B0C7] "
+                className="w-[80px]   bg-[#F9FAFB] border-[#E1E1E1]  px-2 py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#1254bd] focus:border-[#1254bd] "
                 value={year}
                 onChange={(e) => setYear(e.target.value)}
               >
@@ -214,7 +221,7 @@ const Dashboard = () => {
                   onClick={() => setSelectedFilter(item?.label)}
                   className={`rounded-md border-[#E1E1E1] px-2 py-1  ${
                     item?.label === selectedFilter
-                      ? "bg-[#00B0C7] text-white"
+                      ? "bg-[#1254bd] text-white"
                       : "bg-[#fff] text-[#282828]"
                   } text-sm`}
                 >
@@ -231,8 +238,7 @@ const Dashboard = () => {
         <div className="flex flex-col gap-8">
           <div className="rounded-[12px] bg-[#FBFBFB] border border-[#E1E1E1] py-[10px] md:py-[15px]">
             <p className="text-center text-sm  text-[#282828] font-medium ">
-              Patients by Division
-            </p>
+User Visit By Categories            </p>
             <div className="border-t border-[#E1E1E1]">
               {dashboardData?.patient_division?.slice(0,7).map((item, index) => (
                 <div className="px-3 flex  items-center gap-2 py-2 border-b border-[#E1E1E1] ">
@@ -243,10 +249,10 @@ const Dashboard = () => {
                     color={"#BCBCBC"}
                   />{" "}
                   <p className="text-[12px] md:text-sm flex-1 text-[#BCBCBC]">
-                    {item?.name}
+                   Kaileb
                   </p>{" "}
                   <p className="text-[12px] md:text-sm text-[#282828]">
-                    {item?.user_count}
+                    2
                   </p>
                 </div>
               ))}
@@ -255,7 +261,7 @@ const Dashboard = () => {
           <div className="flex flex-row gap-8 lg:flex-col">
           <div className="rounded-[12px] w-[200px] bg-[#FBFBFB] border border-[#E1E1E1] py-[10px] md:py-[15px]">
             <p className="text-center text-sm  text-[#282828] font-medium ">
-              Patients by Gender
+              User By Location
             </p>
             <div className="border-t border-[#E1E1E1] py-5">
               <Doughnut data={pieData} />

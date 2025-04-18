@@ -35,6 +35,7 @@ import {
   DocumentText,
   People,
   Notification,
+  Box,
 } from "iconsax-react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
@@ -51,8 +52,8 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
       icon: Element4,
     },
     {
-      name: "Counselor Management",
-      path: "counselor-management",
+      name: "Use Management",
+      path: "users",
       icon: Profile2User,
     },
     // {
@@ -61,18 +62,18 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
     //   icon: MessageFavorite,
     // },
     {
-      name: "Booking Tracker",
-      path: "booking-tracker",
+      name: "Transactions",
+      path: "transactions",
       icon: Card,
     },
     {
-      name: "Company Management",
-      path: "company-management",
-      icon: Courthouse,
+      name: "Products",
+      path: "product-management",
+      icon: Box,
     },
     {
       name: "User",
-      path: "user",
+      path: "users",
       icon: User,
     },
   ];
@@ -82,16 +83,16 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
     //   path: "space-management",
     //   icon: Microphone,
     // },
-    {
-      name: "User Assessment",
-      path: "user-assessment",
-      icon: DocumentText,
-    },
-    {
-      name: "Group Management",
-      path: "group-management",
-      icon: People,
-    },
+    // {
+    //   name: "User Assessment",
+    //   path: "user-assessment",
+    //   icon: DocumentText,
+    // },
+    // {
+    //   name: "Group Management",
+    //   path: "group-management",
+    //   icon: People,
+    // },
   ];
   const Menu3 = [
     {
@@ -143,13 +144,13 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
           </svg>
         </button>
       </div>
-      <div className="max-w-[260px] min-h-screen bg-[#007D8D] w-[220px] md:w-[240px] pr-[6px]  py-[16px] md:py-[24px] sticky top-0 overflow-y-auto ">
+      <div className="max-w-[260px] min-h-screen bg-[#002F7A] w-[220px] md:w-[240px] pr-[6px]  py-[16px] md:py-[24px] sticky top-0 overflow-y-auto ">
         <div className="relative">
           <div className="relative h-screen  flex flex-col justify-between ">
             <div>
               <img
-                className=" h-[36px] md:h-[42px] xl:h-[51px] mx-auto    "
-                src="/assets/theragistLogo.svg"
+                className=" h-[36px] md:h-[42px] xl:h-[45px] mx-auto    "
+                src="/assets/MPRIMO.svg"
                 alt="Theragist logo"
               />
 
@@ -161,7 +162,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                     onClick={onClose}
                     className={` py-[10px] pl-[16px] md:py-[16px] md:pl-[20px] flex items-center text-[14px]     leading-[20px] md:leading-[24px] ${
                       window.location.pathname === `/${menu?.path}`
-                        ? "text-[#ffffff] font-medium rounded-tr-lg rounded-br-lg bg-[#00B0C7]"
+                        ? "text-[#ffffff] font-medium rounded-tr-lg rounded-br-lg bg-[#1254bd]"
                         : "text-[#ffffff] font-normal"
                     }`}
                   >
@@ -180,14 +181,14 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                     window.location.pathname === `/feed-management/article` ||
                     window.location.pathname === `/feed-management/post` ||
                     window.location.pathname === `/about-us`
-                      ? "text-[#ffffff] font-medium rounded-tr-lg rounded-br-lg bg-[#00B0C7]"
+                      ? "text-[#ffffff] font-medium rounded-tr-lg rounded-br-lg bg-[#1254bd]"
                       : "text-[#ffffff] font-normal"
                   }`}
                 >
                   <div className="flex items-center ">
                     {" "}
                     <Compass className="mr-[12px]" size={20} />
-                    Feed Management
+                    Vendor Management
                   </div>
 
                   {isSettingActive ? (
@@ -200,36 +201,36 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                 {isSettingActive && (
                   <ul className="ml-[26px] pl-[12px] py-[8px] mb-1">
                     <Link
-                      to="/feed-management/post"
+                      to="/"
                       className={` py-[6px] pl-[12px] flex items-center text-[12px] md:text-sm   rounded-md  hover:bg-[#F7F9FC] hover:text-[#667185]  ${
                         window.location.pathname === "/feed-management/post"
                           ? "bg-[#F7F9FC] text-[#2e2e2e] font-medium "
                           : " font-normal text-[#fff] "
                       }`}
                     >
-                      <li className="">Feed Post</li>
+                      <li className="">Vendor Products</li>
                     </Link>
                     <Link
-                      to="/feed-management/article"
+                      to="/"
                       className={` py-[6px] pl-[12px] flex items-center text-[12px] md:text-sm   rounded-md  hover:bg-[#F7F9FC] hover:text-[#667185]  ${
                         window.location.pathname === "/feed-management/article"
                           ? "bg-[#F7F9FC] text-[#2e2e2e] font-medium "
                           : " font-normal text-[#fff]"
                       }`}
                     >
-                      <li className="">Article Post </li>
+                      <li className="">Vendor Users </li>
                     </Link>
                   </ul>
                 )}
 
-                {Menu2.map((menu, index) => (
+                {/* {Menu2.map((menu, index) => (
                   <Link
                     key={index}
                     to={`/${menu?.path}`}
                     onClick={onClose}
                     className={` py-[10px] pl-[16px] md:py-[16px] md:pl-[20px] flex items-center text-[14px]     leading-[20px] md:leading-[24px] ${
                       window.location.pathname === `/${menu?.path}`
-                        ? "text-[#ffffff] font-medium rounded-tr-lg rounded-br-lg bg-[#00B0C7]"
+                        ? "text-[#ffffff] font-medium rounded-tr-lg rounded-br-lg bg-[#1254bd]"
                         : "text-[#ffffff] font-normal"
                     }`}
                   >
@@ -240,7 +241,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                     />
                     {menu?.name}
                   </Link>
-                ))}
+                ))} */}
 
                 {/* <button
                   onClick={() => setIsSettingActive(!isSettingActive)}
@@ -248,7 +249,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                     window.location.pathname === `/privacy-policy` ||
                     window.location.pathname === `/community-guidline` ||
                     window.location.pathname === `/about-us`
-                      ? "text-[#ffffff] font-medium rounded-tr-lg rounded-br-lg bg-[#00B0C7]"
+                      ? "text-[#ffffff] font-medium rounded-tr-lg rounded-br-lg bg-[#1254bd]"
                       : "text-[#ffffff] font-normal"
                   }`}
                 >

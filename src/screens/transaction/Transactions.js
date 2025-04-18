@@ -28,17 +28,14 @@ import React, { useState } from "react";
 import { ClipLoader } from "react-spinners";
 
 import { Link, useNavigate } from "react-router-dom";
-import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
-import api from "../api";
-import { enqueueSnackbar } from "notistack";
-import { useQuery } from "@tanstack/react-query";
+
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "react-loading-skeleton/dist/skeleton.css";
 
 
-const Users = () => {
+const Transactions = () => {
   const navigate = useNavigate();
   const [isViewModal, setIsViewModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -136,14 +133,14 @@ const Users = () => {
           <div className="flex items-center gap-[16px]">
             <div className="flex items-center">
               <p className="text-[#000] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px]  ">
-                User Management
+              Transactions
               </p>
             </div>
             <div className="h-[32px] w-[1px] bg-[#D0D5DD]" />
             <div className="flex items-center gap-[8px]">
               <SearchNormal1 variant="Linear" color="#667185" size="16" />
               <input
-                className="w-full lg:w-[300px] py-[6px] text-[16px] text-[#344054] leading-[20px] placeholder:text-[#98A2B3] placeholder:text-[12px] border border-transparent  focus:outline-none focus:ring-[#1254bd] focus:border-b-[#1254bd] "
+                className="w-full lg:w-[300px] py-[6px] text-[16px] text-[#344054] leading-[20px] placeholder:text-[#98A2B3] placeholder:text-[12px] border border-transparent  focus:outline-none focus:ring-[#26ae5f] focus:border-b-[#26ae5f] "
                 placeholder="Search by transaction ref.."
               />
             </div>
@@ -159,16 +156,7 @@ const Users = () => {
 
               <DocumentUpload variant="Linear" color="#667185" size="16" />
             </button>
-            <button
-              onClick={() => toggleCreate()}
-              className="flex items-center gap-[8px] "
-            >
-              <p className="text-[14px] text-[#667185] leading-[20px]">
-                Create Payment Link
-              </p>
-
-              <Add variant="Linear" color="#667185" size="16" />
-            </button>
+          
 
             <Modal
               isCentered
@@ -201,7 +189,7 @@ const Users = () => {
                   </p>
 
                   <input
-                    className="flex mb-[20px] h-9 w-full rounded-md  border-input bg-background  text-sm shadow-sm text-[#667185] border-[0.2px] border-[#98A2B3] transition-colors file:border-0 file:border-r-[0.2px] file:h-9 file:bg-[#F9FAFB] file:text-[#667185] file:border-[#D0D5DD] file:text-sm file:font-medium placeholder:text-muted-foreground focus:outline-none focus:ring-[#1254bd] focus:border-[#1254bd]  disabled:opacity-50"
+                    className="flex mb-[20px] h-9 w-full rounded-md  border-input bg-background  text-sm shadow-sm text-[#667185] border-[0.2px] border-[#98A2B3] transition-colors file:border-0 file:border-r-[0.2px] file:h-9 file:bg-[#F9FAFB] file:text-[#667185] file:border-[#D0D5DD] file:text-sm file:font-medium placeholder:text-muted-foreground focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f]  disabled:opacity-50"
                     id="csv"
                     name="csv"
                     type="file"
@@ -224,7 +212,7 @@ const Users = () => {
                   <button className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black">
                     Cancel
                   </button>
-                  <button className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#1254bd] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white">
+                  <button className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white">
                     {!isLoading ? (
                       <ClipLoader color={"white"} size={20} />
                     ) : (
@@ -242,7 +230,7 @@ const Users = () => {
             <input
               type="text"
               placeholder="username"
-              className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#1254bd] focus:border-[#1254bd] "
+              className="w-[240px] h-[44px] bg-[#F9FAFB]  px-2 py-[12px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[#D0D5DD] focus:border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
               
             />
             
@@ -389,21 +377,21 @@ const Users = () => {
                                   />
                                   <path
                                     d="M28 38C33.5 38 38 33.5 38 28C38 22.5 33.5 18 28 18C22.5 18 18 22.5 18 28C18 33.5 22.5 38 28 38Z"
-                                    stroke="#1254bd"
+                                    stroke="#26ae5f"
                                     stroke-width="1.5"
                                     stroke-linecap="round"
                                     stroke-linejoin="round"
                                   />
                                   <path
                                     d="M28 24V29"
-                                    stroke="#1254bd"
+                                    stroke="#26ae5f"
                                     stroke-width="1.5"
                                     stroke-linecap="round"
                                     stroke-linejoin="round"
                                   />
                                   <path
                                     d="M27.9961 32H28.0051"
-                                    stroke="#1254bd"
+                                    stroke="#26ae5f"
                                     stroke-width="2"
                                     stroke-linecap="round"
                                     stroke-linejoin="round"
@@ -434,7 +422,7 @@ const Users = () => {
                                 </button>
                                 <button
                                   // onClick={handleDelete}
-                                  className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#1254bd] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
+                                  className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
                                 >
                                   {isLoading ? (
                                     <ClipLoader color={"white"} size={20} />
@@ -470,7 +458,7 @@ const Users = () => {
             className={`rounded-tl-lg rounded-bl-lg py-1 px-2 border-[0.2px] text-[14px] leading-[16px] tracking-[0.2px] border-[#98A2B3] ${
               !results?.data?.links.prev
                 ? "text-[#667185] bg-[#fefefe] "
-                : "text-white bg-[#1254bd]"
+                : "text-white bg-[#26ae5f]"
             }`}
           >
             Prev
@@ -496,7 +484,7 @@ const Users = () => {
             className={`rounded-tr-lg rounded-br-lg py-1 px-2 border-[0.2px] text-[14px] leading-[16px] tracking-[0.2px] border-[#98A2B3] ${
               !results?.data?.links.next
                 ? "text-[#667185] bg-[#fefefe] "
-                : "text-white bg-[#1254bd]"
+                : "text-white bg-[#26ae5f]"
             }`}
           >
             Next
@@ -508,4 +496,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default Transactions;
