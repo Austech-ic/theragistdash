@@ -43,14 +43,14 @@ import "react-loading-skeleton/dist/skeleton.css";
 import moment from "moment";
 import { PackageOpen } from "lucide-react";
 import { NumericFormat } from "react-number-format";
+import ModalLeft from "../components/ModalLeft";
+import InputField from "../components/InputField";
+import { IMAGE_BASE_URL } from "../utils/config";
 
 const Product = () => {
   const navigate = useNavigate();
   const [isViewModal, setIsViewModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-  const [isOpenImportModal, setIsOpenImportModal] = useState(false);
-  const [isCreateModal, setIsCreateModal] = useState(false);
   const [isCreate, setIsCreate] = useState(false);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -63,6 +63,7 @@ const Product = () => {
     price: "",
     description: "",
     status: null,
+    quantity: ""
   });
   const [preview, setPreview] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -90,10 +91,12 @@ const Product = () => {
   function ToggleEditModal(id) {
     setIsEditOpen(!isEditOpen);
     setResultId(id);
+    setImage(id?.image_url)
     setFormValue({
       name: id?.name,
       price: id?.price,
       description: id?.description,
+      quantity: id?.stock_quantity
     });
   }
 
@@ -101,28 +104,24 @@ const Product = () => {
     setIsCreate(!isCreate);
   };
 
+  const closeCreateModal = ()=> {
+    setIsCreate(false)
+  }
 
   function closeDeleteModal() {
     setIsDeleteModal(false);
   }
 
-  const toggleCreateModal = () => {
-    setIsCreateModal(!isCreateModal);
+
+
+
+
+  const toggleDelete = (result) => {
+
+    setIsDeleteModal(!isDeleteModal);
+    setResultId(result?.id)
   };
 
-  const toggleImportModal = () => {
-    setIsOpenImportModal(!isOpenImportModal);
-  };
-  const closeImportModal = () => {
-    setIsOpenImportModal(false);
-  };
-
-  const toggleDelete = () => {
-    setIsDeleteOpen(!isDeleteOpen);
-  };
-  const HandleDeleteModalClose = () => {
-    setIsDeleteOpen(false);
-  };
   const result = [{ status: "Success" }];
 
   const closeViewModal = () => {
@@ -136,6 +135,7 @@ const Product = () => {
       price: "",
       description: "",
       status: null,
+      quantity: ""
     });
   };
 
@@ -146,10 +146,10 @@ const Product = () => {
     formData.append("price", formValue?.price);
     formData.append("name", formValue?.name);
     formData.append("description", formValue?.description);
+    formData.append("stock_quantity", formValue?.quantity);
     try {
-      const response = await api.updateProduct(resultId?.id,formData);
-      const decryptRes = JSON.parse(decryptaValue(response?.data));
-      enqueueSnackbar(decryptRes?.message, { variant: "success" });
+      const response = await api.updateProducts(resultId?.id,formData);
+      enqueueSnackbar(response?.message, { variant: "success" });
       results.refetch();
       setIsLoading(false);
       setIsEditOpen(false);
@@ -165,9 +165,8 @@ const Product = () => {
     setIsLoading(true);
    
     try {
-      const response = await api.deleteProduct(resultId);
-      const decryptRes = JSON.parse(decryptaValue(response?.data));
-      enqueueSnackbar(decryptRes?.message, { variant: "success" });
+      const response = await api.deleteProducts(resultId);
+      enqueueSnackbar(response?.message, { variant: "success" });
       results.refetch();
       setIsLoading(false);
       closeDeleteModal(false);
@@ -186,10 +185,10 @@ const Product = () => {
     formData.append("price", formValue?.price);
     formData.append("name", formValue?.name);
     formData.append("description", formValue?.description);
+    formData.append("stock_quantity", formValue?.quantity);
     try {
       const response = await api.createProducts(formData);
-      const decryptRes = JSON.parse(decryptaValue(response?.data));
-      enqueueSnackbar("Product Created Successfully", { variant: "success" });
+      enqueueSnackbar(response.message, { variant: "success" });
       results.refetch();
       setIsLoading(false);
       setIsCreate(false);
@@ -203,17 +202,17 @@ const Product = () => {
   };
 
   async function getProducts(page) {
-    const response = await api.getProduct({
+    const response = await api.getProducts({
       params: {
         page,
-        search,
+        
       },
     });
     return response;
   }
 
   const results = useQuery(
-    ["products", page, search],
+    ["products", page, ],
     () => getProducts(page),
     {
       keepPreviousData: true,
@@ -250,7 +249,7 @@ const Product = () => {
             <div className="flex items-center gap-[8px]">
               <SearchNormal1 variant="Linear" color="#667185" size="16" />
               <input
-                className="w-full lg:w-[300px] py-[6px] text-[16px] text-[#344054] leading-[20px] placeholder:text-[#98A2B3] placeholder:text-[12px] border border-transparent  focus:outline-none focus:ring-[#1254bd] focus:border-b-[#1254bd] "
+                className="w-full lg:w-[300px] py-[6px] text-[16px] text-[#344054] leading-[20px] placeholder:text-[#98A2B3] placeholder:text-[12px] border border-transparent  focus:outline-none focus:ring-[#26ae5f] focus:border-b-[#26ae5f] "
                 placeholder="Search by Product name.."
                 value={search}
                 onChange={(e) => {
@@ -264,77 +263,14 @@ const Product = () => {
               onClick={() => toggleCreate()}
               className="flex items-center gap-[8px] "
             >
-              <p className="text-[14px] text-[#1254bd] leading-[20px]">
+              <p className="text-[14px] text-[#26ae5f] leading-[20px]">
                 Create Product
               </p>
 
-              <Add variant="Linear" color="#1254bd" size="16" />
+              <Add variant="Linear" color="#26ae5f" size="16" />
             </button>
 
-            <Modal
-              isCentered
-              isOpen={isOpenImportModal}
-              onClose={closeImportModal}
-              size="xl"
-              style={{ borderRadius: 12 }}
-              motionPreset="slideInBottom"
-              className="rounded-[12px]"
-            >
-              <ModalOverlay />
-              <ModalContent>
-                <ModalHeader
-                  py="4"
-                  color="#000000"
-                  className="text-[18px] md:text-[20px] text-[#000000] font-medium leading-[24px] md:leading-[24px]"
-                >
-                  Export Transactions
-                </ModalHeader>
-                <ModalCloseButton size={"sm"} />
-                <Divider color="#98A2B3" />
-                <ModalBody
-                  pt={{ base: "20px", md: "24px" }}
-                  px={{ base: "16px", md: "24px" }}
-                  pb={{ base: "30px", md: "40px" }}
-                  className="pt-[20px] md:pt-[24px] px-[16px] md:px-[24px] pb-[30px] md:pb-[40px]"
-                >
-                  <p className="text-[14px] text-[#667185] leading-[20px] mb-[20px] ">
-                    Select CSV File
-                  </p>
 
-                  <input
-                    className="flex mb-[20px] h-9 w-full rounded-md  border-input bg-background  text-sm shadow-sm text-[#667185] border-[0.2px] border-[#98A2B3] transition-colors file:border-0 file:border-r-[0.2px] file:h-9 file:bg-[#F9FAFB] file:text-[#667185] file:border-[#D0D5DD] file:text-sm file:font-medium placeholder:text-muted-foreground focus:outline-none focus:ring-[#1254bd] focus:border-[#1254bd]  disabled:opacity-50"
-                    id="csv"
-                    name="csv"
-                    type="file"
-                  />
-
-                  <div className="flex gap-[8px] items-center">
-                    {" "}
-                    <p className="text-[14px] underline text-[#667185] leading-[20px]  ">
-                      Download Sample Transactions CSV File
-                    </p>
-                    <DocumentDownload
-                      color="#4CAF50"
-                      variant="Bold"
-                      size="20px"
-                    />
-                  </div>
-                </ModalBody>
-                <Divider />
-                <ModalFooter gap={"16px"}>
-                  <button className="border-[0.2px]  border-[#98A2B3] w-[99px] text-center rounded-[8px] py-[12px] text-[14px] font-medium text-black">
-                    Cancel
-                  </button>
-                  <button className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#1254bd] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white">
-                    {!isLoading ? (
-                      <ClipLoader color={"white"} size={20} />
-                    ) : (
-                      <> Upload </>
-                    )}
-                  </button>
-                </ModalFooter>
-              </ModalContent>
-            </Modal>
           </div>
         </div>
       </div>
@@ -398,27 +334,27 @@ const Product = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {/* {results?.isLoading && <TableLoading cols={8} />}
-                  {results?.data && results?.data?.data?.length === 0 && (
+                  {/* {results?.isLoading && <TableLoading cols={8} />} */}
+                  {results?.data && results?.data.length === 0 && (
                     <EmptyWallet
                       cols={8}
                       action={"Product"}
                       subheading={"Your Product will appear here."}
                     />
-                  )} */}
+                  )}
                   {/*  {TaskSummaryData &&
                     results?.data?.data?.map((result) => ( */}
 
-                  {/* {results?.data &&
-                    results?.data?.data?.map((result) => (
+                  {results?.data &&
+                    results?.data?.map((result) => (
                       <tr key="_" className="mb-2 hover:bg-light-gray">
                         <td className="whitespace-nowrap py-[16px] bg-white  px-5  border-b-[0.8px] border-[#E4E7EC] text-[14px] leading-[24px] tracking-[0.2px] text-[#667185] font-medium text-center ">
                           <div className="flex justify-center w-full ">
                             {" "}
-                            {result?.image ? (
+                            {result?.image_url ? (
                               <img
                                 className="rounded-full w-[35px] h-[35px] object-cover mx-auto"
-                                src={DocUrl + result?.image}
+                                src={IMAGE_BASE_URL + result?.image_url}
                                 alt="user-img"
                               />
                             ) : (
@@ -452,7 +388,7 @@ const Product = () => {
                         <button onClick={() => ToggleEditModal(result)}>
                             <Edit variant="Linear" color="#667185" size="16" />
                           </button>
-                          <button onClick={() => ToggleDeleteModal(result?.id)}>
+                          <button onClick={() => toggleDelete(result)}>
                             <Trash variant="Linear" color="#F05454FF" size="16" />
                           </button>
                             </div>
@@ -461,7 +397,7 @@ const Product = () => {
                         </td>
                       </tr>
                     ))} 
-                     */}
+                    
                 </tbody>
               </table>
             </div>
@@ -483,7 +419,7 @@ const Product = () => {
             className={`rounded-tl-lg rounded-bl-lg py-1 px-2 border-[0.2px] text-[14px] leading-[16px] tracking-[0.2px] border-[#98A2B3] ${
               !results?.data?.links.prev
                 ? "text-[#667185] bg-[#fefefe] "
-                : "text-white bg-[#1254bd]"
+                : "text-white bg-[#26ae5f]"
             }`}
           >
             Prev
@@ -509,7 +445,7 @@ const Product = () => {
             className={`rounded-tr-lg rounded-br-lg py-1 px-2 border-[0.2px] text-[14px] leading-[16px] tracking-[0.2px] border-[#98A2B3] ${
               !results?.data?.links.next
                 ? "text-[#667185] bg-[#fefefe] "
-                : "text-white bg-[#1254bd]"
+                : "text-white bg-[#26ae5f]"
             }`}
           >
             Next
@@ -533,53 +469,8 @@ const Product = () => {
                                   color="#000000"
                                   className="text-[18px]   font-medium leading-[24px] md:leading-[24px]"
                                 >
-                                  <svg
-                                    className="mx-auto"
-                                    width="56"
-                                    height="56"
-                                    viewBox="0 0 56 56"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                  >
-                                    <rect
-                                      x="4"
-                                      y="4"
-                                      width="48"
-                                      height="48"
-                                      rx="24"
-                                      fill="#FCC5C1"
-                                    />
-                                    <rect
-                                      x="4"
-                                      y="4"
-                                      width="48"
-                                      height="48"
-                                      rx="24"
-                                      stroke="#FEECEB"
-                                      stroke-width="8"
-                                    />
-                                    <path
-                                      d="M28 38C33.5 38 38 33.5 38 28C38 22.5 33.5 18 28 18C22.5 18 18 22.5 18 28C18 33.5 22.5 38 28 38Z"
-                                      stroke="#1254bd"
-                                      stroke-width="1.5"
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                    />
-                                    <path
-                                      d="M28 24V29"
-                                      stroke="#1254bd"
-                                      stroke-width="1.5"
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                    />
-                                    <path
-                                      d="M27.9961 32H28.0051"
-                                      stroke="#1254bd"
-                                      stroke-width="2"
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                    />
-                                  </svg>
+                                                     <Trash variant="Linear" color="red" size="36"  className="mx-auto"/>
+
                                 </ModalHeader>
                                 <ModalCloseButton size={"sm"} />
                                 <ModalBody
@@ -605,7 +496,7 @@ const Product = () => {
                                   </button>
                                   <button
                                     onClick={DeleteProduct}
-                                    className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#1254bd] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
+                                    className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
                                   >
                                     {isLoading ? (
                                       <ClipLoader color={"white"} size={20} />
@@ -618,12 +509,12 @@ const Product = () => {
                             </Modal>
 
       {/* Create Modal */}
-      {/* <ModalLeft isOpen={isCreate} onClose={closeCreateModal}>
+      <ModalLeft isOpen={isCreate} onClose={closeCreateModal}>
         <div>
-          <div className="border-b border-b-[#E4E7EC] p-[10px] md:p-[14px]  flex justify-between items-center ">
-            <div className="flex items-center gap-[16px]">
+        <div className="border-b border-b-[#E4E7EC] p-[8px] md:p-[10px]  flex justify-between items-center ">
+        <div className="flex items-center gap-[16px]">
               <Maximize4 variant="Linear" color="#667185" size="16" />{" "}
-              <div className="h-[32px] w-[1px] bg-[#D0D5DD]" />
+              <div className="h-[27px] w-[1px] bg-[#D0D5DD]" />
               <div className="flex items-center">
                 <p className="text-[#667185] text-[14px] md:text-[14px] xl:text-[16px] font-normal leading-[24px] ">
                   Create Product
@@ -705,7 +596,7 @@ const Product = () => {
 
                 <label
                   htmlFor="fileInput"
-                  className="mt-1 text-[#1254bd] cursor-pointer hover:underline text-[14px]"
+                  className="mt-1 text-[#26ae5f] cursor-pointer hover:underline text-[14px]"
                 >
                   Or select an image
                 </label>
@@ -724,6 +615,19 @@ const Product = () => {
                 />
               </div>
             </div>
+            <div className="mb-[16px]">
+              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
+                Product Quantity
+              </label>
+              <div className=" ">
+                <InputField
+                  placeholder=""
+                  value={formValue?.quantity}
+                  name="quantity"
+                  onChange={(e) => handleInputChange(e)}
+                />
+              </div>
+            </div>
 
             <div className="py-[20px] border-t border-b-[#E4E7EC] flex-item  justify-end">
               <div className="flex-item gap-2">
@@ -736,7 +640,7 @@ const Product = () => {
                 </button>
                 <button
                   onClick={CreateProduct}
-                  className="border-[0.2px]  border-[#98A2B3] w-[140px] bg-[#1254bd] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
+                  className="border-[0.2px]  border-[#98A2B3] w-[140px] bg-[#26ae5f] flex items-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
                 >
                   {isLoading ? (
                     <ClipLoader color={"white"} size={20} />
@@ -748,7 +652,7 @@ const Product = () => {
             </div>
           </div>
         </div>
-      </ModalLeft> */}
+      </ModalLeft>
 
       <Modal
         isCentered
@@ -781,12 +685,12 @@ const Product = () => {
                 Product Name
               </label>
               <div className="">
-                {/* <InputField
+                <InputField
                   placeholder="product"
                   value={formValue.name}
                   name="name"
                   onChange={(e) => handleInputChange(e)}
-                /> */}
+                />
               </div>
             </div>
             <div className="mb-[16px]">
@@ -794,12 +698,12 @@ const Product = () => {
                 Product Price
               </label>
               <div className=" ">
-                {/* <InputField
+                <InputField
                   placeholder="100"
                   value={formValue?.price}
                   name="price"
                   onChange={(e) => handleInputChange(e)}
-                /> */}
+                />
               </div>
             </div>
             <div className="max-w-md mb-[16px]">
@@ -843,7 +747,7 @@ const Product = () => {
 
                 <label
                   htmlFor="fileInput"
-                  className="mt-1 text-[#1254bd] cursor-pointer hover:underline text-[14px]"
+                  className="mt-1 text-[#26ae5f] cursor-pointer hover:underline text-[14px]"
                 >
                   Or select an image
                 </label>
@@ -854,12 +758,25 @@ const Product = () => {
                 Product Description
               </label>
               <div className=" ">
-                {/* <InputField
+                <InputField
                   placeholder=""
                   value={formValue?.description}
                   name="description"
                   onChange={(e) => handleInputChange(e)}
-                /> */}
+                />
+              </div>
+            </div>
+            <div className="mb-[16px]">
+              <label className="text-[14px] text-[#667185] leading-[20px]   mb-[8px] md:mb-[16px]">
+                Product Quantity
+              </label>
+              <div className=" ">
+                <InputField
+                  placeholder=""
+                  value={formValue?.quantity}
+                  name="quantity"
+                  onChange={(e) => handleInputChange(e)}
+                />
               </div>
             </div>
           </ModalBody>
@@ -873,7 +790,7 @@ const Product = () => {
             </button>
             <button
               onClick={UpdateProduct}
-              className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#1254bd] flex banks-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
+              className="border-[0.2px]  border-[#98A2B3] w-[99px] bg-[#26ae5f] flex banks-center justify-center text-center rounded-[8px] py-[12px] text-[14px] font-medium text-white"
             >
               {isLoading ? (
                 <ClipLoader color={"white"} size={20} />

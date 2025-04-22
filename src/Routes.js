@@ -9,17 +9,14 @@ import Layout from "./containers/Layout";
 import Home from "./screens/Home";
 import Dashboard from "./screens/dashboard/Dashboard";
 import Transactions from "./screens/transaction/Transactions";
-import Users from "./screens/Users";
-import Notification from "./screens/notification/Notification";
-import PrivacyPolicy from "./screens/settings/PrivacyPolicy";
-import CommunityGuidline from "./screens/settings/CommunityGuidline";
-import Product from "./screens/Store";
 
-// import AboutUs from "./screens/settings/AboutUs";
-// import CommunityGuidline from "./screens/settings/CommunityGuidline";
-// import PrivacyPolicy from "./screens/settings/PrivacyPolicy";
-// import Notification from "./screens/notification/Notification";
-// import SystemUpdate from "./screens/system-update/SystemUpdate";
+import Product from "./screens/Store";
+import Customers from "./screens/Customers";
+import Marketers from "./screens/Marketer";
+import Workers from "./screens/Workers";
+import Investors from "./screens/Investors";
+import Sales from "./screens/Sales";
+
 
 
 const DashboardRoutes = () => {
@@ -29,14 +26,13 @@ const DashboardRoutes = () => {
         <Route path="/" exact={true} element={<Home />} />
         <Route path="/dashboard" exact={true} element={<Dashboard />} />
         <Route path="/transactions" exact={true} element={<Transactions />} />
-        <Route path="/users" exact={true} element={<Users />} />
-        <Route path="/product" exact={true} element={<Product />} />
+        <Route path="/sales" exact={true} element={<Sales />} />
+        <Route path="/investor-management" exact={true} element={<Investors />} />
 
        
-        {/* <Route path="/about-us" exact={true} element={<AboutUs />} /> */}
-        <Route path="/community-guidline" exact={true} element={<CommunityGuidline />} />
-        <Route path="/privacy-policy" exact={true} element={<PrivacyPolicy />} />
-        <Route path="/send-notification" exact={true} element={<Notification />} />
+        <Route path="/worker-management" exact={true} element={<Workers />} />
+        <Route path="/marketer-management" exact={true} element={<Marketers />} />
+        <Route path="/customer-management" exact={true} element={<Customers />} />
         <Route path="/product-management" exact={true} element={<Product />} />
      
       </Route>

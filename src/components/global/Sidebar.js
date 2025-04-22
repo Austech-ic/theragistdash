@@ -52,48 +52,39 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
       icon: Element4,
     },
     {
-      name: "Use Management",
-      path: "users",
-      icon: Profile2User,
-    },
-    // {
-    //   name: "Messages",
-    //   path: "messages",
-    //   icon: MessageFavorite,
-    // },
-    {
-      name: "Transactions",
-      path: "transactions",
-      icon: Card,
-    },
-    {
       name: "Products",
       path: "product-management",
-      icon: Box,
+      icon: ShoppingCart,
     },
     {
-      name: "User",
-      path: "users",
-      icon: User,
+      name: "Customers",
+      path: "customer-management",
+      icon: Profile2User,
     },
+    {
+      name: "Marketers",
+      path: "marketer-management",
+      icon: People,
+    },
+    {
+      name: "Workers",
+      path: "worker-management",
+      icon: Profile2User,
+    },
+    {
+      name: "Investors",
+      path: "investor-management",
+      icon: Profile2User,
+    },
+    {
+      name: "Sales",
+      path: "sales",
+      icon: WalletMoney,
+    },
+   
+   
   ];
-  const Menu2 = [
-    // {
-    //   name: "Space Management",
-    //   path: "space-management",
-    //   icon: Microphone,
-    // },
-    // {
-    //   name: "User Assessment",
-    //   path: "user-assessment",
-    //   icon: DocumentText,
-    // },
-    // {
-    //   name: "Group Management",
-    //   path: "group-management",
-    //   icon: People,
-    // },
-  ];
+
   const Menu3 = [
     {
       name: "Send Notification",
@@ -144,13 +135,13 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
           </svg>
         </button>
       </div>
-      <div className="max-w-[260px] min-h-screen bg-[#002F7A] w-[220px] md:w-[240px] pr-[6px]  py-[16px] md:py-[24px] sticky top-0 overflow-y-auto ">
+      <div className="max-w-[260px] min-h-screen bg-[#26ae5f] w-[220px] md:w-[240px] pr-[6px]  py-[16px] md:py-[24px] sticky top-0 overflow-y-auto ">
         <div className="relative">
           <div className="relative h-screen  flex flex-col justify-between ">
             <div>
               <img
                 className=" h-[36px] md:h-[42px] xl:h-[45px] mx-auto    "
-                src="/assets/MPRIMO.svg"
+                src="/assets/dagiLogo.png"
                 alt="Theragist logo"
               />
 
@@ -162,7 +153,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                     onClick={onClose}
                     className={` py-[10px] pl-[16px] md:py-[16px] md:pl-[20px] flex items-center text-[14px]     leading-[20px] md:leading-[24px] ${
                       window.location.pathname === `/${menu?.path}`
-                        ? "text-[#ffffff] font-medium rounded-tr-lg rounded-br-lg bg-[#1254bd]"
+                        ? "text-[#ffffff] font-medium rounded-tr-lg rounded-br-lg bg-[#1c8448]"
                         : "text-[#ffffff] font-normal"
                     }`}
                   >
@@ -181,7 +172,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                     window.location.pathname === `/feed-management/article` ||
                     window.location.pathname === `/feed-management/post` ||
                     window.location.pathname === `/about-us`
-                      ? "text-[#ffffff] font-medium rounded-tr-lg rounded-br-lg bg-[#1254bd]"
+                      ? "text-[#ffffff] font-medium rounded-tr-lg rounded-br-lg bg-[#1c8448]"
                       : "text-[#ffffff] font-normal"
                   }`}
                 >
@@ -230,7 +221,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                     onClick={onClose}
                     className={` py-[10px] pl-[16px] md:py-[16px] md:pl-[20px] flex items-center text-[14px]     leading-[20px] md:leading-[24px] ${
                       window.location.pathname === `/${menu?.path}`
-                        ? "text-[#ffffff] font-medium rounded-tr-lg rounded-br-lg bg-[#1254bd]"
+                        ? "text-[#ffffff] font-medium rounded-tr-lg rounded-br-lg bg-[#1c8448]"
                         : "text-[#ffffff] font-normal"
                     }`}
                   >
@@ -249,7 +240,7 @@ const Sidebar = ({ isSidebarOpen, onClose, profileData }) => {
                     window.location.pathname === `/privacy-policy` ||
                     window.location.pathname === `/community-guidline` ||
                     window.location.pathname === `/about-us`
-                      ? "text-[#ffffff] font-medium rounded-tr-lg rounded-br-lg bg-[#1254bd]"
+                      ? "text-[#ffffff] font-medium rounded-tr-lg rounded-br-lg bg-[#1c8448]"
                       : "text-[#ffffff] font-normal"
                   }`}
                 >

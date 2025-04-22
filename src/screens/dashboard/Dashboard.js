@@ -73,7 +73,7 @@ const Dashboard = () => {
       {
         label: "",
         data: analyticsData?.map((item) => item?.point),
-        backgroundColor: "#1254bd",
+        backgroundColor: "#26ae5f",
       },
     ],
   };
@@ -112,8 +112,8 @@ const Dashboard = () => {
           dashboardData?.patient_gender?.Female,
           dashboardData?.patient_gender?.Male,
         ],
-        backgroundColor: ["#F7A30A", "#1254bd"],
-        borderColor: ["#F7A30A", "#1254bd"],
+        backgroundColor: ["#F7A30A", "#26ae5f"],
+        borderColor: ["#F7A30A", "#26ae5f"],
         borderWidth: 0.5,
       },
     ],
@@ -145,19 +145,26 @@ const Dashboard = () => {
               icon={Profile2User}
               iconName={""}
               total={dashboardData?.total_patients}
-              totalLabel={"Total Users"}
+              totalLabel={"Total Customers"}
             />
              <TotalCard
               icon={Profile2User}
               iconName={""}
               total={dashboardData?.total_patients}
-              totalLabel={"Total Vendors"}
+              totalLabel={"Total Marketers"}
+            />
+
+<TotalCard
+              icon={Profile2User}
+              iconName={""}
+              total={dashboardData?.total_patients}
+              totalLabel={"Total Investors"}
             />
              <TotalCard
               icon={WalletMinus}
               iconName={""}
               total={avCost}
-              totalLabel={"Total Transactions"}
+              totalLabel={"Total Sales"}
             />
             <TotalCard
               icon={WalletMinus}
@@ -205,7 +212,7 @@ const Dashboard = () => {
               <select
                 type="text"
                 placeholder=""
-                className="w-[80px]   bg-[#F9FAFB] border-[#E1E1E1]  px-2 py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#1254bd] focus:border-[#1254bd] "
+                className="w-[80px]   bg-[#F9FAFB] border-[#E1E1E1]  px-2 py-[8px] text-[14px] text-[#344054] leading-[20px]  placeholder:text-[#98A2B3] placeholder:text-[12px]  border-[0.2px] rounded-[8px] focus:outline-none focus:ring-[#26ae5f] focus:border-[#26ae5f] "
                 value={year}
                 onChange={(e) => setYear(e.target.value)}
               >
@@ -221,7 +228,7 @@ const Dashboard = () => {
                   onClick={() => setSelectedFilter(item?.label)}
                   className={`rounded-md border-[#E1E1E1] px-2 py-1  ${
                     item?.label === selectedFilter
-                      ? "bg-[#1254bd] text-white"
+                      ? "bg-[#26ae5f] text-white"
                       : "bg-[#fff] text-[#282828]"
                   } text-sm`}
                 >
@@ -238,9 +245,9 @@ const Dashboard = () => {
         <div className="flex flex-col gap-8">
           <div className="rounded-[12px] bg-[#FBFBFB] border border-[#E1E1E1] py-[10px] md:py-[15px]">
             <p className="text-center text-sm  text-[#282828] font-medium ">
-User Visit By Categories            </p>
+Customers By Marketers           </p>
             <div className="border-t border-[#E1E1E1]">
-              {dashboardData?.patient_division?.slice(0,7).map((item, index) => (
+              {dashboardData?.patient_division?.slice(0,5).map((item, index) => (
                 <div className="px-3 flex  items-center gap-2 py-2 border-b border-[#E1E1E1] ">
                   <Icon
                     icon="ri:mental-health-line"

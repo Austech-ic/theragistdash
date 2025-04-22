@@ -3,10 +3,10 @@
 
 
 //live server
-export const API_BASE_URL = 'https://octopus-app-spiq3.ondigitalocean.app/auth/api/v1/account';
+export const API_BASE_URL = 'https://dagi-production-2ae3.up.railway.app/api';
 export const getApiUrl = (endpoint) => API_BASE_URL + endpoint
 
-export const LOGIN = getApiUrl('/login/')
+export const LOGIN = getApiUrl('/login')
 export const SIGNUP = getApiUrl('/signup')
 export const FORGOTPASSWORD = getApiUrl('/password/forget')
 export const RESETPASSWORD = getApiUrl('/password/reset')

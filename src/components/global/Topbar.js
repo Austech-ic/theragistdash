@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import {
-
   ArrowDown2,
   DocumentDownload,
   DocumentSketch,
@@ -12,20 +11,13 @@ import {
   Logout,
   Notification,
   ProfileCircle,
-
 } from "iconsax-react";
 import Moment from "moment";
-import {
- 
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  Switch,
-} from "@chakra-ui/react";
+import { Menu, MenuButton, MenuList, MenuItem, Switch } from "@chakra-ui/react";
 import api from "../../api";
 import { ClipLoader } from "react-spinners";
 import { useQuery } from "@tanstack/react-query";
+import { clearUserData } from "../../utils/utils";
 
 const Topbar = ({ setIsSidebar }) => {
   const [logo, setLogo] = useState("");
@@ -35,8 +27,6 @@ const Topbar = ({ setIsSidebar }) => {
   const [switchId, setSwitchId] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
-
-
 
   const [formValue, setFormValue] = useState({
     firstName: "",
@@ -50,7 +40,7 @@ const Topbar = ({ setIsSidebar }) => {
   });
   // bg-[#26ae5f6a]
   async function getProfile(page) {
-    const response = ""
+    const response = "";
     return response;
   }
 
@@ -70,10 +60,6 @@ const Topbar = ({ setIsSidebar }) => {
     });
   }, [ProfileQuery?.data]);
 
-
-
- 
-
   return (
     <div className="flex w-full items-center justify-between px-6 gap-[16px] py-2 border-l-[0.2px] border-[#D0D5DD]">
       <div className="flex items-center">
@@ -81,16 +67,16 @@ const Topbar = ({ setIsSidebar }) => {
           class="h-8 w-8 sm:h-10 sm:w-10 bg-[#FAFAFA] hover:bg-[#efeeee] flex justify-center items-center rounded-md lg:hidden mr-2"
           onClick={setIsSidebar}
         >
-          <HambergerMenu size={18} color="#1254bd" />
+          <HambergerMenu size={18} color="#26ae5f" />
         </button>
 
         <div className="md:flex items-center gap-1 hidden ">
           <HambergerMenu
             size={24}
-            color="#1254bd"
+            color="#26ae5f"
             className="hidden lg:block"
           />
-          <h4 className="text-[20px] text-[#1254bd] font-normal ">
+          <h4 className="text-[20px] text-[#26ae5f] font-normal ">
             {location.pathname === "/dashboard"
               ? "Dashboard"
               : location.pathname === "/counselor-management"
@@ -135,7 +121,7 @@ const Topbar = ({ setIsSidebar }) => {
               <div className="h-3 w-3 rounded-full flex justify-center items-center bg-red-500 absolute right-1 top-1 text-white text-[8px] font-semibold">
                 0
               </div>
-              <Notification size={16} color="#1254bd" />
+              <Notification size={16} color="#26ae5f" />
             </button>
           </MenuButton>
           <MenuList
@@ -143,18 +129,17 @@ const Topbar = ({ setIsSidebar }) => {
             w="210px"
             className="border-[2px] p-[10px] md:p-[16px] shadow"
           >
-          <p className="text-sm">Notification</p>
+            <p className="text-sm">Notification</p>
 
-          <div className="py-6 flex flex-col items-center justify-center" >
-          <div className="rounded-full  mx-auto bg-[#E8E8E8] h-[50px] md:h-[60px] lg:h-[70px] xl:h-[100px] w-[50px] md:w-[60px] lg:w-[70px] xl:w-[100px] flex items-center justify-center ">
-            <DocumentSketch
-              color="#fff"
-              variant="Bold"
-              className="h-[20px] md:h-[30px] xl:h-[[40px]"
-            />
-          </div>
-            
-            </div>  
+            <div className="py-6 flex flex-col items-center justify-center">
+              <div className="rounded-full  mx-auto bg-[#E8E8E8] h-[50px] md:h-[60px] lg:h-[70px] xl:h-[100px] w-[50px] md:w-[60px] lg:w-[70px] xl:w-[100px] flex items-center justify-center ">
+                <DocumentSketch
+                  color="#fff"
+                  variant="Bold"
+                  className="h-[20px] md:h-[30px] xl:h-[[40px]"
+                />
+              </div>
+            </div>
           </MenuList>
         </Menu>
 
@@ -163,32 +148,49 @@ const Topbar = ({ setIsSidebar }) => {
             <Menu>
               <MenuButton bg={"none"}>
                 <div className="flex items-center gap-3">
-                  <p className="text-[#1254bd] whitespace-nowrap font-medium text-[14px] md:text-[14px] xl:text-[16px]  leading-[24px] ">
+                  <p className="text-[#26ae5f] whitespace-nowrap font-medium text-[14px] md:text-[14px] xl:text-[16px]  leading-[24px] ">
                     Hi {profileData?.data?.username}
                   </p>
 
                   <button className="h-[20px] w-[20px] md:h-[24px] md:w-[24px] rounded-[8px] hover:bg-[#F7F9FC] flex justify-center items-center">
-                    <ArrowDown2 size={14} color="#1254bd" />
+                    <ArrowDown2 size={14} color="#26ae5f" />
                   </button>
                 </div>
               </MenuButton>
               <MenuList
-                maxW="289px"
-                w="210px"
-                className="border-[2px] p-[10px] md:p-[16px] shadow-xl"
+              
+                className="border-[2px] shadow-xl"
               >
-                <div className="flex items-center gap-2">
-                  {profileData?.data?.pic ? (
-                    <img src="" alt="profile" />
-                  ) : (
-                    <ProfileCircle size={24} color="#1254bd" />
-                  )}
-                  <p className="text-gray-500">{profileData?.data?.username}</p>
-                </div>
-                <div className="flex items-center gap-2 mt-1">
-                <p className="text-gray-800 text-sm">Email: </p>
-                <p className="text-gray-500 text-sm">{profileData?.data?.email}</p>
-                </div>
+                <MenuItem   maxW="289px"
+                w="210px">
+                  <div className="flex items-center gap-2">
+                    {profileData?.data?.pic ? (
+                      <img src="" alt="profile" />
+                    ) : (
+                      <ProfileCircle size={20} color="#26ae5f" />
+                    )}
+                    <p className="text-gray-500">
+                      {profileData?.data?.username}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2 mt-1">
+                    <p className="text-gray-800 text-sm">Email: </p>
+                    <p className="text-gray-500 text-sm">
+                      {profileData?.data?.email}
+                    </p>
+                  </div>
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    clearUserData();
+                    navigate("/login");
+                  }}
+                >
+                  <div className="flex items-center gap-2">
+                    <Logout size={20} color="#26ae5f" />{" "}
+                    <p className="text-[#26ae5f]">Logout</p>
+                  </div>
+                </MenuItem>
               </MenuList>
             </Menu>
           </div>

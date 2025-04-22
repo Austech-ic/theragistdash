@@ -53,9 +53,9 @@ const Login = () => {
 
   return (
     <div
-      className="relative h-screen w-full flex justify-center items-center bg-[#002F7A] bg-center"
+      className="relative h-screen w-full flex justify-center items-center  bg-center"
       style={{
-        // backgroundImage: "url('/DashBoard.svg')",
+        backgroundImage: "url('/operation.jpeg')",
       }}
     >
       <m.div
@@ -72,7 +72,7 @@ const Login = () => {
       >
         {" "}
         <img
-          src="/assets/MPRIMO.svg"
+          src="/assets/dagiLogo.png"
           alt="logo"
           className=" h-[40px] md:h-[50px]  mx-auto mb-[36px] md:mb-[50px]"
         />
@@ -148,7 +148,7 @@ const Login = () => {
 
           <button
             type="submit"
-            className="w-full py-[14px] mt-[18px] text-center text-white bg-[#1254bd] rounded-[8px] flex items-center justify-center gap-1 mb-[12px] md:mb-[16px]"
+            className="w-full py-[14px] mt-[18px] text-center text-white bg-[#26ae5f] rounded-[8px] flex items-center justify-center gap-1 mb-[12px] md:mb-[16px]"
           >
             <p className="text-sm font-medium leading-[20px]">Login</p>
             {isLoading && <ClipLoader color={"white"} size={20} />}
