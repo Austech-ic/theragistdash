@@ -13,7 +13,6 @@ import {
   encryptaValue,
   SendOtp,
 } from "../utils/helperFunctions";
-import FloatingPaths from "../components/Floating";
 
 const Login = () => {
   const navigate = useNavigate();

@@ -1,7 +1,6 @@
 import React, { lazy } from "react";
 import Login from "./authScreen/Login";
 import SignUp from "./authScreen/SignUp";
-import ValidateOtp from "./authScreen/OTP";
 import ForgotPassword from "./authScreen/ForgotPassword";
 import {
     Routes,
@@ -15,11 +14,7 @@ const AuthRoute = () => {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
-      <Route path="/validate-otp" element={<ValidateOtp />} />
-
       <Route path="/forgot-password" element={<ForgotPassword />} />
-
-
     </Routes>
   );
 };

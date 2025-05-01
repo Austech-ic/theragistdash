@@ -52,28 +52,11 @@ import { enqueueSnackbar } from "notistack";
 
 const Topbar = ({ setIsSidebar }) => {
   const [logo, setLogo] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isSettingsModal, setIsSettingsModal] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [enableLogin, setEnableLogin] = useState(false);
-  const [enableImage, setEnableImage] = useState(false);
-  const [isInvite, setIsInvite] = useState(false);
-  const [isCreate, setIsCreate] = useState(false);
-  const [isProfile, setIsProfile] = useState(false);
-  const [isSwitchModal, setIsSwitchModal] = useState(false);
-  const [switchId, setSwitchId] = useState(null);
+
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleSwitchModal = (partner) => {
-    setIsSwitchModal(!isSwitchModal);
-    setSwitchId(partner);
-  };
 
-  const closeSwitchModal = () => {
-    setIsSwitchModal(false);
-    setSwitchId("");
-  };
 
   const [formValue, setFormValue] = useState({
     firstName: "",
@@ -107,24 +90,9 @@ const Topbar = ({ setIsSidebar }) => {
     });
   }, [ProfileQuery?.data]);
 
-  const handleIsModalClose = () => {
-    setIsModalOpen(false);
-  };
-  const handleSettingsModalClose = () => {
-    setIsSettingsModal(false);
-  };
 
-  function firstAndLastLetter(word) {
-    if (word && word?.length < 1) {
-      return "Input word is too short!";
-    }
-    const Word = word ? word : "";
 
-    const firstLetter = Word[0]; // First letter
-    const lastLetter = Word[Word.length - 1]; // Last letter
 
-    return `${firstLetter}`;
-  }
 
   return (
     <div className="flex w-full items-center justify-between px-6 gap-[16px] py-2 border-l-[0.2px] border-[#D0D5DD]">
@@ -195,18 +163,17 @@ const Topbar = ({ setIsSidebar }) => {
             w="210px"
             className="border-[2px] p-[10px] md:p-[16px] shadow"
           >
-          <p className="text-sm">Notification</p>
+            <p className="text-sm">Notification</p>
 
-          <div className="py-6 flex flex-col items-center justify-center" >
-          <div className="rounded-full  mx-auto bg-[#E8E8E8] h-[50px] md:h-[60px] lg:h-[70px] xl:h-[100px] w-[50px] md:w-[60px] lg:w-[70px] xl:w-[100px] flex items-center justify-center ">
-            <DocumentSketch
-              color="#fff"
-              variant="Bold"
-              className="h-[20px] md:h-[30px] xl:h-[[40px]"
-            />
-          </div>
-            
-            </div>  
+            <div className="py-6 flex flex-col items-center justify-center">
+              <div className="rounded-full  mx-auto bg-[#E8E8E8] h-[50px] md:h-[60px] lg:h-[70px] xl:h-[100px] w-[50px] md:w-[60px] lg:w-[70px] xl:w-[100px] flex items-center justify-center ">
+                <DocumentSketch
+                  color="#fff"
+                  variant="Bold"
+                  className="h-[20px] md:h-[30px] xl:h-[[40px]"
+                />
+              </div>
+            </div>
           </MenuList>
         </Menu>
 
@@ -227,29 +194,45 @@ const Topbar = ({ setIsSidebar }) => {
               <MenuList
                 maxW="289px"
                 w="210px"
-                className="border-[2px] p-[10px] md:p-[16px] shadow-xl"
+                className="border-[2px]  shadow-xl"
               >
-                <div className="flex items-center gap-2">
-                  {profileData?.data?.pic ? (
-                    <img src="" alt="profile" />
-                  ) : (
-                    <ProfileCircle size={24} color="#00B0C7" />
-                  )}
-                  <p className="text-gray-500">{profileData?.data?.username}</p>
-                </div>
-                <div className="flex items-center gap-2 mt-1">
-                <p className="text-gray-800 text-sm">Email: </p>
-                <p className="text-gray-500 text-sm">{profileData?.data?.email}</p>
-                </div>
+                <MenuItem>
+                <div>
+                  <div className="flex items-center gap-2">
+                    {profileData?.data?.pic ? (
+                      <img src="" alt="profile" />
+                    ) : (
+                      <ProfileCircle size={24} color="#00B0C7" />
+                    )}
+                    <p className="text-gray-500">
+                      {profileData?.data?.username}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2 mt-1">
+                    <p className="text-gray-800 text-sm">Email: </p>
+                    <p className="text-gray-500 text-sm">
+                      {profileData?.data?.email}
+                    </p>
+                  </div>
+                  </div>
+                </MenuItem>
+
+                <MenuItem
+                  onClick={() => {
+                    clearUserData();
+                    navigate("/login");
+                  }}
+                >
+                  <div className="flex items-center gap-2">
+                    <Logout size={20} color="#00B0C7" />{" "}
+                    <p className="text-[#00B0C7]">Logout</p>
+                  </div>
+                </MenuItem>
               </MenuList>
             </Menu>
           </div>
         </div>
       </div>
-
-     
-
-
     </div>
   );
 };
