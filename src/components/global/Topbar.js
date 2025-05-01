@@ -56,8 +56,6 @@ const Topbar = ({ setIsSidebar }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-
-
   const [formValue, setFormValue] = useState({
     firstName: "",
     lastName: "",
@@ -89,10 +87,6 @@ const Topbar = ({ setIsSidebar }) => {
       email: profileData?.user?.email,
     });
   }, [ProfileQuery?.data]);
-
-
-
-
 
   return (
     <div className="flex w-full items-center justify-between px-6 gap-[16px] py-2 border-l-[0.2px] border-[#D0D5DD]">
@@ -197,23 +191,23 @@ const Topbar = ({ setIsSidebar }) => {
                 className="border-[2px]  shadow-xl"
               >
                 <MenuItem>
-                <div>
-                  <div className="flex items-center gap-2">
-                    {profileData?.data?.pic ? (
-                      <img src="" alt="profile" />
-                    ) : (
-                      <ProfileCircle size={24} color="#00B0C7" />
-                    )}
-                    <p className="text-gray-500">
-                      {profileData?.data?.username}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-2 mt-1">
-                    <p className="text-gray-800 text-sm">Email: </p>
-                    <p className="text-gray-500 text-sm">
-                      {profileData?.data?.email}
-                    </p>
-                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      {profileData?.data?.pic ? (
+                        <img src="" alt="profile" />
+                      ) : (
+                        <ProfileCircle size={24} color="#00B0C7" />
+                      )}
+                      <p className="text-gray-500">
+                        {profileData?.data?.username}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2 mt-1">
+                      <p className="text-gray-800 text-sm">Email: </p>
+                      <p className="text-gray-500 text-sm">
+                        {profileData?.data?.email}
+                      </p>
+                    </div>
                   </div>
                 </MenuItem>
 
