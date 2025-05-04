@@ -3,7 +3,7 @@
 
 
 //live server
-export const API_BASE_URL = 'https://octopus-app-spiq3.ondigitalocean.app/auth/api/v1/account';
+export const API_BASE_URL = 'https://api.theragist.com/auth/api/v1/account';
 export const getApiUrl = (endpoint) => API_BASE_URL + endpoint
 
 export const LOGIN = getApiUrl('/login/')

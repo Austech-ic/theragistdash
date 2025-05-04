@@ -1,6 +1,7 @@
 //dev server
 //dev staging
-export const API_BASE_URL = 'https://octopus-app-spiq3.ondigitalocean.app/dashboard/api/v1';
+//export const API_BASE_URL = 'https://octopus-app-spiq3.ondigitalocean.app/dashboard/api/v1';
+export const API_BASE_URL = 'https://api.theragist.com/dashboard/api/v1';
 
 //live server
 
@@ -82,8 +83,8 @@ export const GETARTICLECOUNT = getApiUrl("/feed/management/article/count/");
 
 //
 export const ACTIVATEUSER = getApiUrl("/activate/");
-export const PROFILE = "https://octopus-app-spiq3.ondigitalocean.app/auth/api/v1/client/user/profile/"
-export const NOTIFICATION = "https://octopus-app-spiq3.ondigitalocean.app/client/api/v1/notifications/"
+export const PROFILE = "https://api.theragist.com/auth/api/v1/client/user/profile/"
+export const NOTIFICATION = "https://api.theragist.com/client/api/v1/notifications/"
 
 
 
